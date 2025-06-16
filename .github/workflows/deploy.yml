@@ -1,0 +1,116 @@
+name: Deploy Laravel to cPanel via SSH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: 🎉 Deploy to cPanel via SSH
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Generate .env file from GitHub secrets
+        run: |
+          cat <<EOT > .env
+          APP_NAME="${{ secrets.APP_NAME }}"
+          APP_ENV="${{ secrets.APP_ENV }}"
+          APP_KEY="${{ secrets.APP_KEY }}"
+          APP_DEBUG="${{ secrets.APP_DEBUG }}"
+          APP_URL="${{ secrets.APP_URL }}"
+
+          LOG_CHANNEL="${{ secrets.LOG_CHANNEL }}"
+          LOG_DEPRECATIONS_CHANNEL="${{ secrets.LOG_DEPRECATIONS_CHANNEL }}"
+          LOG_LEVEL="${{ secrets.LOG_LEVEL }}"
+
+          DB_CONNECTION="${{ secrets.DB_CONNECTION }}"
+          DB_HOST="${{ secrets.DB_HOST }}"
+          DB_PORT="${{ secrets.DB_PORT }}"
+          DB_DATABASE="${{ secrets.DB_DATABASE }}"
+          DB_USERNAME="${{ secrets.DB_USERNAME }}"
+          DB_PASSWORD="${{ secrets.DB_PASSWORD }}"
+
+          BROADCAST_DRIVER="${{ secrets.BROADCAST_DRIVER }}"
+          CACHE_DRIVER="${{ secrets.CACHE_DRIVER }}"
+          FILESYSTEM_DISK="${{ secrets.FILESYSTEM_DISK }}"
+          QUEUE_CONNECTION="${{ secrets.QUEUE_CONNECTION }}"
+          SESSION_DRIVER="${{ secrets.SESSION_DRIVER }}"
+          SESSION_LIFETIME="${{ secrets.SESSION_LIFETIME }}"
+
+          MEMCACHED_HOST="${{ secrets.MEMCACHED_HOST }}"
+
+          REDIS_HOST="${{ secrets.REDIS_HOST }}"
+          REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}"
+          REDIS_PORT="${{ secrets.REDIS_PORT }}"
+
+          MAIL_MAILER="${{ secrets.MAIL_MAILER }}"
+          MAIL_HOST="${{ secrets.MAIL_HOST }}"
+          MAIL_PORT="${{ secrets.MAIL_PORT }}"
+          MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}"
+          MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}"
+          MAIL_ENCRYPTION="${{ secrets.MAIL_ENCRYPTION }}"
+          MAIL_FROM_ADDRESS="${{ secrets.MAIL_FROM_ADDRESS }}"
+          MAIL_FROM_NAME="${{ secrets.MAIL_FROM_NAME }}"
+
+          AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+          AWS_DEFAULT_REGION="${{ secrets.AWS_DEFAULT_REGION }}"
+          AWS_BUCKET="${{ secrets.AWS_BUCKET }}"
+          AWS_USE_PATH_STYLE_ENDPOINT="${{ secrets.AWS_USE_PATH_STYLE_ENDPOINT }}"
+
+          PUSHER_APP_ID="${{ secrets.PUSHER_APP_ID }}"
+          PUSHER_APP_KEY="${{ secrets.PUSHER_APP_KEY }}"
+          PUSHER_APP_SECRET="${{ secrets.PUSHER_APP_SECRET }}"
+          PUSHER_HOST="${{ secrets.PUSHER_HOST }}"
+          PUSHER_PORT="${{ secrets.PUSHER_PORT }}"
+          PUSHER_SCHEME="${{ secrets.PUSHER_SCHEME }}"
+          PUSHER_APP_CLUSTER="${{ secrets.PUSHER_APP_CLUSTER }}"
+
+          VITE_APP_NAME="${{ secrets.VITE_APP_NAME }}"
+          VITE_PUSHER_APP_KEY="${{ secrets.VITE_PUSHER_APP_KEY }}"
+          VITE_PUSHER_HOST="${{ secrets.VITE_PUSHER_HOST }}"
+          VITE_PUSHER_PORT="${{ secrets.VITE_PUSHER_PORT }}"
+          VITE_PUSHER_SCHEME="${{ secrets.VITE_PUSHER_SCHEME }}"
+          VITE_PUSHER_APP_CLUSTER="${{ secrets.VITE_PUSHER_APP_CLUSTER }}"
+          EOT
+
+      - name: Generate application key
+        run: php artisan key:generate
+        env:
+          APP_KEY: ${{ secrets.APP_KEY }}
+
+      - name: Build assets (if using Laravel Mix)
+        run: |
+          if [ -f package.json ]; then
+            npm ci
+            npm run build
+          fi
+      
+      - name: Remove unnecessary files
+        run: |
+          rm -rf node_modules
+          rm -rf .git
+          rm -rf .github
+
+      - name: 📂 Upload files via SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "./*"
+          target: ${{ secrets.SSH_TARGET_DIR }}
