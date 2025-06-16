@@ -113,7 +113,7 @@ const Home = ({
       {infocus && homePageSections?.find(h => h.name === 'Infocus')?.show && (
         <InfocusSection infocus={infocus} />
       )}
-      
+
       {/* Events Section */}
       {events &&
         homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (
@@ -153,7 +153,7 @@ const Home = ({
               ?.show && <MediaSesction sawteeInMedia={sawteeInMedia.slice(0, 5)} />}
 
             {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
-              <NewsletterSection newsletters={newsletters} />
+              <NewsletterSection newsletters={newsletters.slice(0,6)} />
             )}
           </div>
         </div>
