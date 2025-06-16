@@ -30,12 +30,12 @@ const Home = ({
 }) => {
   const features = [
     {
-      id: '1',
-      title: 'Reform Monitoring Platform',
-      image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
-      link: '/reform-monitoring-platform',
-      description:
-        'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
+      // id: '1',
+     // title: 'Reform Monitoring Platform',
+     // image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
+     // link: '/reform-monitoring-platform',
+     // description:
+     //   'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
     },
     {
       id: '2',
@@ -55,12 +55,12 @@ const Home = ({
     },
 
     {
-      id: '4',
-      title: "Advancing LDC's Trade Interests",
-      image_src: '/assets/advancing-ldc_upscaled.webp',
-      link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
-      description:
-        'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
+     // id: '4',
+     // title: "Advancing LDC's Trade Interests",
+     // image_src: '/assets/advancing-ldc_upscaled.webp',
+     // link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
+     // description:
+     //   'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
     },
   ];
 
