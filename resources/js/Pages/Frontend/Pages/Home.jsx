@@ -113,16 +113,19 @@ const Home = ({
       {infocus && homePageSections?.find(h => h.name === 'Infocus')?.show && (
         <InfocusSection infocus={infocus} />
       )}
-      {/* Add publication section here  */}
-      {publications &&
-        homePageSections?.find(h => h.name === 'Latest Publications')?.show && (
-          <LatestPublicationSection publications={publications} />
-        )}
+      
       {/* Events Section */}
       {events &&
         homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (
           <PolicyOutreachSection events={events} />
         )}
+
+      {/* Add publication section here  */}
+      {publications &&
+        homePageSections?.find(h => h.name === 'Latest Publications')?.show && (
+          <LatestPublicationSection publications={publications} />
+        )}
+      
       {features && (
         <section className="reform-section dark:bg-gray-900">
           <div className="relative px-4 py-16 mx-auto sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
@@ -150,7 +153,7 @@ const Home = ({
               ?.show && <MediaSesction sawteeInMedia={sawteeInMedia.slice(0, 5)} />}
 
             {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
-              <NewsletterSection newsletters={newsletters.slice(0,6)} />
+              <NewsletterSection newsletters={newsletters} />
             )}
           </div>
         </div>
