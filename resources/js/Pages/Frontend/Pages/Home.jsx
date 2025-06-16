@@ -147,10 +147,10 @@ const Home = ({
           />
           <div className="grid gap-10 lg:grid-cols-6">
             {homePageSections?.find(h => h.name === 'Sawtee in Media')
-              ?.show && <MediaSesction sawteeInMedia={sawteeInMedia} />}
+              ?.show && <MediaSesction sawteeInMedia={sawteeInMedia.slice(0, 5)} />}
 
             {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
-              <NewsletterSection newsletters={newsletters} />
+              <NewsletterSection newsletters={newsletters.slice(0,6)} />
             )}
           </div>
         </div>
