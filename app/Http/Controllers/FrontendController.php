@@ -82,9 +82,9 @@ class FrontendController extends Controller
         $infocus = Category::where('slug', 'in-focus')->firstOrFail()->posts()->where('status', 'published')->whereHas('tags', function ($query) {
             $query->where('name', 'featured');
         })->latest()->take(5)->get();
-        $sawteeInMedia = Category::where('slug', 'sawtee-in-media')->firstOrFail()->posts()->where('status', 'published')->latest()->take(10)->get();
+        $sawteeInMedia = Category::where('slug', 'sawtee-in-media')->firstOrFail()->posts()->where('status', 'published')->latest()->take(6)->get();
         $events = Category::where('slug', 'featured-events')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
-        $newsletters = Category::where('slug', 'newsletters')->firstOrFail()->posts()->where('status', 'published')->latest()->take(10)->get();
+        $newsletters = Category::where('slug', 'newsletters')->firstOrFail()->posts()->where('status', 'published')->latest()->take(6)->get();
         $webinars = Category::where('slug', 'webinar-series')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
 
         return Inertia::render('Frontend/Pages/Home', [

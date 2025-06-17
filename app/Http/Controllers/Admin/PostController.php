@@ -60,7 +60,6 @@ class PostController extends Controller
     {
         $validated = $request->validated();
         $validated['title'] = Str::of($validated['title'])
-            ->title()
             ->squish();
         $validated['meta_title'] = $validated['title'];
         $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
