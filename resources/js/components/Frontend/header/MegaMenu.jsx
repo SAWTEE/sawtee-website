@@ -55,7 +55,7 @@ const AboutMegaMenu = ({ item, experts, introText, introImage, ...rest }) => {
               >
                 <Link
                   className="font-serif text-secondary-foreground"
-                  link={child.url}
+                  href={child.url}
                 >
                   {child.title}
                 </Link>
