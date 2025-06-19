@@ -168,7 +168,6 @@ class PostController extends Controller
             'meta_description' => 'nullable|string|max:255'
         ]);
         $validated['title'] = Str::of($validated['title'])
-            ->title()
             ->squish();
         $validated['meta_title'] = $validated['title'];
         $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
