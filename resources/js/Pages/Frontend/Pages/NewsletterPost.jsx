@@ -49,12 +49,7 @@ const NewsletterPost = ({ post }) => {
   }, []);
   return (
     <div className="pt-10">
-      <Head>
-        <script
-          src="https://acrobatservices.adobe.com/view-sdk/viewer.js"
-          defer
-        />
-      </Head>
+
 
       {post.content ? (
         <div className="container mx-auto max-w-7xl">

@@ -64,11 +64,15 @@ class FrontendController extends Controller
         $home_page_sections = HomePageSection::all();
         $slidesResponsiveImages = array();
         $featured = Tag::where('name', 'featured')->firstOrFail();
-        $featured_publications = $featured->publications()->latest()->limit(5)->get();
+        // $featured_publications = $featured->publications()->latest()->limit(5)->get();
+        $featured_publications = Publication::whereHas('tags', function($query) {
+            return $query->where('name', 'featured');
+        })->with(['file', 'category'])->latest()->limit(5)->get();
         $publications = Publication::with(['file', 'category'])
-            ->orderBy('id', "DESC")
-            ->limit(6)
-            ->get();
+        ->orderBy('id', "DESC")
+        ->limit(6)
+        ->get();
+        // dd($featured_publications);
 
         $slider = Slider::where('page_id', Page::where('name', 'home')->first()->id)->latest()->first();
         $slides = $slider ? Slide::where('slider_id', $slider->id)->with('media')->orderBy('id', 'DESC')->take(5)->get() : Array();
@@ -252,6 +256,8 @@ class FrontendController extends Controller
 
                 }
 
+            dd('Here');
+
                 return Inertia::render('Frontend/Archives/PublicationCategory', [
                     'category' => $category,
                     'publications' => $publications,
@@ -272,6 +278,7 @@ class FrontendController extends Controller
                 $file = $post->getFirstMediaurl('post-files');
                 return Inertia::render('Frontend/Post', ['post' => $post->load('category', 'category.parent', 'tags'), 'featured_image' => $media, "srcSet" => $srcSet, 'file' => $file, 'relatedPosts' => $related_posts]);
             }
+            dd('Here');
 
             return Inertia::render('Frontend/Category', [
                 'category' => $category->load(['parent', 'children']),
