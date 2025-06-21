@@ -5,10 +5,9 @@ import '../css/app.css';
 import '../css/index.css';
 import './bootstrap';
 
-const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
 createInertiaApp({
-  title: title => `${appName} | ${title}`,
+  title: title => `SAWTEE | ${title}`,
   resolve: name =>
     resolvePageComponent(
       `./Pages/${name}.jsx`,
