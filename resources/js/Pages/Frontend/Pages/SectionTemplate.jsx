@@ -80,7 +80,7 @@ const PageSection = ({ section, sections }) => {
 
   const childSections = sections.filter(sec => sec.parent_id === section.id);
   return (
-    <div id={sectionID}>
+    <div id={sectionID} className="offset-element">
       <PageSectionTitle titleText={title} />
 
       {isTabs && childSections.length > 0 && (

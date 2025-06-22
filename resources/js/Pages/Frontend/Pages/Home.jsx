@@ -29,14 +29,14 @@ const Home = ({
   homePageSections,
 }) => {
   const features = [
-    {
-      // id: '1',
-     // title: 'Reform Monitoring Platform',
-     // image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
-     // link: '/reform-monitoring-platform',
-     // description:
-     //   'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
-    },
+    // {
+    //   id: '1',
+    //  title: 'Reform Monitoring Platform',
+    //  image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
+    //  link: '/reform-monitoring-platform',
+    //  description:
+    //    'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
+    // },
     {
       id: '2',
       title: 'Media Fellowship',
@@ -54,14 +54,14 @@ const Home = ({
         'Donec ipsum augue, condimentum pulvinar consequat et, rhoncus sit amet ipsum. Nullam id ante dictum sapien condimentum venenatis nec eget lorem. Etiam ac cursus ipsum, eget auctor velit. Morbi non enim non nunc dignissim rutrum. Vestibulum eu enim eget.',
     },
 
-    {
-     // id: '4',
-     // title: "Advancing LDC's Trade Interests",
-     // image_src: '/assets/advancing-ldc_upscaled.webp',
-     // link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
-     // description:
-     //   'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
-    },
+    // {
+    //  id: '4',
+    //  title: "Advancing LDC's Trade Interests",
+    //  image_src: '/assets/advancing-ldc_upscaled.webp',
+    //  link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
+    //  description:
+    //    'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
+    // },
   ];
 
   const FeaturedPublicationSectionIsVisible = homePageSections?.find(
@@ -182,20 +182,6 @@ const Section = ({ children, title = null, className, dark }) => {
     </section>
   );
 };
-
-// const Title = ({ title }) => {
-//   return (
-//     <div className="relative mb-12">
-//       <FadeText
-//         text={title}
-//         className="flex items-center text-xl font-bold text-primary md:text-2xl lg:text-3xl xl:text-4xl"
-//       >
-//         {title}
-//       </FadeText>
-//       <div className="h-2 w-[8%] bg-gradient-to-l from-theme-50 to-theme-300 dark:bg-gradient-to-l dark:from-theme-300 dark:to-theme-500" />
-//     </div>
-//   );
-// };
 
 const FeaturedEventsSection = ({ events }) => {
   return (

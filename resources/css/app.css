@@ -85,7 +85,9 @@ canvas, iframe {
 }
 
 
-
+.offset-element {
+    scroll-margin-top: 80px;
+}
 
 input,
 button,

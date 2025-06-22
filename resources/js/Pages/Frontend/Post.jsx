@@ -1,7 +1,6 @@
 import WebsiteHead from '@/components/Frontend/Head';
 import MainLayout from '@/components/Layouts/MainLayout';
 import PostLayout from '@/components/Layouts/PostLayout';
-import NewsletterPost from './Pages/NewsletterPost';
 import WebinarPost from './Pages/WebinarPost';
 
 export default function Post({
