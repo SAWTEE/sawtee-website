@@ -56,11 +56,45 @@ Route::get('/category/{categories:slug}/{subcategory?}/{post?}', [FrontendContro
 
 
 
+
+
 Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+            // Clear application cache:
+        Route::get('/clear-cache', function() {
+            Artisan::call('cache:clear');
+            return 'All cache cleared, App is optimized.';
+        });
+
+        // Clear all cache:
+        Route::get('/optimize', function() {
+            Artisan::call('optimize:clear');
+            return 'All cache cleared, App is optimized.';
+        });
+
+        // Clear route cache:
+
+        Route::get('/route-cache', function() {
+            Artisan::call('route:cache');
+            return 'Routes cache has been cleared';
+        });
+
+        //Clear config cache:
+        Route::get('/config-cache', function() {
+        Artisan::call('config:cache');
+        return 'Config cache has been cleared';
+        });
+
+        // Clear view cache:
+        Route::get('/view-clear', function() {
+            Artisan::call('view:clear');
+        return 'View cache has been cleared';
+        });
 
     Route::resource('/categories', CategoryController::class);
     // Route::resource('/posts', PostController::class);
