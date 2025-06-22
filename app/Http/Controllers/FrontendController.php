@@ -256,7 +256,6 @@ class FrontendController extends Controller
 
                 }
 
-            dd('Here');
 
                 return Inertia::render('Frontend/Archives/PublicationCategory', [
                     'category' => $category,
@@ -278,7 +277,6 @@ class FrontendController extends Controller
                 $file = $post->getFirstMediaurl('post-files');
                 return Inertia::render('Frontend/Post', ['post' => $post->load('category', 'category.parent', 'tags'), 'featured_image' => $media, "srcSet" => $srcSet, 'file' => $file, 'relatedPosts' => $related_posts]);
             }
-            dd('Here');
 
             return Inertia::render('Frontend/Category', [
                 'category' => $category->load(['parent', 'children']),
