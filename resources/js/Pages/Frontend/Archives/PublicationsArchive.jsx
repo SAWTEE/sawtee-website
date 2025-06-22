@@ -95,7 +95,7 @@ const ItemComponent = ({ item, publications, className }) => {
                   <a
                     href={
                       publication.file
-                        ? `/publications/${publication.file.name}`
+                        ? `/publications/${publication.file?.name}`
                         : '#'
                     }
                     className="group relative"
@@ -120,7 +120,7 @@ const ItemComponent = ({ item, publications, className }) => {
                   <a
                     className="underline"
                     target="_blank"
-                    href={`/publications/${publication.file.name}`}
+                    href={`/publications/${publication.file?.name}`}
                   >
                     <p className="mt-4 text-center text-sm font-semibold">
                       {publication.title}
