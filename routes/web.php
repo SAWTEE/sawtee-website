@@ -87,13 +87,24 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
         //Clear config cache:
         Route::get('/config-cache', function() {
         Artisan::call('config:cache');
-        return 'Config cache has been cleared';
+            return 'Config cache has been cleared';
         });
 
         // Clear view cache:
         Route::get('/view-clear', function() {
             Artisan::call('view:clear');
-        return 'View cache has been cleared';
+            return 'View cache has been cleared';
+        });
+
+        // Clear view cache:
+        Route::get('/font-fetch', function() {
+            Artisan::call('google-fonts:fetch');
+            return 'All fonts fetched.';
+        });
+
+        Route::get('/storage-link', function() {
+            Artisan::call('storage:link');
+            return 'Storage symlink created.';
         });
 
     Route::resource('/categories', CategoryController::class);
