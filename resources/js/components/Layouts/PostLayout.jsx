@@ -3,6 +3,7 @@ import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
 import readingDuration from 'reading-duration';
 import SidebarWidget from '../Frontend/sidebarWidget';
+import { useEffect, useRef } from 'react';
 
 const PostLayout = ({
   children,
@@ -17,6 +18,22 @@ const PostLayout = ({
         wordsPerMinute: 225,
       })
     : null;
+
+    const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      // Find all anchor elements within the div
+      const anchors = contentRef.current.querySelectorAll('a');
+
+      // Add target="_blank" to each anchor
+      anchors.forEach(anchor => {
+        anchor.setAttribute('target', '_blank');
+        // Optional: add rel="noopener noreferrer" for security
+        anchor.setAttribute('rel', 'noopener noreferrer');
+      });
+    }
+  }, [children]); // Re-run when children change
 
   return (
     <div className="relative w-full px-10 py-10 lg:px-20">
@@ -41,7 +58,9 @@ const PostLayout = ({
               readingTime={readingTime}
               tags={post.tags}
             />
-            <div className="post-content prose-base text-lg text-secondary-foreground">
+            <div
+            ref={contentRef}
+             className="post-content prose-base text-lg text-secondary-foreground">
               {children}
             </div>
             <div className="sharethis-sticky-share-buttons"></div>
