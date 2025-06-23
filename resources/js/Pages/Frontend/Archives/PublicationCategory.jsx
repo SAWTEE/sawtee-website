@@ -45,7 +45,7 @@ export default function Publications({
                             title={publication.title}
                             href={
                               publication.file
-                                ? `/publications/${publication.file.name}`
+                                ? `/publications/${publication.file?.name}`
                                 : '#'
                             }
                             className="group relative"
@@ -70,7 +70,7 @@ export default function Publications({
                             className="underline"
                             target="_blank"
                             referrerPolicy="no-referrer"
-                            href={`/publications/${publication.file.name}`}
+                            href={`/publications/${publication.file?.name}`}
                           >
                             <p className="mt-4 text-center text-sm font-semibold">
                               {publication.title}
