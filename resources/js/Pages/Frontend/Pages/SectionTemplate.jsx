@@ -30,7 +30,7 @@ export default function SectionTemplate({ sections, content, pageData }) {
 
 const Members = ({ memberInstitutions }) => {
   return (
-    <div>
+    <div id="member-institutions" className="offset-element">
       <PageSectionTitle titleText={'Member Institutions'} />
 
       {memberInstitutions?.map(({ country, institutes, id }) => {
