@@ -574,7 +574,7 @@ export const socialMenu = [
   },
   {
     name: 'linkedin',
-    link: 'https://www.linkedin.com/sawteenp/',
+    link: 'https://www.linkedin.com/company/sawtee/',
   },
   {
     name: 'youtube',
