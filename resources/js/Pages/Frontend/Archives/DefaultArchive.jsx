@@ -38,11 +38,7 @@ const ArchivePost = ({ post, showFallbackImage }) => {
       <div className="group relative mb-2 overflow-hidden">
         {showFallbackImage && featured_image && (
           <Link
-            href={
-              post.category.parent
-                ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
-                : `/category/${post.category.slug}/${post.slug}`
-            }
+            href={`/category/${post.category.slug}/${post.slug}`}
           >
             <img
               className="aspect-video w-full object-cover transition-all duration-500 ease-in group-hover:scale-105"
@@ -54,11 +50,7 @@ const ArchivePost = ({ post, showFallbackImage }) => {
           </Link>
         )}
         <Link
-          href={
-            post.category.parent
-              ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
-              : `/category/${post.category.slug}/${post.slug}`
-          }
+          href={`/category/${post.category.slug}/${post.slug}`}
         >
           <div className="absolute right-0 top-0 mr-3 mt-3 cursor-pointer rounded-md bg-theme-600/80 px-2 py-1 font-serif text-xs font-medium text-white transition duration-500 ease-in-out hover:bg-theme-100/80 hover:text-theme-700">
             {post.category.name}
@@ -68,11 +60,7 @@ const ArchivePost = ({ post, showFallbackImage }) => {
       <div className="space-y-4 px-6">
         {hasContent ? (
           <Link
-            href={
-              post.category.parent
-                ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
-                : `/category/${post.category.slug}/${post.slug}`
-            }
+            href={`/category/${post.category.slug}/${post.slug}`}
           >
             <h3 className="inline-block text-lg font-medium leading-5 tracking-wide text-secondary-foreground/90 transition duration-500 ease-in-out hover:text-secondary-foreground/80 hover:underline hover:underline-offset-2">
               {post.title}
