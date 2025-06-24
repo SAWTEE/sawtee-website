@@ -13,7 +13,6 @@ export const PostCategory = props => (
 );
 
 export const PostCategories = ({ category, className = '', ...props }) => {
-  const ParentCategory = category.parent;
   return (
     <div
       className={cn(
@@ -22,18 +21,8 @@ export const PostCategories = ({ category, className = '', ...props }) => {
       )}
       {...props}
     >
-      {/* {ParentCategory && (
-        <Link href={`/category/${ParentCategory.slug}`}>
-          <PostCategory>{ParentCategory.name}</PostCategory>
-        </Link>
-      )} */}
-
       <Link
-        href={
-          ParentCategory
-            ? `/category/${ParentCategory.slug}/${category.slug}`
-            : `/category/${category.slug}`
-        }
+        href={`/category/${category.slug}`}
       >
         <PostCategory>{category.name}</PostCategory>
       </Link>

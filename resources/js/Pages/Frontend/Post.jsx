@@ -11,7 +11,7 @@ export default function Post({
   relatedPosts,
 }) {
   const { category, title, content } = post;
-  const isProgramme = category.parent && category.parent.slug === 'programme';
+  // const isProgramme = category.parent && category.parent.slug === 'programme';
   const isWebinarSeries = category.slug === 'webinar-series';
   const isDefault = !isWebinarSeries;
   const shareUrl = post.category.parent
@@ -32,7 +32,7 @@ export default function Post({
         post={post}
         featured_image={featured_image}
         srcSet={srcSet}
-        isProgramPost={isProgramme}
+        // isProgramPost={isProgramme}
         relatedPosts={relatedPosts}
       >
         {isWebinarSeries && <WebinarPost post={post} />}
