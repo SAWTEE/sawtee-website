@@ -19,7 +19,12 @@ class PublicationController extends Controller
     public function index(Request $request)
   {
         $publications = null;
-        $category = Category::where('type', 'publication')->where('parent_id', null)->first();
+        $category = Category::where('name', 'publications')->where('parent_id', null)->first();
+        $categoriesIDs = $category->getCategoriesIds($category);
+        $categories = array();
+        foreach($categoriesIDs as $id) {
+            $categories[] = Category::find($id);
+        }
         $subcategory = $request->category_id ? Category::where('type', 'publication')->find($request->category_id) : $category->children()->first();
         $childrenIDs = $subcategory->children->pluck('id')->toArray();
         $parent_and_subcategory_ids = array_merge(array($subcategory->id), $childrenIDs);
@@ -29,10 +34,10 @@ class PublicationController extends Controller
             ->orderByDesc('id')
             ->get();
 
-        // dd($publications, $category->children, $subcategory->id);
+        // dd($categories);
         return Inertia::render('Backend/Publication/Index', [
             'publications' => $publications,
-            'categories' => $category->children,
+            'categories' => $categories,
             'categoryID' => $subcategory->id,
         ]);
   }
