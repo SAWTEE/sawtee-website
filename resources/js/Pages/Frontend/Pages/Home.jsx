@@ -47,7 +47,7 @@ const Home = ({
     },
     {
       id: '3',
-      title: 'Covid-19',
+      title: 'COVID-19 resources',
       image_src: '/assets/COVID-19-South-Asia-and-LDCs.webp',
       link: '/category/covid',
       description:
