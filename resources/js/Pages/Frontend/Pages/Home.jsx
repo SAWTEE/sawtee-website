@@ -220,9 +220,7 @@ const FeaturedEventsSection = ({ events }) => {
             >
               {events[0].title}
             </Link>
-            <p className="mt-2 text-base text-muted-foreground dark:text-slate-400">
-              {events[0].excerpt}
-            </p>
+            <p className="mt-2 text-base text-muted-foreground dark:text-slate-400" dangerouslySetInnerHTML={{__html: events[0]?.excerpt}} />
           </div>
         </div>
       </div>
