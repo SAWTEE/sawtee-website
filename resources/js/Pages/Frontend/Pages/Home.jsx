@@ -298,7 +298,7 @@ export const InfocusSection = ({ infocus }) => {
                     {item.title}
                   </h3>
                 </Link>
-                <p className="text-sm text-muted-foreground">{item.excerpt}</p>
+                <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{__html: item.excerpt}} />
               </li>
             );
           })}

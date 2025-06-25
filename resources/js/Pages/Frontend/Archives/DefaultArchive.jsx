@@ -79,9 +79,7 @@ const ArchivePost = ({ post, showFallbackImage }) => {
             </h3>
           </a>
         )}
-        <p className="line-clamp-3 text-sm text-secondary-foreground/70">
-          {post.excerpt}
-        </p>
+        <p className="line-clamp-3 text-sm text-secondary-foreground/70" dangerouslySetInnerHTML={{__html: post.excerpt}} />
         <div className="flex flex-row items-center justify-between">
           <span className="font-regular mr-1 flex flex-row items-center py-1 text-xs text-secondary-foreground/80">
             {formatDate(post.published_at)}

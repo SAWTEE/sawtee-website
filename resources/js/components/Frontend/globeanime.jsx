@@ -216,7 +216,7 @@ const Globeanime = ({ darkMode = false }) => {
         height={400}
         className={`h-full w-full ${darkMode ? 'hidden' : 'block'}`} // Hide/show based on dark mode
         quality={100}
-        priority
+        priority="true"
       />
       <img
         src="/assets/globe-light.svg"
@@ -225,7 +225,7 @@ const Globeanime = ({ darkMode = false }) => {
         height={400}
         className={`h-full w-full ${darkMode ? 'block' : 'hidden'}`} // Hide/show based on dark mode
         quality={100}
-        priority
+        priority="true"
       />
     </div>
   );

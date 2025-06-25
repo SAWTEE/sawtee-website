@@ -62,9 +62,9 @@ class PostController extends Controller
         $validated['title'] = Str::of($validated['title'])
             ->squish();
         $validated['meta_title'] = $validated['title'];
-        $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
-            ->stripTags()
-            ->squish();
+        // $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
+        //     ->stripTags()
+        //     ->squish();
 
         $post = Post::create($validated);
 
@@ -170,9 +170,9 @@ class PostController extends Controller
         $validated['title'] = Str::of($validated['title'])
             ->squish();
         $validated['meta_title'] = $validated['title'];
-        $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
-            ->stripTags()
-            ->squish();
+        // $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
+        //     ->stripTags()
+        //     ->squish();
 
         if ($request->has('tags')) {
             $post->tags()->sync($request->tags);
