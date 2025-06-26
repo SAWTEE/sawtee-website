@@ -39,7 +39,7 @@ const Home = ({
     // },
     {
       id: '2',
-      title: 'Media Fellowship',
+      title: 'Media fellowship',
       image_src: '/assets/Media-Fellowship-banner.webp',
       link: '/media-fellows',
       description:
@@ -47,7 +47,7 @@ const Home = ({
     },
     {
       id: '3',
-      title: 'COVID-19 Resources',
+      title: 'COVID-19 resources',
       image_src: '/assets/COVID-19-South-Asia-and-LDCs.webp',
       link: '/category/covid',
       description:
@@ -142,7 +142,7 @@ const Home = ({
           <Title
             title={
               sawteeInMedia && newsletters
-                ? 'Media and Newsletters'
+                ? 'Media and Newsletter'
                 : sawteeInMedia && !newsletters
                   ? 'Media'
                   : 'Newsletters'
@@ -282,7 +282,7 @@ export const InfocusSection = ({ infocus }) => {
   return (
     <Section className="infocus-section">
       <div className="max-w-5xl mx-auto">
-        <Title title={'In Focus'} />
+        <Title title={'In focus'} />
         <SimpleList heading={null}>
           {infocus.map(item => {
             return (
@@ -301,7 +301,7 @@ export const InfocusSection = ({ infocus }) => {
             );
           })}
         </SimpleList>
-        <ExploreButton text="More In Focus" link={'/category/in-focus'} />
+        <ExploreButton text="More in focus" link={'/category/in-focus'} />
       </div>
     </Section>
   );
@@ -311,7 +311,7 @@ export const LatestPublicationSection = ({ publications }) => {
   return (
     <Section className="publications-section">
       <div className="max-w-5xl mx-auto">
-        <Title title={'Latest in Pubications'} />
+        <Title title={'Latest in publications'} />
         <MultiPostsCarousel
           link={'/category/publications'}
           text={'More in publications'}
@@ -331,7 +331,7 @@ export const PolicyOutreachSection = ({ events }) => {
   return (
     <Section>
       <div className="max-w-5xl mx-auto">
-        <Title title={'Policy Outreach'} />
+        <Title title={'Policy outreach'} />
         <FeaturedEventsSection events={events} />
         <ExploreButton
           text="More in featured events"
@@ -383,7 +383,7 @@ export const MediaSesction = ({ sawteeInMedia }) => {
       </SimpleList>
       <ExploreButton
         size={['xs', 'sm']}
-        text="More in sawtee in media "
+        text="More in SAWTEE in media "
         link={'/category/sawtee-in-media'}
       />
     </div>
@@ -431,11 +431,11 @@ export const WebinarSection = ({ webinars }) => {
   return (
     <Section className="section videos-section">
       <div className="max-w-5xl mx-auto">
-        <Title title={'Webinar Series'} />
+        <Title title={'Recordings and resources'} />
         <VideoCarousel posts={webinars} />
         <ExploreButton
           className="mt-8"
-          text="More In Webinar Series"
+          text="More In Recordings and resources"
           link={'/category/webinar-series'}
         />
       </div>
