@@ -210,7 +210,7 @@ const FeaturedEventsSection = ({ events }) => {
           <div className="">
             <Link
               href={`/category/featured-events/${events[0].slug}`}
-              className="text-xs font-medium uppercase transition duration-500 ease-in-out text-sky-500 hover:text-sky-600"
+              className="text-xs font-medium  transition duration-500 ease-in-out text-sky-500 hover:text-sky-600"
             >
               {events[0].category.name}
             </Link>
