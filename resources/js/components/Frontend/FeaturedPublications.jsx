@@ -8,7 +8,7 @@ export const FeaturedPublications = ({ publications }) => {
     <Glassbox className="bg-white dark:bg-bgDarker">
       <SimpleList
         className="mx-auto max-w-lg rounded-xl border-none"
-        heading={'featured publications'}
+        heading={'Featured publications'}
       >
         {publications.map((publication, idx) => {
           const media = publication.media.length
