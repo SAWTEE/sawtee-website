@@ -345,7 +345,7 @@ export const PolicyOutreachSection = ({ events }) => {
 export const MediaSesction = ({ sawteeInMedia }) => {
   return (
     <div className="w-full md:col-span-3">
-      <SimpleList heading={'sawtee in media'}>
+      <SimpleList heading={'SAWTEE in media'}>
         {sawteeInMedia.map(item => {
           const hasContent = item.content !== null || '';
           const file = item.media?.filter(
