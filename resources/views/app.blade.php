@@ -22,6 +22,8 @@
 <body class="antialiased bg-zinc-50 dark:bg-background">
     <a  href='#main' class="absolute px-3 py-2 transition-all -translate-y-full focus:translate-y-0 bg-theme-500 text-gray-100 text-base font-medium rounded-b-lg mx-4 focus:outline-none focus:ring-4 focus:ring-sky-500  hover:no-underline hover:bg-theme-700 hover:text-white z-[50]">skip to main content</a>
     @inertia
+<!-- <script src="https://js.supascribe.com/v1/loader/jRidZcAP45eGTg8kYDJwjAije1I2.js" async></script> -->
+
 </body>
 
 </html>

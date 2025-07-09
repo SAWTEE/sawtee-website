@@ -33,7 +33,6 @@ class HandleInertiaRequests extends Middleware
    */
   public function share(Request $request): array
   {
-    $experts = Team::orderBy('order', 'ASC')->take(6)->get();
     $primaryMenu = Menu::where('location', 'header')->firstOrFail();
     $footerMenu = Menu::where('location', 'footer')->firstOrFail();
     $primaryMenuItems = null;
@@ -58,7 +57,6 @@ class HandleInertiaRequests extends Middleware
       'flash' => [
         'message' => fn() => $request->session()->get('message'),
       ],
-      'experts' => fn() => $experts->load('media'),
       'primaryMenu' => fn() => $primaryMenuItems,
       'footerMenu' => fn() => $footerMenuItems,
       'ziggy' => fn() => [...(new Ziggy())->toArray(), 'location' => $request->url()],

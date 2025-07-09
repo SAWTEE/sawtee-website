@@ -40,7 +40,6 @@ export default function Footer({ menu, socialMenu }) {
 
             <div className="flex w-2/3 flex-col items-center justify-center gap-3 lg:items-start">
               <SubscribeForm
-                inputStyles={'border-borderColor dark:border-slate-700'}
                 // buttonStyles={'bg-primary dark:text-slate-700 text-white'}
               />
             </div>
