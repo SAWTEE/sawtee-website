@@ -72,7 +72,6 @@ class FrontendController extends Controller
         ->orderBy('id', "DESC")
         ->limit(6)
         ->get();
-        // dd($featured_publications);
 
         $slider = Slider::where('page_id', Page::where('name', 'home')->first()->id)->latest()->first();
         $slides = $slider ? Slide::where('slider_id', $slider->id)->with('media')->orderBy('id', 'DESC')->take(5)->get() : Array();
@@ -202,7 +201,6 @@ class FrontendController extends Controller
         // If route is for publications category
         if ($slug === 'publications' && !$subcategory) {
             $publications = $category->getAllPublicationsPost($category);
-            // dd($publications);
             return Inertia::render('Frontend/Archives/PublicationsArchive', [
                 'category' => $category,
                 'infocus' => $infocus,
@@ -223,11 +221,9 @@ class FrontendController extends Controller
         }
 
 
-
-
         // if route is for category/subcategory/post eg: sawtee.org/programmes/ongoing-programmes/post-slug
         if ($subcategory && $post) {
-            $post_slug = $segments[3];
+            $post_slug = $segments[3]->explode('.html')[0];
             $category = Category::where('slug', $subcategory)->firstOrFail();
             $post =
             Post::where("category_id", $category->id)->where("status", "published")->where('slug', $post_slug)->firstOrFail();
@@ -269,8 +265,9 @@ class FrontendController extends Controller
             }
 
             if (!$category) {
+                $post_slug = explode('.html', $segments[2])[0];
                 $category = Category::with('parent')->where('slug', $segments[1])->firstOrFail();
-                $post = Post::where("category_id", $category->id)->where("status", "published")->where('slug', $segments[2])->firstOrFail();
+                $post = Post::where("category_id", $category->id)->where("status", "published")->where('slug', $post_slug)->firstOrFail();
                 $related_posts = Post::where("category_id", $category->id)->where("status", "published")->where('slug', '!=', $slug)->latest()->take(5)->get();
                 $media = $post->getFirstMediaUrl('post-featured-image');
                 $srcSet = $post->getFirstMedia('post-featured-image')?->getSrcSet('responsive');

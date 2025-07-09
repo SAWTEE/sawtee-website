@@ -55,7 +55,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'https://info.sawtee.org'),
+    'url' => env('APP_URL', 'https://sawtee.org'),
 
     'asset_url' => env('ASSET_URL'),
 

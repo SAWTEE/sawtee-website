@@ -52,8 +52,8 @@ Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
 Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags']);
 Route::get('/themes/{themes:slug}/{subcategory?}/{post?}', [FrontendController::class, 'themes']);
+Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)->name('article.redirect');
 Route::get('/category/{categories:slug}/{subcategory?}/{post?}', [FrontendController::class, 'category'])->name('category.show');
-
 
 
 
@@ -96,7 +96,7 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
             return 'View cache has been cleared';
         });
 
-        // Clear view cache:
+        // Fetch all google fonts:
         Route::get('/font-fetch', function() {
             Artisan::call('google-fonts:fetch');
             return 'All fonts fetched.';
