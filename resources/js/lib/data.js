@@ -260,11 +260,6 @@ export const DashBoardMenuItems = [
     icon: SlidersHorizontalIcon,
     route: 'admin.sliders.index',
   },
-  {
-    name: 'Subscribers',
-    icon: UsersIcon,
-    route: 'admin.subscribers.list',
-  },
 ];
 
 export const primarMenu = [
