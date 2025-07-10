@@ -53,8 +53,7 @@ const FullWidthCarousel = ({
               <img
                 src={slide.media[0]?.original_url}
                 alt="slide"
-                loading="lazy"
-                className="object-cover w-full duration-500 ease-in h-fulltransition-all"
+                className="object-cover w-full duration-500 ease-in h-full transition-all"
               />
               <div className="absolute inset-0 flex items-center justify-center w-full h-full bg-black/20">
                 <span className="text-4xl font-semibold leading-5 tracking-normal text-white text-secondary-foreground">

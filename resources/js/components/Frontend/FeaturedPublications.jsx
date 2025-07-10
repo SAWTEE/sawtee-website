@@ -23,7 +23,7 @@ export const FeaturedPublications = ({ publications }) => {
               }
               key={publication.id}
             >
-              <div className="max-w-2/3 grow">
+              <div className="w-2/3 max-w-full grow">
                 <Link
                   className=""
                   href={`category/publications/${publication.category?.slug}`}
