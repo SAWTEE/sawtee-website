@@ -846,7 +846,7 @@ export const mediaFellowshipData = [
   {
     year: '2024',
     description:
-      'The 2024 edition of SAWTEE's media fellowship focused on the trade and climate change nexus. This fellowship aims to provide an opportunity for journalists to deepen their knowledge and expand their network while contributing to the public’s understanding of critical issues at the intersection of trade and climate change.',
+      "The 2024 edition of SAWTEE's media fellowship focused on the trade and climate change nexus. This fellowship aims to provide an opportunity for journalists to deepen their knowledge and expand their network while contributing to the public’s understanding of critical issues at the intersection of trade and climate.",
     fellows: [
     {
         id: 1,
