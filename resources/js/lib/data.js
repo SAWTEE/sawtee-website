@@ -887,7 +887,7 @@ export const mediaFellowshipData = [
           ' In the second story, I examined how erratic rainfall in September 2024 led to a spike in commodity prices, making common people bear the brunt of climate-induced disruptions. The early rains before the formal onset of the monsoon served as a stark reminder of how challenging the rainy season could be for Kathmandu Valley residents. Exploring the intersection of trade and climate change was an intellectually rewarding journey. It involved engagement with authorities and stakeholders to gather data and information. My fellowship stories were published in late December 2024 and January 2025.',
           'This experience has further motivated me to explore policy impacts, necessary interventions, and the externalities tied to climate resilience and trade. I extend my heartfelt thanks to SAWTEE for this invaluable opportunity—especially to Vice Chairperson Ravi Shanker Sainju, Executive Director Dr. Paras Kharel, and Programme Coordinator Dikshya Singh, with whom I closely worked and interacted during the fellowship. I sincerely hope SAWTEE continues to offer such platforms to many more media fellows in the future.  Thank you! ',
         ],
-        designation: 'Editor, Capital Business Magazine',
+        designation: 'freelance journalist',
         published_stories: [
           {
             link: "https://www.b360nepal.com/detail/24378/resilience-of-nepals-energy-infrastructure",
