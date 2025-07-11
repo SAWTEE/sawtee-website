@@ -846,7 +846,91 @@ export const mediaFellowshipData = [
   {
     year: '2024',
     description:
-      'SAWTEE is delighted to announce an exciting fellowship opportunity for journalists in Nepal. The fellowship program will select two journalists who will have the opportunity to delve into trade and climate change nexus. This fellowship presents a unique opportunity for journalists to deepen their knowledge, expand their network, and contribute to the public’s understanding of critical issues at the intersection of trade and climate change. FELLOWSHIP TIMELINE: 1 September–31 December 2024. Selection is ongoing',
-    fellows: [],
+      'The 2024 edition of SAWTEE's media fellowship focused on the trade and climate change nexus. This fellowship aims to provide an opportunity for journalists to deepen their knowledge and expand their network while contributing to the public’s understanding of critical issues at the intersection of trade and climate change.',
+    fellows: [
+    {
+        id: 1,
+        bio: "Mamta Thapa serves as a senior correspondent at Annapurna Post National Daily. In her journalism career spaning 16 years, she worked with Abhiyan National Daily, Janshwath Sarokar Magazine, Radio Sagarmatha, and Radio Palung's Audio Tower. She has a keen interest in investigative reporting and specializes in economic topics such as banking, financial institutions, agriculture, industry, and the macroeconomy. Ms Thapa’s contributions have been widely recognized. She received the Dr. Harihardev Pant Economic Journalism Award (2078) from the Dr. Harihardev Foundation and the Season Best Award (2079) from the Nepal Economic Journalists Society (SEJON). Most recently, she was recognized by the Nepali Agricultural Journalists Association (ANAJ) for her outstanding reporting on millet. Ms Thapa is actively involved in professional organizations. She is a member of SEJON's working committee, a former treasurer of the Education Journalists Group (EJG), and an ordinary member of the Women Economic Journalists Association (FEJA), the Sancharika Group, and the Kathmandu branch of the Federation of Nepalese Journalists. ",
+        name: 'Mamata Thapa',
+        avatar: '/assets/Himal Lamsal.jpg',
+        experience: [
+          "मैले पहिलो पटक सावती नेपाल ९साउथ एशिया वाच अन ट्रेड, ईकोनोमीक्स एण्ड ईनभाईरोमेन्ट० बाट प्राप्त फेलोसीपको दुई ओटा समाचार सम्प्रेषण तथा प्रकाशन गर्ने अवसर पाएको थिएँ । फेलोको दुई फरक समाचार शिर्षक क्रमशः ‘जलवायू परिवर्तनको असर व्यापारमा’ र ‘वातावरणमैत्री उत्पादनको माग बढ्दो’लाई अन्नपूर्ण पोस्ट दैनिकदेखी अँग्रेजी संस्करण दि अन्नपूर्ण एक्सप्रेसमा प्रकाशित भएका थिए । उक्त समाचार संकलनको क्रममा केहि फरक अनुभव प्राप्त गरें । विशेष गरेर चीनसँगको मुख्य भन्सार नाका रसुवा र तातोपानीमा बर्सेनि बेमौसमी वर्षाले भौतिक संरचनामा क्षति पु¥याउँदा व्यापारमा ठूलो नोक्सानी व्यहोर्नु परिरहेकोबारे नाकामा पुगेर रिपोर्टिङ गर्न सम्भव नभएकाले आवश्यक सामाग्री केन्द्रबाट जुटाएँ र राजधानीबाटै नाका प्रतिनिधिहरुसँग टेलिफोनबाट कुराकानीको आधारमा समाचार तयार पारें । पहिलो पटक यसरी गरेको रिपोर्टिङले टाढाबाट पनिस्रोतसँगको प्रगाढ सम्बन्ध सम्भव हुने रहेछ भन्ने भयो । यसपछि उक्त नाकाका केहि समाचारहरु राजधानी बसेरै सम्प्रेषण गरे । किनभने यसपछि उक्त स्रोत प्रयोग गरेर भन्सारमा वर्षौंदेखी थन्किएको यूरीया मल र यसको प्रभावबारे राम्रो स्टोरी बनाउन सकें । ",
+          'फेलोशीप रिपोर्टिङको क्रममा जलवायूसँग अन्तरसम्बन्धित बिषयलाई नजिकबाट नियाँल्ने, केलाउने र सिक्ने मौका पाएँ । यससँगै, राष्ट्रिय तथा अन्तर्राष्ट्रिय अभ्यासहरुबारे परिचित हुने मौका पनि जु¥यो । सावतीले फेलोसीपका लागि योग्य ठानी छनोट गरेर अवसर दिएकोमा धेरै धन्यवाद व्यक्त गर्दछु । सधै सँगै ',
+        ],
+        designation: ' वरिष्ठ संवाददाता अन्नपूर्ण ',
+        published_stories: [
+          {
+            link: "https://annapurnapost.com/story/474167/",
+            title:
+              'व्यवसायीलाई नोक्सानी, सरकारलाई राजस्व घाटा ',
+            image_src: ['/assets/himal-news-1.jpg'],
+            media_src: null,
+          },
+          {
+            link: "https://theannapurnaexpress.com/story/52797/",
+            title: 'Growing demand for eco-friendly products: Amriso exports surpass billions ',
+            image_src: [
+              '/assets/himal-news-2-page-1.jpg',
+              '/assets/himal-news-2-page-2.jpg',
+            ],
+            media_src: null,
+          },
+        ],
+      },
+      {
+        id: 2,
+        bio: "Pushpa Raj Acharya is a freelance journalist, who writes on business and economy-related issues. He is currently contributing to the Business 360 Magazine. Based in Kathmandu, he is Nepal Correspondent of The Yomiuri Shimbun, Japan's largest-selling newspaper. During his one and half decade-long journalism career, he has worked for national dailies such as Karobar Daily, myRepublica, The Himalayan Times, Annapurna Post, Annapurna Express and ekagaj.com , among others. He is the former president of the Society of Economic Journalists-Nepal (SEJON). ",
+        name: 'Pushpa Raj Acharya',
+        avatar: '/assets/Lok_Bahadur_Chapagain.jpg',
+        experience: [
+          'It was a unique experience to be part of the SAWTEE Media Fellowship on the Nexus of Trade and Climate Change. My stories focused on two key themes: first, how climate change could jeopardize Nepal’s energy trade prospects, and second, the deteriorating conditions of roads connecting Kathmandu Valley—Nepal’s major economic hub—and how this impacts the cost of trade logistics, particularly in the supply of raw materials and essential goods.',
+          ' In the second story, I examined how erratic rainfall in September 2024 led to a spike in commodity prices, making common people bear the brunt of climate-induced disruptions. The early rains before the formal onset of the monsoon served as a stark reminder of how challenging the rainy season could be for Kathmandu Valley residents. Exploring the intersection of trade and climate change was an intellectually rewarding journey. It involved engagement with authorities and stakeholders to gather data and information. My fellowship stories were published in late December 2024 and January 2025.',
+          'This experience has further motivated me to explore policy impacts, necessary interventions, and the externalities tied to climate resilience and trade. I extend my heartfelt thanks to SAWTEE for this invaluable opportunity—especially to Vice Chairperson Ravi Shanker Sainju, Executive Director Dr. Paras Kharel, and Programme Coordinator Dikshya Singh, with whom I closely worked and interacted during the fellowship. I sincerely hope SAWTEE continues to offer such platforms to many more media fellows in the future.  Thank you! ',
+        ],
+        designation: 'Editor, Capital Business Magazine',
+        published_stories: [
+          {
+            link: "https://www.b360nepal.com/detail/24378/resilience-of-nepals-energy-infrastructure",
+            title: 'RESILIENCE OF NEPAL’S ENERGY INFRASTRUCTURE',
+            image_src: ['/assets/Lokbahadur-news-1.png'],
+            media_src: null,
+          },
+          {
+            link: "https://www.b360nepal.com/detail/24675/poor-connectivity-dampens-supply-chain-management-hits-consumers-hard?fbclid=IwY2xjawJF9X1leHRuA2FlbQIxMQABHQsPBZ0brtIhkgWZveMLELBBQKei2L_co0dNSHfZRZLHW_B664PuVb6ssw_aem_sfsDUyOvI1e-Kck2CLtxtA",
+            title: 'Poor connectivity dampens supply chain management hits consumers hard ',
+            image_src: [
+              '/assets/himal-news-2-page-1.jpg',
+              '/assets/himal-news-2-page-2.jpg',
+            ],
+            media_src: null,
+          },
+        ],
+      },
+      {
+        id: 3,
+        bio: "Ramesh Kumar Neupane is the News Chief at Himal Khabar and has over 15 years of experience in journalism. His work spans the realms of political economy, development, environmental issues, and social justice in Nepal. Mr. Neupane's investigative reporting has exposed corruption in capital markets, agricultural subsidies, international aid, and the misappropriation of government resources. His impactful stories have led to policy reforms benefiting disadvantaged communities. Additionally, his contributions to data journalism have played a pivotal role in advancing data-driven storytelling in Nepal. Mr. Neupane has earned several prestigious accolades, including the Investigative Journalism Award from the Barbara Foundation, the Best Economic Journalist Award from the Society of Economic Journalists-Nepal (SEJON), and the Investigative Journalism Award from Freedom Forum.Dedicated to uncovering the truth and advocating for underrepresented communities, Ramesh also conducts workshops and training programs in collaboration with the Center for Investigative Journalism Nepal. ",
+        name: 'Ramesh Kumar Neupane',
+        avatar: '/assets/Modnath_Dhakal.JPG',
+        experience: [
+          "साउथ एशिया वाच अन ट्रेड इकोनोमिक्स एण्ड इन्भाइरोनमेन्टको मिडिया फेलोशिपमा सहभागी हुनु मेरो पत्रकारिता यात्राको लागि एक महत्वपूर्ण अनुभव रह्यो । ऊर्जा उत्पादन र व्यापार, कृषि उत्पादन तथा खाद्य सुरक्षामा जलवायु परिवर्तनको प्रभावजस्ता गहिरा र महत्वपूर्ण तर प्रायः ओझेलमा परेका विषयमा विस्तृत रिपोर्टिङ गर्ने मौका पाएँ । फेलोशिपको दौरानमा साउथ एशिया वाच अन ट्रेड इकोनोमिक्स एण्ड इन्भाइरोनमेन्टसम्वद्ध विज्ञबाट प्राप्त मार्गनिर्देशन, उपलब्ध गराइएको स्रोत सामाग्री तथा अन्य विशेषज्ञसँगको अन्तरक्रिया, र अन्तर्वार्ताले मेरो दृष्टिकोणलाई थप फराकि«लो बनायो । यसले मलाई रिर्पोटिङको दौरान पत्रकारलाई विज्ञ मतको सहायताले कसरी समाचार सामाग्रीलाई गहन बनाउन मद्दत गर्छ भन्ने प्रष्ट दृष्टि दियो । यसले विभिन्न विषयहरुको अन्तर्सम्बन्ध केलाउन तथा तिनको प्रभावबारे बुझ्न पनि मद्दत गर्यो । रिर्पोटको प्रकाशनपश्चात् प्राप्त प्रतिक्रिया निकै उपयोगी रह्यो जसले मलाई भविष्यमा गर्ने रिर्पोटिङलाई अझ निखार्न मद्दत गर्नेछ ।",
+          'यो फेलोशिपले केवल मेरो पेशागत दक्षता वृद्धि मात्रै गरेन, सार्वजनिक चासोका विषयमा गहिरो र तथ्यमा आधारित पत्रकारिता गर्न थप अभिप्रेरित पनि गरेको छ । खासगरी, साउथ एशिया वाच अन ट्रेड इकोनोमिक्स एण्ड इन्भाइरोनमेन्टसँगको फेलोशिप सहकार्य मेरो पत्रकारिता यात्राको महत्वपूर्ण  ',
+        ],
+        designation: 'Journalist, The Rising Nepal',
+        published_stories: [
+          {
+            link: "https://www.himalkhabar.com/news/144330 ",
+            title:
+              'बिजुलीले बदलिएला नेपालको अन्तर्राष्ट्रिय व्याप',
+            image_src: ['/assets/modnath-news-1.webp'],
+            media_src: null,
+          },
+          {
+            link: 'https://risingnepaldaily.com/news/37526',
+            title: 'के नेपाल खाद्यवस्तुमा आत्मनिर्भर बन्न सक्छ?',
+            image_src: ['/assets/modnath-news-2.webp'],
+            media_src: null,
+          },
+        ],
+      },],
   },
 ];
