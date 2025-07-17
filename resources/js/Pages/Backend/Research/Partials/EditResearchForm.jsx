@@ -19,25 +19,28 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import { useState } from 'react';
+import { useState} from 'react';
 
-export default function CreateResearchForm({ research }) {
+export default function EditResearchForm({ research }) {
   const { data, setData, post, processing, errors } = useForm({
-    title: research.title,
-    subtitle: research.subtitle,
-    description: research.description,
-    year: research.year,
-    image: research.featured_image ? research.featured_image.name : null,
-    file: research.media[0] ? research.media[0].original_url : null,
-    meta_title: research.meta_title,
-    meta_description: research.meta_description,
+    title: research.title ?? '',
+    subtitle: research.subtitle ?? '',
+    description: research.description ?? '',
+    year: research.year ?? '',
+    file: research.file ? research.file.name : undefined,
+    link: research.link ?? '',
+    image: research.media[0] ? research.media[0].original_url : undefined,
+    meta_title: research.meta_title ?? '',
+    meta_description: research.meta_description ?? '',
   });
-  const toast = useToast();
+  const {toast} = useToast();
   const [image, setImage] = useState(data.image);
+
   const [filename, setFilename] = useState(
-    research.file ? research.file.name : ''
+    research.file ? research.file.name : null
   );
 
+  console.log('Research Data:', data, 'Research:', research);
   const submit = e => {
     e.preventDefault();
     post(
@@ -50,7 +53,7 @@ export default function CreateResearchForm({ research }) {
         onSuccess: () =>
           toast({
             title: 'Research Edited.',
-            description: `Research ${data.title} Successfully`,
+            description: `Research edited Successfully`,
           }),
         onError: errors => {
           for (const key in errors) {
@@ -200,8 +203,20 @@ export default function CreateResearchForm({ research }) {
             )}
           </fieldset>
 
+          { filename &&  <div className="mx-2">
+            <Label htmlFor="file">File Name</Label>
+            <Input
+              type="text"
+              id="file"
+              name="file"
+              className="mt-1"
+              value={ filename}
+              placeholder="file name will be shown here"
+              readOnly />
+              </div>}
+
           <div className="mx-2">
-            <Label htmlFor="file">File Upload</Label>
+            <Label htmlFor="file">Change/File Upload</Label>
 
             <Input
               type="file"
@@ -209,8 +224,10 @@ export default function CreateResearchForm({ research }) {
               id="file"
               name="file"
               className="mt-1"
+              // value={filename}
               onChange={e => {
                 setData('file', e.target.files[0]);
+                setFilename(e.target.files[0].name);
               }}
             />
 
@@ -226,7 +243,7 @@ export default function CreateResearchForm({ research }) {
               name="link"
               className="mt-1"
               value={data.link}
-              placeholder="enter research link"
+              // placeholder="enter research link"
               autoComplete="link"
               onChange={e => setData('link', e.target.value)}
             />

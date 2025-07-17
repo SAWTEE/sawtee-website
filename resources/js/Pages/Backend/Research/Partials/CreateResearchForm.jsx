@@ -28,8 +28,8 @@ export default function CreateResearchForm() {
     description: '',
     year: '',
     link: '',
-    image: null,
-    file: null,
+    image: undefined,
+    file: undefined,
     meta_title: '',
     meta_description: '',
   });
