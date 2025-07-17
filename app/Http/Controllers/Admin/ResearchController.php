@@ -16,7 +16,7 @@ class ResearchController extends Controller
      */
     public function index()
     {
-        $researchs = Research::with(['media'])->latest()->get();
+        $researchs = Research::with(['media'])->orderBy('year', 'desc')->get();
         return Inertia::render('Backend/Research/Index', ['researchs' => $researchs]);
     }
 
