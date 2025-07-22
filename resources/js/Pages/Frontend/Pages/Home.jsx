@@ -43,7 +43,7 @@ const Home = ({
       image_src: '/assets/Media-Fellowship-banner.webp',
       link: '/media-fellows',
       description:
-        'SAWTEE is delighted to announce an exciting fellowship opportunity for journalists in Nepal. This fellowship presents a unique opportunity for journalists to deepen their knowledge, expand their network, and contribute to the public’s understanding of critical issues at the intersection of trade and climate change.',
+        'Since 2023, SAWTEE has been offering a media fellowship programme that supports economic journalists with mentorship on a range of technical issues at the intersection of trade, climate change, and related topics—while fully upholding their journalistic independence. .',
     },
     {
       id: '3',
