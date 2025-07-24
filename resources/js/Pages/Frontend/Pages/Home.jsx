@@ -49,7 +49,7 @@ const Home = ({
       id: '3',
       title: 'COVID-19 resources',
       image_src: '/assets/COVID-19-South-Asia-and-LDCs.webp',
-      link: '/category/covid',
+      link: '/category/COVID-19-resources',
       description:
         "Between 2020 and 2021, COVID-19 pandemic affected the social, economic and well-being of people worldwide. SAWTEE undertook activities that provided evidence-based insights and expert perspectives to help understand the pandemic and its impacts. Explore SAWTEE's curated collection of works related to the COVID-19 pandemic, including articles, reports and recorded webinars that examined the health impacts of the pandemic, along with lessons for future resilience and preparedness.",
     },
