@@ -24,18 +24,7 @@ export const FeaturedPublications = ({ publications }) => {
               key={publication.id}
             >
               <div className="w-2/3 max-w-full grow">
-                <Link
-                  className=""
-                  href={`category/publications/${publication.category?.slug}`}
-                >
-                  <Badge
-                    variant="outline"
-                    className="mb-2 px-2 font-sans"
-                    size={'sm'}
-                  >
-                    {publication.category?.name}
-                  </Badge>
-                </Link>
+
 
                 <a
                   target="_blank"

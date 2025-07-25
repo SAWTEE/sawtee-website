@@ -70,6 +70,8 @@
     "embla-carousel-autoplay": "^8.1.7",
     "embla-carousel-react": "^8.1.7",
     "framer-motion": "^10.16.4",
+    "@uidotdev/usehooks": "^2.4.1",
+    "animejs": "^3.2.2",
     "install": "^0.13.0",
     "lucide-react": "^0.407.0",
     "nprogress": "^0.2.0",

@@ -12,7 +12,15 @@ import FeaturedSection from '@/components/Frontend/feature';
 import Title from '@/components/Frontend/title';
 import ListItem from '@/components/shared/ListItem';
 import { formatDate } from '@/lib/helpers';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import { Link } from '@inertiajs/react';
 import MainLayout from '../../../components/Layouts/MainLayout';
 
@@ -28,6 +36,7 @@ const Home = ({
   slidesResponsiveImages,
   homePageSections,
 }) => {
+  const [open, setOpen] = useState(true);
   const features = [
     // {
     //   id: '1',
@@ -68,6 +77,7 @@ const Home = ({
     h => h.name === 'Featured Publication'
   );
 
+
   return (
     <MainLayout>
       <WebsiteHead
@@ -75,7 +85,22 @@ const Home = ({
         description="Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges."
         image={'/assets/logo-sawtee.webp'}
       />
-      <Section py={4} className="px-6 carousel-section lg:py-4">
+
+      {/* POPUP CODE */}
+      {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Are you absolutely sure?</DialogTitle>
+            <DialogDescription>
+              This action cannot be undone. This will permanently delete your
+              account and remove your data from our servers.
+            </DialogDescription>
+          </DialogHeader>
+        </DialogContent>
+      </Dialog> */}
+
+
+      <Section py={4} className="carousel-section px-6 lg:py-4">
         <div
           className={cn(
             'grid grid-cols-1 gap-10',
@@ -84,7 +109,7 @@ const Home = ({
           )}
           id="carousel-section"
         >
-          <div className="overflow-hidden rounded-md shadow-xl place-self-center lg:col-span-4">
+          <div className="place-self-center overflow-hidden rounded-md shadow-xl lg:col-span-4">
             {/* Carousel Section */}
             {slides &&
             homePageSections?.find(h => h.name === 'Carousel')?.show ? (
@@ -128,17 +153,17 @@ const Home = ({
 
       {features && (
         <section className="reform-section dark:bg-gray-900">
-          <div className="relative px-4 py-16 mx-auto sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
+          <div className="relative mx-auto px-4 py-16 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
             <SvgBackground svgStyles={'dark:text-gray-800'} />
-            <Particles className="absolute inset-0 pointer-events-none" />
-            <div className="relative mx-auto max-w-9xl">
+            <Particles className="pointer-events-none absolute inset-0" />
+            <div className="max-w-9xl relative mx-auto">
               <FeaturedSection features={features} />
             </div>
           </div>
         </section>
       )}
       <Section className="outreach-section">
-        <div className="max-w-5xl mx-auto">
+        <div className="mx-auto max-w-5xl">
           <Title
             title={
               sawteeInMedia && newsletters
@@ -185,15 +210,15 @@ const Section = ({ children, title = null, className, dark }) => {
 
 const FeaturedEventsSection = ({ events }) => {
   return (
-    <div className="grid grid-cols-1 gap-5 mb-4 place-items-start md:grid-cols-12">
+    <div className="mb-4 grid grid-cols-1 place-items-start gap-5 md:grid-cols-12">
       <div className="group md:col-span-5">
         <Link href={`/category/featured-events/${events[0].slug}`}>
           <div
-            className="relative overflow-hidden text-center rounded-md"
+            className="relative overflow-hidden rounded-md text-center"
             title={events[0].title}
           >
             <div className="ease absolute inset-0 top-0 z-10 hidden h-[5px] w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
-            <div className="absolute inset-0 z-20 w-full h-full transition-all duration-200 ease bg-black/20 group-hover:bg-transparent" />
+            <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
             <img
               src={
                 events[0].media.filter(
@@ -202,25 +227,28 @@ const FeaturedEventsSection = ({ events }) => {
               }
               alt="event cover"
               loading="lazy"
-              className="object-cover w-full transition-all duration-500 ease-linear aspect-video"
+              className="aspect-video w-full object-cover transition-all duration-500 ease-linear"
             />
           </div>
         </Link>
-        <div className="flex flex-col justify-between mt-3 leading-normal rounded-b lg:rounded-b-none lg:rounded-r">
+        <div className="mt-3 flex flex-col justify-between rounded-b leading-normal lg:rounded-b-none lg:rounded-r">
           <div className="">
             <Link
               href={`/category/featured-events/${events[0].slug}`}
-              className="text-xs font-medium uppercase transition duration-500 ease-in-out text-sky-500 hover:text-sky-600"
+              className="text-xs font-medium uppercase text-sky-500 transition duration-500 ease-in-out hover:text-sky-600"
             >
               {events[0].category.name}
             </Link>
             <Link
               href={`/category/featured-events/${events[0].slug}`}
-              className="block mb-2 text-2xl font-bold leading-6 tracking-wide transition duration-500 ease-in-out text-secondary-foreground group-hover:text-sky-500/80 lg:text-3xl"
+              className="mb-2 block text-2xl font-bold leading-6 tracking-wide text-secondary-foreground transition duration-500 ease-in-out group-hover:text-sky-500/80 lg:text-3xl"
             >
               {events[0].title}
             </Link>
-            <p className="mt-2 text-base text-muted-foreground dark:text-slate-400" dangerouslySetInnerHTML={{__html: events[0]?.excerpt}} />
+            <p
+              className="mt-2 text-base text-muted-foreground dark:text-slate-400"
+              dangerouslySetInnerHTML={{ __html: events[0]?.excerpt }}
+            />
           </div>
         </div>
       </div>
@@ -238,22 +266,22 @@ const FeaturedEventsSection = ({ events }) => {
               <div className="group" key={event.id}>
                 <Link href={`/category/featured-events/${event.slug}`}>
                   <div
-                    className="relative overflow-hidden text-center rounded-md max-h-40"
+                    className="relative max-h-40 overflow-hidden rounded-md text-center"
                     title={event.title}
                   >
                     <img
                       src={featured_image}
                       alt="event cover"
                       loading="lazy"
-                      className="object-cover w-full h-full transition-all duration-500 ease-linear aspect-square"
+                      className="aspect-square h-full w-full object-cover transition-all duration-500 ease-linear"
                     />
-                    <div className="absolute inset-0 top-0 z-10 hidden w-full h-1 transition-all duration-200 ease bg-sky-500/80 group-hover:block" />
-                    <div className="absolute inset-0 z-20 w-full h-full transition-all duration-200 ease bg-black/20 group-hover:bg-transparent" />
+                    <div className="ease absolute inset-0 top-0 z-10 hidden h-1 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
+                    <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
                   </div>
                 </Link>
                 <Link
                   href={`/category/featured-events/${event.slug}`}
-                  className="inline-block my-2 font-semibold leading-5 tracking-wide transition duration-500 ease-in-out text-md text-secondary-foreground group-hover:text-sky-500/80"
+                  className="text-md my-2 inline-block font-semibold leading-5 tracking-wide text-secondary-foreground transition duration-500 ease-in-out group-hover:text-sky-500/80"
                 >
                   {event.title}
                 </Link>
@@ -270,23 +298,22 @@ export default Home;
 
 export const CarouselSection = ({ slides, slidesResponsiveImages }) => {
   return (
-      <FullWidthCarousel
-        slides={slides}
-        responsiveImages={slidesResponsiveImages}
-      />
-
+    <FullWidthCarousel
+      slides={slides}
+      responsiveImages={slidesResponsiveImages}
+    />
   );
 };
 
 export const InfocusSection = ({ infocus }) => {
   return (
     <Section className="infocus-section">
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
         <Title title={'In focus'} />
         <SimpleList heading={null}>
           {infocus.map(item => {
             return (
-              <li className="flex flex-col w-full gap-3 mb-6" key={item.id}>
+              <li className="mb-6 flex w-full flex-col gap-3" key={item.id}>
                 <Link
                   className="underline underline-offset-2 hover:underline-offset-4"
                   target="_blank"
@@ -296,7 +323,10 @@ export const InfocusSection = ({ infocus }) => {
                     {item.title}
                   </h3>
                 </Link>
-                <p className="text-sm text-muted-foreground" dangerouslySetInnerHTML={{__html: item.excerpt}} />
+                <p
+                  className="text-sm text-muted-foreground"
+                  dangerouslySetInnerHTML={{ __html: item.excerpt }}
+                />
               </li>
             );
           })}
@@ -310,7 +340,7 @@ export const InfocusSection = ({ infocus }) => {
 export const LatestPublicationSection = ({ publications }) => {
   return (
     <Section className="publications-section">
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
         <Title title={'Latest in publications'} />
         <MultiPostsCarousel
           link={'/category/publications'}
@@ -330,7 +360,7 @@ export const LatestPublicationSection = ({ publications }) => {
 export const PolicyOutreachSection = ({ events }) => {
   return (
     <Section>
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
         <Title title={'Policy outreach'} />
         <FeaturedEventsSection events={events} />
         <ExploreButton
@@ -353,14 +383,14 @@ export const MediaSesction = ({ sawteeInMedia }) => {
           )[0];
 
           return (
-            <li className="mb-4 group" key={item.id}>
+            <li className="group mb-4" key={item.id}>
               <div>
                 {file && !hasContent && (
                   <a
                     href={file?.original_url}
                     target="_blank"
                     rel="noreferrer"
-                    className="text-sm leading-5 underline md:text-md text-secondary-foreground underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
+                    className="md:text-md text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
                   >
                     {item.title}
                   </a>
@@ -368,7 +398,7 @@ export const MediaSesction = ({ sawteeInMedia }) => {
                 {hasContent && (
                   <Link
                     href={`/category/${item.category.slug}/${item.slug}`}
-                    className="text-sm leading-5 underline md:text-md text-secondary-foreground underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
+                    className="md:text-md text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
                   >
                     {item.title}
                   </Link>
@@ -405,7 +435,7 @@ export const NewsletterSection = ({ newsletters }) => {
             <li key={item.id}>
               <ListItem>
                 <a
-                  className="font-sans text-sm leading-5 underline md:text-md text-secondary-foreground underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
+                  className="md:text-md font-sans text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
                   href={file?.original_url}
                   target="_blank"
                   rel="noreferrer"
@@ -430,7 +460,7 @@ export const NewsletterSection = ({ newsletters }) => {
 export const WebinarSection = ({ webinars }) => {
   return (
     <Section className="section videos-section">
-      <div className="max-w-5xl mx-auto">
+      <div className="mx-auto max-w-5xl">
         <Title title={'Recordings and resources'} />
         <VideoCarousel posts={webinars} />
         <ExploreButton

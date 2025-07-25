@@ -29,6 +29,7 @@ export default function FeaturedSection({ features }) {
       <div className="relative w-full md:block lg:w-[50%]">
         <Link
           href={feature.link}
+          preserveScroll
           className="group relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0"
         >
           <img
