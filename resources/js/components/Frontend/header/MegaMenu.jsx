@@ -4,7 +4,6 @@ import { aboutMenuData } from '@/lib/data';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import Globeanime from '../globeanime';
-import ExpertCard from './ExpertCard';
 
 const ListVariants = {
   open: {

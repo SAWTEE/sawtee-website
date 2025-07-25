@@ -29,16 +29,16 @@ export default function Footer({ menu, socialMenu }) {
           <div className="col-span-full mb-10 flex w-full flex-col gap-5 lg:col-span-2 lg:mb-0">
             <Link
               href="/"
-              className="mx-auto flex w-32 justify-center lg:mx-0 lg:justify-start"
+              className="mx-auto flex w-full justify-center lg:mx-0 lg:justify-start"
             >
               <img
                 src="/assets/logo-sawtee.svg"
                 alt="logo"
-                className="h-full w-full object-cover"
+                className="h-full w-32 object-cover"
               />
             </Link>
 
-            <div className="flex w-2/3 flex-col items-center justify-center gap-3 lg:items-start">
+            <div className="flex w-full flex-col items-center justify-center gap-3 lg:items-start">
               <SubscribeForm
                 // buttonStyles={'bg-primary dark:text-slate-700 text-white'}
               />

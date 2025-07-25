@@ -42,7 +42,7 @@ const Logo = ({ text = 'SAWTEE', src }) => {
   );
 };
 
-const SiteLogo = ({ src, established }) => {
+export const SiteLogo = ({ src, established }) => {
   // check if the logo is a url,
   // we assume, if it's a url, it points to an image, else it's a text
   return (

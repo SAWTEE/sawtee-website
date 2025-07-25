@@ -35,20 +35,18 @@ const DropDownMenu = ({ menuItem, index, className }) => {
           }
         >
           <MenuLink
-            className={cn('flex p-4 no-underline hover:underline', className)}
+            className={cn('flex w-full p-4 no-underline hover:underline', className)}
             title={menuItem.title}
             url={menuItem.url}
             index={`0${index + 1}`}
             isOpen={false}
           />
-          <CollapsibleTrigger asChild>
+          <CollapsibleTrigger >
             {menuItem.children && (
-              <div className="w-16 flex-1">
                 <ChevronDownIcon
                   className="h-6 w-6 transition-all duration-200 ease-in-out"
                   transition={'all .25s ease-in-out'}
                 />
-              </div>
             )}
           </CollapsibleTrigger>
         </li>
@@ -76,15 +74,17 @@ const MobileMenu = ({
   socialLinks = null,
 }) => {
   return (
-    <ScrollArea className="h-screen px-8">
+    <ScrollArea className="h-full px-4">
+
       {menu &&
         menu.map((menuItem, index) => (
           <React.Fragment key={menuItem.title}>
             <DropDownMenu menuItem={menuItem} index={index} />
           </React.Fragment>
         ))}
+
       {showSocialLinks && (
-        <div className="mx-auto mt-5 p-5">
+        <div className="mx-auto my-5 p-5">
           <SocialMenu ml="0" menu={socialLinks} />
         </div>
       )}

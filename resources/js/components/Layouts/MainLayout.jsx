@@ -6,9 +6,16 @@ import { Button } from '@/components/ui/button';
 import { mobileMenu, socialMenu } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
-import { useWindowWidth } from '@react-hook/window-size';
 import { ArrowUpToLineIcon } from 'lucide-react';
 import { register } from 'swiper/element/bundle';
+import SearchModal from '@/components/Frontend/header/searchModal';
+
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
 
 import MobileMenu from '../Frontend/mobileMenu';
 export default function MainLayout({ children, ...rest }) {
@@ -16,8 +23,6 @@ export default function MainLayout({ children, ...rest }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const page = usePage();
   const { primaryMenu, footerMenu } = page.props;
-  const onlyWidth = useWindowWidth();
-  const mobileWidth = onlyWidth < 768;
 
   const toggleVisibility = () => {
     if (window.scrollY > 570) {
@@ -39,6 +44,24 @@ export default function MainLayout({ children, ...rest }) {
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+      <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
+        <SheetContent aria-describedby={undefined}>
+          <SheetHeader>
+            <SheetTitle className="hidden" ariaLable="Mobile Menu">
+              Mobile Menu
+            </SheetTitle>
+            <div className="mx-auto my-4">
+              <SearchModal />
+            </div>
+          </SheetHeader>
+
+          <MobileMenu
+            menu={mobileMenu}
+            socialLinks={socialMenu}
+            showSocialLinks={true}
+          />
+        </SheetContent>
+      </Sheet>
       <main id="main">
         <Header
           menu={primaryMenu}
@@ -48,26 +71,10 @@ export default function MainLayout({ children, ...rest }) {
           setShowMobileMenu={setShowMobileMenu}
         />
 
-        {mobileWidth && (
-          <div
-            className={cn(
-              'absolute z-30 min-h-screen w-fit transform overflow-y-auto bg-popover text-secondary-foreground transition-all duration-300 ease-in-out',
-              !showMobileMenu ? '-translate-x-full' : 'translate-x-0'
-            )}
-            id="sidebar"
-          >
-            <MobileMenu
-              menu={mobileMenu}
-              socialLinks={socialMenu}
-              showSocialLinks={true}
-            />
-          </div>
-        )}
-        <div className="min-h-screen" {...rest}>
+        <div className="relative mx-auto min-h-screen w-full px-6" {...rest}>
           {children}
+          <Footer menu={footerMenu} socialMenu={socialMenu} />
         </div>
-
-        <Footer menu={footerMenu} socialMenu={socialMenu} />
 
         <Button
           className={cn(
