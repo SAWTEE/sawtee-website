@@ -1,10 +1,37 @@
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { useToast } from '@/components/ui/use-toast';
 import { Head } from '@inertiajs/react';
-import { BookOpenIcon, FileArchiveIcon, FilesIcon } from 'lucide-react';
-import React from 'react';
+import {
 
-export default function Dashboard({ auth, posts, publications, researchs }) {
+  TrendingUp,
+  TrendingDown,
+} from 'lucide-react';
+import React from 'react';
+import { Badge } from '@/components/ui/badge';
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+
+export default function Dashboard({
+  auth,
+  posts,
+  publications,
+  researchs,
+  postsIncreasePercent,
+  publicationsIncreasePercent,
+  researchsIncreasePercent,
+  postsThisMonth,
+  postsLastMonth,
+  publicationsThisMonth,
+  publicationsLastMonth,
+  researchsThisMonth,
+  researchsLastMonth,
+}) {
   const { toast } = useToast();
 
   React.useState(() => {
@@ -20,80 +47,58 @@ export default function Dashboard({ auth, posts, publications, researchs }) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Dashboard" />
-      <div className="mx-auto px-8">
-        <h1 className="text-2xl font-bold">Hello, {auth.user.name}.</h1>
-        <div className="removable -mx-3 mb-5 flex flex-wrap">
-          <div className="mb-6 w-full max-w-full px-3 sm:flex-none lg:w-1/3 xl:mb-0">
-            <StatsCard
-              title={'posts'}
-              stat={posts}
-              icon={
-                <FileArchiveIcon
-                  w="2em"
-                  h="2em"
-                  className="relative mx-auto text-lg leading-none text-white"
-                />
-              }
-            />
-          </div>
-          <div className="mb-6 w-full max-w-full px-3 sm:flex-none lg:w-1/3 xl:mb-0">
-            <StatsCard
-              title={'publications'}
-              stat={publications}
-              icon={
-                <BookOpenIcon
-                  w="2em"
-                  h="2em"
-                  className="relative mx-auto text-lg leading-none text-white"
-                />
-              }
-            />
-          </div>
-          <div className="mb-6 w-full max-w-full px-3 sm:flex-none lg:w-1/3 xl:mb-0">
-            <StatsCard
-              title={'Research'}
-              stat={researchs}
-              icon={
-                <FilesIcon
-                  w="2em"
-                  h="2em"
-                  className="relative mx-auto text-lg leading-none text-white"
-                />
-              }
-            />
-          </div>
-        </div>
-      </div>
+
+            <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-3 grid grid-cols-1 lg:grid-cols-3 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:px-6">
+              <StatsCard
+                title={'posts'}
+                stat={posts}
+                count={postsThisMonth}
+                lastMonth={postsLastMonth}
+                percent={postsIncreasePercent}
+              />
+              <StatsCard
+                title={'publications'}
+                stat={publications}
+                count={publicationsThisMonth}
+                lastMonth={publicationsLastMonth}
+                percent={publicationsIncreasePercent}
+              />
+              <StatsCard
+                title={'Research'}
+                stat={researchs}
+                count={researchsThisMonth}
+                lastMonth={researchsLastMonth}
+                percent={researchsIncreasePercent}
+              />
+            </div>
+
     </AuthenticatedLayout>
   );
 }
 
-const StatsCard = ({ title, stat, icon }) => {
+const StatsCard = ({ title, stat, percent, count, lastMonth }) => {
   return (
-    <div className="shadow-soft-xl relative mb-4 flex min-w-0 flex-col break-words rounded-2xl bg-white bg-clip-border dark:bg-[rgba(255,255,255,0.08)]">
-      <div className="flex-auto p-4">
-        <div className="-mx-3 flex flex-row">
-          <div className="w-2/3 max-w-full flex-none px-3">
-            <div>
-              <p className="mb-0 font-sans text-sm font-semibold capitalize leading-normal">
-                {title}
-              </p>
-              <h5 className="mb-0 font-bold">
-                {' '}
-                {stat}{' '}
-                {/* <span className="text-sm leading-normal font-weight-bolder text-lime-500">
-                  +55%
-                </span> */}
-              </h5>
-            </div>
+    <Card className="@container/card">
+      <CardHeader>
+        <CardDescription className="uppercase">{title}</CardDescription>
+        <CardTitle className="@[250px]/card:text-3xl flex w-full justify-between gap-2 text-2xl font-semibold tabular-nums">
+          {title.charAt(0).toUpperCase() + title.slice(1) + " : " + stat }
+        </CardTitle>
+        <CardAction>
+          <Badge variant="outline">
+            {percent > 0 ? <TrendingUp className="size-4" /> : <TrendingDown />}
+            {percent}%
+          </Badge>
+        </CardAction>
+      </CardHeader>
+      <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Number of { title } went {percent > 0 ? "up" : "down"} this month
           </div>
-          <div className="basis-1/3 px-3 text-right">
-            <div className="shadow-soft-2xl flex h-12 w-12 items-center justify-center rounded-lg bg-gradient-to-tl from-blue-700 to-cyan-500">
-              {icon}
-            </div>
+          <div className="text-muted-foreground">
+            {title} published this month {count} and last month {lastMonth}
           </div>
-        </div>
-      </div>
-    </div>
+        </CardFooter>
+    </Card>
   );
 };

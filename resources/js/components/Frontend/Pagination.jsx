@@ -15,7 +15,7 @@ const PaginationButton = ({
   return (
     <Link
       className="group w-full"
-      href={link}
+      href={link ?? undefined}
       aria-disabled={isDisabled}
       {...rest}
     >
@@ -56,6 +56,7 @@ const Pagination = ({
         link={nextPage}
         label="Older Posts"
         slot="after"
+
         isDisabled={totalPages === currentPage}
       >
         <MoveRight className="ml-3 -translate-x-[100%] opacity-0 transition-all duration-100 ease-in group-hover:translate-x-0 group-hover:opacity-100 md:ml-4" />
