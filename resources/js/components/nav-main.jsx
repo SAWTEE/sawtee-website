@@ -8,7 +8,6 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { Link, usePage } from '@inertiajs/react';
-import { cn } from '@/lib/utils';
 
 export function NavMain({ menu }) {
   const { url } = usePage();
@@ -20,7 +19,7 @@ export function NavMain({ menu }) {
           const routeLink = route(menuItem.route);
           const active = routeLink.includes(url);
           return (
-            <Link href={route(menuItem.route)} preserveState>
+            <Link key={menuItem.name} href={route(menuItem.route)} preserveState>
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={active} tooltip={menuItem.name}>
                   {menuItem.icon && <menuItem.icon />}

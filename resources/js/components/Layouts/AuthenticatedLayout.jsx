@@ -39,8 +39,10 @@ export default function Authenticated({ user, children }) {
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href={`/admin/` + sections[1]}>
                       {sections[1]
-                        ? sections[1].charAt(0).toUpperCase() +
-                          sections[1].slice(1)
+                        ? sections[1]
+                            .charAt(0)
+                            .toUpperCase() + sections[1].slice(1)
+                            .replaceAll('-', ' ')
                         : 'Home'}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
@@ -62,8 +64,7 @@ export default function Authenticated({ user, children }) {
               </div>
             </div>
           </header>
-
-          {children}
+          <div className="flex-1 overflow-y-auto p-8">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </ThemeProvider>

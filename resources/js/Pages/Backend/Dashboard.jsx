@@ -87,7 +87,7 @@ const StatsCard = ({ title, stat, percent, count, lastMonth }) => {
         <CardAction>
           <Badge variant="outline">
             {percent > 0 ? <TrendingUp className="size-4" /> : <TrendingDown />}
-            {percent}%
+            {percent.toFixed()}%
           </Badge>
         </CardAction>
       </CardHeader>
