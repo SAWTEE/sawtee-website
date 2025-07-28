@@ -22,9 +22,7 @@ const SubscriptionCard = ({
 
       <SubscribeForm />
 
-{/* <div data-supascribe-embed-id="164835946128" data-supascribe-subscribe></div> */}
-
-
+      {/* <div data-supascribe-embed-id="164835946128" data-supascribe-subscribe></div> */}
     </div>
   );
 };

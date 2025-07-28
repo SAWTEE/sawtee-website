@@ -21,9 +21,7 @@ export const PostCategories = ({ category, className = '', ...props }) => {
       )}
       {...props}
     >
-      <Link
-        href={`/category/${category.slug}`}
-      >
+      <Link href={`/category/${category.slug}`}>
         <PostCategory>{category.name}</PostCategory>
       </Link>
     </div>

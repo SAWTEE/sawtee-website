@@ -76,7 +76,12 @@ export default function CreateSliderForm({ open, setOpen, pages }) {
 
           <div className="w-[280px]">
             <Label htmlFor="pages">Pages</Label>
-            <Select id="pages" name="pages" onValueChange={value => setData('page_id', value)} placeholder="Select pages">
+            <Select
+              id="pages"
+              name="pages"
+              onValueChange={value => setData('page_id', value)}
+              placeholder="Select pages"
+            >
               <SelectTrigger>
                 <SelectValue placeholder="Select pages" />
               </SelectTrigger>

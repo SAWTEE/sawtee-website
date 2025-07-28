@@ -1,9 +1,3 @@
-import { cn } from '@/lib/utils';
-import { useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
-import InputError from '../Backend/InputError';
-import { Input } from '../ui/input';
-import { AnimatedSubscribeButton } from './AnimatedSubscribeButton';
 
 export default function NewsletterCallout() {
   return (
@@ -25,26 +19,24 @@ export default function NewsletterCallout() {
 
           {/* <div data-supascribe-embed-id="164835946128" data-supascribe-subscribe></div> */}
         </div>
-
       </div>
     </div>
   );
 }
 
 export const SubscribeForm = () => {
-
   return (
     <iframe
-        src="https://sawteenp.substack.com/embed"
-        width="100%"
-        height="220"
-        style={{
-          border: '1px solid #EEE',
-          borderRadius: '0.25rem',
-          background: 'white',
-        }}
-        frameBorder="0"
-        scrolling="no"
-      ></iframe>
+      src="https://sawteenp.substack.com/embed"
+      width="100%"
+      height="220"
+      style={{
+        border: '1px solid #EEE',
+        borderRadius: '0.25rem',
+        background: 'white',
+      }}
+      frameBorder="0"
+      scrolling="no"
+    ></iframe>
   );
 };

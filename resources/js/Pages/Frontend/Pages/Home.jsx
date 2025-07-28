@@ -77,7 +77,6 @@ const Home = ({
     h => h.name === 'Featured Publication'
   );
 
-
   return (
     <MainLayout>
       <WebsiteHead
@@ -98,7 +97,6 @@ const Home = ({
           </DialogHeader>
         </DialogContent>
       </Dialog> */}
-
 
       <Section py={4} className="carousel-section px-6 lg:py-4">
         <div
@@ -223,7 +221,8 @@ const FeaturedEventsSection = ({ events }) => {
               src={
                 events[0].media.filter(
                   item => item.collection_name === 'post-featured-image'
-                )[0]?.original_url ?? `https://placehold.co/600x400/eee/000/webp?text=No+Image`
+                )[0]?.original_url ??
+                `https://placehold.co/600x400/eee/000/webp?text=No+Image`
               }
               alt={events[0].title}
               loading="lazy"
@@ -257,11 +256,12 @@ const FeaturedEventsSection = ({ events }) => {
         {events.map((event, index) => {
           const featured_image =
             event.media.length > 0
-              ? event.media.filter(
+              ? (event.media.filter(
                   item => item.collection_name === 'post-featured-image'
-                )[0]?.original_url ?? `https://placehold.co/300x160/eee/000/webp?text=No+Image`
+                )[0]?.original_url ??
+                `https://placehold.co/300x160/eee/000/webp?text=No+Image`)
               : `https://placehold.co/300x160/eee/000/webp?text=No+Image`;
-              console.log(featured_image);
+
           return (
             index !== 0 && (
               <div className="group" key={event.id}>

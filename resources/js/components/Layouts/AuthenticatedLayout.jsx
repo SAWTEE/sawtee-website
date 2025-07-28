@@ -39,10 +39,9 @@ export default function Authenticated({ user, children }) {
                   <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href={`/admin/` + sections[1]}>
                       {sections[1]
-                        ? sections[1]
-                            .charAt(0)
-                            .toUpperCase() + sections[1].slice(1)
-                            .replaceAll('-', ' ')
+                        ? sections[1].charAt(0).toUpperCase() +
+                          sections[1].slice(1).replaceAll('-', ' ')
+                          .split('?')[0]
                         : 'Home'}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
@@ -59,7 +58,7 @@ export default function Authenticated({ user, children }) {
                   )}
                 </BreadcrumbList>
               </Breadcrumb>
-              <div className="ml-auto mr-8 flex items-center gap-2">
+              <div className="ml-auto px-8 flex items-center gap-2">
                 <ModeToggle />
               </div>
             </div>

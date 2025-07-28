@@ -1,20 +1,20 @@
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import {
-    Select,
-    SelectContent,
-    SelectGroup,
-    SelectItem,
-    SelectLabel,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { slugify } from '@/lib/helpers';
@@ -62,11 +62,7 @@ export default function ManageMenu({
       <Head title="Manage Menus" />
 
       {editMenu && (
-        <EditMenuForm
-          open={editMenu}
-          setOpen={setEditMenu}
-          menu={menu}
-        />
+        <EditMenuForm open={editMenu} setOpen={setEditMenu} menu={menu} />
       )}
 
       {menus.length > 0 && (
@@ -123,11 +119,7 @@ export default function ManageMenu({
                 menuItems={menuItems}
               />
 
-              <AddToMenu
-                name="custom link"
-                menu={menu}
-                menuItems={menuItems}
-              />
+              <AddToMenu name="custom link" menu={menu} menuItems={menuItems} />
             </div>
           )}
         </div>

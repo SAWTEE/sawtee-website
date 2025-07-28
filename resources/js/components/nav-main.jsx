@@ -19,12 +19,15 @@ export function NavMain({ menu }) {
           const routeLink = route(menuItem.route);
           const active = routeLink.includes(url);
           return (
-            <Link key={menuItem.name} href={route(menuItem.route)} preserveState>
+            <Link
+              key={menuItem.name}
+              href={route(menuItem.route)}
+              preserveState
+            >
               <SidebarMenuItem>
                 <SidebarMenuButton isActive={active} tooltip={menuItem.name}>
                   {menuItem.icon && <menuItem.icon />}
                   <span>{menuItem.name}</span>
-
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </Link>

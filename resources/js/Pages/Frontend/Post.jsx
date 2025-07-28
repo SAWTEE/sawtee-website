@@ -24,9 +24,7 @@ export default function Post({
         description={post.meta_description}
         image={featured_image ? featured_image : '/assets/logo-sawtee.webp'}
         url={shareUrl}
-      >
-
-      </WebsiteHead>
+      ></WebsiteHead>
 
       <PostLayout
         post={post}

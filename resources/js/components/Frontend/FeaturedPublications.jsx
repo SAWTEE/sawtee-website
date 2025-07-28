@@ -1,6 +1,6 @@
-
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
+import { Link } from '@inertiajs/react';
 
 export const FeaturedPublications = ({ publications }) => {
   return (
@@ -9,52 +9,82 @@ export const FeaturedPublications = ({ publications }) => {
         className="mx-auto max-w-lg rounded-xl border-none"
         heading={'Featured publications'}
       >
-        {publications.sort((a,b) => a.created_at - b.created_at).map((publication, idx) => {
-          const media = publication.media.length
-            ? publication.media.filter(
-                media => media.collection_name === 'publication_featured_image'
-              )[0].original_url
-            : `https://placehold.co/120x150/eee/000/webp?text=No+image`;
-          return (
-            <li
-              className={
-                'group mb-4 flex w-full items-center cursor-pointer justify-between gap-6 last:mb-0'
-              }
-              key={publication.id}
-            >
-              <div className="w-2/3 max-w-full grow">
-
-
-                <a
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group-hover:opacity-80"
-                  href={`/publications/${publication.file?.name}`}
-                >
-                  <p className="md:text-md font-sans text-sm leading-4 font-semibold text-secondary-foreground group-hover:underline">
-                    {publication.title}
-                  </p>
-
-                  <p className="mt-1 text-xs text-muted-foreground">
-                    {publication.subtitle}
-                  </p>
-                </a>
-              </div>
-
-              {media && (
-                <div title={publication.title} aria-label={publication.title} className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md">
-                  <img
-                    className="h-full w-full border object-cover"
-                    src={media}
-                    alt={publication.title}
-                    loading="lazy"
-                  />
+        {publications
+          .sort((a, b) => a.created_at - b.created_at)
+          .map((publication, idx) => {
+            const media = publication.media.length
+              ? publication.media.filter(
+                  media =>
+                    media.collection_name === 'publication_featured_image'
+                )[0].original_url
+              : `https://placehold.co/120x150/eee/000/webp?text=No+image`;
+            return (
+              <li
+                className={
+                  'group mb-4 flex w-full cursor-pointer items-center justify-between gap-6 last:mb-0'
+                }
+                key={publication.id}
+              >
+                <div className="w-2/3 max-w-full grow">
+                  <PublicationLink publication={publication} />
                 </div>
-              )}
-            </li>
-          );
-        })}
+
+                {media && (
+                  <div
+                    title={publication.title}
+                    aria-label={publication.title}
+                    className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md"
+                  >
+                    <img
+                      className="h-full w-full border object-cover"
+                      src={media}
+                      alt={publication.title}
+                      loading="lazy"
+                    />
+                  </div>
+                )}
+              </li>
+            );
+          })}
       </SimpleList>
     </Glassbox>
   );
+};
+
+const PublicationLink = ({ publication }) => {
+  const { type } = publication.category;
+
+  if (type === 'publication') {
+    return (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        className="group-hover:opacity-80"
+        href={`/publications/${publication.file?.name}`}
+      >
+        <p className="md:text-md font-sans text-sm font-semibold leading-4 text-secondary-foreground group-hover:underline">
+          {publication.title}
+        </p>
+
+        <p className="mt-1 text-xs text-muted-foreground">
+          {publication.subtitle}
+        </p>
+      </a>
+    );
+  } else {
+    return (
+      <Link
+        className="group-hover:opacity-80"
+        href={`/category/${publication.category.slug}/${publication.slug}`}
+      >
+        <p className="md:text-md font-sans text-sm font-semibold leading-4 text-secondary-foreground group-hover:underline">
+          {publication.title}
+        </p>
+
+        <p className="mt-1 text-xs text-muted-foreground">
+          {publication.subtitle}
+        </p>
+      </Link>
+    );
+  }
 };

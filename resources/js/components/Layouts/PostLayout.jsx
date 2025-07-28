@@ -19,7 +19,7 @@ const PostLayout = ({
       })
     : null;
 
-    const contentRef = useRef(null);
+  const contentRef = useRef(null);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -59,8 +59,9 @@ const PostLayout = ({
               tags={post.tags}
             />
             <div
-            ref={contentRef}
-             className="post-content prose-base text-lg text-secondary-foreground">
+              ref={contentRef}
+              className="post-content prose-base text-lg text-secondary-foreground"
+            >
               {children}
             </div>
             <div className="sharethis-sticky-share-buttons"></div>

@@ -32,13 +32,13 @@ const Logo = ({ text = 'SAWTEE', src }) => {
     return <img src={src} alt="Logo" className="w-32 object-cover" />;
   }
   return (
-    <P
+    <p
       className={
         'text-center font-sans font-bold uppercase text-theme-500 md:text-left'
       }
     >
       {text}
-    </P>
+    </p>
   );
 };
 

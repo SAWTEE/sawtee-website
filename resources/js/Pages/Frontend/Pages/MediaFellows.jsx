@@ -1,10 +1,10 @@
 import AirBnbCard from '@/components/Frontend/AirBnbCard';
 import Glassbox from '@/components/Frontend/Glassbox';
 import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { mediaFellowshipData } from '@/lib/data';

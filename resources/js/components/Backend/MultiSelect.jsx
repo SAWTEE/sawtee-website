@@ -5,11 +5,11 @@ import * as React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
-    DropdownMenu,
-    DropdownMenuCheckboxItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
 import { cn } from '@/lib/utils';
@@ -57,7 +57,6 @@ export const MultiSelect = React.forwardRef(
   ) => {
     const [selectedValues, setSelectedValues] = React.useState(defaultValue);
     const [isAnimating, setIsAnimating] = React.useState(false);
-
 
     React.useEffect(() => {
       if (JSON.stringify(selectedValues) !== JSON.stringify(defaultValue)) {

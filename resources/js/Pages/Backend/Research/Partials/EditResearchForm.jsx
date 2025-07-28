@@ -19,7 +19,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import { useState} from 'react';
+import { useState } from 'react';
 
 export default function EditResearchForm({ research }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -33,7 +33,7 @@ export default function EditResearchForm({ research }) {
     meta_title: research.meta_title ?? '',
     meta_description: research.meta_description ?? '',
   });
-  const {toast} = useToast();
+  const { toast } = useToast();
   const [image, setImage] = useState(data.image);
 
   const [filename, setFilename] = useState(
@@ -203,17 +203,20 @@ export default function EditResearchForm({ research }) {
             )}
           </fieldset>
 
-          { filename &&  <div className="mx-2">
-            <Label htmlFor="file">File Name</Label>
-            <Input
-              type="text"
-              id="file"
-              name="file"
-              className="mt-1"
-              value={ filename}
-              placeholder="file name will be shown here"
-              readOnly />
-              </div>}
+          {filename && (
+            <div className="mx-2">
+              <Label htmlFor="file">File Name</Label>
+              <Input
+                type="text"
+                id="file"
+                name="file"
+                className="mt-1"
+                value={filename}
+                placeholder="file name will be shown here"
+                readOnly
+              />
+            </div>
+          )}
 
           <div className="mx-2">
             <Label htmlFor="file">Change/File Upload</Label>

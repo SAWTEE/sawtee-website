@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 const Globeanime = ({ darkMode = false }) => {
   const ref = useRef(null);
 
-  const stopColor= darkMode ? '#FFFFFF' : '#000000';
+  const stopColor = darkMode ? '#FFFFFF' : '#000000';
 
   const dots = [
     {
@@ -173,21 +173,9 @@ const Globeanime = ({ darkMode = false }) => {
               gradientUnits="userSpaceOnUse"
             >
               {/* Define colors for both light and dark modes */}
-              <stop
-                offset="0"
-                stopColor={stopColor}
-                stopOpacity="0"
-              />
-              <stop
-                offset="0.5"
-                stopColor={stopColor}
-                stopOpacity="0.6"
-              />
-              <stop
-                offset="1"
-                stopColor={stopColor}
-                stopOpacity="0"
-              />
+              <stop offset="0" stopColor={stopColor} stopOpacity="0" />
+              <stop offset="0.5" stopColor={stopColor} stopOpacity="0.6" />
+              <stop offset="1" stopColor={stopColor} stopOpacity="0" />
             </linearGradient>
           </defs>
         </svg>

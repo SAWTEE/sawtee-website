@@ -4,7 +4,7 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/inertia-react';
-import {  useState } from 'react';
+import { useState } from 'react';
 import EditSlideForm from './EditSlideForm';
 
 const Slides = ({ slides, slider }) => {

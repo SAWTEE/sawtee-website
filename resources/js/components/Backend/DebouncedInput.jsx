@@ -10,7 +10,6 @@ function DebouncedInput({
   debounce = 500,
   ...props
 }) {
-
   useEffect(() => {
     const timeout = setTimeout(() => {
       setValue(value);
