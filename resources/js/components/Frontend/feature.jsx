@@ -15,11 +15,6 @@ export default function FeaturedSection({ features }) {
           index % 2 === 0 ? 'lg:order-1' : 'order-0'
         )}
       >
-        {/* <h2 className="text-3xl font-semibold text-secondary-foreground">
-          <span className='after:content:"" after:bg-primary-100 relative z-20 after:absolute after:bottom-1 after:left-0 after:z-[-1] after:h-[30%] after:w-full after:bg-gradient-to-l after:from-theme-50 after:to-theme-300 dark:after:bg-gradient-to-l dark:after:from-theme-300 dark:after:to-theme-500'>
-            {feature.title}
-          </span>
-        </h2> */}
         <Title title={feature.title} underlineStyles={'w-[20%]'} />
 
         <p className="text-md mt-4 text-muted-foreground">
@@ -29,7 +24,6 @@ export default function FeaturedSection({ features }) {
       <div className="relative w-full md:block lg:w-[50%]">
         <Link
           href={feature.link}
-          preserveScroll
           className="group relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0"
         >
           <img
