@@ -63,11 +63,22 @@ class FrontendController extends Controller
     {
         $home_page_sections = HomePageSection::all();
         $slidesResponsiveImages = array();
+        $opinion_in_lead_ID = Category::where('slug', 'opinion-in-lead')->firstOrFail()->id;
         $featured = Tag::where('name', 'featured')->firstOrFail();
-        // $featured_publications = $featured->publications()->latest()->limit(5)->get();
-        $featured_publications = Publication::whereHas('tags', function($query) {
+        $featured_publications_list = Publication::whereHas('tags', function($query) {
             return $query->where('name', 'featured');
-        })->with(['file', 'category'])->latest()->limit(5)->get();
+        })->with(['file', 'category'])->latest()->limit(4)->get();
+        $featured_opinion_in_leads = Post::where('category_id', $opinion_in_lead_ID)
+        ->whereHas('tags', function (Builder $query) {
+            $query->where('name', 'featured');
+        })
+        ->with(['category', 'media'])
+        ->latest()
+        ->limit(2)
+        ->get();
+
+        $featured_publications = array(...$featured_publications_list, ...$featured_opinion_in_leads);
+
         $publications = Publication::with(['file', 'category'])
         ->orderBy('id', "DESC")
         ->limit(6)

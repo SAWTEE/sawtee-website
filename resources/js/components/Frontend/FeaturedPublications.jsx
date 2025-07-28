@@ -1,5 +1,4 @@
-import { Link } from '@inertiajs/react';
-import { Badge } from '../ui/badge';
+
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
 
@@ -10,12 +9,12 @@ export const FeaturedPublications = ({ publications }) => {
         className="mx-auto max-w-lg rounded-xl border-none"
         heading={'Featured publications'}
       >
-        {publications.map((publication, idx) => {
+        {publications.sort((a,b) => a.created_at - b.created_at).map((publication, idx) => {
           const media = publication.media.length
             ? publication.media.filter(
                 media => media.collection_name === 'publication_featured_image'
               )[0].original_url
-            : '/assets/SM-placeholder-150x150.png';
+            : `https://placehold.co/120x150/eee/000/webp?text=No+image`;
           return (
             <li
               className={
@@ -43,11 +42,11 @@ export const FeaturedPublications = ({ publications }) => {
               </div>
 
               {media && (
-                <div className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md">
+                <div title={publication.title} aria-label={publication.title} className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md">
                   <img
                     className="h-full w-full border object-cover"
                     src={media}
-                    alt="Publication Cover"
+                    alt={publication.title}
                     loading="lazy"
                   />
                 </div>

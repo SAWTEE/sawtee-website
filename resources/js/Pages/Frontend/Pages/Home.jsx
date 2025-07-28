@@ -214,7 +214,7 @@ const FeaturedEventsSection = ({ events }) => {
       <div className="group md:col-span-5">
         <Link href={`/category/featured-events/${events[0].slug}`}>
           <div
-            className="relative overflow-hidden rounded-md text-center"
+            className="relative h-60 max-h-60 overflow-hidden rounded-md text-center"
             title={events[0].title}
           >
             <div className="ease absolute inset-0 top-0 z-10 hidden h-[5px] w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
@@ -223,11 +223,11 @@ const FeaturedEventsSection = ({ events }) => {
               src={
                 events[0].media.filter(
                   item => item.collection_name === 'post-featured-image'
-                )[0]?.original_url
+                )[0]?.original_url ?? `https://placehold.co/600x400/eee/000/webp?text=No+Image`
               }
-              alt="event cover"
+              alt={events[0].title}
               loading="lazy"
-              className="aspect-video w-full object-cover transition-all duration-500 ease-linear"
+              className="aspect-video w-full object-cover transition-all duration-200 ease-linear"
             />
           </div>
         </Link>
@@ -235,13 +235,13 @@ const FeaturedEventsSection = ({ events }) => {
           <div className="">
             <Link
               href={`/category/featured-events/${events[0].slug}`}
-              className="text-xs font-medium uppercase text-sky-500 transition duration-500 ease-in-out hover:text-sky-600"
+              className="text-xs font-medium uppercase text-sky-500 transition duration-200 ease-in-out hover:text-sky-600"
             >
               {events[0].category.name}
             </Link>
             <Link
               href={`/category/featured-events/${events[0].slug}`}
-              className="mb-2 block text-2xl font-bold leading-6 tracking-wide text-secondary-foreground transition duration-500 ease-in-out group-hover:text-sky-500/80 lg:text-3xl"
+              className="mb-2 block text-2xl font-bold leading-6 tracking-wide text-secondary-foreground transition duration-200 ease-in-out group-hover:text-sky-500/80 lg:text-3xl"
             >
               {events[0].title}
             </Link>
@@ -259,21 +259,22 @@ const FeaturedEventsSection = ({ events }) => {
             event.media.length > 0
               ? event.media.filter(
                   item => item.collection_name === 'post-featured-image'
-                )[0]?.original_url
-              : '/assets/SM-placeholder-150x150.png';
+                )[0]?.original_url ?? `https://placehold.co/300x160/eee/000/webp?text=No+Image`
+              : `https://placehold.co/300x160/eee/000/webp?text=No+Image`;
+              console.log(featured_image);
           return (
             index !== 0 && (
               <div className="group" key={event.id}>
                 <Link href={`/category/featured-events/${event.slug}`}>
                   <div
-                    className="relative max-h-40 overflow-hidden rounded-md text-center"
+                    className="relative h-40 max-h-40 overflow-hidden rounded-md text-center"
                     title={event.title}
                   >
                     <img
                       src={featured_image}
-                      alt="event cover"
+                      alt={event.title}
                       loading="lazy"
-                      className="aspect-square h-full w-full object-cover transition-all duration-500 ease-linear"
+                      className="h-full w-full object-cover transition-all duration-200 ease-linear"
                     />
                     <div className="ease absolute inset-0 top-0 z-10 hidden h-1 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
                     <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
@@ -281,7 +282,7 @@ const FeaturedEventsSection = ({ events }) => {
                 </Link>
                 <Link
                   href={`/category/featured-events/${event.slug}`}
-                  className="text-md my-2 inline-block font-semibold leading-5 tracking-wide text-secondary-foreground transition duration-500 ease-in-out group-hover:text-sky-500/80"
+                  className="text-md my-2 inline-block font-semibold leading-5 tracking-wide text-secondary-foreground transition duration-200 ease-in-out group-hover:text-sky-500/80"
                 >
                   {event.title}
                 </Link>
