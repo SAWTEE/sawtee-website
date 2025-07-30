@@ -62,15 +62,14 @@ const Home = ({
       description:
         "Between 2020 and 2021, COVID-19 pandemic affected the social, economic and well-being of people worldwide. SAWTEE undertook activities that provided evidence-based insights and expert perspectives to help understand the pandemic and its impacts. Explore SAWTEE's curated collection of works related to the COVID-19 pandemic, including articles, reports and recorded webinars that examined the health impacts of the pandemic, along with lessons for future resilience and preparedness.",
     },
-
-    // {
-    //  id: '4',
-    //  title: "Advancing LDC's Trade Interests",
-    // image_src: '/assets/advancing-ldc_upscaled.webp',
-    //  link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
-    //  description:
-      //  'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
-    // },
+    {
+      id: '4',
+      title: "Advancing LDC's Trade Interests",
+      image_src: '/assets/advancing-ldc_upscaled.webp',
+      link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
+      description:
+        'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
+    },
   ];
 
   const FeaturedPublicationSectionIsVisible = homePageSections?.find(
