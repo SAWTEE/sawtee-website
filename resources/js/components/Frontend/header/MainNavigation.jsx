@@ -1,15 +1,16 @@
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  NavigationMenuViewport,
 } from '@/components/ui/navigation-menu';
+import { ChevronDownIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 import MegaMenu from './MegaMenu';
 
@@ -30,26 +31,23 @@ export default function DesktopNavigation({ menu }) {
       }}
       viewport={false}
     >
-      <NavigationMenuList className="gap-4">
+      <NavigationMenuList>
         {menu.map((menuItem, index) => {
           const active = menuItem.url === `${url}`;
           const hasMegaMenu =
             menuItem.name === 'Our Work' || menuItem.name === 'Know Us';
           const hasChildren = menuItem.children.length > 0;
           return (
-            <NavigationMenuItem
-              key={menuItem.title}
-              className={!hasMegaMenu ? 'dropdown' : ''}
-            >
+            <NavigationMenuItem key={menuItem.title}>
               <NavigationMenuLink
                 asChild
                 active={active}
-                className="p-0 "
+                className={hasChildren ? ' dropdown p-0' : 'p-0'}
                 onMouseEnter={() => handleHoverButton(index)}
               >
                 <Link href={menuItem.url}>
                   <NavigationMenuTrigger
-                    className={cn('bg-transparent dark:text-white')}
+                    className={cn(' dark:text-white')}
                     hasChildren={hasChildren}
                   >
                     {menuItem.title}
@@ -69,12 +67,17 @@ export default function DesktopNavigation({ menu }) {
                   </NavigationMenuTrigger>
                 </Link>
               </NavigationMenuLink>
+
               {hasMegaMenu && (
-                <NavigationMenuContent className="z-40">
+                <NavigationMenuContent>
                   <MegaMenu item={menuItem} experts={experts} />
                 </NavigationMenuContent>
               )}
-              {!hasMegaMenu && hasChildren && <DropDown menuItem={menuItem} />}
+              {!hasMegaMenu && hasChildren && (
+                // <NavigationMenuContent>
+                  <DropDown menuItem={menuItem} />
+                // </NavigationMenuContent>
+              )}
             </NavigationMenuItem>
           );
         })}
@@ -83,11 +86,43 @@ export default function DesktopNavigation({ menu }) {
   );
 }
 
+// const DropDown = ({ menuItem }) => {
+//   return (
+//     <NavigationMenu viewport={false} className="relative">
+//       <NavigationMenuList>
+//         <ul className=" w-full list-none space-y-2">
+//           {menuItem.children?.map(item => {
+//             return (
+//               <NavigationMenuItem key={item.title} className="w-full">
+//                 <NavigationMenuLink asChild className="p-0">
+//                   <Link href={item.url}>
+//                     <NavigationMenuTrigger
+//                     className="w-48 flex justify-start relative"
+//                       hasChildren={item.children.length > 0}
+//                     >
+//                       {item.title}
+//                     </NavigationMenuTrigger>
+//                   </Link>
+//                 </NavigationMenuLink>
+//                 {item.children.length > 0 && (
+//                   <NavigationMenuContent className="left-0 top-[100px] w-64 z-40">
+//                     <DropDown key={item.title} menuItem={item} />
+//                   </NavigationMenuContent>
+//                 )}
+//               </NavigationMenuItem>
+//             );
+//           })}
+//         </ul>
+//       </NavigationMenuList>
+//     </NavigationMenu>
+//   );
+// };
+
 const DropDown = ({ className, menuItem }) => {
   return (
     <ul
       className={cn(
-        'dropdown-menu left-50 absolute hidden w-full min-w-64 border rounded-md mt-1 shadow-lg',
+        'dropdown-menu left-50 absolute hidden w-fit pt-2 shadow-lg',
         className
       )}
     >
@@ -102,15 +137,13 @@ const DropDown = ({ className, menuItem }) => {
 
 const ListItem = React.forwardRef(({ className, item, ...props }, ref) => {
   return (
-    <li
-    className={cn(
-          'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-          className
-        )}
-    >
+    <li className="dropdown relative">
       <Link
         ref={ref}
-className="flex w-full items-center justify-between"
+        className={cn(
+          'flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+          className
+        )}
         {...props}
       >
         <span className="mr-1 font-medium leading-none">{item.title}</span>
@@ -123,7 +156,7 @@ className="flex w-full items-center justify-between"
       </Link>
       {item.children.length > 0 && (
         <DropDown
-          className="left-[14rem] top-0 z-20 min-w-64"
+          className="left-full top-0 z-20 min-w-64"
           key={item.title}
           menuItem={item}
         />

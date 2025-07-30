@@ -35,10 +35,10 @@ const AboutMegaMenu = ({ item, introText, introImage, ...rest }) => {
   const { theme } = useTheme();
   return (
     <ul
-      className="grid-rows-auto md:grid-rows-[repeat(2, minmax(auto, 250px))] relative mx-auto grid w-[60vw] grid-cols-1 place-items-center gap-4 p-4 px-6 py-10 md:grid-cols-5 md:gap-6 md:px-8 xl:grid-rows-[auto]"
+      className="grid-rows-auto md:grid-rows-[repeat(2, minmax(auto, 250px))] relative mx-auto grid w-[60vw] grid-cols-1 place-items-center gap-4 px-6 py-10 md:grid-cols-5 md:gap-6 xl:grid-rows-[auto]"
       {...rest}
     >
-      <div className="col-span-1 self-center md:col-span-2">
+      <div className="col-span-1 place-self-start md:col-span-2">
         <motion.ul
           variants={ListContainerVariants}
           initial={'closed'}

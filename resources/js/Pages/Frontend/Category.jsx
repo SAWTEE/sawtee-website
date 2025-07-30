@@ -73,7 +73,7 @@ export default function Category({
           <aside className="sidebar col-span-1 lg:col-span-2">
             <div className="flex flex-col gap-12">
               {showSubscriptionBox && (
-                <Glassbox className={'w-full p-4'}>
+                <Glassbox className={'w-full p-0'}>
                   <SubscriptionCard />
                 </Glassbox>
               )}

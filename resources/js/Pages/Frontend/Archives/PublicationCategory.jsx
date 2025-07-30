@@ -99,7 +99,7 @@ export default function Publications({
 
             <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
               {showSubscriptionBox && (
-                <Glassbox className={'w-full p-4'}>
+                <Glassbox className={'w-full p-0'}>
                   <SubscriptionCard />
                 </Glassbox>
               )}

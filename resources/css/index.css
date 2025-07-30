@@ -133,6 +133,7 @@
   .dropdown:hover > a svg {
     transform: rotate(180deg);
   }
+
   .dropdown:hover > .dropdown-menu {
     display: block;
   }

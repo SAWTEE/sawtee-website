@@ -20,7 +20,7 @@ const CovidArchive = ({ posts }) => {
         };
         return (
           <Card key={post.id} className="rounded-md bg-bgDarker shadow-md">
-            <CardContent className="flex h-full w-full flex-col gap-4 space-y-4 p-6">
+            <CardContent className="flex h-full w-full flex-col gap-4 space-y-4 px-6">
               <div className="flex w-full justify-between">
                 {post.genre && (
                   <Badge className="rounded-md">{post.genre}</Badge>

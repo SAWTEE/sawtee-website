@@ -62,7 +62,7 @@ export default function PublicationsArchive({
               )}
 
               {showSubscriptionBox && (
-                <Glassbox className={'w-full p-4'}>
+                <Glassbox className={'w-full p-0'}>
                   <SubscriptionCard />
                 </Glassbox>
               )}
