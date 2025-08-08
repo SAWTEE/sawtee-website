@@ -85,7 +85,7 @@ const Home = ({
       />
 
       {/* POPUP CODE */}
-      {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+       <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Are you absolutely sure?</DialogTitle>
@@ -95,7 +95,7 @@ const Home = ({
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
-      </Dialog> */}
+      </Dialog> 
 
       <Section py={4} className="carousel-section px-6 lg:py-4">
         <div
