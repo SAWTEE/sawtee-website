@@ -91,11 +91,9 @@ const Home = ({
               <img 
         src="https://info.sawtee.org/images/Website-02.jpg" 
         alt="Warning" 
-        style={{ width: '100px', height: '100px', marginBottom: '10px' }} 
       />
-            <DialogTitle>SAWTEE MEDIA FELLOWSHIP 2025</DialogTitle>
+            <DialogTitle></DialogTitle>
             <DialogDescription>
-              A fellowship  opportunity for nepali journalists to explore how digitalization is influencing the country's economy.
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
