@@ -86,11 +86,12 @@ const Home = ({
 
       {/* POPUP CODE */}
        <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-        <DialogContent>
+        <DialogContent className="p-0 bg-transparent shadow-none w-[350px] max-w-full">
           <DialogHeader>
               <img 
         src="https://info.sawtee.org/images/Website-02.jpg" 
         alt="Warning" 
+        className="w-full h-auto object-contain rounded-md"
       />
             <DialogTitle></DialogTitle>
             <DialogDescription>
