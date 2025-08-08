@@ -88,16 +88,13 @@ const Home = ({
        <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent className="p-0 bg-transparent shadow-none w-[800px] max-w-[90vw]">
             <a href="https://sawtee.org/career" target="_blank" rel="noopener noreferrer">
-          <DialogHeader>
+         
               <img 
         src="https://info.sawtee.org/images/Website-02.jpg" 
         alt="Warning" 
         className="w-full h-auto object-contain rounded-md"
       />
-            <DialogTitle></DialogTitle>
-            <DialogDescription>
-            </DialogDescription>
-          </DialogHeader>
+           </a>
         </DialogContent>
       </Dialog> 
 
