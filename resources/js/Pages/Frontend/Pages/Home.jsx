@@ -88,10 +88,14 @@ const Home = ({
        <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <img 
+        src="https://info.sawtee.org/images/Website-02.jpg" 
+        alt="Warning" 
+        style={{ width: '100px', height: '100px', marginBottom: '10px' }} 
+      />
+            <DialogTitle>SAWTEE MEDIA FELLOWSHIP 2025</DialogTitle>
             <DialogDescription>
-              This action cannot be undone. This will permanently delete your
-              account and remove your data from our servers.
+              A fellowship  opportunity for nepali journalists to explore how digitalization is influencing the country's economy.
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
