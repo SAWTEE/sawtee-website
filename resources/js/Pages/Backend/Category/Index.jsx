@@ -88,10 +88,11 @@ export default function Index({ auth, categories }) {
       ),
     },
     {
-      accessorKey: 'parent.name',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Parent Category" />
-      ),
+      accessorKey: 'parent',
+      header: 'Parent Category',
+      cell: ({ row }) => {
+        return row.original.parent ? row.original.parent.name : 'N/A';
+      },
     },
     {
       accessorKey: 'id',

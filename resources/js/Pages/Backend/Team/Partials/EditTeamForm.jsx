@@ -40,7 +40,6 @@ export default function EditTeamForm({ team }) {
 
   const submit = e => {
     e.preventDefault();
-    console.log(data);
     post(
       route('admin.teams.update', {
         _method: 'patch',

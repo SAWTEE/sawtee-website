@@ -63,7 +63,7 @@ export default function CreateResearchForm() {
   return (
     <form onSubmit={submit}>
       <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 flex flex-col gap-8 self-center px-4 md:col-span-8">
+        <div className="col-span-12 flex flex-col gap-8 px-4 md:col-span-8">
           <div className="mx-2">
             <Label htmlFor="title">Title</Label>
             <Input

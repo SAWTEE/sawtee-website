@@ -6,7 +6,6 @@ import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
@@ -39,7 +38,7 @@ export default function EditPageForm({ page }) {
     meta_title: page.meta_title,
     meta_description: page.meta_description,
     page_template: page.page_template,
-    file: null,
+    file: page.file ?? null,
   });
   const [showData, setShowData] = React.useState(false);
 
@@ -48,6 +47,7 @@ export default function EditPageForm({ page }) {
   const [image, setImage] = React.useState(
     page.media[0] ? page.media[0].original_url : null
   );
+  const [filename, setFilename] = React.useState(null);
 
   React.useEffect(() => {
     if (data.page_template === ('About' || 'Contact' || 'MediaFellows')) {
@@ -150,6 +150,7 @@ export default function EditPageForm({ page }) {
               accept=".json"
               id="file"
               name="file"
+              // placeholder={filename}
               onChange={e => {
                 setFilename(e.target.files[0].name);
                 setData('file', e.target.files[0]);
@@ -263,11 +264,11 @@ const ShowPageData = ({ open, onOpenChange, data }) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Page Data from the JSON file</AlertDialogTitle>
-          <AlertDialogDescription>
             <ScrollArea className="max-h-[500px] overflow-auto">
+          <AlertDialogContent>
               <pre>{JSON.stringify(data, null, 2)}</pre>
+          </AlertDialogContent>
             </ScrollArea>
-          </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

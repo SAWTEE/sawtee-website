@@ -444,11 +444,8 @@ swiper-container {
   animation: fade-up 1.5s both;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
+@layer utilities {
+  .animation-pause {
+    animation-play-state: paused;
   }
 }

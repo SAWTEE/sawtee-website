@@ -1,0 +1,105 @@
+[
+  {
+    "id": 1,
+    "country": "Bangladesh",
+    "institutes": [
+      {
+        "id": 1,
+        "member_name": "Bangladesh Environmental Lawyers’ Association (BELA), Dhaka",
+        "member_website_link": "https://www.belabangla.org/",
+        "logo": "https://belabangla.org/wp-content/uploads/2020/12/sticky-logo.jpg"
+      },
+      {
+        "id": 2,
+        "member_name": "Unnayan Shamannay, Dhaka",
+        "member_website_link": "https://www.unsy.org/",
+        "logo": "https://unsy.org/wp-content/uploads/2022/10/web_logo_unsy_color.png"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "country": "India",
+    "institutes": [
+      {
+        "id": 1,
+        "member_name": "Citizen consumer and civic Action Group (CAG), Chennai",
+        "member_website_link": "https://www.cag.org.in/",
+        "logo": "https://www.cag.org.in/sites/default/files/cag-logo.png"
+      },
+      {
+        "id": 2,
+        "member_name": "Consumer Unity & Trust Society (CUTS), Jaipur",
+        "member_website_link": "https://cuts-international.org/",
+        "logo": "https://cuts-international.org/wp-content/uploads/2017/06/cuts-40.jpg"
+
+      },
+      {
+        "id": 3,
+        "member_name": "Development Research and Action Group (DRAG), New Delhi",
+        "member_website_link": "https://dragindia.org/",
+        "logo": null
+
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "country": "Nepal",
+    "institutes": [
+      {
+        "id": 1,
+        "member_name": "Society for Legal and Environmental Analysis and Development Research (LEADERS), Kathmandu",
+        "member_website_link": "https://leadersnepal.org.np/",
+        "logo": "https://leadersnepal.org.np/wp-content/themes/leadersnepal/images/logo.png"
+
+      },
+      {
+        "id": 2,
+        "member_name": "Forum for Protection of Public Interest (Pro Public), Kathmandu",
+        "member_website_link": "http://propublic.org/",
+        "logo": "https://propublic.org/front/img/logo.png"
+
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "country": "Pakistan",
+    "institutes": [
+      {
+        "id": 1,
+        "member_name": "Journalists for Democracy and Human Rights (JDHR), Islamabad",
+        "member_website_link": "http://www.jdhr.org/",
+        "logo": null
+
+      },
+      {
+        "id": 2,
+        "member_name": "Sustainable Development Policy Institute (SDPI), Islamabad",
+        "member_website_link": "https://sdpi.org/",
+        "logo": "https://sdpi.org/assets/images/sdpi-logo-2020.webp"
+
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "country": "Sri Lanka",
+    "institutes": [
+      {
+        "id": 1,
+        "member_name": "Institute of Policy Studies (IPS), Colombo",
+        "member_website_link": "https://www.ips.lk/",
+        "logo": "https://www.ips.lk/wp-content/themes/_ips/img/logo.png"
+
+      },
+      {
+        "id": 2,
+        "member_name": "Law & Society Trust (LST), Colombo",
+        "member_website_link": "https://www.lstlanka.org/",
+        "logo": "https://lst.lk/wp-content/uploads/2023/11/Law-Society-Trust-1-Upload-e1700723495277.webp"
+      }
+    ]
+  }
+]

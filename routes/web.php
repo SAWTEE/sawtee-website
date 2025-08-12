@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -17,8 +16,16 @@ use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\PageController;
 use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\ArticleController;
+use App\Http\Controllers\Admin\FellowshipController;
+use App\Http\Controllers\Admin\FellowController;
+use App\Http\Controllers\Admin\MemberController;
+use App\Http\Controllers\Admin\InstituteController;
+use App\Http\Controllers\Admin\PublishedStoryController;
+use App\Http\Controllers\Admin\TradeInsightVolumeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -38,7 +45,7 @@ Route::get('/admin', function () {
 });
 
 Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])
-->name('login');
+    ->name('login');
 
 
 Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
@@ -49,12 +56,12 @@ Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/search', [FrontendController::class, 'search'])->name('search');
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
+Route::get('/trade-insight/{volume}/{article?}', [FrontendController::class, 'trade_insight_volume'])->name('trade-insight-volume.show');
 Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
 Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags']);
 Route::get('/themes/{themes:slug}/{subcategory?}/{post?}', [FrontendController::class, 'themes']);
 Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)->name('article.redirect');
 Route::get('/category/{categories:slug}/{subcategory?}/{post?}', [FrontendController::class, 'category'])->name('category.show');
-
 
 
 
@@ -65,50 +72,49 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-            // Clear application cache:
-        Route::get('/clear-cache', function() {
-            Artisan::call('cache:clear');
-            return 'All cache cleared, App is optimized.';
-        });
+    // Clear application cache:
+    Route::get('/clear-cache', function () {
+        Artisan::call('cache:clear');
+        return 'All cache cleared, App is optimized.';
+    });
 
-        // Clear all cache:
-        Route::get('/optimize', function() {
-            Artisan::call('optimize:clear');
-            return 'All cache cleared, App is optimized.';
-        });
+    // Clear all cache:
+    Route::get('/optimize', function () {
+        Artisan::call('optimize:clear');
+        return 'All cache cleared, App is optimized.';
+    });
 
-        // Clear route cache:
+    // Clear route cache:
 
-        Route::get('/route-cache', function() {
-            Artisan::call('route:cache');
-            return 'Routes cache has been cleared';
-        });
+    Route::get('/route-cache', function () {
+        Artisan::call('route:cache');
+        return 'Routes cache has been cleared';
+    });
 
-        //Clear config cache:
-        Route::get('/config-cache', function() {
+    //Clear config cache:
+    Route::get('/config-cache', function () {
         Artisan::call('config:cache');
-            return 'Config cache has been cleared';
-        });
+        return 'Config cache has been cleared';
+    });
 
-        // Clear view cache:
-        Route::get('/view-clear', function() {
-            Artisan::call('view:clear');
-            return 'View cache has been cleared';
-        });
+    // Clear view cache:
+    Route::get('/view-clear', function () {
+        Artisan::call('view:clear');
+        return 'View cache has been cleared';
+    });
 
-        // Fetch all google fonts:
-        Route::get('/font-fetch', function() {
-            Artisan::call('google-fonts:fetch');
-            return 'All fonts fetched.';
-        });
+    // Fetch all google fonts:
+    Route::get('/font-fetch', function () {
+        Artisan::call('google-fonts:fetch');
+        return 'All fonts fetched.';
+    });
 
-        Route::get('/storage-link', function() {
-            Artisan::call('storage:link');
-            return 'Storage symlink created.';
-        });
+    Route::get('/storage-link', function () {
+        Artisan::call('storage:link');
+        return 'Storage symlink created.';
+    });
 
     Route::resource('/categories', CategoryController::class);
-    // Route::resource('/posts', PostController::class);
     Route::resource('/themes', ThemeController::class);
     Route::resource('/tags', TagController::class);
     Route::resource('/sections', SectionController::class);
@@ -119,8 +125,14 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::resource('/pages', PageController::class);
     Route::resource('/home-page-sections', HomePageSectionController::class);
     Route::resource('/teams', TeamController::class);
+    Route::resource('/trade-insight-volumes', TradeInsightVolumeController::class);
+    Route::resource('/articles', ArticleController::class);
+    Route::resource('/fellowships', FellowshipController::class);
+    Route::resource('/fellows', FellowController::class);
+    Route::resource('/published-stories', PublishedStoryController::class);
+    Route::resource('/members', MemberController::class);
+    Route::resource('/institutes', InstituteController::class);
 
-    // Route::get('/manage-home-page-section', HomePageSectionController::class, 'manage')->name('manage.home.page.sections');
     Route::get('/posts{categoryId?}', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');

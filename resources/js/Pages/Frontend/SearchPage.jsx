@@ -4,63 +4,29 @@ import PostPreviewCard from '@/components/Frontend/PostPreviewCard';
 import MainLayout from '@/components/Layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { router } from '@inertiajs/react';
-import { useIntersectionObserver } from '@uidotdev/usehooks';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import Pagination from '@/components/Frontend/Pagination';
 
 export default function SearchPage({ posts, query }) {
   const [searchQuery, setSearchQuery] = useState(query ?? '');
   const [state, setState] = useState({
     query: query,
-    loading: false,
+    loading: true,
     error: null,
     data: posts?.data,
   });
-  const [ref, entry] = useIntersectionObserver({
-    threshold: 0,
-    root: null,
-    rootMargin: '0px',
-  });
+
   function handleSubmit(e) {
     e.preventDefault();
     router.visit(`/search`, {
       data: { query: searchQuery, page: 1 },
-      preserveScroll: true,
-      //   replace: true,
-      //   preserveState: true,
       onSuccess: () => {
-        setState({ ...state, data: posts?.data });
+        setState({ ...state, loading: false,  data: posts?.data });
       },
     });
   }
+  // console.log('SearchPage posts:', posts);
 
-  //   useEffect(() => {
-  //     setState({ ...state, data: posts?.data });
-  //   }, [posts]);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      setState({ ...state, query: searchQuery });
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [searchQuery]);
-
-  useEffect(() => {
-    if (entry?.isIntersecting && posts?.next_page_url) {
-      router.reload({
-        data: { query: searchQuery, page: posts?.current_page + 1 },
-        preserveScroll: true,
-        onSuccess: () => {
-          setState({ ...state, data: [...state.data, ...posts?.data] });
-          window.history.replaceState(
-            {},
-            searchQuery ? `Search result for: ${searchQuery}` : `Search Page`,
-            '/search?query=' + searchQuery
-          );
-        },
-      });
-    }
-  }, [entry]);
   return (
     <>
       <WebsiteHead title={'Search Page'} />
@@ -107,25 +73,34 @@ export default function SearchPage({ posts, query }) {
 
             <div className="grid place-items-center gap-10 md:grid-cols-2">
               {!state.data && searchQuery && (
-                <div class="flex h-20 items-center justify-center space-x-2 bg-white dark:invert">
-                  <span class="sr-only">Loading...</span>
-                  <div class="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.3s]"></div>
-                  <div class="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.15s]"></div>
-                  <div class="h-6 w-6 animate-bounce rounded-full bg-black"></div>
+                <div className="flex h-20 items-center justify-center space-x-2 bg-white dark:invert">
+                  <span className="sr-only">Loading...</span>
+                  <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.3s]"></div>
+                  <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.15s]"></div>
+                  <div className="h-6 w-6 animate-bounce rounded-full bg-black"></div>
                 </div>
               )}
               {state.data?.map(post => {
                 return (
                   <PostPreviewCard
                     className="w-full"
-                    key={post.id + Math.floor(Math.random() * 1000)}
+                    key={post.id}
                     post={post}
                     showCategoryTag={true}
                   />
                 );
               })}
             </div>
-            {state.data && <div ref={ref} className="-translate-y-20" />}
+            <Pagination
+              links={posts.links}
+              currentPage={posts.current_page}
+              totalPages={posts.last_page}
+              nextPage={posts.next_page_url}
+              prevPage={posts.prev_page_url}
+              className={'mt-8'}
+              nextButtonLabel="Next"
+              prevButtonLabel="Previous"
+            />
           </div>
         </div>
       </MainLayout>

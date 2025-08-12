@@ -48,7 +48,7 @@ export default function Category({
         <div className="mx-auto grid gap-12 px-8 py-8 md:grid-cols-2 md:px-10 md:py-20 lg:grid-cols-6">
           <section className="archive-list col-span-1 flex flex-col items-center gap-12 lg:col-span-4">
             <div>
-              {isDefault && <DefaultArchive posts={posts.data} />}
+              {isDefault && <DefaultArchive posts={posts.data} category={category} />}
               {isCovid && <CovidArchive posts={posts.data} />}
 
               {isResearch && <ResearchArchive posts={posts} />}

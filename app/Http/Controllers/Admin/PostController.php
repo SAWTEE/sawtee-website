@@ -132,6 +132,8 @@ class PostController extends Controller
         $post = Post::with(['category', 'tags', 'postContentFiles'])
             ->where('id', $id)
             ->first();
+        // dd($post);
+
         $categories = Category::where('type', 'post')->get();
         $tags = Tag::all();
         $themes = Theme::all();
@@ -153,6 +155,7 @@ class PostController extends Controller
     public function update(Request $request, $id)
     {
         $post = Post::findOrFail($id);
+        // dd($post);
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'content' => 'nullable|string',

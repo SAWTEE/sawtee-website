@@ -8,8 +8,21 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { slugify } from '@/lib/helpers';
 import { cn, htmlToText } from '@/lib/utils';
+import LogoCarousel from '@/components/Frontend/LogoCarousel';
 
 export default function SectionTemplate({ sections, content, pageData }) {
+  const logos = [];
+  pageData.forEach(country =>
+    country.institutes.map(
+      member =>
+        member.logo &&
+        logos.push({
+          alt: member.member_name,
+          src: member.logo,
+          link: member.member_website_link,
+        })
+    )
+  );
   return (
     <div className="page-content mx-auto max-w-2xl px-[32px] py-[80px] text-lg leading-8 md:px-0">
       {sections?.map(section => {
@@ -24,6 +37,10 @@ export default function SectionTemplate({ sections, content, pageData }) {
         }
       })}
       {pageData && <Members memberInstitutions={pageData} />}
+
+      {/* <div id="logo-carousel" className="offset-element pt-20">
+        <LogoCarousel logos={logos} />
+      </div> */}
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { Link } from '@inertiajs/react';
 
 const DefaultArchive = ({ posts, showFallbackImage = false, ...rest }) => {
   if (!posts || posts.length <= 0) return 'No posts found';
+  console.log('DefaultArchive posts:', posts);
 
   return (
     <div className="grid grid-cols-1 gap-10 p-8 xl:grid-cols-2" {...rest}>
@@ -52,7 +53,9 @@ const ArchivePost = ({ post, showFallbackImage }) => {
       </div>
       <div className="space-y-4 px-6">
         {hasContent ? (
-          <Link href={`/category/${post.category.slug}/${post.slug}`}>
+          <Link href={post.category.parent
+                  ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
+                  : `/category/${post.category.slug}/${post.slug}`}>
             <h3 className="inline-block text-lg font-medium leading-5 tracking-wide text-secondary-foreground/90 transition duration-500 ease-in-out hover:text-secondary-foreground/80 hover:underline hover:underline-offset-2">
               {post.title}
             </h3>
@@ -82,7 +85,7 @@ const ArchivePost = ({ post, showFallbackImage }) => {
           </span>
 
           <ExploreButton
-            link={`/category/${post.category.slug}/${post.slug}`}
+            link={post.category?.parent ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}` : `/category/${post.category.slug}/${post.slug}`}
             text="Read more"
           />
         </div>

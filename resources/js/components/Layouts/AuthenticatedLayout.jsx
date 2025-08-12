@@ -63,7 +63,7 @@ export default function Authenticated({ user, children }) {
               </div>
             </div>
           </header>
-          <div className="flex-1 overflow-y-auto p-8">{children}</div>
+          <div className=" p-8">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </ThemeProvider>

@@ -11,6 +11,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+
 
 /**
  * @mixin IdeHelperPage
@@ -33,6 +35,11 @@ class Page extends Model implements HasMedia
             ->saveSlugsTo('slug')
             // ->skipGenerateWhen(fn () => $this->status !== "published")
             ->startSlugSuffixFrom(2);
+    }
+
+    public function pageData(): MorphMany
+    {
+        return $this->morphMany(File::class, "fileable");
     }
 
     public function sections(): HasMany

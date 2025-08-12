@@ -12,6 +12,10 @@ import {
   SlidersHorizontalIcon,
   TagsIcon,
   UsersIcon,
+  Wand,
+  UserPen,
+  SquareLibrary,
+  ReceiptText
 } from 'lucide-react';
 
 export const feature = {
@@ -188,6 +192,41 @@ export const aboutMenuData = {
   introImage: '/assets/Airports_Network_Map.png',
 };
 
+ export const features = [
+    // {
+    //   id: '1',
+    //  title: 'Reform Monitoring Platform',
+    //  image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
+    //  link: '/reform-monitoring-platform',
+    //  description:
+    //    'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
+    // },
+    {
+      id: '2',
+      title: 'Media fellowship',
+      image_src: '/assets/Media-Fellowship-banner.webp',
+      link: '/media-fellows',
+      description:
+        'Since 2023, SAWTEE has been offering a media fellowship programme that supports economic journalists with mentorship on a range of technical issues at the intersection of trade, climate change, and related topics—while fully upholding their journalistic independence. .',
+    },
+    {
+      id: '3',
+      title: 'COVID-19 resources',
+      image_src: '/assets/COVID-19-South-Asia-and-LDCs.webp',
+      link: '/category/COVID-19-resources',
+      description:
+        "Between 2020 and 2021, COVID-19 pandemic affected the social, economic and well-being of people worldwide. SAWTEE undertook activities that provided evidence-based insights and expert perspectives to help understand the pandemic and its impacts. Explore SAWTEE's curated collection of works related to the COVID-19 pandemic, including articles, reports and recorded webinars that examined the health impacts of the pandemic, along with lessons for future resilience and preparedness.",
+    },
+    // {
+    //   id: '4',
+    //   title: "Advancing LDC's Trade Interests",
+    //   image_src: '/assets/advancing-ldc_upscaled.webp',
+    //   link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
+    //   description:
+    //     'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
+    // },
+  ];
+
 export const DashBoardMenuItems = [
   {
     name: 'Dashboard',
@@ -218,6 +257,31 @@ export const DashBoardMenuItems = [
     name: 'Sections',
     icon: LayoutDashboard,
     route: 'admin.sections.index',
+  },
+  {
+    name: 'Fellowships',
+    icon: Wand,
+    route: 'admin.fellowships.index',
+  },
+  {
+    name: 'Fellows',
+    icon: UserPen,
+    route: 'admin.fellows.index',
+  },
+  {
+    name: 'Published Stories',
+    icon: UserPen,
+    route: 'admin.published-stories.index',
+  },
+   {
+    name: 'Members',
+    icon: UserPen,
+    route: 'admin.members.index',
+  },
+     {
+    name: 'Memebr Institutes',
+    icon: UserPen,
+    route: 'admin.institutes.index',
   },
   {
     name: 'Posts',
@@ -258,6 +322,16 @@ export const DashBoardMenuItems = [
     name: 'Slider',
     icon: SlidersHorizontalIcon,
     route: 'admin.sliders.index',
+  },
+  {
+    name: 'Trade Insight Volumes',
+    icon: SquareLibrary,
+    route: 'admin.trade-insight-volumes.index',
+  },
+  {
+    name: 'Articles',
+    icon: ReceiptText,
+    route: 'admin.articles.index',
   },
 ];
 

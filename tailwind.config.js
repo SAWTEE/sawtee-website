@@ -155,7 +155,11 @@ module.exports = {
   					opacity: 1
   				}
   			},
-  			marquee: {
+				'infinite-scroll': {
+          from: { transform: 'translateX(0)' },
+          to: { transform: 'translateX(-100%)' },
+        },
+  			'marquee': {
   				to: {
   					transform: 'translateX(-50%)'
   				}
@@ -165,7 +169,8 @@ module.exports = {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out',
   			'fade-up': 'fade-up 1.5s ease-out',
-  			marquee: 'marquee var(--duration, 30s) linear infinite'
+				'infinite-scroll': 'infinite-scroll 25s linear infinite',
+  			'marquee': 'marquee var(--duration, 30s) linear infinite'
   		}
   	}
   },

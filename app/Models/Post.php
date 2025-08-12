@@ -56,7 +56,6 @@ class Post extends Model implements HasMedia
         return [
             "title" => $this->title,
             "author" => $this->author,
-            "excerpt" => $this->excerpt,
         ];
     }
 

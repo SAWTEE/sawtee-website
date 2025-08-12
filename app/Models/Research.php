@@ -38,8 +38,15 @@ class Research extends Model implements HasMedia
         return [
             'title' => $this->title,
             'subtitle' => $this->subtitle,
-            'description' => $this->description,
         ];
+    }
+
+    /**
+     * Determine if the model should be searchable.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return $this->status === "published";
     }
 
 

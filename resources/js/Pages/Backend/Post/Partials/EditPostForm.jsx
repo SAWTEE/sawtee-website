@@ -19,6 +19,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { format } from 'date-fns';
 import {
   Select,
   SelectContent,
@@ -59,6 +60,7 @@ export default function EditPostForm({
     image: postData.media?.filter(
       m => m.collection_name === 'post-featured-image'
     )[0],
+    tags: [],
     file: postData.media?.filter(m => m.collection_name === 'post-files')[0],
     files: [],
     link: postData.link,
@@ -278,7 +280,9 @@ export default function EditPostForm({
                   mode="single"
                   selected={data.published_at}
                   onSelect={value => {
-                    setData('published_at', new Date(value).toDateString());
+                    // 2025-06-17 00:00:00
+                    const formatedDate = format(new Date(value), "yyyy-MM-dd H:i:s");
+                    setData('published_at', formatedDate);
                   }}
                   disabled={date =>
                     date > new Date() || date < new Date('1900-01-01')
