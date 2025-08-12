@@ -94,6 +94,10 @@ jobs:
         env:
           APP_KEY: ${{ secrets.APP_KEY }}
 
+      - name: Run Migrations
+        run: |
+            php artisan migrate --force
+
       - name: Build assets (if using Laravel Mix)
         run: |
           if [ -f package.json ]; then
