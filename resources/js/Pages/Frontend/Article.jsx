@@ -6,7 +6,7 @@ import readingDuration from 'reading-duration';
 import { formatDate } from '@/lib/helpers';
 
 import { Link } from '@inertiajs/react';
-import {Button} from '@/components/ui/Button';
+import { Button } from '@/components/ui/button';
 import Glassbox from '@/components/Frontend/Glassbox';
 import SimpleList from '@/components/Frontend/SimpleList';
 
