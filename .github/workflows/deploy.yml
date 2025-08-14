@@ -103,16 +103,22 @@ jobs:
           echo "Skipping database backup due to privilege restrictions"
         continue-on-error: true
 
-      - name: Run database migrations with backup
-        run: |
-          # Check if migrations will run successfully
-          php artisan migrate:status
+      - name: Run database migrations
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            # Check if migrations will run successfully
+            php artisan migrate:status
 
-          # Run migrations
-          php artisan migrate --force
+            # Run migrations
+            php artisan migrate --force
 
-          # Verify application is working
-          php artisan tinker --execute="echo 'Application is working';"
+            # Verify application is working
+            php artisan tinker --execute="echo 'Application is working';"
 
       - name: Build assets (if using Laravel Mix)
         run: |
