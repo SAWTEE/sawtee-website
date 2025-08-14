@@ -99,14 +99,14 @@ jobs:
       - name: Run database migrations with backup
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: \${{ secrets.SSH_HOST }}
-          username: \${{ secrets.SSH_USERNAME }}
-          key: \${{ secrets.SSH_PRIVATE_KEY }}
-          port: \${{ secrets.SSH_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
 
             # Create database backup
-            mysqldump -u \${{ secrets.DB_USERNAME }} -p\${{ secrets.DB_PASSWORD }} \${{ secrets.DB_DATABASE }} > database_backup_\$(date +%Y%m%d_%H%M%S).sql
+            mysqldump -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_DATABASE }} > database_backup_\$(date +%Y%m%d_%H%M%S).sql
 
             # Check if migrations will run successfully
             php artisan migrate:status
