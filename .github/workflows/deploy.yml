@@ -106,7 +106,8 @@ jobs:
           script: |
 
             # Create database backup
-            mysqldump -u ${{ secrets.DB_USERNAME }} -p${{ secrets.DB_PASSWORD }} ${{ secrets.DB_DATABASE }} > database_backup_\$(date +%Y%m%d_%H%M%S).sql
+            BACKUP_FILE="database_backup_$(date +%Y%m%d_%H%M%S).sql"
+            mysqldump -u "${{ secrets.DB_USERNAME }}" -p"${{ secrets.DB_PASSWORD }}" "${{ secrets.DB_NAME }}" > "$BACKUP_FILE"
 
             # Check if migrations will run successfully
             php artisan migrate:status
