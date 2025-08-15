@@ -35,7 +35,7 @@ import React from 'react';
 
 export default function CreatePostForm({ categories, themes, tags }) {
   const { data, setData, post, processing, errors, reset } = useForm({
-    category_id: 2,
+    category_id: 1,
     theme_id: '',
     title: '',
     slug: '',
@@ -46,7 +46,7 @@ export default function CreatePostForm({ categories, themes, tags }) {
     image: '',
     file: '',
     files: [],
-    tags: [],
+    // tags: [],
     link: null,
     genre: '',
     published_at: null,
@@ -54,7 +54,7 @@ export default function CreatePostForm({ categories, themes, tags }) {
     meta_description: '',
   });
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = React.useState('Programme');
+  const [selectedCategory, setSelectedCategory] = React.useState('Featured Events');
   const [tagOptions, setTagOptions] = React.useState([]);
   const [image, setImage] = React.useState(null);
   const [postTags, setPostTags] = React.useState([]);

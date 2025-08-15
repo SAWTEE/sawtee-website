@@ -32,6 +32,7 @@ class PostController extends Controller
             ->whereIn('category_id', $parent_and_subcategory_ids)
             ->idDescending()
             ->get();
+            // dd($posts);
 
         $categories = Category::where('type', 'post')->where('parent_id', null)->get();
         return Inertia::render('Backend/Post/Index', [
@@ -47,7 +48,7 @@ class PostController extends Controller
     public function create()
     {
         return Inertia::render('Backend/Post/Create', [
-            'categories' => Category::where('type', 'post')->get(),
+            'categories' => Category::where('type', 'post')->whereNot("slug", "programme")->get(),
             'themes' => Theme::all(),
             'tags' => Tag::all(),
         ]);
@@ -65,7 +66,6 @@ class PostController extends Controller
         // $validated['excerpt'] = Str::of(Str::words($validated['content'], 30, '...'))
         //     ->stripTags()
         //     ->squish();
-
         $post = Post::create($validated);
 
         if ($request->has('tags')) {

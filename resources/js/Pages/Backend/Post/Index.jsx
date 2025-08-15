@@ -119,7 +119,9 @@ export default function Index({ auth, posts, categories, categoryID }) {
     },
     {
       accessorKey: 'author',
-      header: 'Author',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Author" />
+      ),
     },
     {
       accessorKey: 'id',

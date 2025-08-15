@@ -60,7 +60,7 @@ export default function EditPostForm({
     image: postData.media?.filter(
       m => m.collection_name === 'post-featured-image'
     )[0],
-    tags: [],
+    tags: postData.tags,
     file: postData.media?.filter(m => m.collection_name === 'post-files')[0],
     files: [],
     link: postData.link,

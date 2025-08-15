@@ -125,20 +125,13 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::resource('/pages', PageController::class);
     Route::resource('/home-page-sections', HomePageSectionController::class);
     Route::resource('/teams', TeamController::class);
-    Route::resource('/trade-insight-volumes', TradeInsightVolumeController::class);
-    Route::resource('/articles', ArticleController::class);
-    Route::resource('/fellowships', FellowshipController::class);
-    Route::resource('/fellows', FellowController::class);
-    Route::resource('/published-stories', PublishedStoryController::class);
-    Route::resource('/members', MemberController::class);
-    Route::resource('/institutes', InstituteController::class);
 
-    Route::get('/posts{categoryId?}', [PostController::class, 'index'])->name('posts.index');
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
-    Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
-    Route::patch('/posts/update/{id}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::resource('/posts', PostController::class);
+    // Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    // Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
+    // Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
+    // Route::patch('/posts/update/{id}', [PostController::class, 'update'])->name('posts.update');
+    // Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     Route::post('/post/uploadmedia', [PostController::class, 'uploadmedia'])->name('post.upload');
     Route::get("/menus", [MenuController::class, 'index'])->name('menus.index');
@@ -150,4 +143,11 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::patch('/menus/edit-menu-item/{id}', [MenuController::class, 'editMenuItem'])->name('editMenuItem.menu');
     Route::delete('/menus/delete-menu-item/{id}', [MenuController::class, 'deleteMenuItem'])->name('deleteMenuItem.menu');
     Route::post('/menus/add-custom-link', [MenuController::class, 'addCustomLink'])->name('addCustomLink.menu');
+    Route::resource('/trade-insight-volumes', TradeInsightVolumeController::class);
+    Route::resource('/articles', ArticleController::class);
+    Route::resource('/fellowships', FellowshipController::class);
+    Route::resource('/fellows', FellowController::class);
+    Route::resource('/published-stories', PublishedStoryController::class);
+    Route::resource('/members', MemberController::class);
+    Route::resource('/institutes', InstituteController::class);
 });

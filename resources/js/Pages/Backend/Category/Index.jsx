@@ -87,12 +87,18 @@ export default function Index({ auth, categories }) {
         <DataTableColumnHeader column={column} title="Type" />
       ),
     },
+    // {
+    //   accessorKey: 'parent',
+    //   header: 'Parent Category',
+    //   cell: ({ row }) => {
+    //     return row.original.parent ? row.original.parent.name : 'N/A';
+    //   },
+    // },
     {
-      accessorKey: 'parent',
-      header: 'Parent Category',
-      cell: ({ row }) => {
-        return row.original.parent ? row.original.parent.name : 'N/A';
-      },
+      accessorKey: 'parent.name',
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Parent Category" />
+      ),
     },
     {
       accessorKey: 'id',
