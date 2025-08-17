@@ -80,7 +80,7 @@ jobs:
           echo "PUSHER_SCHEME=${{ secrets.PUSHER_SCHEME }}" >> .env
           echo "PUSHER_APP_CLUSTER=${{ secrets.PUSHER_APP_CLUSTER }}" >> .env
           echo "" >> .env
-          echo "VITE_APP_NAME='${{ secrets.VITE_APP_NAME }}'" >> .env
+          echo "VITE_APP_NAME='${{ secrets.APP_NAME }}'" >> .env
           echo "VITE_PUSHER_APP_KEY=${{ secrets.VITE_PUSHER_APP_KEY }}" >> .env
           echo "VITE_PUSHER_HOST=${{ secrets.VITE_PUSHER_HOST }}" >> .env
           echo "VITE_PUSHER_PORT=${{ secrets.VITE_PUSHER_PORT }}" >> .env
@@ -131,39 +131,40 @@ jobs:
             cd ${{ secrets.SSH_TARGET_DIR }}
 
             # Set proper permissions
-            chmod -R 755 .
-            chmod -R 777 storage
-            chmod -R 777 bootstrap/cache
+            find . -type d -exec chmod 755 {} \;
+            find . -type f -exec chmod 644 {} \;
+            chmod -R 775 storage
+            chmod -R 775 bootstrap/cache
+            chmod -R 755 public
 
-            # Create backups directory if it doesn't exist
-            mkdir -p backups
-
-            # Create database backup with proper error handling
-            echo "Creating database backup..."
-            if command -v mysqldump >/dev/null 2>&1; then
-              BACKUP_FILE="backups/backup_$(date +%Y%m%d_%H%M%S).sql"
-              if mysqldump -h "${{ secrets.DB_HOST }}" \
-                          -u "${{ secrets.DB_USERNAME }}" \
-                          -p"${{ secrets.DB_PASSWORD }}" \
-                          --single-transaction \
-                          --routines \
-                          --triggers \
-                          --no-tablespaces \
-                          "${{ secrets.DB_DATABASE }}" > "$BACKUP_FILE" 2>/dev/null; then
-                echo "✅ Database backup created successfully: $BACKUP_FILE"
-              else
-                echo "⚠️  Database backup failed, but continuing deployment..."
-                echo "This might be due to insufficient MySQL privileges."
-              fi
-            else
-              echo "⚠️  mysqldump not available, skipping database backup"
+            # Create storage link if it doesn't exist
+            if [ ! -L public/storage ]; then
+              php artisan storage:link
             fi
 
-            # Ensure we're using the correct PHP version
-            export PATH="/usr/local/bin:$PATH"
+            # # Create backups directory if it doesn't exist
+            # mkdir -p backups
 
-            # Check if we have the right PHP version
-            php --version
+            # # Create database backup with proper error handling
+            # echo "Creating database backup..."
+            # if command -v mysqldump >/dev/null 2>&1; then
+            #   BACKUP_FILE="backups/backup_$(date +%Y%m%d_%H%M%S).sql"
+            #   if mysqldump -h "${{ secrets.DB_HOST }}" \
+            #               -u "${{ secrets.DB_USERNAME }}" \
+            #               -p"${{ secrets.DB_PASSWORD }}" \
+            #               --single-transaction \
+            #               --routines \
+            #               --triggers \
+            #               --no-tablespaces \
+            #               "${{ secrets.DB_DATABASE }}" > "$BACKUP_FILE" 2>/dev/null; then
+            #     echo "✅ Database backup created successfully: $BACKUP_FILE"
+            #   else
+            #     echo "⚠️  Database backup failed, but continuing deployment..."
+            #     echo "This might be due to insufficient MySQL privileges."
+            #   fi
+            # else
+            #   echo "⚠️  mysqldump not available, skipping database backup"
+            # fi
 
             # Install/update Composer dependencies on server
             if [ -f composer.json ]; then
@@ -196,6 +197,7 @@ jobs:
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
+            php artisan google-fonts:fetch
 
             # Test database connection
             echo "Testing database connection..."

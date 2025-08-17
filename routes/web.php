@@ -49,9 +49,6 @@ Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])
 
 
 Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
-// Route::post('/subscribers/subscribe', [SubscriptionController::class, 'store'])->name('subscription.store');
-// Route::get('/subscribers/verify/{token}', [SubscriptionController::class, 'verify'])->name('subscription.verify');
-// Route::get('/unsubscribe/{email}', [SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
 
 Route::get('/search', [FrontendController::class, 'search'])->name('search');
 
@@ -71,48 +68,6 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-
-    // Clear application cache:
-    Route::get('/clear-cache', function () {
-        Artisan::call('cache:clear');
-        return 'All cache cleared, App is optimized.';
-    });
-
-    // Clear all cache:
-    Route::get('/optimize', function () {
-        Artisan::call('optimize:clear');
-        return 'All cache cleared, App is optimized.';
-    });
-
-    // Clear route cache:
-
-    Route::get('/route-cache', function () {
-        Artisan::call('route:cache');
-        return 'Routes cache has been cleared';
-    });
-
-    //Clear config cache:
-    Route::get('/config-cache', function () {
-        Artisan::call('config:cache');
-        return 'Config cache has been cleared';
-    });
-
-    // Clear view cache:
-    Route::get('/view-clear', function () {
-        Artisan::call('view:clear');
-        return 'View cache has been cleared';
-    });
-
-    // Fetch all google fonts:
-    Route::get('/font-fetch', function () {
-        Artisan::call('google-fonts:fetch');
-        return 'All fonts fetched.';
-    });
-
-    Route::get('/storage-link', function () {
-        Artisan::call('storage:link');
-        return 'Storage symlink created.';
-    });
 
     Route::resource('/categories', CategoryController::class);
     Route::resource('/themes', ThemeController::class);
