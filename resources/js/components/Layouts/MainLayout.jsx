@@ -21,11 +21,12 @@ import MobileMenu from '../Frontend/mobileMenu';
 export default function MainLayout({ children, ...rest }) {
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const page = usePage();
   const { primaryMenu, footerMenu } = page.props;
 
   const toggleVisibility = () => {
-    if (window.scrollY > 570) {
+    if (typeof window !== 'undefined' && window.scrollY > 570) {
       setVisible(true);
     } else {
       setVisible(false);
@@ -33,14 +34,27 @@ export default function MainLayout({ children, ...rest }) {
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', toggleVisibility);
-    return () => window.removeEventListener('scroll', toggleVisibility);
-  }, [window.scrollY]);
+    // Set client-side flag
+    setIsClient(true);
+
+    // Only add event listeners on client side
+    if (typeof window !== 'undefined') {
+      window.addEventListener('scroll', toggleVisibility);
+      return () => window.removeEventListener('scroll', toggleVisibility);
+    }
+  }, []); // Remove window.scrollY dependency
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (typeof window !== 'undefined') {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
-  register();
+  // Register Swiper only on client side
+  useEffect(() => {
+    if (isClient) {
+      register();
+    }
+  }, [isClient]);
 
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">

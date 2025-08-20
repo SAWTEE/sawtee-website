@@ -4,7 +4,7 @@
   "scripts": {
     "commit": "cz",
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && vite build --ssr",
     "lint": "eslint --fix .",
     "format": "prettier 'resources/{js,jsx}/**/*.{js,jsx}' --write",
     "pre-commit": "npm run format && lint-staged && pretty-quick --staged"
@@ -77,7 +77,6 @@
     "nprogress": "^0.2.0",
     "react-day-picker": "^8.10.1",
     "react-medium-image-zoom": "^5.1.8",
-    "reading-duration": "^1.1.2",
     "swiper": "^11.0.7",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7"

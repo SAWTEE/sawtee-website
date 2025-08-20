@@ -1,9 +1,33 @@
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
-import readingDuration from 'reading-duration';
 import SidebarWidget from '../Frontend/sidebarWidget';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useMemo } from 'react';
+
+// Custom reading time calculator
+const calculateReadingTime = (content, options = {}) => {
+  if (!content) return null;
+
+  const { wordsPerMinute = 225, emoji = false } = options;
+
+  // Remove HTML tags and get clean text
+  const cleanText = content
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
+    .replace(/\s+/g, ' ')    // Normalize whitespace
+    .trim();
+
+  if (!cleanText) return null;
+
+  // Count words
+  const words = cleanText.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+
+  if (emoji) {
+    return `📖 ${minutes} min read`;
+  }
+
+  return `${minutes} min read`;
+};
 
 const PostLayout = ({
   children,
@@ -12,12 +36,15 @@ const PostLayout = ({
   featured_image,
   srcSet,
 }) => {
-  const readingTime = post.content
-    ? readingDuration(post.content, {
-        emoji: false,
-        wordsPerMinute: 225,
-      })
-    : null;
+  // Use useMemo to calculate reading time efficiently
+  const readingTime = useMemo(() => {
+    if (!post.content) return null;
+
+    return calculateReadingTime(post.content, {
+      emoji: false,
+      wordsPerMinute: 225,
+    });
+  }, [post.content]);
 
   const contentRef = useRef(null);
 
@@ -29,11 +56,11 @@ const PostLayout = ({
       // Add target="_blank" to each anchor
       anchors.forEach(anchor => {
         anchor.setAttribute('target', '_blank');
-        // Optional: add rel="noopener noreferrer" for security
+        // Add rel="noopener noreferrer" for security
         anchor.setAttribute('rel', 'noopener noreferrer');
       });
     }
-  }, [children]); // Re-run when children change
+  }, [children]);
 
   return (
     <div className="relative w-full px-10 py-10 lg:px-20">

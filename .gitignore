@@ -2,7 +2,8 @@
 /bootstrap/ssr
 /node_modules
 /public/hot
-/public/build
+/public
+/publications
 /public/storage
 /public/media-library/*
 /public/publications/*

@@ -81,12 +81,12 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::resource('/home-page-sections', HomePageSectionController::class);
     Route::resource('/teams', TeamController::class);
 
-    Route::resource('/posts', PostController::class);
-    // Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    // Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
-    // Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
-    // Route::patch('/posts/update/{id}', [PostController::class, 'update'])->name('posts.update');
-    // Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::get('/posts', [  PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
+    Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
+    Route::patch('/posts/update/{id}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     Route::post('/post/uploadmedia', [PostController::class, 'uploadmedia'])->name('post.upload');
     Route::get("/menus", [MenuController::class, 'index'])->name('menus.index');
