@@ -313,7 +313,7 @@ export default function CreatePostForm({ categories, themes, tags }) {
               )}
             </div>
           )}
-          {['Covid', 'Opinion in Lead', 'Webinar Series'].includes(
+          {['Covid', 'Opinion in Lead', 'Webinar Series', 'LDC Graduations'].includes(
             selectedCategory
           ) && (
             <div className="mx-2">

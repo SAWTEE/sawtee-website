@@ -336,7 +336,7 @@ export default function EditPostForm({
               defaultValue={image}
             />
           </div>
-          {selectedCategory === ('Covid' || 'Opinion in Lead' || 'Blog') && (
+          {['Covid', 'Opinion in Lead', 'Blog'].includes(selectedCategory) && (
             <div className="mx-2">
               <TooltipProvider>
                 <Label htmlFor="author">
@@ -387,8 +387,9 @@ export default function EditPostForm({
               )}
             </div>
           )}
-          {selectedCategory ===
-            ('Covid' || 'Opinion in Lead' || 'Webinar Series') && (
+          {['Covid', 'Opinion in Lead', 'Webinar Series', 'LDC Graduations'].includes(
+            selectedCategory
+          ) &&  (
             <div className="mx-2">
               <Label htmlFor="link">External Link</Label>
 

@@ -2,13 +2,37 @@ import WebsiteHead from '@/components/Frontend/Head';
 import MainLayout from '@/components/Layouts/MainLayout';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostMeta from '@/components/Frontend/post/post-meta';
-import readingDuration from 'reading-duration';
 import { formatDate } from '@/lib/helpers';
 
 import { Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import Glassbox from '@/components/Frontend/Glassbox';
 import SimpleList from '@/components/Frontend/SimpleList';
+
+// Custom reading time calculator
+const calculateReadingTime = (content, options = {}) => {
+  if (!content) return null;
+
+  const { wordsPerMinute = 225, emoji = false } = options;
+
+  // Remove HTML tags and get clean text
+  const cleanText = content
+    .replace(/<[^>]*>/g, '') // Remove HTML tags
+    .replace(/\s+/g, ' ')    // Normalize whitespace
+    .trim();
+
+  if (!cleanText) return null;
+
+  // Count words
+  const words = cleanText.split(/\s+/).length;
+  const minutes = Math.ceil(words / wordsPerMinute);
+
+  if (emoji) {
+    return `📖 ${minutes} min read`;
+  }
+
+  return `${minutes} min read`;
+};
 
 export default function Article({
   article,
@@ -17,12 +41,16 @@ export default function Article({
   srcSet,
   relatedArticles,
 }) {
-  const readingTime = article.content
-    ? readingDuration(article.content, {
+  // Use useMemo to calculate reading time efficiently
+    const readingTime = useMemo(() => {
+      if (!post.content) return null;
+
+      return calculateReadingTime(post.content, {
         emoji: false,
         wordsPerMinute: 225,
-      })
-    : null;
+      });
+    }, [article.content]);
+
   const { title,subtitle, content } = article;
   return (
     <MainLayout>
