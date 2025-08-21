@@ -12,7 +12,21 @@ const PaginationButton = ({
   children,
   ...rest
 }) => {
-  return (
+  return isDisabled ? (
+    <div className="group w-full cursor-not-allowed" aria-disabled={isDisabled}  {...rest}>
+      <Button
+        aria-label={label}
+        disabled={isDisabled}
+        variant="outline"
+        size="lg"
+        className="w-full dark:border-borderColor dark:bg-bgDarker dark:text-white"
+      >
+        {slot === 'before' && children}
+        <span>{label}</span>
+        {slot === 'after' && children}
+      </Button>
+    </div>
+  ) : (
     <Link
       className="group w-full"
       href={link ?? undefined}

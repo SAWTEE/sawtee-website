@@ -27,6 +27,7 @@ export default function Category({
   const isNewsletter = category.slug.includes('newsletters');
   const isCovid = category.slug.includes('covid');
   const isResearch = category.slug.includes('research');
+  const isLDC = category.slug.includes('ldc');
   const isDefault = !isNewsletter && !isResearch && !isCovid && !isEvent;
 
   return (
@@ -45,11 +46,12 @@ export default function Category({
         srcSet={srcSet}
         title={category.name}
       >
-        <div className="mx-auto grid gap-12 px-8 py-8 md:grid-cols-2 md:px-10 md:py-20 lg:grid-cols-6">
-          <section className="archive-list col-span-1 flex flex-col items-center gap-12 lg:col-span-4">
+        <div className="grid grid-cols-1 gap-12 px-0 py-8 md:grid-cols-2 md:px-4 md:py-20 lg:grid-cols-6">
+          <section className="archive-list col-span-1 lg:col-span-4">
             <div>
               {isDefault && <DefaultArchive posts={posts.data} category={category} />}
               {isCovid && <CovidArchive posts={posts.data} />}
+              {isLDC && <LDCArchive posts={posts.data} />}
 
               {isResearch && <ResearchArchive posts={posts} />}
               {isNewsletter && <NewsletterArchive posts={posts.data} />}

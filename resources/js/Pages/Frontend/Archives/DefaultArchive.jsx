@@ -6,7 +6,6 @@ import { Link } from '@inertiajs/react';
 
 const DefaultArchive = ({ posts, showFallbackImage = false, ...rest }) => {
   if (!posts || posts.length <= 0) return 'No posts found';
-  console.log('DefaultArchive posts:', posts);
 
   return (
     <div className="grid grid-cols-1 gap-10 p-8 xl:grid-cols-2" {...rest}>
@@ -27,7 +26,7 @@ const ArchivePost = ({ post, showFallbackImage }) => {
   const file = post.media.filter(
     media => media.collection_name === 'post-files'
   )[0];
-  const hasContent = post.content !== null || '';
+  const hasContent = post.content !== null || post.content !== '';
   const featured_image = post.media.filter(
     media => media.collection_name === 'post-featured-image'
   )[0];

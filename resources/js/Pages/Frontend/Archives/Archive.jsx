@@ -7,22 +7,22 @@ import MainLayout from '@/components/Layouts/MainLayout';
 import PageLayout from '@/components/Layouts/PageLayout';
 import DefaultArchive from '@/Pages/Frontend/Archives/DefaultArchive';
 
-export default function TagsArchive({
+export default function Archive({
   posts,
-  tag,
-  infocus,
   sawteeInMedia,
-  events,
+  meta_title,
+  meta_description,
+  layout_title,
   showSubscriptionBox = true,
 }) {
   return (
     <MainLayout>
       <WebsiteHead
-        title={tag.meta_title ? tag.meta_title : tag.name}
-        description={tag.meta_description}
+        title={meta_title}
+        description={meta_description}
         image={'/assets/logo-sawtee.webp'}
       ></WebsiteHead>
-      <PageLayout featured_image={null} srcSet={null} title={tag.name}>
+      <PageLayout featured_image={null} srcSet={null} title={layout_title}>
         <div className="mx-auto grid gap-12 px-8 py-8 md:grid-cols-2 md:px-10 md:py-20 lg:grid-cols-6">
           <section className="archive-list col-span-1 flex flex-col items-center gap-12 lg:col-span-4">
             <div>
@@ -43,7 +43,7 @@ export default function TagsArchive({
           <aside className="sidebar col-span-1 lg:col-span-2">
             <div className="flex flex-col gap-12">
               {showSubscriptionBox && (
-                <Glassbox className={'w-full p-4'}>
+                <Glassbox className={'w-full p-0'}>
                   <SubscriptionCard />
                 </Glassbox>
               )}
@@ -53,21 +53,6 @@ export default function TagsArchive({
                   array={sawteeInMedia}
                   title={'Sawtee in Media'}
                   link={'/category/sawtee-in-media'}
-                />
-              )}
-              {events && (
-                <SidebarWidget
-                  array={events}
-                  title={'Featured Events'}
-                  link={'/category/featured-events'}
-                />
-              )}
-
-              {infocus && (
-                <SidebarWidget
-                  array={infocus}
-                  link={'/category/in-focus'}
-                  title={'In Focus'}
                 />
               )}
             </div>

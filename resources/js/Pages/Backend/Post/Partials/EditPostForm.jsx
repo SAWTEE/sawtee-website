@@ -186,7 +186,7 @@ export default function EditPostForm({
             <ContentEditor
               // type="classic"
               name="content"
-              initialValue={data.content}
+              initialValue={data.content ?? ''}
               id="content"
               onChange={(evt, editor) => {
                 setData('content', editor.getContent());
@@ -333,7 +333,7 @@ export default function EditPostForm({
             <DropZone
               htmlFor={'image'}
               onValueChange={setDataImage}
-              defaultValue={image}
+              defaultValue={image }
             />
           </div>
           {['Covid', 'Opinion in Lead', 'Blog'].includes(selectedCategory) && (
@@ -355,8 +355,8 @@ export default function EditPostForm({
               <Input
                 type="text"
                 id="author"
-                name="author"
-                value={data.author}
+                name="author"S
+                value={data.author ?? ''}
                 className="mt-1 block"
                 placeholder="Add author full name"
                 autoComplete="author"
@@ -376,7 +376,7 @@ export default function EditPostForm({
                 type="text"
                 id="genre"
                 name="genre"
-                value={data.genre}
+                value={data.genre ?? ''}
                 className="mt-1 block"
                 autoComplete="genre"
                 onChange={e => setData('genre', e.target.value)}
@@ -397,7 +397,7 @@ export default function EditPostForm({
                 type="text"
                 id="link"
                 name="link"
-                value={data.link}
+                value={data.link ?? ""}
                 className="mt-1 block"
                 autoComplete="link"
                 onChange={e => setData('link', e.target.value)}

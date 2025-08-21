@@ -46,7 +46,7 @@ export default function CreatePostForm({ categories, themes, tags }) {
     image: '',
     file: '',
     files: [],
-    // tags: [],
+    tags: [],
     link: null,
     genre: '',
     published_at: null,

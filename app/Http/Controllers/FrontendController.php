@@ -35,10 +35,10 @@ class FrontendController extends Controller
     {
         $home_page_sections = HomePageSection::all();
         $slidesResponsiveImages = array();
-        $featured_publications_list = Publication::whereHas('tags', function ($query) {
+        $featured_publications = Publication::whereHas('tags', function ($query) {
             return $query->where('name', 'featured');
         })->with(['file', 'category'])->latest()->limit(4)->get();
-        $featured_opinion_in_leads = Post::whereHas('category', function ($query) {
+        $featured_blog_posts = Post::whereHas('category', function ($query) {
             $query->where('slug', 'opinion-in-lead');
         })->whereHas('tags', function ($query) {
             $query->where('name', 'featured');
@@ -47,7 +47,6 @@ class FrontendController extends Controller
             ->limit(2)
             ->get();
 
-        $featured_publications = array(...$featured_publications_list, ...$featured_opinion_in_leads);
 
         $publications = Publication::with(['file', 'category'])
             ->orderBy('id', "DESC")
@@ -93,6 +92,7 @@ class FrontendController extends Controller
             'sawteeInMedia' => $sawteeInMedia,
             'events' => $events,
             'featuredPublications' => $featured_publications,
+            'featuredBlogPosts'=> $featured_blog_posts,
             'publications' => $publications,
             'newsletters' => $newsletters,
             'webinars' => $webinars,
@@ -119,7 +119,7 @@ class FrontendController extends Controller
         }
 
         if ($slug === 'home') {
-            return to_route('home');
+            return $this->index();
         }
         // dd($page);
 
@@ -135,41 +135,39 @@ class FrontendController extends Controller
 
     public function tags($slug, $post = null)
     {
-        $infocus = Category::where('slug', 'in-focus')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
-        $sawteeInMedia = Category::where('slug', 'sawtee-in-media')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
-        $events = Category::where('slug', 'featured-events')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
+        $sawteeInMedia = Post::whereHas('category', function ($query) {
+            $query->where('slug', 'sawtee-in-media');
+        })->where('status', 'published')->latest()->take(5)->get();
         $tag = Tag::where('name', str_replace('-', ' ', $slug))->firstOrFail();
 
         $posts = $tag->posts()->paginate(10);
         if (!$post) {
             $post = $tag->publications()->paginate(10);
         }
-        return Inertia::render('Frontend/Archives/TagsArchive', [
-            'tag' => $tag,
+        return Inertia::render('Frontend/Archives/Archive', [
+            'meta_title' => $tag->title ?? $tag->name,
+            'meta_description' => $tag->description ?? $tag->name,
+            'layout_title' => $tag->name,
             'posts' => $posts,
-            'infocus' => $infocus,
             'sawteeInMedia' => $sawteeInMedia,
-            'events' => $events->load(['category', 'media']),
-
         ]);
     }
 
     public function themes($slug, $post = null)
     {
-        $infocus = Category::where('slug', 'in-focus')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
-        $sawteeInMedia = Category::where('slug', 'sawtee-in-media')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
-        $events = Category::where('slug', 'featured-events')->firstOrFail()->posts()->where('status', 'published')->latest()->take(5)->get();
+        $sawteeInMedia = Post::whereHas('category', function ($query) {
+            $query->where('slug', 'sawtee-in-media');
+        })->where('status', 'published')->latest()->take(5)->get();
         $theme = Theme::where('title', str_replace('-', ' ', $slug))->firstOrFail();
 
         $posts = $theme->posts()->paginate(10);
-
-        return Inertia::render('Frontend/Archives/ThemesArchive', [
-            'theme' => $theme,
+// dd($theme);
+        return Inertia::render('Frontend/Archives/Archive', [
+            'meta_title' => $theme->title ?? $theme->name,
+            'meta_description' => $theme->description ?? $theme->name,
+            'layout_title' => $theme->title ?? $theme->name,
             'posts' => $posts,
-            'infocus' => $infocus,
             'sawteeInMedia' => $sawteeInMedia,
-            'events' => $events->load(['category', 'media']),
-
         ]);
     }
 
@@ -379,7 +377,7 @@ class FrontendController extends Controller
     {
         // dd($category, $post);
         if ($post) {
-            return $this->renderPost($category, $segments, $infocus, $sawteeInMedia);
+            return $this->renderPost($category, $segments);
         } else {
             // Handle subcategory without post
             $posts = Post::with('category', 'category.parent', 'media')
@@ -475,16 +473,10 @@ class FrontendController extends Controller
     {
         if ($request->query()) {
             $query = $request->query();
-            // dd($query);
             $publications = Publication::search($request->search)->paginate();
             $research = Research::search($request->search)->paginate();
 
             $posts = Post::search($query['query'])->paginate(10);
-
-            // dd($posts);
-            // $result = collect(array(...$posts, ...$publications, ...$research));
-            // dd($result);
-            // return response()->json($posts);
             return Inertia::render('Frontend/SearchPage', ['posts' => $posts, 'publications' => $publications, 'research' => $research, 'query' => $query['query']]);
         }
         return Inertia::render('Frontend/SearchPage', ['posts' => null]);

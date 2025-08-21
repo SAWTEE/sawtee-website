@@ -2,7 +2,7 @@
 /bootstrap/ssr
 /node_modules
 /public/hot
-/public
+/public/
 /publications
 /public/storage
 /public/media-library/*
@@ -12,6 +12,7 @@
 /storage/media-library
 /storage/*.key
 /vendor
+/public/robots.txt
 .DS_Store
 .env
 .env.backup

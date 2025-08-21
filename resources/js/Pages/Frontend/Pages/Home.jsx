@@ -24,6 +24,7 @@ const Home = ({
   slides,
   events,
   featuredPublications,
+  featuredBlogPosts,
   publications,
   sawteeInMedia,
   newsletters,
@@ -87,7 +88,7 @@ const Home = ({
                     : 'self-end lg:col-span-2'
                 }
               >
-                <FeaturedPublications publications={featuredPublications} />
+                <FeaturedPublications publications={featuredPublications} blogPosts={featuredBlogPosts} />
               </div>
             )}
         </div>
