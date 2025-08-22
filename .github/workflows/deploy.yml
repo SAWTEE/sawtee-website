@@ -131,11 +131,11 @@ jobs:
             cd ${{ secrets.SSH_TARGET_DIR }}
 
             # Set proper permissions
-            find . -type d -exec chmod 755 {} \;
-            find . -type f -exec chmod 644 {} \;
-            chmod -R 775 storage
-            chmod -R 775 bootstrap/cache
-            chmod -R 755 public
+            # find . -type d -exec chmod 755 {} \;
+            # find . -type f -exec chmod 644 {} \;
+            # chmod -R 775 storage
+            # chmod -R 775 bootstrap/cache
+            # chmod -R 755 public
 
             # Create storage link if it doesn't exist
             if [ ! -L public/storage ]; then
