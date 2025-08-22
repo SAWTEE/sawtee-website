@@ -143,28 +143,28 @@ jobs:
             fi
 
             # # Create backups directory if it doesn't exist
-            # mkdir -p backups
+            mkdir -p backups
 
-            # # Create database backup with proper error handling
-            # echo "Creating database backup..."
-            # if command -v mysqldump >/dev/null 2>&1; then
-            #   BACKUP_FILE="backups/backup_$(date +%Y%m%d_%H%M%S).sql"
-            #   if mysqldump -h "${{ secrets.DB_HOST }}" \
-            #               -u "${{ secrets.DB_USERNAME }}" \
-            #               -p"${{ secrets.DB_PASSWORD }}" \
-            #               --single-transaction \
-            #               --routines \
-            #               --triggers \
-            #               --no-tablespaces \
-            #               "${{ secrets.DB_DATABASE }}" > "$BACKUP_FILE" 2>/dev/null; then
-            #     echo "✅ Database backup created successfully: $BACKUP_FILE"
-            #   else
-            #     echo "⚠️  Database backup failed, but continuing deployment..."
-            #     echo "This might be due to insufficient MySQL privileges."
-            #   fi
-            # else
-            #   echo "⚠️  mysqldump not available, skipping database backup"
-            # fi
+            # Create database backup with proper error handling
+            echo "Creating database backup..."
+            if command -v mysqldump >/dev/null 2>&1; then
+              BACKUP_FILE="backups/backup_$(date +%Y%m%d_%H%M%S).sql"
+              if mysqldump -h "${{ secrets.DB_HOST }}" \
+                          -u "${{ secrets.DB_USERNAME }}" \
+                          -p"${{ secrets.DB_PASSWORD }}" \
+                          --single-transaction \
+                          --routines \
+                          --triggers \
+                          --no-tablespaces \
+                          "${{ secrets.DB_DATABASE }}" > "$BACKUP_FILE" 2>/dev/null; then
+                echo "✅ Database backup created successfully: $BACKUP_FILE"
+              else
+                echo "⚠️  Database backup failed, but continuing deployment..."
+                echo "This might be due to insufficient MySQL privileges."
+              fi
+            else
+              echo "⚠️  mysqldump not available, skipping database backup"
+            fi
 
             # Install/update Composer dependencies on server
             if [ -f composer.json ]; then
