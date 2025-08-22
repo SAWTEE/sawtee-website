@@ -29,7 +29,7 @@ export default function Category({
   const isCovid = category.slug.includes('covid');
   const isResearch = category.slug.includes('research');
   const isLDC = category.slug.includes('ldc');
-  const isDefault = !isNewsletter && !isResearch && !isCovid && !isEvent;
+  const isDefault = !isNewsletter && !isResearch && !isCovid && !isEvent && !isLDC;
 
   return (
     <MainLayout>
