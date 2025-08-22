@@ -7,6 +7,7 @@ import MainLayout from '../../components/Layouts/MainLayout';
 import PageLayout from '../../components/Layouts/PageLayout';
 import CovidArchive from './Archives/CovidArchive';
 import DefaultArchive from './Archives/DefaultArchive';
+import DefaultArchive from './Archives/LDCArchive';
 import EventsArchive from './Archives/EventsArchive';
 import NewsletterArchive from './Archives/NewsletterArchive';
 import ResearchArchive from './Archives/ResearchArchive';
