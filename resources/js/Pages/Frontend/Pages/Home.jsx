@@ -47,7 +47,7 @@ const Home = ({
       />
 
       {/* POPUP CODE */}
-      <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+        {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent className="w-[800px] max-w-[90vw] bg-transparent p-0 shadow-none">
           <Link href="https://sawtee.org/career">
             <img
@@ -57,7 +57,7 @@ const Home = ({
             />
           </Link>
         </DialogContent>
-      </Dialog>
+      </Dialog> */}
 
       <Section py={4} className="carousel-section px-6 lg:py-4">
         <div
