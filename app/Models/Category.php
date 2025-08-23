@@ -23,7 +23,7 @@ class Category extends Model implements HasMedia
   use HasSlug;
 
   protected $fillable = ['name', 'slug', 'type', 'parent_id', 'meta_title', 'meta_description'];
-  protected $with = ['children'];
+  // protected $with = ['children'];
 
   /**
    * Get the options for generating the slug.

@@ -26,7 +26,7 @@ class Post extends Model implements HasMedia
     use Searchable;
     use HasSlug;
 
-    protected $with = ['category', 'media', 'tags'];
+    // protected $with = ['category', 'media', 'tags'];
 
     protected $fillable = [
         "title",

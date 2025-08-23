@@ -16,11 +16,8 @@ use App\Models\Slider;
 use App\Models\Tag;
 use App\Models\Team;
 use App\Models\Theme;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-
-// use Spatie\Newsletter\Facades\Newsletter;
 
 
 
@@ -38,11 +35,12 @@ class FrontendController extends Controller
         $featured_publications = Publication::whereHas('tags', function ($query) {
             return $query->where('name', 'featured');
         })->with(['file', 'category'])->latest()->limit(4)->get();
-        $featured_blog_posts = Post::whereHas('category', function ($query) {
-            $query->where('slug', 'opinion-in-lead');
-        })->whereHas('tags', function ($query) {
-            $query->where('name', 'featured');
-        })
+        $featured_blog_posts = Post::with(['category', 'tags', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'opinion-in-lead');
+            })->whereHas('tags', function ($query) {
+                $query->where('name', 'featured');
+            })
             ->latest()
             ->limit(2)
             ->get();
@@ -56,35 +54,43 @@ class FrontendController extends Controller
         $slider = Slider::where('page_id', Page::where('name', 'home')->first()->id)->latest()->first();
         $slides = $slider ? Slide::where('slider_id', $slider->id)->with('media')->orderBy('id', 'DESC')->take(5)->get() : array();
         foreach ($slides as $slide) {
-            $responsive = $slide->getFirstMedia('slides')?->getSrcSet('responsive');
+            $media = $slide->getFirstMedia('slides');
+            $responsive = $media?->getSrcSet('responsive');
 
             if ($responsive) {
-                array_push($slidesResponsiveImages, $slide->getFirstMedia('slides')->getSrcSet('responsive'));
+                array_push($slidesResponsiveImages, $responsive);
             }
-        };
-        $infocus = Post::whereHas('category', function ($query) {
-            $query->where('slug', 'in-focus');
-        })->whereHas('tags', function ($query) {
-            $query->where('name', 'featured');
-        })
+        }
+        ;
+        $infocus = Post::with(['category', 'tags', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'in-focus');
+            })->whereHas('tags', function ($query) {
+                $query->where('name', 'featured');
+            })
             ->latest()
             ->limit(5)
             ->get();
-        $sawteeInMedia = Post::whereHas('category', function ($query) {
-            $query->where('slug', 'sawtee-in-media');
-        })->where('status', 'published')->latest()->take(6)->get();
-        $events = Post::whereHas('category', function ($query) {
-            $query->where('slug', 'featured-events');
-        })->where('status', 'published')->latest()->take(5)->get();
+        $sawteeInMedia = Post::with(['category', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'sawtee-in-media');
+            })->where('status', 'published')->latest()->take(6)->get();
 
-        $newsletters = Post::whereHas('category', function ($query) {
-            $query->where('slug', 'newsletters');
-        })->where('status', 'published')->latest()->take(6)->get();
+        $events = Post::with(['category', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'featured-events');
+            })->where('status', 'published')->latest()->take(5)->get();
+
+        $newsletters = Post::with(['category', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'newsletters');
+            })->where('status', 'published')->latest()->take(6)->get();
 
         // Fetch the webinar series posts
-        $webinars = Post::whereHas('category', function ($query) {
-            $query->where('slug', 'webinar-series');
-        })->where('status', 'published')->latest()->take(5)->get();
+        $webinars = Post::with(['category', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'webinar-series');
+            })->where('status', 'published')->latest()->take(5)->get();
 
         return Inertia::render('Frontend/Pages/Home', [
             'slides' => $slides,
@@ -92,7 +98,7 @@ class FrontendController extends Controller
             'sawteeInMedia' => $sawteeInMedia,
             'events' => $events,
             'featuredPublications' => $featured_publications,
-            'featuredBlogPosts'=> $featured_blog_posts,
+            'featuredBlogPosts' => $featured_blog_posts,
             'publications' => $publications,
             'newsletters' => $newsletters,
             'webinars' => $webinars,
@@ -104,7 +110,7 @@ class FrontendController extends Controller
     /**
      * Retrieves a page by its slug and loads associated sections and themes if necessary.
      *
-     * @param datatype $slug The slug of the page to retrieve
+     * @param string $slug The slug of the page to retrieve
      * @throws ModelNotFoundException if the page is not found
      * @return \Inertia\Response
      */
@@ -161,7 +167,7 @@ class FrontendController extends Controller
         $theme = Theme::where('title', str_replace('-', ' ', $slug))->firstOrFail();
 
         $posts = $theme->posts()->paginate(10);
-// dd($theme);
+        // dd($theme);
         return Inertia::render('Frontend/Archives/Archive', [
             'meta_title' => $theme->title ?? $theme->name,
             'meta_description' => $theme->description ?? $theme->name,
@@ -188,63 +194,64 @@ class FrontendController extends Controller
     {
         // dd($slug, $subcategory, $post);
         $segments = request()->segments();
-        $category = Category::with('parent')->where('slug', $slug)->firstOrFail();
 
         // Common data for all views
-        $infocus = Post::whereHas('category', function ($query) {
+        $infocus = $slug == "in-focus" ? null : Post::with(['category', 'media'])->whereHas('category', function ($query) {
             $query->where('slug', 'in-focus');
         })->where('status', 'published')->latest()->take(5)->get();
 
-        $sawteeInMedia = Post::whereHas('category', function ($query) {
+        $sawteeInMedia = $slug == "sawtee-in-media" ? null : Post::with(['category', 'media'])->whereHas('category', function ($query) {
             $query->where('slug', 'sawtee-in-media');
         })->where('status', 'published')->latest()->take(5)->get();
 
+        $events = Post::with(['category', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'featured-events');
+            })->where('status', 'published')->latest()->take(5)->get();
+
+        $category = Category::with('parent')->where('slug', $slug)->firstOrFail();
         $featured_image = $category->getFirstMediaUrl('category_media');
         $category_responsive_images = $category->getFirstMedia('category_media')?->getSrcset('responsive');
 
-        // Handle different slug types
-        switch ($slug) {
-            case 'research':
-                return $this->handleResearchCategory($category, $featured_image, $category_responsive_images);
+        // Handle different slug types using match expression
+        return match ($slug) {
+            'research' => $this->handleResearchCategory($category, $featured_image, $category_responsive_images),
 
-            case 'teams':
-                return $this->handleTeamsCategory($category, $subcategory, $featured_image, $category_responsive_images);
+            'teams' => $this->handleTeamsCategory($category, $subcategory, $featured_image, $category_responsive_images),
 
-            case 'publications':
-                return $this->handlePublicationsCategory(
-                    $category,
-                    $subcategory,
-                    $segments,
-                    $infocus,
-                    $sawteeInMedia,
-                    $featured_image,
-                    $category_responsive_images
-                );
+            'publications' => $this->handlePublicationsCategory(
+                $category,
+                $subcategory,
+                $segments,
+                $infocus,
+                $sawteeInMedia,
+                $featured_image,
+                $category_responsive_images
+            ),
 
-            case 'programme':
-                return $this->handleProgrammeCategory(
-                    $category,
-                    $slug,
-                    $subcategory,
-                    $post,
-                    $segments,
-                    $infocus,
-                    $sawteeInMedia,
-                    $featured_image,
-                    $category_responsive_images
-                );
+            'programme' => $this->handleProgrammeCategory(
+                $category,
+                $slug,
+                $subcategory,
+                $post,
+                $segments,
+                $infocus,
+                $sawteeInMedia,
+                $featured_image,
+                $category_responsive_images
+            ),
 
-            default:
-                return $this->handleDefaultCategory(
-                    $category,
-                    $post = $subcategory,
-                    $segments,
-                    $infocus,
-                    $sawteeInMedia,
-                    $featured_image,
-                    $category_responsive_images
-                );
-        }
+            default => $this->handleDefaultCategory(
+                $category,
+                $subcategory, // Use $subcategory instead of overwriting $post
+                $segments,
+                $infocus,
+                $sawteeInMedia,
+                $events,
+                $featured_image,
+                $category_responsive_images
+            ),
+        };
     }
 
     private function handleResearchCategory($category, $featured_image, $category_responsive_images)
@@ -325,7 +332,7 @@ class FrontendController extends Controller
             $category = Category::with('parent')->where('slug', $subcategory)->firstOrFail();
             // dd($category, $slug, $subcategory, $post);
             if ($post) {
-                return $this->renderPost($category, $segments, $infocus, $sawteeInMedia);
+                return $this->renderPost($category, $segments);
             } else {
                 $posts = Post::with('category', 'category.parent', 'media')
                     ->where("category_id", $category->id)
@@ -345,37 +352,38 @@ class FrontendController extends Controller
             }
         } else {
             // Main category page
-            if ($post) {
-                return $this->renderPost($category, $segments, $infocus, $sawteeInMedia);
-            } else {
-                $subcategory_ids = $category->children->pluck('id')->toArray();
-                $parent_and_subcategory_ids = array_merge(
-                    array($slug === 'programme' ? null : $category->id),
-                    $subcategory_ids
-                );
+            $subcategory_ids = $category->children->pluck('id')->toArray();
+            $parent_and_subcategory_ids = array_merge(
+                array($slug === 'programme' ? null : $category->id),
+                $subcategory_ids
+            );
+            // Remove any null values to avoid issues in whereIn query
+            $parent_and_subcategory_ids = array_filter($parent_and_subcategory_ids, function ($id) {
+                return !is_null($id);
+            });
 
-                $posts = Post::query()
-                    ->whereIn('category_id', $parent_and_subcategory_ids)
-                    ->orderByDesc('id')
-                    ->with('category', 'category.parent', 'media')
-                    ->where('status', 'published')
-                    ->paginate(10);
+            $posts = Post::query()
+                ->whereIn('category_id', $parent_and_subcategory_ids)
+                ->orderByDesc('id')
+                ->with('category', 'category.parent', 'media')
+                ->where('status', 'published')
+                ->paginate(10);
 
-                return Inertia::render('Frontend/Category', [
-                    'category' => $category,
-                    'posts' => $posts,
-                    'infocus' => $infocus,
-                    'sawteeInMedia' => $sawteeInMedia,
-                    'featured_image' => $featured_image,
-                    'srcSet' => $category_responsive_images
-                ]);
-            }
+            return Inertia::render('Frontend/Category', [
+                'category' => $category,
+                'posts' => $posts,
+                'infocus' => $infocus,
+                'sawteeInMedia' => $sawteeInMedia,
+                'featured_image' => $featured_image,
+                'srcSet' => $category_responsive_images
+            ]);
         }
+
     }
 
-    private function handleDefaultCategory($category, $post, $segments, $infocus, $sawteeInMedia, $featured_image, $category_responsive_images)
+
+    private function handleDefaultCategory($category, $post, $segments, $infocus, $sawteeInMedia, $events, $featured_image, $category_responsive_images)
     {
-        // dd($category, $post);
         if ($post) {
             return $this->renderPost($category, $segments);
         } else {
@@ -387,10 +395,11 @@ class FrontendController extends Controller
                 ->paginate(10);
 
             return Inertia::render('Frontend/Category', [
-                'category' => $category,
+                'category'=> $category,
                 'posts' => $posts,
                 'infocus' => $infocus,
                 'sawteeInMedia' => $sawteeInMedia,
+                'events' => $events,
                 'featured_image' => $featured_image,
                 'srcSet' => $category_responsive_images
             ]);
@@ -416,10 +425,14 @@ class FrontendController extends Controller
             ->latest()
             ->take(5)
             ->get();
-
+        $file = $post->getFirstMediaUrl('post-files');
         $media = $post->getFirstMediaUrl('post-featured-image');
         $srcSet = $post->getFirstMedia('post-featured-image')?->getSrcSet('responsive');
         $file = $post->getFirstMediaurl('post-files');
+
+        $media = $post->getFirstMediaUrl('post-featured-image');
+        $srcSet = $post->getFirstMedia('post-featured-image')?->getSrcSet('responsive');
+        $file = $post->getFirstMediaUrl('post-files');
 
         return Inertia::render('Frontend/Post', [
             'post' => $post->load('category', 'category.parent', 'tags'),
@@ -429,10 +442,6 @@ class FrontendController extends Controller
             'file' => $file,
             'relatedPosts' => $related_posts
         ]);
-    }
-
-    public function trade_insight_volume($volumeSlug = null, $articleSlug = null)
-    {
         $trade_insight_volume = TradeInsightVolume::with('articles')->where('slug', $volumeSlug)->firstOrFail();
         if (!$articleSlug) {
             // Common data for all views
