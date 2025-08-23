@@ -395,7 +395,7 @@ class FrontendController extends Controller
                 ->paginate(10);
 
             return Inertia::render('Frontend/Category', [
-                'category'=> $category,
+                'category' => $category,
                 'posts' => $posts,
                 'infocus' => $infocus,
                 'sawteeInMedia' => $sawteeInMedia,
@@ -414,12 +414,12 @@ class FrontendController extends Controller
             $category = Category::where('slug', $segments[1])->firstOrFail();
         }
 
-        $post = Post::where("category_id", $category->id)
+        $post = Post::with('category', 'category.parent')->where("category_id", $category->id)
             ->where("status", "published")
             ->where('slug', $post_slug)
             ->firstOrFail();
 
-        $related_posts = Post::where("category_id", $category->id)
+        $related_posts = Post::with('category', 'category.parent')->where("category_id", $category->id)
             ->where("status", "published")
             ->where('slug', '!=', $post_slug)
             ->latest()
@@ -435,21 +435,26 @@ class FrontendController extends Controller
         $file = $post->getFirstMediaUrl('post-files');
 
         return Inertia::render('Frontend/Post', [
-            'post' => $post->load('category', 'category.parent', 'tags'),
+            'post' => $post,
             'category' => $category,
             'featured_image' => $media,
             "srcSet" => $srcSet,
             'file' => $file,
             'relatedPosts' => $related_posts
         ]);
+
+    }
+
+    public function trade_insight_volume($volumeSlug = null, $articleSlug = null)
+    {
         $trade_insight_volume = TradeInsightVolume::with('articles')->where('slug', $volumeSlug)->firstOrFail();
         if (!$articleSlug) {
             // Common data for all views
-            $infocus = Post::whereHas('category', function ($query) {
+            $infocus = Post::with('category', 'category.parent', 'media')->whereHas('category', function ($query) {
                 $query->where('slug', 'in-focus');
             })->where('status', 'published')->latest()->take(5)->get();
 
-            $sawteeInMedia = Post::whereHas('category', function ($query) {
+            $sawteeInMedia = Post::with('category', 'category.parent', 'media')->whereHas('category', function ($query) {
                 $query->where('slug', 'sawtee-in-media');
             })->where('status', 'published')->latest()->take(5)->get();
 

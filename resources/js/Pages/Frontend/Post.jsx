@@ -11,6 +11,7 @@ export default function Post({
   relatedPosts,
 }) {
   const { category, title, content } = post;
+  console.log('Post category:', category);
   // const isProgramme = category.parent && category.parent.slug === 'programme';
   const isWebinarSeries = category.slug === 'webinar-series';
   const isDefault = !isWebinarSeries;
