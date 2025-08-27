@@ -5,7 +5,6 @@ import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { CalendarIcon } from '@radix-ui/react-icons';
-
 import {
   Popover,
   PopoverContent,
@@ -17,7 +16,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import ContentEditor from '@/components/Backend/ContentEditor';
-import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Select,
   SelectContent,
@@ -56,14 +55,8 @@ export default function EditArticleForm({ article, tags, volumes }) {
   const [articleTags, setArticleTags] = React.useState([]);
 
   function setDataTags(selectedValues) {
-    const array = [];
-    selectedValues.map(item => {
-      array.push({
-        article_id: item.id,
-        tag_id: item.value,
-      });
-    });
-    setData('tags', array);
+    const tagIds = selectedValues.map(item => item.value);
+    setData('tags', tagIds);
   }
 
   const [selectedVolume, setSelectedVolume] = React.useState(
@@ -89,48 +82,45 @@ export default function EditArticleForm({ article, tags, volumes }) {
 
   const submit = e => {
     e.preventDefault();
-    post(route('admin.articles.update', {
-      _method: 'patch',
-      article: article
-    }), {
-      preserveScroll: true,
-      onSuccess: () =>
-        toast({
-          title: 'Article Created.',
-          description: 'Article Created Successfully',
-        }),
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              description: `${key.toUpperCase()} field error ` + `: ${value}`,
-            });
+    post(
+      route('admin.articles.update', {
+        _method: 'patch',
+        article: article,
+      }),
+      {
+        preserveScroll: true,
+        onSuccess: () =>
+          toast({
+            title: 'Article Created.',
+            description: 'Article Created Successfully',
+          }),
+        onError: errors => {
+          for (const key in errors) {
+            if (Object.hasOwnProperty.call(errors, key)) {
+              const value = errors[key];
+              reset(key);
+              return toast({
+                title: 'Uh oh, Something went wrong',
+                description: `${key.toUpperCase()} field error ` + `: ${value}`,
+              });
+            }
           }
-        }
-      },
-    });
+        },
+      }
+    );
   };
 
   React.useEffect(() => {
-    tags.length > 0 &&
-      tags.map(tag => {
-        setTagOptions(prev => [
-          ...prev,
-          { value: tag.id, label: tag.name, id: article.id },
-        ]);
-      });
-      const array = [];
+    tags.length !== tagOptions.length &&
+      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+  }, [tags]);
+
+  React.useEffect(() => {
     article.tags.map(tag => {
-      array.push({ value: tag.id, label: tag.name, id: article.id });
+      setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
     });
-    setArticleTags([...array]);
-  }, [tags, article]);
+  }, [article]);
 
-
-  console.log(articleTags, article);
   return (
     <form onSubmit={submit}>
       <div className="grid grid-cols-4 gap-4">

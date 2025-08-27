@@ -63,8 +63,8 @@ const PostLayout = ({
   }, [children]);
 
   return (
-    <div className="relative w-full px-10 py-10 lg:px-20">
-      <div className="mx-auto mt-5 max-w-5xl">
+    <div className="relative w-full py-10">
+      <div className="mx-auto mt-5 max-w-5xl w-full">
         <PostHeader categories={post.category} heading={post.title} />
         {featured_image && (
           <FeaturedMedia

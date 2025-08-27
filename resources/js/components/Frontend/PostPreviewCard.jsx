@@ -1,59 +1,41 @@
 import PostCategories from '@/components/Frontend/post/post-categories';
-import { formatDate } from '@/lib/helpers';
+import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import ExploreButton from './ExploreButton';
 
-const PostPreviewCard = ({
-  post,
-  showImage = false,
-  showCategoryTag = false,
-  className,
-}) => {
-  const { title, slug, excerpt, media, category, published_at } = post;
-  const file = post.media.filter(
+const PostPreviewCard = ({ post, showCategoryTag = false, className }) => {
+  const { title, slug, excerpt } = post;
+  const file = post.media?.filter(
     media => media.collection_name === 'post-files'
   )[0];
-  const hasContent = post.content !== null || '';
+  const hasContent = post.content && post.content !== '';
+  const category = { name: post.category, slug: post.category_slug };
 
-  const featured_image = media
-    ? media.filter(item => item.collection_name === 'post-featured-image')[0]
-    : null;
   return (
     <Card className={cn('group rounded-md bg-bgDarker shadow-md', className)}>
       <CardHeader>
-        {showImage && featured_image && (
-          <div className="rounded-md">
-            <img
-              className="aspect-video w-full object-cover transition-all duration-500 ease-in group-hover:scale-105"
-              loading="lazy"
-              src={featured_image?.original_url}
-              alt={title}
-            />
-            <div className="absolute bottom-0 left-0 right-0 top-0 bg-gray-900 opacity-25 transition duration-300 hover:bg-transparent" />
-          </div>
-        )}
         <div className="flex items-center justify-between">
           {showCategoryTag && (
-            <PostCategories className="justify-start" category={category} />
+            <Link href={`/category/${category.slug}`}>
+              <Badge variant="outline">{category.name}</Badge>
+            </Link>
           )}
 
-          <time className={`text-sm text-muted-foreground`}>
+          {/* <time className={`text-sm text-muted-foreground`}>
             {formatDate(published_at)}
-          </time>
+          </time> */}
         </div>
       </CardHeader>
 
       <CardContent>
-        <div
-          className={`flex flex-col justify-center gap-2 ${showImage ? 'mt-4' : 'mt-0'}`}
-        >
+        <div className="mt-0 flex flex-col justify-center gap-2">
           {hasContent ? (
             <Link
               href={
                 category.parent
-                  ? `/category/${category.parent.slug}/${category.slug}/${slug}`
+                  ? `/category/${category.parent?.slug}/${category.slug}/${slug}`
                   : `/category/${category.slug}/${slug}`
               }
             >
@@ -66,7 +48,7 @@ const PostPreviewCard = ({
               href={
                 hasContent || !file
                   ? category.parent
-                    ? `/category/${category.parent.slug}/${category.slug}/${slug}`
+                    ? `/category/${category.parent?.slug}/${category.slug}/${slug}`
                     : `/category/${category.slug}/${slug}`
                   : file?.original_url
               }

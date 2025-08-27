@@ -13,9 +13,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-/**
- * @mixin IdeHelperCategory
- */
 class Category extends Model implements HasMedia
 {
   use InteractsWithMedia;

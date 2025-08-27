@@ -1,6 +1,6 @@
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
-import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,28 +30,12 @@ export default function CreatePublicationForm({ categories, tags }) {
     tags: [],
   });
   const [image, setImage] = useState(null);
-  const [tagOptions, setTagOptions] = useState(() => {
-    const tagsarray = [];
-    tags?.map(tag => {
-      tagsarray.push({
-        value: tag.id,
-        label: tag.name,
-        id: undefined,
-      });
-    });
-
-    return tagsarray;
-  });
+  const [tagOptions, setTagOptions] = useState([]);
   const [publicationTags, setPublicationTags] = React.useState([]);
   const { toast } = useToast();
 
   React.useEffect(() => {
-    tags.map(tag => {
-      setTagOptions(prev => [
-        ...prev,
-        { value: tag.id, label: tag.name, id: undefined },
-      ]);
-    });
+    tags.length !== tagOptions.length && setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   function setDataImage(image) {
@@ -93,15 +77,8 @@ export default function CreatePublicationForm({ categories, tags }) {
   };
 
   function setDataTags(selectedValues) {
-    const array = [];
-    selectedValues.length > 0 &&
-      selectedValues.map(item => {
-        array.push({
-          publication_id: item.id,
-          tag_id: item.value,
-        });
-      });
-    setData('tags', array);
+    const tagIds = selectedValues.map(item => item.value);
+    setData('tags', tagIds);
   }
 
   return (

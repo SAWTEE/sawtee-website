@@ -16,9 +16,7 @@ use Laravel\Scout\Attributes\SearchUsingFullText;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-/**
- * @mixin IdeHelperPost
- */
+
 class Post extends Model implements HasMedia
 {
     use InteractsWithMedia;
@@ -26,7 +24,7 @@ class Post extends Model implements HasMedia
     use Searchable;
     use HasSlug;
 
-    // protected $with = ['category', 'media', 'tags'];
+    // protected $with = ['media', 'tags'];
 
     protected $fillable = [
         "title",
@@ -56,6 +54,7 @@ class Post extends Model implements HasMedia
         return [
             "title" => $this->title,
             "author" => $this->author,
+            "excerpt" => $this->excerpt,
         ];
     }
 

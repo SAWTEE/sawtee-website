@@ -204,7 +204,7 @@ class FrontendController extends Controller
             $query->where('slug', 'sawtee-in-media');
         })->where('status', 'published')->latest()->take(5)->get();
 
-        $events = Post::with(['category', 'media'])
+        $events = $slug == "featured-events" ? null : Post::with(['category', 'media'])
             ->whereHas('category', function ($query) {
                 $query->where('slug', 'featured-events');
             })->where('status', 'published')->latest()->take(5)->get();
@@ -330,7 +330,6 @@ class FrontendController extends Controller
     {
         if ($subcategory) {
             $category = Category::with('parent')->where('slug', $subcategory)->firstOrFail();
-            // dd($category, $slug, $subcategory, $post);
             if ($post) {
                 return $this->renderPost($category, $segments);
             } else {
@@ -414,12 +413,14 @@ class FrontendController extends Controller
             $category = Category::where('slug', $segments[1])->firstOrFail();
         }
 
-        $post = Post::with('category', 'category.parent')->where("category_id", $category->id)
+        $post = Post::with('category', 'category.parent')
             ->where("status", "published")
             ->where('slug', $post_slug)
             ->firstOrFail();
 
-        $related_posts = Post::with('category', 'category.parent')->where("category_id", $category->id)
+        $related_posts = Post::with('category', 'category.parent')->whereHas("category", function ($query) use ($category) {
+                $query->where("category_id", $category->id);
+            })
             ->where("status", "published")
             ->where('slug', '!=', $post_slug)
             ->latest()
@@ -483,16 +484,5 @@ class FrontendController extends Controller
         }
     }
 
-    public function search(Request $request)
-    {
-        if ($request->query()) {
-            $query = $request->query();
-            $publications = Publication::search($request->search)->paginate();
-            $research = Research::search($request->search)->paginate();
 
-            $posts = Post::search($query['query'])->paginate(10);
-            return Inertia::render('Frontend/SearchPage', ['posts' => $posts, 'publications' => $publications, 'research' => $research, 'query' => $query['query']]);
-        }
-        return Inertia::render('Frontend/SearchPage', ['posts' => null]);
-    }
 }

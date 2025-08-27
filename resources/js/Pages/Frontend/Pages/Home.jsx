@@ -12,9 +12,9 @@ import FeaturedSection from '@/components/Frontend/feature';
 import Title from '@/components/Frontend/title';
 import ListItem from '@/components/shared/ListItem';
 import { formatDate } from '@/lib/helpers';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { cn } from '@/lib/utils';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+// import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Link } from '@inertiajs/react';
 import MainLayout from '../../../components/Layouts/MainLayout';
 import { features } from '@/lib/data';
@@ -32,7 +32,7 @@ const Home = ({
   slidesResponsiveImages,
   homePageSections,
 }) => {
-  const [open, setOpen] = useState(true);
+  // const [open, setOpen] = useState(true);
 
   const FeaturedPublicationSectionIsVisible = homePageSections?.find(
     h => h.name === 'Featured Publication'

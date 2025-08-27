@@ -1,6 +1,6 @@
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
-import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -30,41 +30,12 @@ export default function EditPublicationForm({ publication, categories, tags }) {
   });
   const { toast } = useToast();
   const [image, setImage] = useState(data.image);
-  const [tagOptions, setTagOptions] = useState(() => {
-    const tagsarray = [];
-    tags?.map(tag => {
-      tagsarray.push({
-        value: tag.id,
-        label: tag.name,
-        id: publication.id,
-      });
-    });
-
-    return tagsarray;
-  });
-  const [publicationTags, setPublicationTags] = React.useState(() => {
-    const tagsarray = [];
-    publication.tags?.map(tag => {
-      tagsarray.push({
-        value: tag.id,
-        label: tag.name,
-        id: publication.id,
-      });
-    });
-
-    return tagsarray;
-  });
+  const [tagOptions, setTagOptions] = useState([]);
+  const [publicationTags, setPublicationTags] = React.useState([]);
 
   function setDataTags(selectedValues) {
-    const array = [];
-    selectedValues.length > 0 &&
-      selectedValues.map(item => {
-        array.push({
-          publication_id: item.id,
-          tag_id: item.value,
-        });
-      });
-    setData('tags', array);
+    const tagIds = selectedValues.map(item => item.value);
+    setData('tags', tagIds);
   }
 
   function setDataImage(image) {
@@ -80,6 +51,15 @@ export default function EditPublicationForm({ publication, categories, tags }) {
       setData('image', null);
     }
   }
+  React.useEffect(() => {
+      tags.length !== tagOptions.length && setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+    }, [tags]);
+
+    React.useEffect(() => {
+      publication.tags.map(tag => {
+        setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
+      });
+    }, [publication]);
 
   const submit = e => {
     e.preventDefault();

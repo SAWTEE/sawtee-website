@@ -97,7 +97,7 @@ export default function Category({
       >
         <div className="grid grid-cols-1 gap-12 px-0 py-8 md:grid-cols-2 md:px-4 md:py-20 lg:grid-cols-6">
           <section className="archive-list col-span-1 lg:col-span-4">
-            <div>
+            <div className="flex flex-col w-full">
               {renderArchiveComponent()}
               <div className="w-full p-8">
                 {!isResearch && (

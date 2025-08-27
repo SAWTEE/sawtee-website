@@ -1,7 +1,8 @@
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
-import { MultiSelect } from '@/components/Backend/MultiSelect';
+// import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
   Accordion,
@@ -60,7 +61,7 @@ export default function EditPostForm({
     image: postData.media?.filter(
       m => m.collection_name === 'post-featured-image'
     )[0],
-    tags: postData.tags,
+    tags: [],
     file: postData.media?.filter(m => m.collection_name === 'post-files')[0],
     files: [],
     link: postData.link,
@@ -86,15 +87,20 @@ export default function EditPostForm({
       : null
   );
 
+  // function setDataTags(selectedValues) {
+  //   const array = [];
+  //   selectedValues.map(item => {
+  //     array.push({
+  //       post_id: item.id,
+  //       tag_id: item.value,
+  //     });
+  //   });
+  //   setData('tags', array);
+  // }
+
   function setDataTags(selectedValues) {
-    const array = [];
-    selectedValues.map(item => {
-      array.push({
-        post_id: item.id,
-        tag_id: item.value,
-      });
-    });
-    setData('tags', array);
+    const tagIds = selectedValues.map(item => item.value);
+    setData('tags', tagIds);
   }
 
   function setDataImage(image) {
@@ -139,21 +145,12 @@ export default function EditPostForm({
   };
 
   React.useEffect(() => {
-    tags.map(tag => {
-      setTagOptions(prev => [
-        ...prev,
-        { value: tag.id, label: tag.name, id: postData.id },
-      ]);
-    });
-  }, [tags, postData]);
+    tags.length !== tagOptions.length && setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+  }, [tags]);
 
   React.useEffect(() => {
-    setPostTags([]);
     postData.tags.map(tag => {
-      setPostTags(prev => [
-        ...prev,
-        { value: tag.id, label: tag.name, id: postData.id },
-      ]);
+      setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
     });
   }, [postData]);
 
@@ -169,6 +166,7 @@ export default function EditPostForm({
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
+              name="title"
               className="mt-1 block w-full"
               value={data.title}
               autoFocus
@@ -221,6 +219,7 @@ export default function EditPostForm({
 
             <Select
               name="category_id"
+              id="category_id"
               value={data.category_id}
               onValueChange={value => {
                 setData('category_id', Number(value));
@@ -281,7 +280,10 @@ export default function EditPostForm({
                   selected={data.published_at}
                   onSelect={value => {
                     // 2025-06-17 00:00:00
-                    const formatedDate = format(new Date(value), "yyyy-MM-dd H:i:s");
+                    const formatedDate = format(
+                      new Date(value),
+                      'yyyy-MM-dd H:i:s'
+                    );
                     setData('published_at', formatedDate);
                   }}
                   disabled={date =>
@@ -333,7 +335,7 @@ export default function EditPostForm({
             <DropZone
               htmlFor={'image'}
               onValueChange={setDataImage}
-              defaultValue={image }
+              defaultValue={image}
             />
           </div>
           {['Covid', 'Opinion in Lead', 'Blog'].includes(selectedCategory) && (
@@ -355,7 +357,7 @@ export default function EditPostForm({
               <Input
                 type="text"
                 id="author"
-                name="author"S
+                name="author"
                 value={data.author ?? ''}
                 className="mt-1 block"
                 placeholder="Add author full name"
@@ -387,9 +389,12 @@ export default function EditPostForm({
               )}
             </div>
           )}
-          {['Covid', 'Opinion in Lead', 'Webinar Series', 'LDC Graduations'].includes(
-            selectedCategory
-          ) &&  (
+          {[
+            'Covid',
+            'Opinion in Lead',
+            'Webinar Series',
+            'LDC Graduations',
+          ].includes(selectedCategory) && (
             <div className="mx-2">
               <Label htmlFor="link">External Link</Label>
 
@@ -397,7 +402,7 @@ export default function EditPostForm({
                 type="text"
                 id="link"
                 name="link"
-                value={data.link ?? ""}
+                value={data.link ?? ''}
                 className="mt-1 block"
                 autoComplete="link"
                 onChange={e => setData('link', e.target.value)}
@@ -492,6 +497,7 @@ export default function EditPostForm({
 
                     <Select
                       name="theme_id"
+                      id="theme_id"
                       value={data.theme_id}
                       onValueChange={value => {
                         setData('theme_id', Number(value));
@@ -520,7 +526,7 @@ export default function EditPostForm({
                   </fieldset>
 
                   <div className="mx-2">
-                    <Label htmlFor="tags">{' Add Tags'}</Label>
+                    <Label htmlFor="tags">Add Tags</Label>
 
                     <MultiSelect
                       name={'tags'}
@@ -598,7 +604,6 @@ export default function EditPostForm({
                       accept=".pdf,.doc,.docx,.ppt,.pptx"
                       id="files"
                       name="files"
-                      size="md"
                       onChange={e => {
                         setData('files', Array.from(e.target.files));
                         setFiles(Array.from(e.target.files));

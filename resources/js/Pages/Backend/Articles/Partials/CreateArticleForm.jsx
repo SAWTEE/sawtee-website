@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import ContentEditor from '@/components/Backend/ContentEditor';
-import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Select,
   SelectContent,
@@ -24,7 +24,7 @@ export default function CreateArticleForm({ tags, volumes }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     slug: '',
-    'trade_insight_volume_id': volumes ? volumes[0]?.id : null,
+    trade_insight_volume_id: volumes ? volumes[0]?.id : null,
     subtitle: null,
     excerpt: '',
     tags: [],
@@ -39,15 +39,11 @@ export default function CreateArticleForm({ tags, volumes }) {
   const [tagOptions, setTagOptions] = React.useState([]);
   const [image, setImage] = React.useState(null);
   const [articleTags, setArticleTags] = React.useState([]);
+
+
   function setDataTags(selectedValues) {
-    const array = [];
-    selectedValues.map(item => {
-      array.push({
-        post_id: item.id,
-        tag_id: item.value,
-      });
-    });
-    setData('tags', array);
+    const tagIds = selectedValues.map(item => item.value);
+    setData('tags', tagIds);
   }
 
   function setDataImage(image) {
@@ -89,13 +85,8 @@ export default function CreateArticleForm({ tags, volumes }) {
   };
 
   React.useEffect(() => {
-    tags.length > 0 &&
-      tags.map(tag => {
-        setTagOptions(prev => [
-          ...prev,
-          { value: tag.id, label: tag.name, id: undefined },
-        ]);
-      });
+    tags.length !== tagOptions.length &&
+      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   return (
@@ -112,7 +103,9 @@ export default function CreateArticleForm({ tags, volumes }) {
             required
           />
 
-          {errors.title && <InputError className="space-y-2">{errors.title}</InputError>}
+          {errors.title && (
+            <InputError className="space-y-2">{errors.title}</InputError>
+          )}
         </div>
 
         <div className="col-span-3">
@@ -159,46 +152,50 @@ export default function CreateArticleForm({ tags, volumes }) {
               placeholder="enter author names"
               onChange={e => setData('author', e.target.value)}
             />
-            {errors.author && <InputError className="space-y-2">{errors.author}</InputError>}
+            {errors.author && (
+              <InputError className="space-y-2">{errors.author}</InputError>
+            )}
           </div>
 
           <div className="col-span-1">
             <fieldset required className="mx-2">
-            <Label as="legend" htmlFor="category_id">
-              Volume
-            </Label>
+              <Label as="legend" htmlFor="category_id">
+                Volume
+              </Label>
 
-            <Select
-              name="trade_insight_volume_id"
-              value={data.trade_insight_volume_id}
-              onValueChange={value => {
-                setData('trade_insight_volume_id', Number(value));
+              <Select
+                name="trade_insight_volume_id"
+                value={data.trade_insight_volume_id}
+                onValueChange={value => {
+                  setData('trade_insight_volume_id', Number(value));
 
-                setSelectedCategory(
-                  volumes.filter(vol => vol.id === Number(value))[0]?.title
-                );
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select Trade Insight Volume" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Volumes</SelectLabel>
-                </SelectGroup>
+                  setSelectedCategory(
+                    volumes.filter(vol => vol.id === Number(value))[0]?.title
+                  );
+                }}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select Trade Insight Volume" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Volumes</SelectLabel>
+                  </SelectGroup>
 
-                {volumes.map(volume => (
-                  <SelectItem key={volume.id} value={volume.id}>
-                    {volume.title}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+                  {volumes.map(volume => (
+                    <SelectItem key={volume.id} value={volume.id}>
+                      {volume.title}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
 
-            {errors.trade_insight_volume_id && (
-              <InputError className={'mt-2'}>{errors.trade_insight_volume_id}</InputError>
-            )}
-          </fieldset>
+              {errors.trade_insight_volume_id && (
+                <InputError className={'mt-2'}>
+                  {errors.trade_insight_volume_id}
+                </InputError>
+              )}
+            </fieldset>
           </div>
           <div className="cols-span-1">
             <Label htmlFor="tags">{' Add Tags'}</Label>
@@ -215,7 +212,6 @@ export default function CreateArticleForm({ tags, volumes }) {
               setValues={setDataTags}
             />
           </div>
-
         </div>
 
         <div className="col-span-2">
@@ -227,7 +223,9 @@ export default function CreateArticleForm({ tags, volumes }) {
             rows={8}
             onChange={e => setData('excerpt', e.target.value)}
           />
-          {errors.excerpt && <InputError className="space-y-2">{errors.excerpt}</InputError>}
+          {errors.excerpt && (
+            <InputError className="space-y-2">{errors.excerpt}</InputError>
+          )}
         </div>
 
         <div className="col-span-2 flex flex-col gap-4">
@@ -267,7 +265,9 @@ export default function CreateArticleForm({ tags, volumes }) {
             onValueChange={setDataImage}
           />
 
-          {errors.image && <InputError className="space-y-2">{errors.image}</InputError>}
+          {errors.image && (
+            <InputError className="space-y-2">{errors.image}</InputError>
+          )}
         </div>
         <div className="col-span-4">
           <Label htmlFor="content">Content</Label>

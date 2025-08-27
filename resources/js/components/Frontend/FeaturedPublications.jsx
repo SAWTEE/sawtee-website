@@ -60,8 +60,8 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
             );
           })}
       </SimpleList>
-      <hr className="h-10 py-4" />
-      {blogPosts && (
+      <hr className="my-6" />
+      {blogPosts && blogPosts.length > 0 && (
         <SimpleList
           className="mx-auto max-w-lg rounded-xl border-none"
           heading={'Blog'}
@@ -71,7 +71,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
             .map((post, idx) => {
               const media = post.media.length
                 ? post.media.filter(
-                    media => media.collection_name === 'post_featured_image'
+                    media => media.collection_name === 'post-featured-image'
                   )[0].original_url
                 : `https://placehold.co/120x150/eee/000/webp?text=No+image`;
               return (

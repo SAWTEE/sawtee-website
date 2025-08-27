@@ -25,6 +25,7 @@ use App\Http\Controllers\Admin\PublishedStoryController;
 use App\Http\Controllers\Admin\TradeInsightVolumeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SearchController;
 
 
 /*
@@ -50,7 +51,7 @@ Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])
 
 Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::get('/search', [FrontendController::class, 'search'])->name('search');
+Route::get('/search', SearchController::class);
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/trade-insight/{volume}/{article?}', [FrontendController::class, 'trade_insight_volume'])->name('trade-insight-volume.show');

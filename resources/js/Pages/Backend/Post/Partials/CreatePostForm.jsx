@@ -1,7 +1,7 @@
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
-import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
   Accordion,
@@ -54,19 +54,26 @@ export default function CreatePostForm({ categories, themes, tags }) {
     meta_description: '',
   });
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] = React.useState('Featured Events');
+  const [selectedCategory, setSelectedCategory] =
+    React.useState('Featured Events');
   const [tagOptions, setTagOptions] = React.useState([]);
   const [image, setImage] = React.useState(null);
   const [postTags, setPostTags] = React.useState([]);
+
+  // function setDataTags(selectedValues) {
+  //   const array = [];
+  //   selectedValues.map(item => {
+  //     array.push({
+  //       post_id: item.id,
+  //       tag_id: item.value,
+  //     });
+  //   });
+  //   setData('tags', array);
+  // }
+
   function setDataTags(selectedValues) {
-    const array = [];
-    selectedValues.map(item => {
-      array.push({
-        post_id: item.id,
-        tag_id: item.value,
-      });
-    });
-    setData('tags', array);
+    const tagIds = selectedValues.map(item => item.value);
+    setData('tags', tagIds);
   }
 
   function setDataImage(image) {
@@ -109,12 +116,7 @@ export default function CreatePostForm({ categories, themes, tags }) {
   };
 
   React.useEffect(() => {
-    tags.map(tag => {
-      setTagOptions(prev => [
-        ...prev,
-        { value: tag.id, label: tag.name, id: undefined },
-      ]);
-    });
+    tags.length !== tagOptions.length && setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   return (
@@ -313,9 +315,12 @@ export default function CreatePostForm({ categories, themes, tags }) {
               )}
             </div>
           )}
-          {['Covid', 'Opinion in Lead', 'Webinar Series', 'LDC Graduations'].includes(
-            selectedCategory
-          ) && (
+          {[
+            'Covid',
+            'Opinion in Lead',
+            'Webinar Series',
+            'LDC Graduations',
+          ].includes(selectedCategory) && (
             <div className="mx-2">
               <Label htmlFor="link">External Link</Label>
 

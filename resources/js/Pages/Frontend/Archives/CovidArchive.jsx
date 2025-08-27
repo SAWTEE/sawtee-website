@@ -19,7 +19,7 @@ const CovidArchive = ({ posts }) => {
           }
         };
         return (
-          <Card key={post.id} className="max-w-sm rounded-md bg-bgDarker shadow-md">
+          <Card key={post.id} className="w-full min-w-lg rounded-md bg-bgDarker shadow-md">
             <CardContent className="flex h-full w-full flex-col gap-4 space-y-4 px-6">
               <div className="flex w-full justify-between">
                 {post.genre && (
@@ -27,10 +27,9 @@ const CovidArchive = ({ posts }) => {
                 )}
 
                 <time
-                  className="self-end text-sm font-medium"
+                  className="self-end text-sm font-medium justify-self-end text-muted-foreground"
                   fontSize={'xs'}
                   fontWeight="medium"
-                  justifySelf={'flex-end'}
                 >
                   {DateFormat(post.published_at)}
                 </time>
