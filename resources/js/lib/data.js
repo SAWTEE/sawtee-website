@@ -1003,7 +1003,7 @@ export const mediaFellowshipData = [
   {
     year: ' 2025',
     description:
-      'SAWTEE is delighted to announce the launch of its 2025 Media Fellowship, a unique opportunity for Nepali journalists to explore how digitalization is influencing the country’s economy.  This fellowship aims to provide an opportunity for journalists to report on critical issues at the intersection of digital transformation and economic development.<br><br> <a href="https://sawtee.org/career" target="_blank" rel="noopener noreferrer"><u>For more information</u></a>.',
+      'SAWTEE has launched its 2025 Media Fellowship, a unique opportunity for Nepali journalists to explore how digitalization is influencing the country’s economy. This fellowship aims to provide journalists with the opportunity to report on critical issues at the intersection of digital transformation and economic development.<br><br> <i>The selection process is currently underway</i>.',
     fellows: [],
   },
 ];
