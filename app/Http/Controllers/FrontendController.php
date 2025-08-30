@@ -16,7 +16,6 @@ use App\Models\Slider;
 use App\Models\Tag;
 use App\Models\Team;
 use App\Models\Theme;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 
@@ -31,20 +30,31 @@ class FrontendController extends Controller
     public function index()
     {
         $home_page_sections = HomePageSection::all();
-        $slidesResponsiveImages = array();
+        $slidesResponsiveImages = [];
         $featured_publications = Publication::whereHas('tags', function ($query) {
             return $query->where('name', 'featured');
-        })->with(['file', 'category'])->latest()->limit(4)->get();
-        $featured_blog_posts = Post::with(['category', 'tags', 'media'])
+        })->with(['file', 'category'])->latest()->limit(3)->get();
+        $featured_blog_posts = [];
+        $featured_Opinion_in_lead = Post::with(['category', 'tags', 'media'])
             ->whereHas('category', function ($query) {
-                $query->where('slug', 'opinion-in-lead');
+            $query->where('slug', 'opinion-in-lead');
             })->whereHas('tags', function ($query) {
-                $query->where('name', 'featured');
+            $query->where('name', 'featured');
             })
             ->latest()
-            ->limit(2)
+            ->limit(1)
             ->get();
 
+            $featured_commentary = Post::with(['category', 'tags', 'media'])
+            ->whereHas('category', function ($query) {
+            $query->where('slug', 'commentary');
+            })->whereHas('tags', function ($query) {
+            $query->where('name', 'featured');
+            })
+            ->latest()
+            ->limit(1)
+            ->get();
+            $featured_blog_posts = [...$featured_Opinion_in_lead, ...$featured_commentary];
 
         $publications = Publication::with(['file', 'category'])
             ->orderBy('id', "DESC")
@@ -111,10 +121,9 @@ class FrontendController extends Controller
      * Retrieves a page by its slug and loads associated sections and themes if necessary.
      *
      * @param string $slug The slug of the page to retrieve
-     * @throws ModelNotFoundException if the page is not found
      * @return \Inertia\Response
      */
-    public function page($slug)
+    public function page(string $slug)
     {
         $page = Page::where('slug', $slug)->firstOrFail();
         $sections = Section::where('page_id', $page->id)->get();
