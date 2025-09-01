@@ -219,11 +219,11 @@ export const aboutMenuData = {
     },
      {
       id: '4',
-      title: "Advancing LDC's Trade Interests",
+      title: "LDCs' Interests ",
       image_src: '/assets/advancing-ldc_upscaled.webp',
-      link: '/advancing-ldcs’-interests-in-the-wto-strengthening-participation,-securing-priorities',
+      link: '/category/LDCs-Interests',
       description:
-        'This project seeks to undertake a range of activities towards strengthened participation of the LDCs in the WTO by addressing their felt-demands by pursuing a multi-pronged implementation strategy in view of the proposed project. ',
+        'Least Developed Countries (LDCs) continue to face challenges in securing their trade and development interests. For those LDCs that have recently graduated or are on the verge of graduation, ensuring a sustainable and irreversible graduation is a a critical challenge. This curated collection brings together articles, reports, and recorded webinars that highlight the constraints LDCs face, their evolving priorities, and the reforms needed to leverage trade and finance for their sustainable development.',
      },
   ];
 
