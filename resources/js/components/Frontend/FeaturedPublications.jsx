@@ -64,7 +64,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
       {blogPosts && blogPosts.length > 0 && (
         <SimpleList
           className="mx-auto max-w-lg rounded-xl border-none"
-          heading={'Blog'}
+          heading={'Blogs and Articles'}
         >
           {blogPosts
             .sort((a, b) => a.created_at - b.created_at)
