@@ -12,16 +12,11 @@ const LDCArchive = ({ posts }) => {
           <Card key={post.id} className="rounded-md bg-bgDarker shadow-md">
             <CardContent className="flex h-full w-full flex-col gap-4 space-y-4 px-6">
               <div className="flex w-full justify-between">
-                {post.category && (
-                  <Badge className="rounded-md">{post.category.name}</Badge>
+                {post.genre && (
+                  <Badge className="rounded-md">{post.genre}</Badge>
                 )}
 
-                <time
-                  className="self-end text-sm font-medium"
-                  fontSize={'xs'}
-                  fontWeight="medium"
-                  justifySelf={'flex-end'}
-                >
+                <time className="self-end text-sm font-medium">
                   {DateFormat(post.published_at)}
                 </time>
               </div>
@@ -31,7 +26,6 @@ const LDCArchive = ({ posts }) => {
                     {post.title}
                   </h3>
                 </Link>
-
               ) : (
                 <a href={post.link} className="primary-link">
                   <h3 className="text-md font-normal tracking-normal lg:text-lg lg:leading-5">

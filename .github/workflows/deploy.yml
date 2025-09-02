@@ -5,7 +5,7 @@ on:
     branches:
       - main
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   deploy:
@@ -116,7 +116,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          source: "./*"
+          source: './*'
           target: ${{ secrets.SSH_TARGET_DIR }}
 
       - name: Create database backup and run migrations

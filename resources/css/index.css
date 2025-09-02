@@ -114,6 +114,7 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
   body {
     @apply bg-bodyBackground dark:bg-background text-foreground;
@@ -124,7 +125,7 @@
   .post-content a,
   .page-content a,
   .primary-link {
-    @apply text-sky-600 underline underline-offset-4 hover:text-sky-600/70;
+    @apply underline text-sky-600 underline-offset-4 hover:text-sky-600/70;
   }
   .sidebar > :last-child,
   .post-body > aside > :last-child {
@@ -174,6 +175,36 @@ html::-webkit-scrollbar-track {
 html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
     background-color: var(--thumbBG);
     border-radius: 6px;
+}
+
+@keyframes scaleProgress {
+    0% {
+        transform: scaleX(0%);
+        height: 0;
+    }
+    1% {
+        transform: scaleX(1%);
+        height: 0.25rem;
+    }
+
+    100% {
+        transform: scaleX(100%);
+    }
+}
+
+.progress {
+    height: 0.25rem;
+    background-color: #006181;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 50;
+    transform-origin: 0 50%;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    animation: scaleProgress auto linear;
+    animation-timeline: scroll(root);
 }
 
 body {

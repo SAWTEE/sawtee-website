@@ -24,6 +24,7 @@ export default function Post({
         image={featured_image ? featured_image : '/assets/logo-sawtee.webp'}
         url={shareUrl}
       ></WebsiteHead>
+      <div id="progress" class="progress"></div>
 
       <PostLayout
         post={post}

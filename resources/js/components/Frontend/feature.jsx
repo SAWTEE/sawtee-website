@@ -22,8 +22,10 @@ export default function FeaturedSection({ features }) {
         </p>
       </div>
       <div className="relative w-full md:block lg:w-[50%]">
-        <Link
+        <a
           href={feature.link}
+          target="_blank"
+          rel="noopener noreferrer"
           className="group relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0"
         >
           <img
@@ -40,7 +42,7 @@ export default function FeaturedSection({ features }) {
               'transform:translateX(-50%) transform:translateY(-50%) absolute z-30 h-12 w-12 text-white/70 transition-all duration-150 ease-in-out group-hover:text-white'
             }
           />
-        </Link>
+        </a>
       </div>
     </div>
   ));

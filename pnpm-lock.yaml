@@ -80,6 +80,9 @@ importers:
       '@radix-ui/react-tooltip':
         specifier: ^1.2.7
         version: 1.2.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@radix-ui/react-visually-hidden':
+        specifier: ^1.2.3
+        version: 1.2.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@tanstack/match-sorter-utils':
         specifier: ^8.15.1
         version: 8.19.4
@@ -131,9 +134,6 @@ importers:
       react-medium-image-zoom:
         specifier: ^5.1.8
         version: 5.3.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
-      reading-duration:
-        specifier: ^1.1.2
-        version: 1.1.2
       swiper:
         specifier: ^11.0.7
         version: 11.2.10
@@ -148,7 +148,7 @@ importers:
         specifier: ^2.0.3
         version: 2.0.17(react@18.3.1)
       '@tailwindcss/forms':
-        specifier: ^0.5.7
+        specifier: ^0.5.10
         version: 0.5.10(tailwindcss@3.4.17)
       '@tailwindcss/typography':
         specifier: ^0.5.13
@@ -2809,9 +2809,6 @@ packages:
   readdirp@3.6.0:
     resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==}
     engines: {node: '>=8.10.0'}
-
-  reading-duration@1.1.2:
-    resolution: {integrity: sha512-rm/bVuqGCZ6Ox1R9lIkgOa5+PG96MDD5n8w62k/6+woRTGT3Wss76c/LBo9hBgpUVQSYqw2uSyshBKOksrQ7xA==}
 
   reflect.getprototypeof@1.0.10:
     resolution: {integrity: sha512-00o4I+DVrefhv+nX0ulyi3biSHCPDe+yLv5o/p6d/UVlirijB8E16FtfwSAi4g3tcqrQ4lRAqQSoFEZJehYEcw==}
@@ -5911,8 +5908,6 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
-
-  reading-duration@1.1.2: {}
 
   reflect.getprototypeof@1.0.10:
     dependencies:
