@@ -1010,71 +1010,27 @@ export const mediaFellowshipData = [
         bio: " Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training.<br>Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).",
         name: 'Aditi Baral ',
         avatar: '',
-        experience: [
-          ' ',
-          '',
-        ],
+        
         designation: '  ',
-        published_stories: [
-          {
-           
-          },
-          {
-            
-          },
-        ],
+        
       },
       {
         id: 2,
-        bio: "Pushpa Raj Acharya is a freelance journalist, who writes on business and economy-related issues. He is currently contributing to the Business 360 Magazine. Based in Kathmandu, he is Nepal Correspondent of The Yomiuri Shimbun, Japan's largest-selling newspaper. During his one and half decade-long journalism career, he has worked for national dailies such as Karobar Daily, myRepublica, The Himalayan Times, Annapurna Post, Annapurna Express and ekagaj.com , among others. He is the former president of the Society of Economic Journalists-Nepal (SEJON). ",
-        name: 'Pushpa Raj Acharya',
+        bio: "Hemant Raj Joshi is a media professional with extensive experience in economic and business journalism. He currently serves as a Sub-Editor at the National News Agency (Rastriya Samachar Samiti), where he oversees the collection, editing, and dissemination of national news. Prior to this, he worked with Kantipur Publications, Nepal Live, and Nepal Samacharpatra Daily, focusing on public finance, fiscal federalism, and capital markets. Mr. Joshi also contributed to the Developing Capacity for Enhancing Large-Scale Investment in Nepal (DECL) project during the Nepal Investment Summit 2024.<br> An elected executive member of the Society of Economic Journalists–Nepal (SEJON), he has participated in international media training programs, including SputnikPro in Moscow. His professional interests lie in media innovation, economic policy communication, and evidence-based journalism.  ",
+        name: 'Hemant Raj Joshi ',
         avatar: '',
-        experience: [
-          'It was a unique experience to be part of the SAWTEE Media Fellowship on the Nexus of Trade and Climate Change. My stories focused on two key themes: first, how climate change could jeopardize Nepal’s energy trade prospects, and second, the deteriorating conditions of roads connecting Kathmandu Valley—Nepal’s major economic hub—and how this impacts the cost of trade logistics, particularly in the supply of raw materials and essential goods.',
-          ' In the second story, I examined how erratic rainfall in September 2024 led to a spike in commodity prices, making common people bear the brunt of climate-induced disruptions. The early rains before the formal onset of the monsoon served as a stark reminder of how challenging the rainy season could be for Kathmandu Valley residents. Exploring the intersection of trade and climate change was an intellectually rewarding journey. It involved engagement with authorities and stakeholders to gather data and information. My fellowship stories were published in late December 2024 and January 2025.',
-          'This experience has further motivated me to explore policy impacts, necessary interventions, and the externalities tied to climate resilience and trade. I extend my heartfelt thanks to SAWTEE for this invaluable opportunity—especially to Vice Chairperson Ravi Shanker Sainju, Executive Director Dr. Paras Kharel, and Programme Coordinator Dikshya Singh, with whom I closely worked and interacted during the fellowship. I sincerely hope SAWTEE continues to offer such platforms to many more media fellows in the future.  Thank you! ',
-        ],
-        designation: 'freelance journalist',
-        published_stories: [
-          {
-            link: 'https://www.b360nepal.com/detail/24378/resilience-of-nepals-energy-infrastructure',
-            title: 'RESILIENCE OF NEPAL’S ENERGY INFRASTRUCTURE',
-            image_src: [''],
-            media_src: null,
-          },
-          {
-            link: 'https://www.b360nepal.com/detail/24675/poor-connectivity-dampens-supply-chain-management-hits-consumers-hard?fbclid=IwY2xjawJF9X1leHRuA2FlbQIxMQABHQsPBZ0brtIhkgWZveMLELBBQKei2L_co0dNSHfZRZLHW_B664PuVb6ssw_aem_sfsDUyOvI1e-Kck2CLtxtA',
-            title:
-              'Poor connectivity dampens supply chain management hits consumers hard ',
-            image_src: ['', ''],
-            media_src: null,
-          },
-        ],
+        
+        designation: 'Sub-editor, National News Agency',
+       
       },
       {
         id: 3,
-        bio: "Ramesh Kumar Neupane is the News Chief at Himal Khabar and has over 15 years of experience in journalism. His work spans the realms of political economy, development, environmental issues, and social justice in Nepal. Mr. Neupane's investigative reporting has exposed corruption in capital markets, agricultural subsidies, international aid, and the misappropriation of government resources. His impactful stories have led to policy reforms benefiting disadvantaged communities. Additionally, his contributions to data journalism have played a pivotal role in advancing data-driven storytelling in Nepal. Mr. Neupane has earned several prestigious accolades, including the Investigative Journalism Award from the Barbara Foundation, the Best Economic Journalist Award from the Society of Economic Journalists-Nepal (SEJON), and the Investigative Journalism Award from Freedom Forum.Dedicated to uncovering the truth and advocating for underrepresented communities, Ramesh also conducts workshops and training programs in collaboration with the Center for Investigative Journalism Nepal. ",
-        name: 'Ramesh Kumar Neupane',
+        bio: "Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI). <br>Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ",
+        name: 'Sunita Karki',
         avatar: '',
-        experience: [
-          'साउथ एशिया वाच अन ट्रेड इकोनोमिक्स एण्ड इन्भाइरोनमेन्टको मिडिया फेलोशिपमा सहभागी हुनु मेरो पत्रकारिता यात्राको लागि एक महत्वपूर्ण अनुभव रह्यो । ऊर्जा उत्पादन र व्यापार, कृषि उत्पादन तथा खाद्य सुरक्षामा जलवायु परिवर्तनको प्रभावजस्ता गहिरा र महत्वपूर्ण तर प्रायः ओझेलमा परेका विषयमा विस्तृत रिपोर्टिङ गर्ने मौका पाएँ । फेलोशिपको दौरानमा साउथ एशिया वाच अन ट्रेड इकोनोमिक्स एण्ड इन्भाइरोनमेन्टसम्वद्ध विज्ञबाट प्राप्त मार्गनिर्देशन, उपलब्ध गराइएको स्रोत सामाग्री तथा अन्य विशेषज्ञसँगको अन्तरक्रिया, र अन्तर्वार्ताले मेरो दृष्टिकोणलाई थप फराकि«लो बनायो । यसले मलाई रिर्पोटिङको दौरान पत्रकारलाई विज्ञ मतको सहायताले कसरी समाचार सामाग्रीलाई गहन बनाउन मद्दत गर्छ भन्ने प्रष्ट दृष्टि दियो । यसले विभिन्न विषयहरुको अन्तर्सम्बन्ध केलाउन तथा तिनको प्रभावबारे बुझ्न पनि मद्दत गर्यो । रिर्पोटको प्रकाशनपश्चात् प्राप्त प्रतिक्रिया निकै उपयोगी रह्यो जसले मलाई भविष्यमा गर्ने रिर्पोटिङलाई अझ निखार्न मद्दत गर्नेछ ।',
-          'यो फेलोशिपले केवल मेरो पेशागत दक्षता वृद्धि मात्रै गरेन, सार्वजनिक चासोका विषयमा गहिरो र तथ्यमा आधारित पत्रकारिता गर्न थप अभिप्रेरित पनि गरेको छ । खासगरी, साउथ एशिया वाच अन ट्रेड इकोनोमिक्स एण्ड इन्भाइरोनमेन्टसँगको फेलोशिप सहकार्य मेरो पत्रकारिता यात्राको महत्वपूर्ण  ',
-        ],
-        designation: 'Journalist, The Rising Nepal',
-        published_stories: [
-          {
-            link: 'https://www.himalkhabar.com/news/144330 ',
-            title: 'बिजुलीले बदलिएला नेपालको अन्तर्राष्ट्रिय व्याप',
-            image_src: [''],
-            media_src: null,
-          },
-          {
-            link: 'https://risingnepaldaily.com/news/37526',
-            title: 'के नेपाल खाद्यवस्तुमा आत्मनिर्भर बन्न सक्छ?',
-            image_src: [''],
-            media_src: null,
-          },
-        ],
+        
+        designation: 'Senior Economic Journalist, Annapurna Post',
+        
       },
     ],
   },
