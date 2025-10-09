@@ -1008,7 +1008,7 @@ export const mediaFellowshipData = [
       {
         id: 1,
         bio:[ 
-            "Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training. <br/> <p>Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).</P>",
+            " <p> Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training. <br> Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).</P>",
             name: 'Aditi Baral ',
         avatar: '',
         designation: '  ',
@@ -1016,7 +1016,7 @@ export const mediaFellowshipData = [
       },
       {
         id: 2,
-        bio: "Hemant Raj Joshi is a media professional with extensive experience in economic and business journalism. He currently serves as a Sub-Editor at the National News Agency (Rastriya Samachar Samiti), where he oversees the collection, editing, and dissemination of national news. Prior to this, he worked with Kantipur Publications, Nepal Live, and Nepal Samacharpatra Daily, focusing on public finance, fiscal federalism, and capital markets. Mr. Joshi also contributed to the Developing Capacity for Enhancing Large-Scale Investment in Nepal (DECL) project during the Nepal Investment Summit 2024.An elected executive member of the Society of Economic Journalists–Nepal (SEJON), he has participated in international media training programs, including SputnikPro in Moscow. His professional interests lie in media innovation, economic policy communication, and evidence-based journalism.  ",
+        bio: "Hemant Raj Joshi is a media professional with extensive experience in economic and business journalism. He currently serves as a Sub-Editor at the National News Agency (Rastriya Samachar Samiti), where he oversees the collection, editing, and dissemination of national news. Prior to this, he worked with Kantipur Publications, Nepal Live, and Nepal Samacharpatra Daily, focusing on public finance, fiscal federalism, and capital markets. Mr. Joshi also contributed to the Developing Capacity for Enhancing Large-Scale Investment in Nepal (DECL) project during the Nepal Investment Summit 2024.An elected executive member of the Society of Economic Journalists–Nepal (SEJON), he has participated in international media training programs, including SputnikPro in Moscow. His professional interests lie in media innovation, economic policy communication, and evidence-based journalism.",
         name: 'Hemant Raj Joshi ',
         avatar: '',
         designation: 'Sub-editor, National News Agency',
