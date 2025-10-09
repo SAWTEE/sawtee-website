@@ -1008,7 +1008,7 @@ export const mediaFellowshipData = [
       {
         id: 1,
         bio:[ 
-            " <p> Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training.</P> <br> <p> Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).</P>",
+            "Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training.Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).",
             name: 'Aditi Baral ',
         avatar: '',
         designation: '  ',
@@ -1024,7 +1024,7 @@ export const mediaFellowshipData = [
       },
       {
         id: 3,
-        bio: "Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI).>Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ",
+        bio: "Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI).Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ",
         name: 'Sunita Karki',
         avatar: '',
         designation: 'Senior Economic Journalist, Annapurna Post',
