@@ -1017,17 +1017,10 @@ export const mediaFellowshipData = [
         designation: '  ',
         published_stories: [
           {
-            link: '',
-            title: ' ',
-            image_src: [''],
-            media_src: null,
+           
           },
           {
-            link: '',
-            title:
-              ' ',
-            image_src: ['', ''],
-            media_src: null,
+            
           },
         ],
       },
