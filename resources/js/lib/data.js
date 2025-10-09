@@ -1008,7 +1008,7 @@ export const mediaFellowshipData = [
       {
         id: 1,
         bio:[ 
-            "Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training.<p>Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).</P>",
+            "Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training. <br/> <p>Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).</P>",
             name: 'Aditi Baral ',
         avatar: '',
         designation: '  ',
