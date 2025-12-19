@@ -1027,7 +1027,14 @@ export const mediaFellowshipData = [
         name: 'Sunita Karki',
         avatar: '',
         designation: 'Senior Economic Journalist, Annapurna Post',
-        
+        published_stories: [
+          {
+            link: 'https://annapurnapost.com/story/491072/',
+            title: 'जमाना एआईको, सरकारी सेवामा सर्भर डाउनकै सास्ती ',
+            image_src: ['https://annapurnapost.prixacdn.net/media/albums/cover-ai_ceDX2tKTBj_qAkUqYRJEV.jpg'],
+            media_src: null,
+          },
+        ],
       },
     ],
   },
