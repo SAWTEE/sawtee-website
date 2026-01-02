@@ -1034,6 +1034,12 @@ export const mediaFellowshipData = [
             image_src: ['https://annapurnapost.prixacdn.net/media/albums/cover-ai_ceDX2tKTBj_qAkUqYRJEV.jpg'],
             media_src: null,
           },
+             {
+            link: 'https://annapurnapost.com/story/491742/',
+            title: ' न गुणस्तरीय इन्टरनेट, न गरिबकै पहुँचती ',
+            image_src: ['https://annapurnapost.prixacdn.net/media/albums/internate_dZYQaTyaZt_uCy24q5385.jpg'],
+            media_src: null,
+          },
         ],
       },
     ],
