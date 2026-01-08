@@ -24,7 +24,7 @@ export default function CreateArticleForm({ tags, volumes }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     slug: '',
-    trade_insight_volume_id: volumes ? volumes[0]?.id : null,
+    trade_insight_volume_id: 0,
     subtitle: null,
     excerpt: '',
     tags: [],
@@ -39,7 +39,6 @@ export default function CreateArticleForm({ tags, volumes }) {
   const [tagOptions, setTagOptions] = React.useState([]);
   const [image, setImage] = React.useState(null);
   const [articleTags, setArticleTags] = React.useState([]);
-
 
   function setDataTags(selectedValues) {
     const tagIds = selectedValues.map(item => item.value);
@@ -72,6 +71,19 @@ export default function CreateArticleForm({ tags, volumes }) {
       onError: errors => {
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
+            if (key !== 'trade_insight_volume_id') continue;
+            if (
+              key === 'trade_insight_volume_id' &&
+              data.trade_insight_volume_id === 0
+            ) {
+              const value =
+                'The trade insight volume id field is required. Please select a volume.';
+              reset(key);
+              return toast({
+                title: 'Uh oh, Something went wrong',
+                description: `${key.toUpperCase()} field error ` + `: ${value}`,
+              });
+            }
             const value = errors[key];
             reset(key);
             return toast({
@@ -170,7 +182,7 @@ export default function CreateArticleForm({ tags, volumes }) {
                   setData('trade_insight_volume_id', Number(value));
 
                   setSelectedCategory(
-                    volumes.filter(vol => vol.id === Number(value))[0]?.title
+                    volumes.filter(vol => vol.id === Number(value))[0]?.volume
                   );
                 }}
               >
@@ -181,10 +193,10 @@ export default function CreateArticleForm({ tags, volumes }) {
                   <SelectGroup>
                     <SelectLabel>Volumes</SelectLabel>
                   </SelectGroup>
-
+                  <SelectItem value={0}>Select Trade Insight Volume</SelectItem>
                   {volumes.map(volume => (
                     <SelectItem key={volume.id} value={volume.id}>
-                      {volume.title}
+                      {volume.volume}
                     </SelectItem>
                   ))}
                 </SelectContent>
