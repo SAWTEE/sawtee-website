@@ -1026,15 +1026,7 @@ export const mediaFellowshipData = [
         bio: "Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI).Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ",
         name: 'Sunita Karki',
         avatar: '',
-           experience: [
-          ';fjtLsf] ldl8of km]nf]lzk d]/f] nflu s]jn Pp6f cj;/ dfq geP/ ;"rgf / k|ljlwsf] If]qnfO{ x]g]{ b[li6sf]0fdf cfPsf] Pp6f 7"nf] kl/jt{g xf] . ',
-          ' d}n] o; sfo{qmdsf nflu b'O{j6f km/s ljifo …;fj{hlgs ;]jfdf l8lh6fOh]zgÚ / …OG6/g]6n] l;h{gf u/]sf] ju{ leGgtfÚ df k|:tfj k]z u/]sf] lyPF . cfj]bgsf] 5f]6f] ;"rL -Shortlist_ df k/]kl5 ePsf] cGtjf{tf{ d]/f] nflu lgs} cy{k"0f{ /Xof] . cGtjf{tf{sf] qmddf d]/f] k]zfut cg'ej / k|:tfljt ljifox¿ dfly ePsf uxg 5nkmnn] dnfO{ cfˆgf n]vx¿nfO{ s;/L ;d;fdlos / tYok/s agfpg ;lsG5 eGg] gofF dfu{lrq k|bfg uof]{ . ',
-          '5gf}6 ePkl5sf] tLg dlxgfsf] ;do / ;fjtLn] pknAw u/fpg'ePsf] …d]G6/l;kÚ d]/f] n]vg ofqfsf] ;a}eGbf alnof] kIf aGof] . d]G6/sf] dfu{bz{gs} sf/0f d]/f b'O{j6f n]vx¿ cGgk"0f{ kf]:6\ /fli6«o b}lgssf] Úse/ :6f]/LÚ -जमाना एआईको, सरकारी सेवामा सर्भर डाउनकै सास्ती / न गुणस्तरीय इन्टरनेट, न गरिबकै पहुँच _ sf] ¿kdf k|sflzt x'g ;kmn eP . of] pknlAwn] dnfO{ JolQmut ¿kdf dfq geO{ Jofj;flos ¿kdf klg 7"nf] pT;fx lbPsf] 5 . ;"rgf k|ljlw / ;dfhsf] cGt/;DaGwnfO{ a'‰g, cg';Gwfgdf cfwfl/t n]vg ug{ / hl6n ljifonfO{ ;/n 9Ën] k|:t't ug{ l;sfPsf]df d ;fjtL / d]/f] d]G6/k|lt xflb{s cfef/ k|s6 ub{5' . k|ljlw / n]vgsf] If]qdf cl3 a9\g rfxg] hf]sf]xLsf nflu ;fjtLsf] of] km]nf]lzk Ps pTs[i6 cj;/ xf] . 
-
-–;'lgtf sfsL{, jl/i7 ;+jfbbftf, cGgk"0f{ kf]:6\ . 
-
-  ',
-        ],
+           experience: ["सावतीको मिडिया फेलोशिप मेरो लागि केवल एउटा अवसर मात्र नभएर सूचना र प्रविधिको क्षेत्रलाई हेर्ने दृष्टिकोणमा आएको एउटा ठूलो परिवर्तन हो  । मैले यस कार्यक्रमका लागि दुईवटा फरक विषय 'सार्वजनिक सेवामा डिजिटाइजेशन' र 'इन्टरनेटले सिर्जना गरेको वर्ग भिन्नता' मा प्रस्ताव पेश गरेको थिएँ"],
         designation: 'Senior Economic Journalist, Annapurna Post',
         published_stories: [
           {
