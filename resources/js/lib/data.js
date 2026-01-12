@@ -1026,7 +1026,11 @@ export const mediaFellowshipData = [
         bio: "Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI).Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ",
         name: 'Sunita Karki',
         avatar: '',
-           experience: ["सावतीको मिडिया फेलोशिप मेरो लागि केवल एउटा अवसर मात्र नभएर सूचना र प्रविधिको क्षेत्रलाई हेर्ने दृष्टिकोणमा आएको एउटा ठूलो परिवर्तन हो  । मैले यस कार्यक्रमका लागि दुईवटा फरक विषय 'सार्वजनिक सेवामा डिजिटाइजेशन' र 'इन्टरनेटले सिर्जना गरेको वर्ग भिन्नता' मा प्रस्ताव पेश गरेको थिएँ"],
+           experience: ["सावतीको मिडिया फेलोशिप मेरो लागि केवल एउटा अवसर मात्र नभएर सूचना र प्रविधिको क्षेत्रलाई हेर्ने दृष्टिकोणमा आएको एउटा ठूलो परिवर्तन हो ।",
+                       "मैले यस कार्यक्रमका लागि दुईवटा फरक विषय 'सार्वजनिक सेवामा डिजिटाइजेशन' र 'इन्टरनेटले सिर्जना गरेको वर्ग भिन्नता' मा प्रस्ताव पेश गरेको थिएँ",
+                        "आवेदनको छोटो सूची मा परेपछि भएको अन्तर्वार्ता मेरो लागि निकै अर्थपूर्ण रह्यो अन्तर्वार्ताको क्रममा मेरो पेशागत अनुभव र प्रस्तावित विषयहरू माथि भएका गहन छलफलले मलाई आफ्ना लेखहरूलाई कसरी समसामयिक र तथ्यपरक बनाउन सकिन्छ भन्ने नयाँ मार्गचित्र प्रदान गर्यो",
+                     छनौट भएपछिको तीन महिनाको समय र सावतीले उपलब्ध गराउनुभएको 'मेन्टरसिप' मेरो लेखन यात्राको सबैभन्दा बलियो पक्ष बन्यो । मेन्टरको मार्गदर्शनकै कारण मेरा दुईवटा लेखहरू अन्नपूर्ण पोस्ट् राष्ट्रिय दैनिकको 'कभर स्टोरी'— 'जमाना एआईको, सरकारी सेवामा सर्भर डाउनकै सास्ती' र 'न गुणस्तरीय इन्टरनेट, न गरिबकै पहुँच'— का रूपमा प्रकाशित हुन सफल भए । यो उपलब्धले मलाई व्यक्तिगत रूपमा मात्र नभई व्यावसायिक रूपमा पनि ठूलो उत्साह दिएको छ ।"
+                       ],
         designation: 'Senior Economic Journalist, Annapurna Post',
         published_stories: [
           {
