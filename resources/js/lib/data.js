@@ -1019,6 +1019,20 @@ export const mediaFellowshipData = [
         name: 'Hemant Raj Joshi ',
         avatar: '',
         designation: 'Sub-editor, National News Agency',
+          published_stories: [
+          {
+            link: 'https://annapurnapost.com/story/491072/',
+            title: 'जमाना एआईको, सरकारी सेवामा सर्भर डाउनकै सास्ती ',
+            image_src: ['https://annapurnapost.prixacdn.net/media/albums/cover-ai_ceDX2tKTBj_qAkUqYRJEV.jpg'],
+            media_src: null,
+          },
+             {
+            link: 'https://annapurnapost.com/story/491742/',
+            title: ' न गुणस्तरीय इन्टरनेट, न गरिबकै पहुँच ',
+            image_src: ['https://annapurnapost.prixacdn.net/media/albums/internate_dZYQaTyaZt_uCy24q5385.jpg'],
+            media_src: null,
+          },
+        ],
        
       },
       {
