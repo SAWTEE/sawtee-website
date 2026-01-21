@@ -1074,6 +1074,12 @@ export const mediaFellowshipData = [
             image_src: ['https://nepalsamaj.com/wp-content/uploads/2025/08/cripto.png'],
             media_src: null,
           },
+               {
+            link: 'https://en.nepalkhabar.com/news/detail/16912/',
+            title: " Nepal's digital journey is growing, so is its footprint ",
+            image_src: ['https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-payment_U9GyRvmN2F.jpg'],
+            media_src: null,
+          },
         ],
        
       },
