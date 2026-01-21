@@ -1018,7 +1018,7 @@ export const mediaFellowshipData = [
             image_src: ['https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-payment_U9GyRvmN2F.jpg'],
             media_src: null,
           },
-        
+        ],
       },
       {
         id: 2,
