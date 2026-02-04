@@ -1076,11 +1076,24 @@ export const mediaFellowshipData = [
             media_src: null,
           },
                {
-            link: 'https://nepalsamaj.com/2026/01/14/383389/',
-            title: ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण ',
-            image_src: ['https://nepalsamaj.com/wp-content/uploads/2025/08/cripto.png'],
+            link: 'https://clickmandu.com/2026/02/435938.html',
+            title: ' व्यक्तिगत डाटा चोरीका घटना बढ्दै, कानुन नहुँदा समस्या ',
+            image_src: ['https://clickmandu.com/wp-content/uploads/2026/02/confidential-data.jpg'],
             media_src: null,
           },
+               {
+            link: 'https://shilapatra.com/detail/177048',
+            title: ' व्यक्तिगत डाटा संरक्षणका लागि कानुन नहुँदा चोरीका घटना बढ्दै ',
+            image_src: ['https://shilapatracdn.de/uploads/posts/data-hack-1770086045.jpg'],
+            media_src: null,
+          },
+               {
+            link: 'https://nepalkhabar.com/society/264533-2026-2-3-10-12-59',
+            title: " डिजिटल नेपालमा ह्याकरको रजगज:  जनताको डेटा 'डार्कवेब'मा पुग्दा सरकार हेरेको हेर्‍यै ",
+            image_src: ['https://nepalkhabar.prixacdn.net/media/albums/dark-web_15StbaqsSV.jpg'],
+            media_src: null,
+          },
+              
               
         ],
        
