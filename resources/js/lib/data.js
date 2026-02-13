@@ -1093,7 +1093,12 @@ export const mediaFellowshipData = [
             image_src: ['https://nepalkhabar.prixacdn.net/media/albums/dark-web_15StbaqsSV.jpg'],
             media_src: null,
           },
-              
+           {
+            link: 'https://en.nepalkhabar.com/news/detail/17210/',
+            title: " Paying the Price of Scale: Inside Nepal's costly digital payments boom ",
+            image_src: ['https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-wallet-3_YS2WmrOZuP.jpg'],
+            media_src: null,
+          },   
               
         ],
        
