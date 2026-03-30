@@ -1038,10 +1038,7 @@ export const mediaFellowshipData = [
         name: 'Hemant Raj Joshi ',
         avatar: '',
          experience: [
-          'The SAWTEE Media Fellowship was a meaningful experience that helped me better engage with complex economic and policy issues through evidence-based writing. During the fellowship, I worked on two stories examining Nepal’s digital transformation: one focused on the structural dynamics of the country’s digital payments ecosystem, and the other exploring the quieter, often overlooked environmental costs of rapid digitalization.',
-          'The fellowship’s emphasis on analytical depth and policy relevance encouraged me to ground my work in data and expert perspectives. Reporting these stories meant spending more time with data, with expert voices and with contradictions that resisted easy conclusions.',
-          'The fellowship’s mentorship and editorial guidance also played an important role in helping me be more intentional in how I structure and tell a story and my stories become more precise, especially when translating technical or policy-heavy issues into something readable without losing nuance.',
-          'Overall, this fellowship was a deeply rewarding experience that sharpened both my instincts and skills as a journalist. I’m grateful to have had the opportunity, and encouraged to know that SAWTEE continues to create spaces like this for emerging journalists each year. '   
+          'hwhwhwhwhhhhhhhhhhhh'   
         ],
           
         designation: 'Sub-editor, National News Agency',
