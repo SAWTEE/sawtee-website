@@ -1038,15 +1038,15 @@ export const mediaFellowshipData = [
         name: 'Hemant Raj Joshi ',
         avatar: '',
          experience: [
-          'hwhwhwhwhhhhhhhhhhhh'   
+          'I had the opportunity to be part of the SAWTEE media fellowship, and it was a truly unique experience for me. Over the course of three months'
         ],
           
         designation: 'Sub-editor, National News Agency',
           published_stories: [
           {
             link: 'https://www.ukaalo.com/news/31785/',
-            title:  चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण ,
-            image_src: [https://www.ukaalo.com/media/albums/digital_ILNSuykxlw.jpg],
+            title:  'चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण' ,
+            image_src: ['https://wwww.ukaalo.com/media/albums/digital_ILNSuykxlw.jpg'],
             media_src: null,
           },
              {
