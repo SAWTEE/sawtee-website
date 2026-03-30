@@ -1038,9 +1038,8 @@ export const mediaFellowshipData = [
         name: 'Hemant Raj Joshi ',
         avatar: '',
           experience: [
-          ' I had the opportunity to be part of the SAWTEE media fellowship, and it was a truly unique experience for me. Over the course of three months,',
-          'I worked on two important topics: "Challenges in formalization of Nepals economy" and',
-          '"lack of personal data protection mechanism in Nepal." This fellowship gave me a platform to highlight policy-related gaps and challenges that are often overlooked. The mentorship from SAWTEE was excellent; very supportive and encouraging. The team guided me well throughout the process, which helped me to think out of the box and level up my professionalism. Overall, this experience helped me broaden my understanding of journalism and strengthened my ability to report on complex policy issues. '
+          ' I had the opportunity to be part of the SAWTEE media fellowship, and it was a truly unique experience for me. Over the course of three months',
+          
         ],
           
         designation: 'Sub-editor, National News Agency',
