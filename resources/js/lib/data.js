@@ -1037,6 +1037,10 @@ export const mediaFellowshipData = [
         bio: "Hemant Raj Joshi is a media professional with extensive experience in economic and business journalism. He currently serves as a Sub-Editor at the National News Agency (Rastriya Samachar Samiti), where he oversees the collection, editing, and dissemination of national news. Prior to this, he worked with Kantipur Publications, Nepal Live, and Nepal Samacharpatra Daily, focusing on public finance, fiscal federalism, and capital markets. Mr. Joshi also contributed to the Developing Capacity for Enhancing Large-Scale Investment in Nepal (DECL) project during the Nepal Investment Summit 2024.An elected executive member of the Society of Economic Journalists–Nepal (SEJON), he has participated in international media training programs, including SputnikPro in Moscow. His professional interests lie in media innovation, economic policy communication, and evidence-based journalism.",
         name: 'Hemant Raj Joshi ',
         avatar: '',
+          experience: [
+          'I had the opportunity to be part of the SAWTEE media fellowship, and it was a truly unique experience for me. Over the course of three months, I worked on two important topics: "Challenges in formalization of Nepal's economy" and "lack of personal data protection mechanism in Nepal." This fellowship gave me a platform to highlight policy-related gaps and challenges that are often overlooked. The mentorship from SAWTEE was excellent; very supportive and encouraging. The team guided me well throughout the process, which helped me to think out of the box and level up my professionalism. Overall, this experience helped me broaden my understanding of journalism and strengthened my ability to report on complex policy issues.'
+         
+        ],
         designation: 'Sub-editor, National News Agency',
           published_stories: [
           {
