@@ -54,7 +54,17 @@ class FrontendController extends Controller
             ->latest()
             ->limit(1)
             ->get();
-            $featured_blog_posts = [...$featured_Opinion_in_lead, ...$featured_commentary];
+        // ३. Blog section  (which added to see in home pages blog)
+        $featured_blogs = Post::with(['category', 'tags', 'media'])
+            ->whereHas('category', function ($query) {
+                $query->where('slug', 'blog'); 
+            })->whereHas('tags', function ($query) {
+                $query->where('name', 'featured');
+            })
+            ->latest()
+            ->limit(1)
+            ->get();
+            $featured_blog_posts = [...$featured_Opinion_in_lead, ...$featured_commentary, ...$featured_blogs];
 
         $publications = Publication::with(['file', 'category'])
             ->orderBy('id', "DESC")
