@@ -266,7 +266,7 @@ export const CarouselSection = ({ slides, slidesResponsiveImages }) => {
     />
   );
 };
-
+{/*infocus code chnages for external link from home pages  */}
 export const InfocusSection = ({ infocus }) => {
   return (
     <Section className="infocus-section">
@@ -276,16 +276,30 @@ export const InfocusSection = ({ infocus }) => {
           {infocus.map(item => {
             return (
               <li className="mb-6 flex w-full flex-col gap-3" key={item.id}>
-              {/* link chnages in in focus home pages for external link */}
+                
+                {/* मुख्य परिवर्तन यहाँ छ: 'item.link' छ कि छैन भनेर चेक गर्ने */}
+                {item.link ? (
+                  <a
+                    className="underline underline-offset-2 hover:underline-offset-4"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={item.link}
+                  >
+                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-green-600 transition-colors">
+                      {item.title}
+                    </h3>
+                  </a>
+                ) : (
                   <Link
-  className="underline underline-offset-2 hover:underline-offset-4"
-  target="_blank"
-  href={`/category/in-focus/${item.slug}`}
->
-  <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-secondary-foreground/80">
-    {item.title}
-  </h3>
-</Link>
+                    className="underline underline-offset-2 hover:underline-offset-4"
+                    href={`/category/in-focus/${item.slug}`}
+                  >
+                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-green-600 transition-colors">
+                      {item.title}
+                    </h3>
+                  </Link>
+                )}
+                
                 <p
                   className="text-sm text-muted-foreground"
                   dangerouslySetInnerHTML={{ __html: item.excerpt }}
