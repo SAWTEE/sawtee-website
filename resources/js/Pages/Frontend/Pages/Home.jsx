@@ -292,7 +292,7 @@ export const InfocusSection = ({ infocus }) => {
                     className="underline underline-offset-2 hover:underline-offset-4"
                     href={`/category/in-focus/${item.slug}`}
                   >
-                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-green-600 transition-colors">
+                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-secondary-foreground/80 transition-colors">
                       {item.title}
                     </h3>
                   </Link>
