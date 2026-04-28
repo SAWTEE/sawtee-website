@@ -276,15 +276,16 @@ export const InfocusSection = ({ infocus }) => {
           {infocus.map(item => {
             return (
               <li className="mb-6 flex w-full flex-col gap-3" key={item.id}>
-                <Link
-                  className="underline underline-offset-2 hover:underline-offset-4"
-                  target="_blank"
-                  href={`/category/in-focus/${item.slug}`}
-                >
-                  <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-secondary-foreground/80">
-                    {item.title}
-                  </h3>
-                </Link>
+              {/* link chnages in in focus home pages for external link */}
+                  <Link
+  className="underline underline-offset-2 hover:underline-offset-4"
+  target="_blank"
+  href={`/category/in-focus/${item.slug}`}
+>
+  <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-secondary-foreground/80">
+    {item.title}
+  </h3>
+</Link>
                 <p
                   className="text-sm text-muted-foreground"
                   dangerouslySetInnerHTML={{ __html: item.excerpt }}
