@@ -19,6 +19,8 @@ export default function PublicationsArchive({
   featured_image,
   srcSet,
 }) {
+  const isTradeInsightCategory = category.slug === 'trade-insight';
+  console.log(category);
   return (
     <MainLayout>
       <WebsiteHead
@@ -37,7 +39,7 @@ export default function PublicationsArchive({
         showBackgroundPattern={false}
       >
         <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
-          <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
+          <div className="grid gap-10 place-content-center md:grid-cols-4 xl:grid-cols-6">
             <section className="archive-list md:col-span-2 xl:col-span-4">
               <ItemsList
                 items={category.children}
@@ -45,7 +47,7 @@ export default function PublicationsArchive({
               />
             </section>
 
-            <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
+            <aside className="flex flex-col items-center gap-12 sidebar md:col-span-2">
               {sawteeInMedia && (
                 <SidebarWidget
                   array={sawteeInMedia}
@@ -74,7 +76,12 @@ export default function PublicationsArchive({
   );
 }
 
-const ItemComponent = ({ item, publications, className }) => {
+const ItemComponent = ({
+  item,
+  publications,
+  isTradeInsightCategory,
+  className,
+}) => {
   return (
     <div className={cn('w-full', className)} key={item.name}>
       <h3 className="pb-8 text-2xl lg:text-3xl" id={item.name}>
@@ -89,20 +96,16 @@ const ItemComponent = ({ item, publications, className }) => {
       {publications[item.slug] && publications[item.slug].length > 0 && (
         <div className="grid grid-cols-4 gap-6">
           {publications[item.slug].map(publication => {
-            return (
+            return isTradeInsightCategory ? (
               <div key={publication.id}>
                 <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
                   <a
-                    href={
-                      publication.file
-                        ? `/publications/${publication.file?.name}`
-                        : '#'
-                    }
-                    className="group relative"
+                    href={`/category/publications/${item.slug}/${publication.subtitle_slug}`}
+                    className="relative group"
                     target="_blank"
                     referrerPolicy="no-referrer"
                   >
-                    <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                    <div className="absolute top-0 left-0 w-full h-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
                     <img
                       className="aspect-[3/4] h-full w-full rounded-md object-cover"
@@ -122,11 +125,55 @@ const ItemComponent = ({ item, publications, className }) => {
                     target="_blank"
                     href={`/publications/${publication.file?.name}`}
                   >
-                    <p className="mt-4 text-center text-sm font-semibold">
+                    <p className="mt-4 text-sm font-semibold text-center">
                       {publication.title}
                     </p>
                     {publication.subtitle && (
-                      <p className="mt-1 text-center text-xs">
+                      <p className="mt-1 text-xs text-center">
+                        {publication.subtitle}
+                      </p>
+                    )}
+                  </a>
+                )}
+              </div>
+            ) : (
+              <div key={publication.id}>
+                <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
+                  <a
+                    href={
+                      publication.file
+                        ? `/publications/${publication.file?.name}`
+                        : '#'
+                    }
+                    className="relative group"
+                    target="_blank"
+                    referrerPolicy="no-referrer"
+                  >
+                    <div className="absolute top-0 left-0 w-full h-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+
+                    <img
+                      className="aspect-[3/4] h-full w-full rounded-md object-cover"
+                      src={
+                        `${publication.media[0]?.original_url}` ||
+                        '/assets/SM-placeholder-150x150.png'
+                      }
+                      alt={publication.title}
+                      title={publication.title}
+                      loading="lazy"
+                    />
+                  </a>
+                </article>
+                {publication.title && (
+                  <a
+                    className="underline"
+                    target="_blank"
+                    href={`/publications/${publication.file?.name}`}
+                  >
+                    <p className="mt-4 text-sm font-semibold text-center">
+                      {publication.title}
+                    </p>
+                    {publication.subtitle && (
+                      <p className="mt-1 text-xs text-center">
                         {publication.subtitle}
                       </p>
                     )}
@@ -142,7 +189,7 @@ const ItemComponent = ({ item, publications, className }) => {
           <ItemsList
             items={item.children}
             publications={publications}
-            className="ml-4 pt-0"
+            className="pt-0 ml-4"
           />
         </React.Fragment>
       )}
@@ -152,20 +199,24 @@ const ItemComponent = ({ item, publications, className }) => {
 
 // Main component that receives the data
 const ItemsList = ({ items, publications, className }) => {
+  console.log(items, publications, className);
   return (
     <div className="flex flex-col gap-4">
-      {items.map((item, i) => (
-        <React.Fragment key={item.id}>
-          <ItemComponent
-            className={className}
-            item={item}
-            publications={publications}
-          />
-          {i < items.length - 1 && (
-            <Separator className="my-12 border-t-4 border-bgDarker" />
-          )}
-        </React.Fragment>
-      ))}
+      {items.map(
+        (item, i, isTradeInsightCategory = item.slug === 'trade-insight') => (
+          <React.Fragment key={item.id}>
+            <ItemComponent
+              className={className}
+              item={item}
+              publications={publications}
+              isTradeInsightCategory={isTradeInsightCategory}
+            />
+            {i < items.length - 1 && (
+              <Separator className="my-12 border-t-4 border-bgDarker" />
+            )}
+          </React.Fragment>
+        )
+      )}
     </div>
   );
 };

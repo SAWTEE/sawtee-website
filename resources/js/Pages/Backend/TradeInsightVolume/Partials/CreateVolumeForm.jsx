@@ -6,21 +6,33 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import ContentEditor from '@/components/Backend/ContentEditor';
 
-
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
 export default function CreateVolumeForm() {
   const { data, setData, post, processing, errors, reset } = useForm({
     volume: '',
-    title: '',
     slug: '',
-    description: '',
-    subtitle: '',
     content: '',
+    image: '',
     full_article_link: '',
   });
   const { toast } = useToast();
+  const [image, setImage] = React.useState(null);
+
+  function setDataImage(image) {
+    if (image) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        setImage(e.target.result);
+      };
+      reader.readAsDataURL(image);
+      setData('image', image);
+    } else {
+      setImage(null);
+      setData('image', null);
+    }
+  }
 
   const submit = e => {
     e.preventDefault();
@@ -64,34 +76,21 @@ export default function CreateVolumeForm() {
         </div>
 
         <div className="col-span-2">
-          <Label htmlFor="title">Title</Label>
-
-          <Input
-            type="text"
-            id="title"
-            name="title"
-            placeholder="enter title"
-            onChange={e => setData('title', e.target.value)}
+          <DropZone
+            id="image"
+            name="image"
+            accept="image/.png,.jpg,.jpeg,.webp"
+            defaultValue={image}
+            onValueChange={setDataImage}
           />
 
-          {errors.title && <InputError>{errors.title}</InputError>}
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="subtitle">Subtitle</Label>
-          <Input
-            id="subtitle"
-            name="subtitle"
-            placeholder="enter subtitle"
-            onChange={e => setData('subtitle', e.target.value)}
-          />
-          {errors.subtitle && (
-            <InputError mt={2}>{errors.subtitle}</InputError>
+          {errors.image && (
+            <InputError className="space-y-2">{errors.image}</InputError>
           )}
         </div>
 
-<div className="col-span-2">
-          <Label htmlFor="link">Full article link</Label>
+        <div className="col-span-2">
+          <Label htmlFor="link">Download Link</Label>
           <Input
             id="link"
             name="link"
@@ -102,35 +101,22 @@ export default function CreateVolumeForm() {
             <InputError mt={2}>{errors.full_article_link}</InputError>
           )}
         </div>
+
         <div className="col-span-4">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            placeholder="enter description"
-            rows={8}
-            onChange={e => setData('description', e.target.value)}
+          <Label htmlFor="content">Content</Label>
+
+          <ContentEditor
+            // type="classic"
+            name="content"
+            initialValue=""
+            id="content"
+            onChange={(evt, editor) => setData('content', editor.getContent())}
           />
-          {errors.description && <InputError mt={2}>{errors.description}</InputError>}
+
+          {errors.content && (
+            <InputError className={'mt-2'}>{errors.content}</InputError>
+          )}
         </div>
-
-        <div className="col-span-4">
-            <Label htmlFor="content">Content</Label>
-
-            <ContentEditor
-              // type="classic"
-              name="content"
-              initialValue=""
-              id="content"
-              onChange={(evt, editor) =>
-                setData('content', editor.getContent())
-              }
-            />
-
-            {errors.content && (
-              <InputError className={'mt-2'}>{errors.content}</InputError>
-            )}
-          </div>
 
         <PrimaryButton type="submit" isLoading={processing}>
           Save

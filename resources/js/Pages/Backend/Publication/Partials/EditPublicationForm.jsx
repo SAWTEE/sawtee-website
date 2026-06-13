@@ -52,14 +52,15 @@ export default function EditPublicationForm({ publication, categories, tags }) {
     }
   }
   React.useEffect(() => {
-      tags.length !== tagOptions.length && setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
-    }, [tags]);
+    tags.length !== tagOptions.length &&
+      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+  }, [tags]);
 
-    React.useEffect(() => {
-      publication.tags.map(tag => {
-        setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
-      });
-    }, [publication]);
+  // React.useEffect(() => {
+  //   publication.tags.map(tag => {
+  //     setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
+  //   });
+  // }, [publication]);
 
   const submit = e => {
     e.preventDefault();

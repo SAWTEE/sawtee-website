@@ -57,7 +57,7 @@ class FrontendController extends Controller
         // ३. Blog section  (which added to see in home pages blog)
         $featured_blogs = Post::with(['category', 'tags', 'media'])
             ->whereHas('category', function ($query) {
-                $query->where('slug', 'blog'); 
+                $query->where('slug', 'blog');
             })->whereHas('tags', function ($query) {
                 $query->where('name', 'featured');
             })
@@ -209,7 +209,7 @@ class FrontendController extends Controller
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the category is not found.
      */
 
-    public function category($slug, $subcategory = null, $post = null)
+    public function category($slug, $subcategory = null, $post = null, $article = null)
     {
         // dd($slug, $subcategory, $post);
         $segments = request()->segments();
@@ -242,6 +242,8 @@ class FrontendController extends Controller
                 $category,
                 $subcategory,
                 $segments,
+                $post,
+                $article,
                 $infocus,
                 $sawteeInMedia,
                 $featured_image,
@@ -308,8 +310,39 @@ class FrontendController extends Controller
         ]);
     }
 
-    private function handlePublicationsCategory($category, $subcategory, $segments, $infocus, $sawteeInMedia, $featured_image, $category_responsive_images)
+    private function handlePublicationsCategory($category, $subcategory, $segments, $end_slug, $article, $infocus, $sawteeInMedia, $featured_image, $category_responsive_images)
     {
+        if($end_slug) {
+            $trade_insight_volume = TradeInsightVolume::with('articles', 'media')->where('slug', $end_slug)->firstOrFail();
+            $isArticleSlug = Article::where('slug', $article)->exists();
+            if ($isArticleSlug) {
+                $article = Article::where('slug', $article)->firstOrFail();
+                $media = $article->getFirstMediaUrl('article-featured-image');
+                $srcSet = $article->getFirstMedia('article-featured-image')?->getSrcSet('responsive');
+                $related_articles = Article::where("trade_insight_volume_id", $trade_insight_volume->id)
+                    ->where('slug', '!=', $article)
+                    ->latest()
+                    ->take(5)
+                    ->get();
+                return Inertia::render('Frontend/Article', [
+                    'article' => $article,
+                    'volume' => $trade_insight_volume,
+                    'featured_image' => $media,
+                    "srcSet" => $srcSet,
+                    'relatedArticles' => $related_articles
+                ]);
+
+            } else {
+                $media = $trade_insight_volume->getFirstMediaUrl('volume-featured-image');
+
+                return Inertia::render('Frontend/SingleTradeInsight', [
+                    'tradeInsightVolume' => $trade_insight_volume,
+                    'media'=> $media,
+                    'infocus' => $infocus,
+                    'sawteeInMedia' => $sawteeInMedia,
+                ]);
+            }
+        }
         if ($subcategory) {
             $category = Category::with('parent')->where('slug', end($segments))->firstOrFail();
             if (count($category->children) > 0) {
@@ -464,44 +497,5 @@ class FrontendController extends Controller
         ]);
 
     }
-
-    public function trade_insight_volume($volumeSlug = null, $articleSlug = null)
-    {
-        $trade_insight_volume = TradeInsightVolume::with('articles')->where('slug', $volumeSlug)->firstOrFail();
-        if (!$articleSlug) {
-            // Common data for all views
-            $infocus = Post::with('category', 'category.parent', 'media')->whereHas('category', function ($query) {
-                $query->where('slug', 'in-focus');
-            })->where('status', 'published')->latest()->take(5)->get();
-
-            $sawteeInMedia = Post::with('category', 'category.parent', 'media')->whereHas('category', function ($query) {
-                $query->where('slug', 'sawtee-in-media');
-            })->where('status', 'published')->latest()->take(5)->get();
-
-            return Inertia::render('Frontend/Archives/TradeInsights', [
-                'tradeInsightVolume' => $trade_insight_volume,
-                'infocus' => $infocus,
-                'sawteeInMedia' => $sawteeInMedia,
-            ]);
-        } else {
-            $article = Article::where('slug', $articleSlug)->firstOrFail();
-
-            $media = $article->getFirstMediaUrl('article-featured-image');
-            $srcSet = $article->getFirstMedia('article-featured-image')?->getSrcSet('responsive');
-            $related_articles = Article::where("trade_insight_volume_id", $trade_insight_volume->id)
-                ->where('slug', '!=', $articleSlug)
-                ->latest()
-                ->take(5)
-                ->get();
-            return Inertia::render('Frontend/Article', [
-                'article' => $article,
-                'volume' => $trade_insight_volume,
-                'featured_image' => $media,
-                "srcSet" => $srcSet,
-                'relatedArticles' => $related_articles
-            ]);
-        }
-    }
-
 
 }

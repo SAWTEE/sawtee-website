@@ -36,17 +36,14 @@ class TradeInsightVolumeController extends Controller
     {
         $validated = $request->validate([
             'volume' => 'required|string|max:255',
-            'title' => 'nullable|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:2000',
             'content' => 'nullable|string',
             'full_article_link' => 'nullable|string',
         ]);
-        $validated['title'] = Str::of($validated['title'])
-            ->squish();
-        $validated['meta_title'] = $validated['title'];
-
         $volume = TradeInsightVolume::create($validated);
+        if ($request->hasFile('image')) {
+            $volume->addMediaFromRequest('image')->toMediaCollection('volume-featured-image');
+        }
+
         $volume->save();
         return redirect()->route('admin.trade-insight-volumes.index');
     }
@@ -76,15 +73,12 @@ class TradeInsightVolumeController extends Controller
     {
         $validated = $request->validate([
             'volume' => 'required|string|max:255',
-            'title' => 'nullable|string|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'description' => 'nullable|string|max:2000',
             'content' => 'nullable|string',
             'full_article_link' => 'nullable|string',
         ]);
-        $validated['title'] = Str::of($validated['title'])
-            ->squish();
-        $validated['meta_title'] = $validated['title'];
+        if ($request->hasFile('image')) {
+            $tradeInsightVolume->addMediaFromRequest('image')->toMediaCollection('volume-featured-image');
+        }
 
         $tradeInsightVolume->update($validated);
 

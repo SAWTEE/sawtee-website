@@ -8,6 +8,7 @@ import { Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import Glassbox from '@/components/Frontend/Glassbox';
 import SimpleList from '@/components/Frontend/SimpleList';
+import { useMemo } from 'react';
 
 // Custom reading time calculator
 const calculateReadingTime = (content, options = {}) => {
@@ -18,7 +19,7 @@ const calculateReadingTime = (content, options = {}) => {
   // Remove HTML tags and get clean text
   const cleanText = content
     .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/\s+/g, ' ')    // Normalize whitespace
+    .replace(/\s+/g, ' ') // Normalize whitespace
     .trim();
 
   if (!cleanText) return null;
@@ -42,16 +43,16 @@ export default function Article({
   relatedArticles,
 }) {
   // Use useMemo to calculate reading time efficiently
-    const readingTime = useMemo(() => {
-      if (!post.content) return null;
+  const readingTime = useMemo(() => {
+    if (!article.content) return null;
 
-      return calculateReadingTime(post.content, {
-        emoji: false,
-        wordsPerMinute: 225,
-      });
-    }, [article.content]);
+    return calculateReadingTime(article.content, {
+      emoji: false,
+      wordsPerMinute: 225,
+    });
+  }, [article.content]);
 
-  const { title,subtitle, content } = article;
+  const { title, subtitle, content } = article;
   return (
     <MainLayout>
       <WebsiteHead
@@ -61,7 +62,7 @@ export default function Article({
       />
 
       <div className="relative w-full px-10 py-10 lg:px-20">
-        <div className="mx-auto mt-5 max-w-5xl">
+        <div className="max-w-5xl mx-auto mt-5">
           <div
             className={'post-categories flex flex-wrap justify-center gap-4'}
           >
@@ -75,10 +76,12 @@ export default function Article({
               </Button>
             </Link>
           </div>
-          <h1 className="captialize my-3 text-2xl font-bold text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl">
+          <h1 className="my-3 text-2xl font-bold captialize text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl">
             {title}
           </h1>
-              {subtitle && <Text>{subtitle}</Text>}
+          {subtitle && (
+            <p className="text-lg text-muted-foreground">{subtitle}</p>
+          )}
 
           {featured_image && (
             <FeaturedMedia
@@ -90,7 +93,7 @@ export default function Article({
         </div>
 
         <div className="w-full">
-          <div className="post-body mx-auto grid max-w-7xl gap-6 pt-10 leading-8 lg:grid-cols-12">
+          <div className="grid gap-6 pt-10 mx-auto leading-8 post-body max-w-7xl lg:grid-cols-12">
             <div className="post-content max-w-[60ch] text-lg lg:col-span-8 lg:ml-14">
               <PostMeta
                 className="py-2"
@@ -99,7 +102,7 @@ export default function Article({
                 readingTime={readingTime}
                 tags={article.tags}
               />
-              <div className="post-content prose-base text-lg text-secondary-foreground">
+              <div className="text-lg post-content prose-base text-secondary-foreground">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: content,
@@ -108,20 +111,20 @@ export default function Article({
               </div>
               <div className="sharethis-sticky-share-buttons"></div>
             </div>
-            <aside className="sticky top-32 h-full w-full lg:col-span-4">
-              <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none">
+            <aside className="sticky w-full h-full top-32 lg:col-span-4">
+              <Glassbox className="relative overflow-y-auto border-none shadow-none sidebar_widget max-h-max">
                 <SimpleList
                   className={'border-none px-8'}
                   heading={'Related Articles'}
                 >
                   {relatedArticles?.map(post => {
                     return (
-                      <li className="group mb-4" key={post.id}>
+                      <li className="mb-4 group" key={post.id}>
                         <Link
-                          className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                          className="underline text-secondary-foreground underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
                           href={`/trade-insight/${volume.volume}/${post.slug}`}
                         >
-                          <p className="lg:text-md text-sm leading-5">
+                          <p className="text-sm leading-5 lg:text-md">
                             {post.title}
                           </p>
                         </Link>

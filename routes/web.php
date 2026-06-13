@@ -54,12 +54,12 @@ Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/search', SearchController::class);
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
-Route::get('/trade-insight/{volume}/{article?}', [FrontendController::class, 'trade_insight_volume'])->name('trade-insight-volume.show');
+// Route::get('/trade-insight/{volume}/{article?}', [FrontendController::class, 'trade_insight_volume'])->name('trade-insight-volume.show');
 Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
 Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags']);
 Route::get('/themes/{themes:slug}/{subcategory?}/{post?}', [FrontendController::class, 'themes']);
 Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)->name('article.redirect');
-Route::get('/category/{categories:slug}/{subcategory?}/{post?}', [FrontendController::class, 'category'])->name('category.show');
+Route::get('/category/{categories:slug}/{subcategory?}/{post?}/{article?}', [FrontendController::class, 'category'])->name('category.show');
 
 
 
@@ -82,7 +82,7 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::resource('/home-page-sections', HomePageSectionController::class);
     Route::resource('/teams', TeamController::class);
 
-    Route::get('/posts', [  PostController::class, 'index'])->name('posts.index');
+    Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
     Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
     Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');

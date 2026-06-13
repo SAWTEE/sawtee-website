@@ -6,6 +6,7 @@ import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import MainLayout from '../../../components/Layouts/MainLayout';
 import PageLayout from '../../../components/Layouts/PageLayout';
+import { slugify } from '../../../lib/utils';
 
 export default function Publications({
   category,
@@ -16,6 +17,7 @@ export default function Publications({
   showSubscriptionBox = true,
   srcSet,
 }) {
+  console.log('publications', publications, category);
   return (
     <MainLayout>
       <WebsiteHead
@@ -41,29 +43,50 @@ export default function Publications({
                     return (
                       <div key={publication.id}>
                         <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
-                          <a
-                            title={publication.title}
-                            href={
-                              publication.file
-                                ? `/publications/${publication.file?.name}`
-                                : '#'
-                            }
-                            className="group relative"
-                            target="_blank"
-                            referrerPolicy="no-referrer"
-                          >
-                            <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
-                            <img
-                              className="aspect-[3/4] h-full w-full rounded-md object-cover"
-                              src={
-                                `${publication.media[0]?.original_url}` ||
-                                '/assets/SM-placeholder-150x150.png'
-                              }
-                              alt={publication.title}
+                          {category.slug === 'trade-insight' ? (
+                            <a
                               title={publication.title}
-                              loading="lazy"
-                            />
-                          </a>
+                              href={`/category/publications/${category?.slug}/${publication.subtitle_slug}`}
+                              className="group relative"
+                              referrerPolicy="no-referrer"
+                            >
+                              <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                              <img
+                                className="aspect-[3/4] h-full w-full rounded-md object-cover"
+                                src={
+                                  `${publication.media[0]?.original_url}` ||
+                                  '/assets/SM-placeholder-150x150.png'
+                                }
+                                alt={publication.title}
+                                title={publication.title}
+                                loading="lazy"
+                              />
+                            </a>
+                          ) : (
+                            <a
+                              title={publication.title}
+                              href={
+                                publication.file
+                                  ? `/publications/${publication.file?.name}`
+                                  : '#'
+                              }
+                              className="group relative"
+                              target="_blank"
+                              referrerPolicy="no-referrer"
+                            >
+                              <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                              <img
+                                className="aspect-[3/4] h-full w-full rounded-md object-cover"
+                                src={
+                                  `${publication.media[0]?.original_url}` ||
+                                  '/assets/SM-placeholder-150x150.png'
+                                }
+                                alt={publication.title}
+                                title={publication.title}
+                                loading="lazy"
+                              />
+                            </a>
+                          )}
                         </article>
                         {publication.title && (
                           <a

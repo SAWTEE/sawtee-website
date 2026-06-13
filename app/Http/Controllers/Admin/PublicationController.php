@@ -61,13 +61,16 @@ class PublicationController extends Controller
       'title' => 'required|string|max:255',
       'slug' => 'nullable|string|unique:pubications|max:255',
       'subtitle' => 'nullable|string|max:255',
+      'subtitle_slug' => 'nullable|string|unique:pubications|max:255',
       'description' => 'nullable|string|max:2000',
       'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
       'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx|max:10240',
     ]);
     $slug = $validated['title'] . ' ' . $validated['subtitle'];
+    $subtitleSlug = $validated['subtitle'] ? Str::slug($validated['subtitle'], '-') : null;
 
     $validated['slug'] = Str::slug($slug, '-');
+    $validated['subtitle_slug'] = $subtitleSlug;
     $publication = Publication::create($validated);
 
         if (!$request->image) {
@@ -118,9 +121,13 @@ class PublicationController extends Controller
       'title' => 'required|string|max:255',
       'slug' => 'nullable|string|unique:pubications|max:255',
       'subtitle' => 'nullable|string|max:255',
+    'subtitle_slug' => 'nullable|string|unique:pubications|max:255',
       'description' => 'nullable|string|max:2000',
     ]);
     $slug = $validated['title'] . ' ' . $validated['subtitle'];
+    $subtitleSlug = $validated['subtitle'] ? Str::slug($validated['subtitle'], '-') : null;
+    $publication->slug = $slug;
+    $publication->subtitle_slug = $subtitleSlug;
     $validated['slug'] = Str::slug($slug, '-');
 
     if ($request->has('tags')) {

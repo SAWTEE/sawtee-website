@@ -8,7 +8,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function Index({ auth, volumes  }) {
+export default function Index({ auth, volumes }) {
   const { toast } = useToast();
   const { processing, delete: destroy, get } = useForm();
 
@@ -41,18 +41,6 @@ export default function Index({ auth, volumes  }) {
       accessorKey: 'volume',
       header: ({ column }) => {
         return <DataTableColumnHeader column={column} title="Volume" />;
-      },
-    },
-    {
-      accessorKey: 'title',
-      header: ({ column }) => {
-        return <DataTableColumnHeader column={column} title="Title" />;
-      },
-    },
-    {
-      accessorKey: 'subtitle',
-      header: ({ column }) => {
-        return <DataTableColumnHeader column={column} title="Subtitle" />;
       },
     },
     {
