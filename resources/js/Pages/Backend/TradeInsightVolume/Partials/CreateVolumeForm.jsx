@@ -5,6 +5,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import ContentEditor from '@/components/Backend/ContentEditor';
+import DropZone from '@/components/Backend/DropZone';
 
 import { useForm } from '@inertiajs/react';
 import React from 'react';

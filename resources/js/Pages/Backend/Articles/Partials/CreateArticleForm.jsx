@@ -141,7 +141,7 @@ export default function CreateArticleForm({ tags, volumes }) {
 
           <Input
             type="date"
-            className="mt-1 block"
+            className="block mt-1"
             placeholder="Select Date"
             id="published_at"
             name="published_at"
@@ -155,7 +155,7 @@ export default function CreateArticleForm({ tags, volumes }) {
           )}
         </div>
 
-        <div className="col-span-2 flex flex-col gap-4">
+        <div className="flex flex-col col-span-2 gap-4">
           <div className="col-span-1">
             <Label htmlFor="author">Author</Label>
             <Input
@@ -181,9 +181,9 @@ export default function CreateArticleForm({ tags, volumes }) {
                 onValueChange={value => {
                   setData('trade_insight_volume_id', Number(value));
 
-                  setSelectedCategory(
-                    volumes.filter(vol => vol.id === Number(value))[0]?.volume
-                  );
+                  //   setSelectedCategory(
+                  //     volumes.filter(vol => vol.id === Number(value))[0]?.volume
+                  //   );
                 }}
               >
                 <SelectTrigger>
@@ -240,7 +240,7 @@ export default function CreateArticleForm({ tags, volumes }) {
           )}
         </div>
 
-        <div className="col-span-2 flex flex-col gap-4">
+        <div className="flex flex-col col-span-2 gap-4">
           <div className="cols-span-1">
             <Label htmlFor="meta_title">Meta Title</Label>
             <Input
@@ -259,7 +259,7 @@ export default function CreateArticleForm({ tags, volumes }) {
             <Textarea
               id="meta_description"
               name="meta_description"
-              className="mt-1 block"
+              className="block mt-1"
               placeholder="enter meta_description"
               rows={8}
               onChange={e => setData('meta_description', e.target.value)}

@@ -310,10 +310,10 @@ class FrontendController extends Controller
         ]);
     }
 
-    private function handlePublicationsCategory($category, $subcategory, $segments, $end_slug, $article, $infocus, $sawteeInMedia, $featured_image, $category_responsive_images)
+    private function handlePublicationsCategory($category, $subcategory, $segments, $post, $article, $infocus, $sawteeInMedia, $featured_image, $category_responsive_images)
     {
-        if($end_slug) {
-            $trade_insight_volume = TradeInsightVolume::with('articles', 'media')->where('slug', $end_slug)->firstOrFail();
+        if($post) {
+            $trade_insight_volume = TradeInsightVolume::with('articles', 'media')->where('slug', $post)->firstOrFail();
             $isArticleSlug = Article::where('slug', $article)->exists();
             if ($isArticleSlug) {
                 $article = Article::where('slug', $article)->firstOrFail();
@@ -334,12 +334,12 @@ class FrontendController extends Controller
 
             } else {
                 $media = $trade_insight_volume->getFirstMediaUrl('volume-featured-image');
+                $trade_insights = TradeInsightVolume::with('media')->where('id', '!=', $trade_insight_volume->id)->orderByDesc('id')->limit(5)->get();
 
                 return Inertia::render('Frontend/SingleTradeInsight', [
                     'tradeInsightVolume' => $trade_insight_volume,
+                    'tradeInsights' => $trade_insights,
                     'media'=> $media,
-                    'infocus' => $infocus,
-                    'sawteeInMedia' => $sawteeInMedia,
                 ]);
             }
         }

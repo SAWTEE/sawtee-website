@@ -11,8 +11,7 @@ import { Button } from '@/components/ui/button';
 export default function SingleTradeInsight({
   tradeInsightVolume,
   media,
-  infocus,
-  sawteeInMedia,
+  tradeInsights,
   showSubscriptionBox = true,
 }) {
   return (
@@ -24,42 +23,42 @@ export default function SingleTradeInsight({
       />
       <PageLayout title={tradeInsightVolume.volume} featured_image={null}>
         <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
-          <div className="grid gap-10 place-content-center md:grid-cols-4 xl:grid-cols-6">
-            <div className="md:col-span-2 xl:col-span-4">
-              <div className="mt-5 lg:mt-10">
-                <div class="flex flex-col justify-center gap-4 pt-4 md:flex-row md:items-center lg:items-stretch lg:gap-4">
-                  <img
-                    class="w-full max-w-[300px] rounded-sm object-cover md:w-[20%] md:rounded-t-lg"
-                    src={media}
-                    alt={tradeInsightVolume.volume}
-                  />
+          <div className="">
+            <div class="flex flex-col justify-center gap-4 md:flex-row md:items-center lg:items-stretch lg:gap-4">
+              <img
+                class="aspect-auto w-full max-w-[300px] rounded-sm object-cover md:w-[20%] md:rounded-t-lg"
+                src={media}
+                alt={tradeInsightVolume.volume}
+              />
 
-                  <div class="flex w-full flex-col gap-4 rounded-md md:w-[80%] md:p-4">
-                    <h2 class="text-xl font-semibold text-gray-900 dark:text-white md:text-3xl">
-                      {'Trade Insight' + ' ' + tradeInsightVolume.volume}
-                    </h2>
+              <div class="md:w-[80 %] flex w-full flex-col gap-4 rounded-md md:p-4">
+                <h2 class="text-xl font-semibold text-gray-900 dark:text-white md:text-3xl">
+                  {'Trade Insight' + ' ' + tradeInsightVolume.volume}
+                </h2>
 
-                    <div
-                      className="text-lg prose-base text-secondary-foreground md:text-lg lg:text-xl"
-                      dangerouslySetInnerHTML={{
-                        __html: tradeInsightVolume.content,
-                      }}
-                    />
-                    <div className="flex gap-4 mt-4">
-                      <a
-                        href={tradeInsightVolume.full_article_link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-block"
-                      >
-                        <Button variant="outline" size="lg">
-                          Read PDF
-                        </Button>
-                      </a>
-                    </div>
-                  </div>
+                <div
+                  className="text-md md:text-md prose-base text-secondary-foreground lg:text-lg"
+                  dangerouslySetInnerHTML={{
+                    __html: tradeInsightVolume.content,
+                  }}
+                />
+                <div className="flex gap-4 mt-4">
+                  <a
+                    href={tradeInsightVolume.full_article_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-block"
+                  >
+                    <Button variant="outline" size="lg">
+                      Read PDF
+                    </Button>
+                  </a>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="grid gap-10 place-content-center md:grid-cols-4 xl:grid-cols-6">
+            <div className="md:col-span-2 xl:col-span-4">
               <div className="max-w-[60ch] text-lg lg:col-span-8">
                 <div className="pt-10">
                   <h3 className="my-3 text-xl font-bold capitalize text-slate-800 dark:text-slate-300 md:text-2xl lg:my-5 xl:text-3xl">
@@ -78,18 +77,11 @@ export default function SingleTradeInsight({
                   <SubscriptionCard />
                 </Glassbox>
               )}
-              {sawteeInMedia && (
+              {tradeInsights && tradeInsights.length > 0 && (
                 <SidebarWidget
-                  array={sawteeInMedia}
-                  title={'SAWTEE in Media'}
-                  link={'/category/sawtee-in-media'}
-                />
-              )}
-              {infocus && (
-                <SidebarWidget
-                  array={infocus}
-                  title={'Infocus'}
-                  link={'/category/infocus'}
+                  array={tradeInsights}
+                  title={'Trade Insights Volumes'}
+                  link={'/category/publications/trade-insight'}
                 />
               )}
             </aside>
