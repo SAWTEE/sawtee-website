@@ -62,18 +62,32 @@ export default function CreateVolumeForm() {
   return (
     <form onSubmit={submit}>
       <div className="grid grid-cols-4 gap-4">
-        <div className="col-span-2">
-          <Label htmlFor="volume">Volume</Label>
+        <div className="col-span-4 flex flex-col gap-4 md:flex-row md:items-center lg:items-stretch lg:gap-4">
+          <div className="w-full">
+            <Label htmlFor="volume">Volume</Label>
 
-          <Input
-            id="volume"
-            name="volume"
-            placeholder="enter trade insight volume"
-            onChange={e => setData('volume', e.target.value)}
-            required
-          />
+            <Input
+              id="volume"
+              name="volume"
+              placeholder="enter trade insight volume"
+              onChange={e => setData('volume', e.target.value)}
+              required
+            />
 
-          {errors.volume && <InputError mt={2}>{errors.volume}</InputError>}
+            {errors.volume && <InputError mt={2}>{errors.volume}</InputError>}
+          </div>
+          <div className="w-full">
+            <Label htmlFor="link">Download Link</Label>
+            <Input
+              id="link"
+              name="link"
+              placeholder="enter link"
+              onChange={e => setData('link', e.target.value)}
+            />
+            {errors.full_article_link && (
+              <InputError mt={2}>{errors.full_article_link}</InputError>
+            )}
+          </div>
         </div>
 
         <div className="col-span-2">
@@ -87,19 +101,6 @@ export default function CreateVolumeForm() {
 
           {errors.image && (
             <InputError className="space-y-2">{errors.image}</InputError>
-          )}
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="link">Download Link</Label>
-          <Input
-            id="link"
-            name="link"
-            placeholder="enter link"
-            onChange={e => setData('link', e.target.value)}
-          />
-          {errors.full_article_link && (
-            <InputError mt={2}>{errors.full_article_link}</InputError>
           )}
         </div>
 

@@ -72,21 +72,35 @@ export default function EditVolumeForm({ volume }) {
   return (
     <form onSubmit={submit}>
       <div className="grid grid-cols-4 gap-4">
-        <div className="col-span-2">
-          <Label htmlFor="volume">Volume</Label>
+        <div className="col-span-4 flex flex-col gap-4 md:flex-row md:items-center lg:items-stretch lg:gap-4">
+          <div className="w-full">
+            <Label htmlFor="volume">Volume</Label>
 
-          <Input
-            id="volume"
-            name="volume"
-            value={data.volume}
-            onChange={e => setData('volume', e.target.value)}
-            required
-          />
+            <Input
+              id="volume"
+              name="volume"
+              value={data.volume}
+              onChange={e => setData('volume', e.target.value)}
+              required
+            />
 
-          {errors.volume && <InputError mt={2}>{errors.volume}</InputError>}
+            {errors.volume && <InputError mt={2}>{errors.volume}</InputError>}
+          </div>
+          <div className="w-full">
+            <Label htmlFor="full_article_link">Download Link</Label>
+            <Input
+              id="full_article_link"
+              name="full_article_link"
+              value={data.full_article_link}
+              onChange={e => setData('full_article_link', e.target.value)}
+            />
+            {errors.full_article_link && (
+              <InputError mt={2}>{errors.full_article_link}</InputError>
+            )}
+          </div>
         </div>
 
-        <div className="col-span-4">
+        <div className="col-span-2">
           <DropZone
             id="image"
             name="image"
@@ -99,30 +113,6 @@ export default function EditVolumeForm({ volume }) {
             <InputError className="space-y-2">{errors.image}</InputError>
           )}
         </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="full_article_link">Download Link</Label>
-          <Input
-            id="full_article_link"
-            name="full_article_link"
-            value={data.full_article_link}
-            onChange={e => setData('full_article_link', e.target.value)}
-          />
-          {errors.full_article_link && (
-            <InputError mt={2}>{errors.full_article_link}</InputError>
-          )}
-        </div>
-        {/* <div className="col-span-4">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            value={data.description}
-            rows={8}
-            onChange={e => setData('description', e.target.value)}
-          />
-          {errors.description && <InputError mt={2}>{errors.description}</InputError>}
-        </div> */}
 
         <div className="col-span-4">
           <Label htmlFor="content">Content</Label>
