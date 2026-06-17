@@ -13,7 +13,11 @@ const PaginationButton = ({
   ...rest
 }) => {
   return isDisabled ? (
-    <div className="group w-full cursor-not-allowed" aria-disabled={isDisabled}  {...rest}>
+    <div
+      className="group w-full cursor-not-allowed"
+      aria-disabled={isDisabled}
+      {...rest}
+    >
       <Button
         aria-label={label}
         disabled={isDisabled}

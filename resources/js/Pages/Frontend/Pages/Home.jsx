@@ -47,7 +47,7 @@ const Home = ({
       />
 
       {/* POPUP CODE */}
-        {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+      {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
         <DialogContent className="w-[800px] max-w-[90vw] bg-transparent p-0 shadow-none">
           <Link href="https://sawtee.org/career">
             <img
@@ -88,7 +88,10 @@ const Home = ({
                     : 'self-end lg:col-span-2'
                 }
               >
-                <FeaturedPublications publications={featuredPublications} blogPosts={featuredBlogPosts} />
+                <FeaturedPublications
+                  publications={featuredPublications}
+                  blogPosts={featuredBlogPosts}
+                />
               </div>
             )}
         </div>
@@ -266,7 +269,9 @@ export const CarouselSection = ({ slides, slidesResponsiveImages }) => {
     />
   );
 };
-{/*infocus code chnages for external link from home pages  */}
+{
+  /*infocus code chnages for external link from home pages  */
+}
 export const InfocusSection = ({ infocus }) => {
   return (
     <Section className="infocus-section">
@@ -276,14 +281,13 @@ export const InfocusSection = ({ infocus }) => {
           {infocus.map(item => {
             return (
               <li className="mb-6 flex w-full flex-col gap-3" key={item.id}>
-                
                 {/* मुख्य परिवर्तन यहाँ छ: 'item.link' छ कि छैन भनेर चेक गर्ने */}
                 {item.link ? (
                   <a
                     className="underline underline-offset-2 hover:underline-offset-4"
                     href={item.link}
                   >
-                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-secondary-foreground/80 transition-colors">
+                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground transition-colors hover:text-secondary-foreground/80">
                       {item.title}
                     </h3>
                   </a>
@@ -292,12 +296,12 @@ export const InfocusSection = ({ infocus }) => {
                     className="underline underline-offset-2 hover:underline-offset-4"
                     href={`/category/in-focus/${item.slug}`}
                   >
-                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground hover:text-secondary-foreground/80 transition-colors">
+                    <h3 className="font-sans text-lg font-semibold text-secondary-foreground transition-colors hover:text-secondary-foreground/80">
                       {item.title}
                     </h3>
                   </Link>
                 )}
-                
+
                 <p
                   className="text-sm text-muted-foreground"
                   dangerouslySetInnerHTML={{ __html: item.excerpt }}

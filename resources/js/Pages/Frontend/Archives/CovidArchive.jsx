@@ -10,7 +10,7 @@ import { DateFormat } from '@/lib/helpers';
 
 const CovidArchive = ({ posts }) => {
   return (
-    <div className="grid grid-cols-1 w-full gap-x-4 gap-y-10 px-4 lg:grid-cols-2 md:px-8">
+    <div className="grid w-full grid-cols-1 gap-x-4 gap-y-10 px-4 md:px-8 lg:grid-cols-2">
       {posts.map(post => {
         const authors = () => {
           if (post.author) {
@@ -19,7 +19,10 @@ const CovidArchive = ({ posts }) => {
           }
         };
         return (
-          <Card key={post.id} className="w-full min-w-lg rounded-md bg-bgDarker shadow-md">
+          <Card
+            key={post.id}
+            className="min-w-lg w-full rounded-md bg-bgDarker shadow-md"
+          >
             <CardContent className="flex h-full w-full flex-col gap-4 space-y-4 px-6">
               <div className="flex w-full justify-between">
                 {post.genre && (
@@ -27,7 +30,7 @@ const CovidArchive = ({ posts }) => {
                 )}
 
                 <time
-                  className="self-end text-sm font-medium justify-self-end text-muted-foreground"
+                  className="self-end justify-self-end text-sm font-medium text-muted-foreground"
                   fontSize={'xs'}
                   fontWeight="medium"
                 >

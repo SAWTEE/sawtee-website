@@ -10,7 +10,7 @@ const PageLayout = ({ title, featured_image, srcSet, children }) => {
         {hasFeaturedImage ? (
           <FeaturedMedia
             src={featured_image}
-            srcSet={{...srcSet}}
+            srcSet={{ ...srcSet }}
             className={'max-h-80'}
           />
         ) : (
@@ -24,13 +24,12 @@ const PageLayout = ({ title, featured_image, srcSet, children }) => {
           />
         )}
         <PostHeader
-          className={cn(
-            'absolute bottom-4 left-12 z-10 px-2 text-left',
-
-          )}
-          textStyle={hasFeaturedImage
+          className={cn('absolute bottom-4 left-12 z-10 px-2 text-left')}
+          textStyle={
+            hasFeaturedImage
               ? 'text-gray-100'
-              : 'text-gray-800 dark:text-gray-200'}
+              : 'text-gray-800 dark:text-gray-200'
+          }
           heading={title}
         />
       </div>

@@ -13,7 +13,7 @@ const calculateReadingTime = (content, options = {}) => {
   // Remove HTML tags and get clean text
   const cleanText = content
     .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/\s+/g, ' ')    // Normalize whitespace
+    .replace(/\s+/g, ' ') // Normalize whitespace
     .trim();
 
   if (!cleanText) return null;
@@ -64,7 +64,7 @@ const PostLayout = ({
 
   return (
     <div className="relative w-full py-10">
-      <div className="mx-auto mt-5 max-w-5xl w-full">
+      <div className="mx-auto mt-5 w-full max-w-5xl">
         <PostHeader categories={post.category} heading={post.title} />
         {featured_image && (
           <FeaturedMedia

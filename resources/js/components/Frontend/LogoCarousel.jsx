@@ -5,11 +5,7 @@ export default function LogoCarousel({ logos }) {
         {logos.map((logo, index) => (
           <li key={logo.alt + `${index}`} title={logo.alt}>
             <a href={logo.link} target="_blank" className="">
-              <img
-                src={logo.src}
-                alt={logo.alt}
-                className="mx-4 inline h-16"
-              />
+              <img src={logo.src} alt={logo.alt} className="mx-4 inline h-16" />
             </a>
           </li>
         ))}
@@ -18,11 +14,7 @@ export default function LogoCarousel({ logos }) {
         {logos.map((logo, index) => (
           <li key={logo.alt + `${index}`} title={logo.alt}>
             <a href={logo.link} target="_blank" className="">
-              <img
-                src={logo.src}
-                alt={logo.alt}
-                className="h-full w-full"
-              />
+              <img src={logo.src} alt={logo.alt} className="h-full w-full" />
             </a>
           </li>
         ))}

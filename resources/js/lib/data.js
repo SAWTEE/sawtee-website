@@ -15,7 +15,7 @@ import {
   Wand,
   UserPen,
   SquareLibrary,
-  ReceiptText
+  ReceiptText,
 } from 'lucide-react';
 
 export const feature = {
@@ -192,40 +192,40 @@ export const aboutMenuData = {
   introImage: '/assets/Airports_Network_Map.png',
 };
 
- export const features = [
-    // {
-    //   id: '1',
-    //  title: 'Reform Monitoring Platform',
-    //  image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
-    //  link: '/reform-monitoring-platform',
-    //  description:
-    //    'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
-    // },
-    {
-      id: '2',
-      title: 'Media fellowship',
-      image_src: '/assets/Media-Fellowship-banner.webp',
-      link: '/media-fellows',
-      description:
-        'Since 2023, SAWTEE has been offering a media fellowship programme that supports economic journalists with mentorship on a range of technical issues at the intersection of trade, climate change, and related topics—while fully upholding their journalistic independence. .',
-    },
-    {
-      id: '3',
-      title: 'COVID-19 resources',
-      image_src: '/assets/COVID-19-South-Asia-and-LDCs.webp',
-      link: '/category/COVID-19-resources',
-      description:
-        "Between 2020 and 2021, COVID-19 pandemic affected the social, economic and well-being of people worldwide. SAWTEE undertook activities that provided evidence-based insights and expert perspectives to help understand the pandemic and its impacts. Explore SAWTEE's curated collection of works related to the COVID-19 pandemic, including articles, reports and recorded webinars that examined the health impacts of the pandemic, along with lessons for future resilience and preparedness.",
-    },
-     {
-      id: '4',
-      title: "LDCs' Interests ",
-      image_src: '/assets/interests.webp',
-      link: '/category/LDCs-Interests',
-      description:
-        'Least Developed Countries (LDCs) continue to face challenges in securing their trade and development interests. For those LDCs that have recently graduated or are on the verge of graduation, ensuring a sustainable and irreversible graduation is a a critical challenge. This curated collection brings together articles, reports, and recorded webinars that highlight the constraints LDCs face, their evolving priorities, and the reforms needed to leverage trade and finance for their sustainable development.',
-     },
-  ];
+export const features = [
+  // {
+  //   id: '1',
+  //  title: 'Reform Monitoring Platform',
+  //  image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
+  //  link: '/reform-monitoring-platform',
+  //  description:
+  //    'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
+  // },
+  {
+    id: '2',
+    title: 'Media fellowship',
+    image_src: '/assets/Media-Fellowship-banner.webp',
+    link: '/media-fellows',
+    description:
+      'Since 2023, SAWTEE has been offering a media fellowship programme that supports economic journalists with mentorship on a range of technical issues at the intersection of trade, climate change, and related topics—while fully upholding their journalistic independence. .',
+  },
+  {
+    id: '3',
+    title: 'COVID-19 resources',
+    image_src: '/assets/COVID-19-South-Asia-and-LDCs.webp',
+    link: '/category/COVID-19-resources',
+    description:
+      "Between 2020 and 2021, COVID-19 pandemic affected the social, economic and well-being of people worldwide. SAWTEE undertook activities that provided evidence-based insights and expert perspectives to help understand the pandemic and its impacts. Explore SAWTEE's curated collection of works related to the COVID-19 pandemic, including articles, reports and recorded webinars that examined the health impacts of the pandemic, along with lessons for future resilience and preparedness.",
+  },
+  {
+    id: '4',
+    title: "LDCs' Interests ",
+    image_src: '/assets/interests.webp',
+    link: '/category/LDCs-Interests',
+    description:
+      'Least Developed Countries (LDCs) continue to face challenges in securing their trade and development interests. For those LDCs that have recently graduated or are on the verge of graduation, ensuring a sustainable and irreversible graduation is a a critical challenge. This curated collection brings together articles, reports, and recorded webinars that highlight the constraints LDCs face, their evolving priorities, and the reforms needed to leverage trade and finance for their sustainable development.',
+  },
+];
 
 export const DashBoardMenuItems = [
   {
@@ -273,12 +273,12 @@ export const DashBoardMenuItems = [
     icon: UserPen,
     route: 'admin.published-stories.index',
   },
-   {
+  {
     name: 'Members',
     icon: UserPen,
     route: 'admin.members.index',
   },
-     {
+  {
     name: 'Memebr Institutes',
     icon: UserPen,
     route: 'admin.institutes.index',
@@ -322,11 +322,6 @@ export const DashBoardMenuItems = [
     name: 'Slider',
     icon: SlidersHorizontalIcon,
     route: 'admin.sliders.index',
-  },
-  {
-    name: 'Trade Insight Volumes',
-    icon: SquareLibrary,
-    route: 'admin.trade-insight-volumes.index',
   },
   {
     name: 'Articles',
@@ -1000,142 +995,174 @@ export const mediaFellowshipData = [
       },
     ],
   },
- {
+  {
     year: '2025',
     description:
       'SAWTEE has launched its 2025 Media Fellowship, a unique opportunity for Nepali journalists to explore how digitalization is influencing the country’s economy. This fellowship aims to provide journalists with the opportunity to report on critical issues at the intersection of digital transformation and economic development.',
     fellows: [
       {
         id: 1,
-        bio: "Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training.Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).",
+        bio: 'Aditi Baral is a journalist specializing in social and economic reporting. She currently contributes to Nepalkhabar and previously worked as a correspondent at Republica Daily. Her reporting focuses on making policy debates accessible and engaging, with coverage spanning social issues, trade, and digital transformation. She has conducted interviews with policymakers and academics, and has participated in notable media workshops such as the 2019 Asia Media Workshop and the World Internet Conference training.Aditi holds a Bachelor’s degree in International Economics and Trade from the University of International Business and Economics, Beijing (2025).',
         name: 'Aditi Baral ',
         avatar: '',
-          experience: [
+        experience: [
           'The SAWTEE Media Fellowship was a meaningful experience that helped me better engage with complex economic and policy issues through evidence-based writing. During the fellowship, I worked on two stories examining Nepal’s digital transformation: one focused on the structural dynamics of the country’s digital payments ecosystem, and the other exploring the quieter, often overlooked environmental costs of rapid digitalization.',
           'The fellowship’s emphasis on analytical depth and policy relevance encouraged me to ground my work in data and expert perspectives. Reporting these stories meant spending more time with data, with expert voices and with contradictions that resisted easy conclusions.',
           'The fellowship’s mentorship and editorial guidance also played an important role in helping me be more intentional in how I structure and tell a story and my stories become more precise, especially when translating technical or policy-heavy issues into something readable without losing nuance.',
-          'Overall, this fellowship was a deeply rewarding experience that sharpened both my instincts and skills as a journalist. I’m grateful to have had the opportunity, and encouraged to know that SAWTEE continues to create spaces like this for emerging journalists each year. '   
+          'Overall, this fellowship was a deeply rewarding experience that sharpened both my instincts and skills as a journalist. I’m grateful to have had the opportunity, and encouraged to know that SAWTEE continues to create spaces like this for emerging journalists each year. ',
         ],
         designation: 'Contributor, Nepal Khabar',
-          published_stories: [
+        published_stories: [
           {
             link: 'https://en.nepalkhabar.com/news/detail/16912/',
             title: " Nepal's digital journey is growing, so is its footprint ",
-            image_src: ['https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-payment_U9GyRvmN2F.jpg'],
+            image_src: [
+              'https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-payment_U9GyRvmN2F.jpg',
+            ],
             media_src: null,
           },
-              {
+          {
             link: 'https://en.nepalkhabar.com/news/detail/17210/',
-            title: " Paying the Price of Scale: Inside Nepal's costly digital payments boom ",
-            image_src: ['https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-wallet-3_YS2WmrOZuP.jpg'],
+            title:
+              " Paying the Price of Scale: Inside Nepal's costly digital payments boom ",
+            image_src: [
+              'https://ennepalkhabar.prixacdn.net/media/gallery_folder/digital-wallet-3_YS2WmrOZuP.jpg',
+            ],
             media_src: null,
-          },   
+          },
         ],
       },
       {
         id: 2,
-        bio: "Hemant Raj Joshi is a media professional with extensive experience in economic and business journalism. He currently serves as a Sub-Editor at the National News Agency (Rastriya Samachar Samiti), where he oversees the collection, editing, and dissemination of national news. Prior to this, he worked with Kantipur Publications, Nepal Live, and Nepal Samacharpatra Daily, focusing on public finance, fiscal federalism, and capital markets. Mr. Joshi also contributed to the Developing Capacity for Enhancing Large-Scale Investment in Nepal (DECL) project during the Nepal Investment Summit 2024.An elected executive member of the Society of Economic Journalists–Nepal (SEJON), he has participated in international media training programs, including SputnikPro in Moscow. His professional interests lie in media innovation, economic policy communication, and evidence-based journalism.",
+        bio: 'Hemant Raj Joshi is a media professional with extensive experience in economic and business journalism. He currently serves as a Sub-Editor at the National News Agency (Rastriya Samachar Samiti), where he oversees the collection, editing, and dissemination of national news. Prior to this, he worked with Kantipur Publications, Nepal Live, and Nepal Samacharpatra Daily, focusing on public finance, fiscal federalism, and capital markets. Mr. Joshi also contributed to the Developing Capacity for Enhancing Large-Scale Investment in Nepal (DECL) project during the Nepal Investment Summit 2024.An elected executive member of the Society of Economic Journalists–Nepal (SEJON), he has participated in international media training programs, including SputnikPro in Moscow. His professional interests lie in media innovation, economic policy communication, and evidence-based journalism.',
         name: 'Hemant Raj Joshi ',
         avatar: '',
-         experience: [
-          'I had the opportunity to be part of the SAWTEE media fellowship, and it was a truly unique experience for me. Over the course of three months, I worked on two important topics: "Challenges in formalization of Nepals economy" and "lack of personal data protection mechanism in Nepal." This fellowship gave me a platform to highlight policy-related gaps and challenges that are often overlooked. The mentorship from SAWTEE was excellent; very supportive and encouraging. The team guided me well throughout the process, which helped me to think out of the box and level up my professionalism. Overall, this experience helped me broaden my understanding of journalism and strengthened my ability to report on complex policy issues.'
+        experience: [
+          'I had the opportunity to be part of the SAWTEE media fellowship, and it was a truly unique experience for me. Over the course of three months, I worked on two important topics: "Challenges in formalization of Nepals economy" and "lack of personal data protection mechanism in Nepal." This fellowship gave me a platform to highlight policy-related gaps and challenges that are often overlooked. The mentorship from SAWTEE was excellent; very supportive and encouraging. The team guided me well throughout the process, which helped me to think out of the box and level up my professionalism. Overall, this experience helped me broaden my understanding of journalism and strengthened my ability to report on complex policy issues.',
         ],
-          
+
         designation: 'Sub-editor, National News Agency',
-          published_stories: [
+        published_stories: [
           {
             link: 'https://www.ukaalo.com/news/31785/',
-            title:  'चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण' ,
-            image_src: ['https://wwww.ukaalo.com/media/albums/digital_ILNSuykxlw.jpg'],
+            title: 'चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण',
+            image_src: [
+              'https://wwww.ukaalo.com/media/albums/digital_ILNSuykxlw.jpg',
+            ],
             media_src: null,
           },
-             {
+          {
             link: 'https://www.ratopati.com/story/537064/formalization-of-the-digital-economy-is-becoming-challengin',
             title: ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण ',
-            image_src: ['https://npcdn.ratopati.com/media/news/digital-economy_Z6tngUJ1z0.jpg'],
+            image_src: [
+              'https://npcdn.ratopati.com/media/news/digital-economy_Z6tngUJ1z0.jpg',
+            ],
             media_src: null,
           },
-              {
+          {
             link: 'https://newspolar.com/archives/398528',
             title: ' औपचारिक संरचनामा ल्याउन सकस हुँदै डिजिटल अर्थतन्त्र ',
-            image_src: ['https://newspolar.com/wp-content/uploads/2026/01/Digital-Economy.png'],
+            image_src: [
+              'https://newspolar.com/wp-content/uploads/2026/01/Digital-Economy.png',
+            ],
             media_src: null,
           },
-              {
+          {
             link: 'https://newspolar.com/archives/398528',
             title: ' औपचारिक संरचनामा ल्याउन सकस हुँदै डिजिटल अर्थतन्त्र ',
-            image_src: ['https://newspolar.com/wp-content/uploads/2026/01/Digital-Economy.png'],
+            image_src: [
+              'https://newspolar.com/wp-content/uploads/2026/01/Digital-Economy.png',
+            ],
             media_src: null,
           },
-               {
+          {
             link: 'https://nepalsamaya.com/detail/140772',
             title: ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण ',
-            image_src: ['https://nepalsamaya.com/uploads/posts/Payments1111-1768357147.jpg'],
+            image_src: [
+              'https://nepalsamaya.com/uploads/posts/Payments1111-1768357147.jpg',
+            ],
             media_src: null,
           },
-              {
+          {
             link: 'https://notebazar.com/news/2026/01/14/146353/',
             title: ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण ',
-            image_src: ['https://notebazar.com/wp-content/uploads/2024/09/Digitalization.jpg'],
+            image_src: [
+              'https://notebazar.com/wp-content/uploads/2024/09/Digitalization.jpg',
+            ],
             media_src: null,
           },
-               {
+          {
             link: 'https://nepalartha.com/posts/53729',
-            title: ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण, अवैध कारोबारका बढ्दो घटना ',
-            image_src: ['https://nepalartha.com/media-file/images/2022/05/1651454133-wPQmF.jpg'],
+            title:
+              ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण, अवैध कारोबारका बढ्दो घटना ',
+            image_src: [
+              'https://nepalartha.com/media-file/images/2022/05/1651454133-wPQmF.jpg',
+            ],
             media_src: null,
           },
-              {
+          {
             link: 'https://www.corporatenepal.com/story/275583',
             title: ' चुनौतीपूर्ण बन्दै डिजिटल अर्थतन्त्रको औपचारिकीकरण ',
-            image_src: ['https://corporatenepalcdn.prixacdn.net/media/albums/digital_payment_oSAZgIT3w1.jfif'],
+            image_src: [
+              'https://corporatenepalcdn.prixacdn.net/media/albums/digital_payment_oSAZgIT3w1.jfif',
+            ],
             media_src: null,
           },
-               {
+          {
             link: 'https://clickmandu.com/2026/02/435938.html',
             title: ' व्यक्तिगत डाटा चोरीका घटना बढ्दै, कानुन नहुँदा समस्या ',
-            image_src: ['https://clickmandu.com/wp-content/uploads/2026/02/confidential-data.jpg'],
+            image_src: [
+              'https://clickmandu.com/wp-content/uploads/2026/02/confidential-data.jpg',
+            ],
             media_src: null,
           },
-               {
+          {
             link: 'https://shilapatra.com/detail/177048',
-            title: ' व्यक्तिगत डाटा संरक्षणका लागि कानुन नहुँदा चोरीका घटना बढ्दै ',
-            image_src: ['https://shilapatracdn.de/uploads/posts/data-hack-1770086045.jpg'],
+            title:
+              ' व्यक्तिगत डाटा संरक्षणका लागि कानुन नहुँदा चोरीका घटना बढ्दै ',
+            image_src: [
+              'https://shilapatracdn.de/uploads/posts/data-hack-1770086045.jpg',
+            ],
             media_src: null,
           },
-               {
+          {
             link: 'https://nepalkhabar.com/society/264533-2026-2-3-10-12-59',
-            title: " डिजिटल नेपालमा ह्याकरको रजगज:  जनताको डेटा 'डार्कवेब'मा पुग्दा सरकार हेरेको हेर्‍यै ",
-            image_src: ['https://nepalkhabar.prixacdn.net/media/albums/dark-web_15StbaqsSV.jpg'],
+            title:
+              " डिजिटल नेपालमा ह्याकरको रजगज:  जनताको डेटा 'डार्कवेब'मा पुग्दा सरकार हेरेको हेर्‍यै ",
+            image_src: [
+              'https://nepalkhabar.prixacdn.net/media/albums/dark-web_15StbaqsSV.jpg',
+            ],
             media_src: null,
           },
-              
         ],
-       
       },
       {
         id: 3,
-        bio: "Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI).Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ",
+        bio: 'Sunita Karki is a senior economic journalist with extensive experience in hydro and sustainable energy reporting, economic development, and social inclusion. She currently serves at Annapurna National Daily, where her work focuses on issues related to hydropower, climate change, financial governance, and gender equality, disability, and social inclusion (GEDSI).Previously, she served as Senior Television Program Producer at Artha ko Artha, where she managed economic news production, editorial planning, and video content creation for a decade. Ms. Karki holds a PhD Graduate Fellowship at Prince of Songkla University, Thailand, where her research examines the determinants of hydro business in Nepal. ',
         name: 'Sunita Karki',
         avatar: '',
-           experience: [
+        experience: [
           ' सावतीको मिडिया फेलोशिप मेरो लागि केवल एउटा अवसर मात्र नभएर सूचना र प्रविधिको क्षेत्रलाई हेर्ने दृष्टिकोणमा आएको एउटा ठूलो परिवर्तन हो ।',
           'मैले यस कार्यक्रमका लागि दुईवटा फरक विषय ‘सार्वजनिक सेवामा डिजिटाइजेशन’ र ‘इन्टरनेटले सिर्जना गरेको वर्ग भिन्नता’ मा प्रस्ताव पेश गरेकी थिएँ । आवेदनको छोटो सूची (Shortlist ) मा परेपछि भएको अन्तर्वार्ता मेरो लागि निकै अर्थपूर्ण रह्यो । अन्तर्वार्ताको क्रममा मेरो पेशागत अनुभव र प्रस्तावित विषयहरू माथि भएका गहन छलफलले मलाई आफ्ना लेखहरूलाई कसरी समसामयिक र तथ्यपरक बनाउन सकिन्छ भन्ने नयाँ मार्गचित्र प्रदान गर्यो ।',
           'छनौट भएपछिको तीन महिनाको समय र सावतीले उपलब्ध गराउनुभएको ‘मेन्टरसिप’ मेरो लेखन यात्राको सबैभन्दा बलियो पक्ष बन्यो । मेन्टरको मार्गदर्शनकै कारण मेरा दुईवटा लेखहरू अन्नपूर्ण पोस्ट् राष्ट्रिय दैनिकको ’कभर स्टोरी’ (जमाना एआईको, सरकारी सेवामा सर्भर डाउनकै सास्ती र न गुणस्तरीय इन्टरनेट, न गरिबकै पहुँच ) को रूपमा प्रकाशित हुन सफल भए । यो उपलब्धिले मलाई व्यक्तिगत रूपमा मात्र नभई व्यावसायिक रूपमा पनि ठूलो उत्साह दिएको छ । सूचना प्रविधि र समाजको अन्तरसम्बन्धलाई बुझ्न, अनुसन्धानमा आधारित लेखन गर्न र जटिल विषयलाई सरल ढङ्गले प्रस्तुत गर्न सिकाएकोमा म सावती र मेरो मेन्टरप्रति हार्दिक आभार प्रकट गर्दछु । प्रविधि र लेखनको क्षेत्रमा अघि बढ्न चाहने जोकोहीका लागि सावतीको यो फेलोशिप एक उत्कृष्ट अवसर हो । ',
-          ' सुनिता कार्की, वरिष्ठ संवाददाता, अन्नपूर्ण पोस्ट् । '   
+          ' सुनिता कार्की, वरिष्ठ संवाददाता, अन्नपूर्ण पोस्ट् । ',
         ],
         designation: 'Senior Economic Journalist, Annapurna Post',
         published_stories: [
           {
             link: 'https://annapurnapost.com/story/491072/',
             title: 'जमाना एआईको, सरकारी सेवामा सर्भर डाउनकै सास्ती ',
-            image_src: ['https://annapurnapost.prixacdn.net/media/albums/cover-ai_ceDX2tKTBj_qAkUqYRJEV.jpg'],
+            image_src: [
+              'https://annapurnapost.prixacdn.net/media/albums/cover-ai_ceDX2tKTBj_qAkUqYRJEV.jpg',
+            ],
             media_src: null,
           },
-             {
+          {
             link: 'https://annapurnapost.com/story/491742/',
             title: ' न गुणस्तरीय इन्टरनेट, न गरिबकै पहुँच ',
-            image_src: ['https://annapurnapost.prixacdn.net/media/albums/internate_dZYQaTyaZt_uCy24q5385.jpg'],
+            image_src: [
+              'https://annapurnapost.prixacdn.net/media/albums/internate_dZYQaTyaZt_uCy24q5385.jpg',
+            ],
             media_src: null,
           },
         ],

@@ -9,7 +9,7 @@ const ThemeProviderContext = createContext(initialState);
 
 // Helper function to safely access localStorage
 const safeLocalStorage = {
-  getItem: (key) => {
+  getItem: key => {
     try {
       if (typeof window !== 'undefined') {
         return localStorage.getItem(key);
@@ -41,7 +41,7 @@ const getSystemTheme = () => {
 };
 
 // Helper function to get resolved theme
-const getResolvedTheme = (theme) => {
+const getResolvedTheme = theme => {
   if (theme === 'system') {
     return getSystemTheme();
   }
@@ -69,7 +69,7 @@ export function ThemeProvider({
   }, []);
 
   // Handle theme changes
-  const applyTheme = (newTheme) => {
+  const applyTheme = newTheme => {
     if (typeof window === 'undefined') return;
 
     const root = window.document.documentElement;
@@ -122,7 +122,7 @@ export function ThemeProvider({
 
   const value = {
     theme,
-    setTheme: (newTheme) => {
+    setTheme: newTheme => {
       safeLocalStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
     },

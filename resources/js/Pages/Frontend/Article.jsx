@@ -62,7 +62,7 @@ export default function Article({
       />
 
       <div className="relative w-full px-10 py-10 lg:px-20">
-        <div className="max-w-5xl mx-auto mt-5">
+        <div className="mx-auto mt-5 max-w-5xl">
           <div
             className={'post-categories flex flex-wrap justify-center gap-4'}
           >
@@ -76,7 +76,7 @@ export default function Article({
               </Button>
             </Link>
           </div>
-          <h1 className="my-3 text-2xl font-bold captialize text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl">
+          <h1 className="captialize my-3 text-2xl font-bold text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl">
             {title}
           </h1>
           {subtitle && (
@@ -93,7 +93,7 @@ export default function Article({
         </div>
 
         <div className="w-full">
-          <div className="grid gap-6 pt-10 mx-auto leading-8 post-body max-w-7xl lg:grid-cols-12">
+          <div className="post-body mx-auto grid max-w-7xl gap-6 pt-10 leading-8 lg:grid-cols-12">
             <div className="post-content max-w-[60ch] text-lg lg:col-span-8 lg:ml-14">
               <PostMeta
                 className="py-2"
@@ -102,7 +102,7 @@ export default function Article({
                 readingTime={readingTime}
                 tags={article.tags}
               />
-              <div className="text-lg post-content prose-base text-secondary-foreground">
+              <div className="post-content prose-base text-lg text-secondary-foreground">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: content,
@@ -111,20 +111,20 @@ export default function Article({
               </div>
               <div className="sharethis-sticky-share-buttons"></div>
             </div>
-            <aside className="sticky w-full h-full top-32 lg:col-span-4">
-              <Glassbox className="relative overflow-y-auto border-none shadow-none sidebar_widget max-h-max">
+            <aside className="sticky top-32 h-full w-full lg:col-span-4">
+              <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none">
                 <SimpleList
                   className={'border-none px-8'}
                   heading={'Related Articles'}
                 >
                   {relatedArticles?.map(post => {
                     return (
-                      <li className="mb-4 group" key={post.id}>
+                      <li className="group mb-4" key={post.id}>
                         <Link
-                          className="underline text-secondary-foreground underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                          className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
                           href={`/trade-insight/${volume.volume}/${post.slug}`}
                         >
-                          <p className="text-sm leading-5 lg:text-md">
+                          <p className="lg:text-md text-sm leading-5">
                             {post.title}
                           </p>
                         </Link>

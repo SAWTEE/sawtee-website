@@ -52,17 +52,22 @@ export default function SearchPage({ posts, query }) {
               className={
                 'absolute bottom-4 left-12 z-10 px-2 text-left text-gray-800 dark:text-gray-200'
               }
-              heading={searchQuery && posts
-              ? `Found ${posts?.total} ${posts?.total > 1 ? 'results' : 'result'} for "${searchQuery}"`
-              : 'Start typing to search the website'}
+              heading={
+                searchQuery && posts
+                  ? `Found ${posts?.total} ${posts?.total > 1 ? 'results' : 'result'} for "${searchQuery}"`
+                  : 'Start typing to search the website'
+              }
             />
           </div>
-            <form onSubmit={handleSubmit} className="my-10 max-w-xl mx-auto px-4 w-full">
-              <label
-                htmlFor="search-modal"
-                className="font-bold text-slate-800 dark:text-slate-300"
-              >
-                {/* Search */}
+          <form
+            onSubmit={handleSubmit}
+            className="mx-auto my-10 w-full max-w-xl px-4"
+          >
+            <label
+              htmlFor="search-modal"
+              className="font-bold text-slate-800 dark:text-slate-300"
+            >
+              {/* Search */}
               <Input
                 id="search-modal"
                 className="[&::-webkit-search-decoration]:none placeholder-text-muted-foreground h-12 w-full appearance-none border bg-bgDarker py-3 text-sm"
@@ -71,19 +76,17 @@ export default function SearchPage({ posts, query }) {
                 value={searchQuery}
                 onChange={e => setSearchQuery(e.target.value)}
               />
-              </label>
-
-            </form>
+            </label>
+          </form>
           <div className="mx-auto min-h-96 max-w-5xl px-[32px] py-[20px] text-lg leading-8 md:px-0">
-
-              {!state.data && searchQuery && (
-                <div className="flex h-20 items-center justify-center space-x-2 bg-white dark:invert">
-                  <span className="sr-only">Loading...</span>
-                  <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.3s]"></div>
-                  <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.15s]"></div>
-                  <div className="h-6 w-6 animate-bounce rounded-full bg-black"></div>
-                </div>
-              )}
+            {!state.data && searchQuery && (
+              <div className="flex h-20 items-center justify-center space-x-2 bg-white dark:invert">
+                <span className="sr-only">Loading...</span>
+                <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.3s]"></div>
+                <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.15s]"></div>
+                <div className="h-6 w-6 animate-bounce rounded-full bg-black"></div>
+              </div>
+            )}
             <div className="grid place-items-center gap-10 md:grid-cols-2">
               {state.data &&
                 state.data?.map(post => {
@@ -97,16 +100,18 @@ export default function SearchPage({ posts, query }) {
                   );
                 })}
             </div>
-           {state.data && <Pagination
-              links={posts.links}
-              currentPage={posts.current_page}
-              totalPages={posts.last_page}
-              nextPage={posts.next_page_url}
-              prevPage={posts.prev_page_url}
-              className={'mt-8'}
-              nextButtonLabel="Next"
-              prevButtonLabel="Previous"
-            />}
+            {state.data && (
+              <Pagination
+                links={posts.links}
+                currentPage={posts.current_page}
+                totalPages={posts.last_page}
+                nextPage={posts.next_page_url}
+                prevPage={posts.prev_page_url}
+                className={'mt-8'}
+                nextButtonLabel="Next"
+                prevButtonLabel="Previous"
+              />
+            )}
           </div>
         </div>
       </MainLayout>

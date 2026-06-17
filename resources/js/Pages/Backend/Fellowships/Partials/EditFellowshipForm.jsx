@@ -29,28 +29,30 @@ export default function EditFellowshipForm({ open, setOpen, fellowship }) {
       route('admin.fellowships.update', {
         _method: 'patch',
         fellowship: fellowship.id,
-      }), {
-      preserveScroll: true,
-      onSuccess: () => {
-        toast({
-          title: 'Fellowship Updated.',
-          description: 'Fellowship Updated Successfully',
-        });
-        setOpen(false);
-      },
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              description: `${key.toUpperCase()} field error` + `: ${value}`,
-            });
+      }),
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast({
+            title: 'Fellowship Updated.',
+            description: 'Fellowship Updated Successfully',
+          });
+          setOpen(false);
+        },
+        onError: errors => {
+          for (const key in errors) {
+            if (Object.hasOwnProperty.call(errors, key)) {
+              const value = errors[key];
+              reset(key);
+              return toast({
+                title: 'Uh oh, Something went wrong',
+                description: `${key.toUpperCase()} field error` + `: ${value}`,
+              });
+            }
           }
-        }
-      },
-    });
+        },
+      }
+    );
   };
 
   return (

@@ -7,6 +7,9 @@ import { TableOfContents } from '@/components/Frontend/TableOfContents';
 import MainLayout from '@/components/Layouts/MainLayout';
 import PageLayout from '@/components/Layouts/PageLayout';
 import { Button } from '@/components/ui/button';
+import { Link } from '@inertiajs/react';
+import ExploreButton from '@/components/Frontend/ExploreButton';
+import SimpleList from '@/components/Frontend/SimpleList';
 
 export default function SingleTradeInsight({
   tradeInsightVolume,
@@ -24,25 +27,27 @@ export default function SingleTradeInsight({
       <PageLayout title={tradeInsightVolume.volume} featured_image={null}>
         <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
           <div className="">
-            <div class="flex flex-col justify-center gap-4 md:flex-row md:items-center lg:items-stretch lg:gap-4">
+            <div class="flex flex-col justify-center gap-4 md:flex-row md:items-center lg:gap-4">
               <img
-                class="aspect-auto w-full max-w-[300px] rounded-sm object-cover md:w-[20%] md:rounded-t-lg"
+                class="aspect-auto w-full max-w-[300px] rounded-sm object-cover md:w-[30%] md:rounded-t-lg"
                 src={media}
                 alt={tradeInsightVolume.volume}
               />
 
-              <div class="md:w-[80 %] flex w-full flex-col gap-4 rounded-md md:p-4">
+              <div class="md:w-[70 %] flex w-full flex-col gap-4 rounded-md md:p-4">
                 <h2 class="text-xl font-semibold text-gray-900 dark:text-white md:text-3xl">
-                  {'Trade Insight' + ' ' + tradeInsightVolume.volume}
+                  {tradeInsightVolume.subtitle
+                    ? tradeInsightVolume.subtitle
+                    : tradeInsightVolume.volume}
                 </h2>
 
                 <div
                   className="text-md md:text-md prose-base text-secondary-foreground lg:text-lg"
                   dangerouslySetInnerHTML={{
-                    __html: tradeInsightVolume.content,
+                    __html: tradeInsightVolume.description,
                   }}
                 />
-                <div className="flex gap-4 mt-4">
+                <div className="mt-4 flex gap-4">
                   <a
                     href={tradeInsightVolume.full_article_link}
                     target="_blank"
@@ -57,7 +62,7 @@ export default function SingleTradeInsight({
               </div>
             </div>
           </div>
-          <div className="grid gap-10 place-content-center md:grid-cols-4 xl:grid-cols-6">
+          <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
             <div className="md:col-span-2 xl:col-span-4">
               <div className="max-w-[60ch] text-lg lg:col-span-8">
                 <div className="pt-10">
@@ -71,18 +76,51 @@ export default function SingleTradeInsight({
                 </div>
               </div>
             </div>
-            <aside className="flex flex-col items-center gap-12 sidebar md:col-span-2">
+            <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
               {showSubscriptionBox && (
                 <Glassbox className={'w-full p-0'}>
                   <SubscriptionCard />
                 </Glassbox>
               )}
               {tradeInsights && tradeInsights.length > 0 && (
-                <SidebarWidget
-                  array={tradeInsights}
-                  title={'Trade Insights Volumes'}
-                  link={'/category/publications/trade-insight'}
-                />
+                <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none">
+                  <SimpleList
+                    className={'border-none px-8'}
+                    heading={'Recent Trade Insights'}
+                  >
+                    {tradeInsights?.map(post => {
+                      return (
+                        <li className="group mb-4" key={post.id}>
+                          <Link
+                            className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                            href={
+                              post.volume_slug
+                                ? `/category/${post.category?.slug}/${post.volume_slug}`
+                                : `/publications/${post.file?.name}`
+                            }
+                          >
+                            <p className="lg:text-md text-sm leading-5">
+                              {post.title}
+                            </p>
+                          </Link>
+                          {post.volume && (
+                            <p className="mt-2 text-xs text-muted-foreground">
+                              {formatDate(post.volume)}
+                            </p>
+                          )}
+                        </li>
+                      );
+                    })}
+                    <ExploreButton
+                      text={`More Trade Insights`}
+                      link={
+                        '/category/publications/trade-insight' ??
+                        `${array[0].category?.slug / array[0].slug}`
+                      }
+                      className="p-0"
+                    />
+                  </SimpleList>
+                </Glassbox>
               )}
             </aside>
           </div>

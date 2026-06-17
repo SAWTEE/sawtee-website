@@ -4,6 +4,13 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import ContentEditor from '@/components/Backend/ContentEditor';
+import {
+  Field,
+  FieldDescription,
+  FieldGroup,
+  FieldLabel,
+} from '@/components/ui/field';
 import {
   Select,
   SelectContent,
@@ -24,6 +31,7 @@ export default function EditPublicationForm({ publication, categories, tags }) {
     category_id: publication.category_id,
     title: publication.title,
     subtitle: publication.subtitle || '',
+    volume: publication.volume || '',
     description: publication.description,
     image: publication.media[0] ? publication.media[0].original_url : null,
     file: publication.file ? publication.file.name : null,
@@ -129,15 +137,41 @@ export default function EditPublicationForm({ publication, categories, tags }) {
               <InputError className="mt-2">{errors.title}</InputError>
             )}
           </div>
+
+          <div className="mx-2">
+            <Field>
+              <FieldLabel htmlFor="volume">Volume</FieldLabel>
+              <Input
+                required
+                type="text"
+                id="volume"
+                name="volume"
+                className="mt-1"
+                value={data.volume}
+                onChange={e => setData('volume', e.target.value)}
+              />
+              <FieldDescription>
+                This feild is required for publications under the category of
+                Trade Insight.
+              </FieldDescription>
+            </Field>
+
+            {errors.volume && (
+              <InputError className="mt-2">{errors.volume}</InputError>
+            )}
+          </div>
+
           <div className="mx-2">
             <Label htmlFor="description">Description</Label>
 
-            <Textarea
+            <ContentEditor
+              // type="classic"
               name="description"
+              initialValue={data.description || ''}
               id="description"
-              rows={10}
-              value={data.description ?? ''}
-              onChange={e => setData('description', e.target.value)}
+              onChange={(evt, editor) =>
+                setData('description', editor.getContent())
+              }
             />
 
             {errors.description && (
@@ -211,17 +245,28 @@ export default function EditPublicationForm({ publication, categories, tags }) {
 
           <div className="mx-2">
             <Label htmlFor="file">File Upload</Label>
-            <Input
-              type="file"
-              accept=".pdf,.doc,.docx,.ppt,.pptx"
-              id="file"
-              className="mt-1"
-              name="file"
-              onChange={e => {
-                setData('file', e.target.files[0]);
-              }}
-            />
-
+            {data.file && (
+              <Input
+                type="text"
+                id="file"
+                name="file"
+                className="mt-1"
+                value={data.file.name || data.file}
+                readOnly
+              />
+            )}
+            {!data.file && (
+              <Input
+                type="file"
+                accept=".pdf,.doc,.docx,.ppt,.pptx"
+                id="file"
+                className="mt-1"
+                name="file"
+                onChange={e => {
+                  setData('file', e.target.files[0]);
+                }}
+              />
+            )}
             {errors.file && (
               <InputError className="mt-2">{errors.file}</InputError>
             )}

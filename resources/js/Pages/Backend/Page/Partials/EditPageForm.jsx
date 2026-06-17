@@ -264,11 +264,11 @@ const ShowPageData = ({ open, onOpenChange, data }) => {
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Page Data from the JSON file</AlertDialogTitle>
-            <ScrollArea className="max-h-[500px] overflow-auto">
-          <AlertDialogContent>
+          <ScrollArea className="max-h-[500px] overflow-auto">
+            <AlertDialogContent>
               <pre>{JSON.stringify(data, null, 2)}</pre>
-          </AlertDialogContent>
-            </ScrollArea>
+            </AlertDialogContent>
+          </ScrollArea>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

@@ -49,31 +49,34 @@ export default function EditFellow({ fellow, fellowships }) {
   const submit = e => {
     e.preventDefault();
 
-    post(route('admin.fellows.update', {
-      _method: 'patch',
-      fellow: fellow,
-    }), {
-      preserveScroll: true,
-      onSuccess: () => {
-        toast({
-          title: 'Fellow Created.',
-          description: 'Fellow Created Successfully',
-        });
-        reset();
-      },
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              description: `${key.toUpperCase()} field error` + `: ${value}`,
-            });
+    post(
+      route('admin.fellows.update', {
+        _method: 'patch',
+        fellow: fellow,
+      }),
+      {
+        preserveScroll: true,
+        onSuccess: () => {
+          toast({
+            title: 'Fellow Created.',
+            description: 'Fellow Created Successfully',
+          });
+          reset();
+        },
+        onError: errors => {
+          for (const key in errors) {
+            if (Object.hasOwnProperty.call(errors, key)) {
+              const value = errors[key];
+              reset(key);
+              return toast({
+                title: 'Uh oh, Something went wrong',
+                description: `${key.toUpperCase()} field error` + `: ${value}`,
+              });
+            }
           }
-        }
-      },
-    });
+        },
+      }
+    );
   };
 
   return (

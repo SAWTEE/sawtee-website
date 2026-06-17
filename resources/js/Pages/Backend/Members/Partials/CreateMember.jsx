@@ -28,9 +28,7 @@ export default function CreateMember({ open, setOpen, members }) {
           title: 'Member Created.',
           description: 'Member Created Successfully',
         });
-        reset(
-          'country',
-        );
+        reset('country');
         setOpen(false);
       },
       onError: errors => {

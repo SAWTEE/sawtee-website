@@ -27,7 +27,6 @@ export default function Index({ auth, articles }) {
     });
   };
 
-
   const handleEdit = (e, id) => {
     e.preventDefault();
     get(route('admin.articles.edit', id));
@@ -116,10 +115,7 @@ export default function Index({ auth, articles }) {
       <Link href={route('admin.articles.create')}>
         <PrimaryButton>Create New Article</PrimaryButton>
       </Link>
-      <DataTable
-        defaultColumns={defaultColumns}
-        data={articles}
-      />
+      <DataTable defaultColumns={defaultColumns} data={articles} />
     </AuthenticatedLayout>
   );
 }

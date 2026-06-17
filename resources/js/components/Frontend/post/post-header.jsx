@@ -17,7 +17,12 @@ const PostHeader = ({
   >
     {categories && <PostCategories category={categories} />}
     {heading && (
-      <h1 className={cn("captialize my-3 text-2xl font-bold text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl", textStyle)}>
+      <h1
+        className={cn(
+          'captialize my-3 text-2xl font-bold text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl',
+          textStyle
+        )}
+      >
         {heading}
       </h1>
     )}

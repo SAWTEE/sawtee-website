@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/components/ui/use-toast';
 import { Head, useForm } from '@inertiajs/react';
-import { Link } from "@inertiajs/react";
+import { Link } from '@inertiajs/react';
 
 export default function Index({ auth, publishedStories }) {
   const { delete: destroy, get } = useForm();
@@ -103,11 +103,9 @@ export default function Index({ auth, publishedStories }) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Published Stories" />
-       <Link href={route('admin.published-stories.create')}>
-      <PrimaryButton>
-        Create New Story
-      </PrimaryButton>
-       </Link>
+      <Link href={route('admin.published-stories.create')}>
+        <PrimaryButton>Create New Story</PrimaryButton>
+      </Link>
       {publishedStories && (
         <DataTable
           defaultColumns={defaultColumns}

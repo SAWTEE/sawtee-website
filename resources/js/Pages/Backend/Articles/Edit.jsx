@@ -8,7 +8,12 @@ export default function Edit({ auth, article, volumes, tags }) {
     <AuthenticatedLayout user={auth.user}>
       <Head title="Edit Article" />
 
-      <EditArticleForm className="max-w-xl" article={article} volumes={volumes} tags={tags} />
+      <EditArticleForm
+        className="max-w-xl"
+        article={article}
+        volumes={volumes}
+        tags={tags}
+      />
     </AuthenticatedLayout>
   );
 }

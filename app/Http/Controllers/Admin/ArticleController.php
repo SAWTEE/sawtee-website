@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Article;
-use Illuminate\Http\Request;
-use Inertia\Inertia;
+use App\Models\Publication;
 use App\Models\Tag;
-use App\Models\TradeInsightVolume;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Inertia\Inertia;
 
 class ArticleController extends Controller
 {
@@ -18,9 +18,10 @@ class ArticleController extends Controller
     public function index()
     {
         $articles = Article::with(['tags'])->latest()->get();
-        return Inertia::render("Backend/Articles/Index", [
-            "articles" => $articles,
-            ]);
+
+        return Inertia::render('Backend/Articles/Index', [
+            'articles' => $articles,
+        ]);
     }
 
     /**
@@ -28,8 +29,12 @@ class ArticleController extends Controller
      */
     public function create()
     {
-        $volumes = TradeInsightVolume::get();
-        return Inertia::render("Backend/Articles/Create", ['tags' => Tag::all(), "volumes" => $volumes]);
+        $volumes = Publication::whereHas('category', function ($query) {
+            $query->where('slug', 'trade-insight');
+        })->orderByDesc('id')->get();
+
+        // dd($volumes);
+        return Inertia::render('Backend/Articles/Create', ['tags' => Tag::all(), 'volumes' => $volumes]);
     }
 
     /**
@@ -38,15 +43,15 @@ class ArticleController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            "title" => "string",
-            "trade_insight_volume_id" => 'required|numeric|exists:trade_insight_volumes,id',
-            "subtitle" => "string|nullable",
-            "excerpt" => "string|nullable",
-            "meta_title" => "string|nullable",
-            "meta_description" => "string|nullable",
-            "author" => "string|nullable",
-            "published_at" => "nullable|date",
-            "content" => "string|nullable",
+            'title' => 'string',
+            'publication_id' => 'required|numeric|exists:publications,id',
+            'subtitle' => 'string|nullable',
+            'excerpt' => 'string|nullable',
+            'meta_title' => 'string|nullable',
+            'meta_description' => 'string|nullable',
+            'author' => 'string|nullable',
+            'published_at' => 'nullable|date',
+            'content' => 'string|nullable',
         ]);
         $validated['title'] = Str::of($validated['title'])
             ->squish();
@@ -62,7 +67,7 @@ class ArticleController extends Controller
 
         $article->save();
 
-        return redirect()->route("admin.articles.index");
+        return redirect()->route('admin.articles.index');
     }
 
     /**
@@ -78,12 +83,14 @@ class ArticleController extends Controller
      */
     public function edit(Article $article)
     {
-        $volumes = TradeInsightVolume::get();
+        $volumes = Publication::whereHas('category', function ($query) {
+            $query->where('slug', 'trade-insight');
+        })->get();
 
-        return Inertia::render("Backend/Articles/Edit", [
-            "article" => $article,
+        return Inertia::render('Backend/Articles/Edit', [
+            'article' => $article,
             'tags' => Tag::all(),
-            "volumes" => $volumes
+            'volumes' => $volumes,
         ]);
     }
 
@@ -93,15 +100,15 @@ class ArticleController extends Controller
     public function update(Request $request, Article $article)
     {
         $validated = $request->validate([
-            "title" => "string",
-            "trade_insight_volume_id" => 'required|numeric|exists:trade_insight_volumes,id',
-            "subtitle" => "string|nullable",
-            "excerpt" => "string|nullable",
-            "meta_title" => "string|nullable",
-            "meta_description" => "string|nullable",
-            "author" => "string|nullable",
-            "published_at" => "nullable|date",
-            "content" => "string|nullable",
+            'title' => 'string',
+            'publication_id' => 'required|numeric|exists:publications,id',
+            'subtitle' => 'string|nullable',
+            'excerpt' => 'string|nullable',
+            'meta_title' => 'string|nullable',
+            'meta_description' => 'string|nullable',
+            'author' => 'string|nullable',
+            'published_at' => 'nullable|date',
+            'content' => 'string|nullable',
         ]);
         $validated['title'] = Str::of($validated['title'])
             ->squish();
@@ -117,7 +124,7 @@ class ArticleController extends Controller
         $article->update($validated);
         $article->save();
 
-        return to_route("admin.articles.index");
+        return to_route('admin.articles.index');
 
     }
 

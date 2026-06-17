@@ -174,13 +174,13 @@ export default function EditArticleForm({ article, tags, volumes }) {
                   ) : (
                     <span>Pick a date</span>
                   )}
-                  <CalendarIcon className="w-4 h-4 ml-auto opacity-50" />
+                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
                 <Calendar
                   name="published_at"
-                  className="block mt-1"
+                  className="mt-1 block"
                   id="published_at"
                   mode="single"
                   selected={data.published_at}
@@ -205,7 +205,7 @@ export default function EditArticleForm({ article, tags, volumes }) {
           </div>
         </div>
 
-        <div className="flex flex-col col-span-2 gap-4">
+        <div className="col-span-2 flex flex-col gap-4">
           <div className="col-span-1">
             <Label htmlFor="author">Author</Label>
             <Input
@@ -290,7 +290,7 @@ export default function EditArticleForm({ article, tags, volumes }) {
           )}
         </div>
 
-        <div className="flex flex-col col-span-2 gap-4">
+        <div className="col-span-2 flex flex-col gap-4">
           <div className="cols-span-1">
             <Label htmlFor="meta_title">Meta Title</Label>
             <Input
@@ -309,7 +309,7 @@ export default function EditArticleForm({ article, tags, volumes }) {
             <Textarea
               id="meta_description"
               name="meta_description"
-              className="block mt-1"
+              className="mt-1 block"
               value={data.meta_description ?? ''}
               rows={8}
               onChange={e => setData('meta_description', e.target.value)}

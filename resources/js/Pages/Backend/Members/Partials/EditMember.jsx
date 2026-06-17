@@ -14,11 +14,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditCategoryForm({
-  open,
-  setOpen,
-  member,
-}) {
+export default function EditCategoryForm({ open, setOpen, member }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     country: member.country,
   });

@@ -103,10 +103,7 @@ export default function Index({ auth, members }) {
       <PrimaryButton onClick={() => setCreateFormOpen(!createFormOpen)}>
         Create New Member
       </PrimaryButton>
-      <CreateMember
-        open={createFormOpen}
-        setOpen={setCreateFormOpen}
-      />
+      <CreateMember open={createFormOpen} setOpen={setCreateFormOpen} />
       {member && editFormOpen && (
         <EditMember
           open={editFormOpen}

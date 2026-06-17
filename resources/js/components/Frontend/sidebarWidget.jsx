@@ -21,9 +21,11 @@ const SidebarWidget = ({ array, title, link, ...rest }) => {
               >
                 <p className="lg:text-md text-sm leading-5">{post.title}</p>
               </Link>
-              <p className="mt-2 text-xs text-muted-foreground">
-                {formatDate(post.published_at)}
-              </p>
+              {post.published_at && (
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {formatDate(post.published_at)}
+                </p>
+              )}
             </li>
           );
         })}

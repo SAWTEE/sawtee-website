@@ -1,4 +1,3 @@
-
 export default function NewsletterCallout() {
   return (
     <div className="rounded-lg bg-sky-100 px-6 py-6 dark:bg-sky-900 md:px-12 md:py-12 lg:px-16 lg:py-16 xl:flex xl:items-center">

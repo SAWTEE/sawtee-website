@@ -4,6 +4,8 @@ import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import ContentEditor from '@/components/Backend/ContentEditor';
+
 import {
   Select,
   SelectContent,
@@ -24,6 +26,7 @@ export default function CreatePublicationForm({ categories, tags }) {
     category_id: '',
     title: '',
     subtitle: '',
+    volume: '',
     description: '',
     image: null,
     file: '',
@@ -35,7 +38,8 @@ export default function CreatePublicationForm({ categories, tags }) {
   const { toast } = useToast();
 
   React.useEffect(() => {
-    tags.length !== tagOptions.length && setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+    tags.length !== tagOptions.length &&
+      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   function setDataImage(image) {
@@ -114,15 +118,36 @@ export default function CreatePublicationForm({ categories, tags }) {
               <InputError className="mt-2">{errors.title}</InputError>
             )}
           </div>
+
+          {data.category_id ===
+            categories.find(category => category.slug === 'trade-insight')
+              ?.id && (
+            <div className="mx-2">
+              <Label htmlFor="volume">Volume</Label>
+              <Input
+                type="text"
+                id="volume"
+                name="volume"
+                className="mt-1"
+                onChange={e => setData('volume', e.target.value)}
+              />
+
+              {errors.volume && (
+                <InputError className="mt-2">{errors.volume}</InputError>
+              )}
+            </div>
+          )}
           <div className="mx-2">
             <Label htmlFor="description">Description</Label>
 
-            <Textarea
+            <ContentEditor
+              // type="classic"
               name="description"
+              initialValue=""
               id="description"
-              rows={10}
-              placeholder="Write something about your publication"
-              onChange={e => setData('description', e.target.value)}
+              onChange={(evt, editor) =>
+                setData('description', editor.getContent())
+              }
             />
 
             {errors.description && (

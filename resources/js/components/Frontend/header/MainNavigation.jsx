@@ -42,12 +42,12 @@ export default function DesktopNavigation({ menu }) {
               <NavigationMenuLink
                 asChild
                 active={active}
-                className={hasChildren ? ' dropdown p-0' : 'p-0'}
+                className={hasChildren ? 'dropdown p-0' : 'p-0'}
                 onMouseEnter={() => handleHoverButton(index)}
               >
                 <Link href={menuItem.url}>
                   <NavigationMenuTrigger
-                    className={cn(' dark:text-white')}
+                    className={cn('dark:text-white')}
                     hasChildren={hasChildren}
                   >
                     {menuItem.title}
@@ -75,7 +75,7 @@ export default function DesktopNavigation({ menu }) {
               )}
               {!hasMegaMenu && hasChildren && (
                 // <NavigationMenuContent>
-                  <DropDown menuItem={menuItem} />
+                <DropDown menuItem={menuItem} />
                 // </NavigationMenuContent>
               )}
             </NavigationMenuItem>

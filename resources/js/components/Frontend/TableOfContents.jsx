@@ -13,18 +13,18 @@ export const TableOfContents = ({ articles, volumeSlug }) => {
         <ul className="flex flex-col gap-1 pt-10">
           {articles.map((article, index) => {
             return (
-              <li className="mb-4 group" key={article.id}>
+              <li className="group mb-4" key={article.id}>
                 {/* Article Item Container */}
                 <div className="flex w-full flex-1 flex-col gap-1.5">
                   <Link
-                    className="underline text-secondary-foreground underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                    className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
                     href={`/category/publications/trade-insight/${volumeSlug}/${article.slug}`}
                   >
                     {article.title}
                   </Link>
 
                   {/* Article Category Badge */}
-                  <span className="text-xs italic font-medium text-theme-500 dark:text-theme-300">
+                  <span className="text-xs font-medium italic text-theme-500 dark:text-theme-300">
                     {article.author ? article.author : 'Author not specified'}
                   </span>
                 </div>

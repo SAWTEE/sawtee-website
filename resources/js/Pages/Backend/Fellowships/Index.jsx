@@ -17,7 +17,6 @@ export default function Index({ auth, fellowships }) {
   const [fellowship, setFellowship] = useState(undefined);
   const { toast } = useToast();
 
-
   const handleEdit = (e, id) => {
     e.preventDefault();
     const FELLOWSHIP = fellowships.find(f => f.id === id);

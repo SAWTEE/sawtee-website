@@ -20,7 +20,6 @@ export default function PublicationsArchive({
   srcSet,
 }) {
   const isTradeInsightCategory = category.slug === 'trade-insight';
-  console.log(category);
   return (
     <MainLayout>
       <WebsiteHead
@@ -39,7 +38,7 @@ export default function PublicationsArchive({
         showBackgroundPattern={false}
       >
         <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
-          <div className="grid gap-10 place-content-center md:grid-cols-4 xl:grid-cols-6">
+          <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
             <section className="archive-list md:col-span-2 xl:col-span-4">
               <ItemsList
                 items={category.children}
@@ -47,7 +46,7 @@ export default function PublicationsArchive({
               />
             </section>
 
-            <aside className="flex flex-col items-center gap-12 sidebar md:col-span-2">
+            <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
               {sawteeInMedia && (
                 <SidebarWidget
                   array={sawteeInMedia}
@@ -100,12 +99,16 @@ const ItemComponent = ({
               <div key={publication.id}>
                 <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
                   <a
-                    href={`/category/publications/${item.slug}/${publication.subtitle_slug}`}
-                    className="relative group"
+                    href={
+                      publication.volume_slug
+                        ? `/category/publications/${item.slug}/${publication.volume_slug}`
+                        : `/publications/${publication.file?.name}`
+                    }
+                    className="group relative"
                     target="_blank"
                     referrerPolicy="no-referrer"
                   >
-                    <div className="absolute top-0 left-0 w-full h-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                    <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
                     <img
                       className="aspect-[3/4] h-full w-full rounded-md object-cover"
@@ -125,11 +128,11 @@ const ItemComponent = ({
                     target="_blank"
                     href={`/publications/${publication.file?.name}`}
                   >
-                    <p className="mt-4 text-sm font-semibold text-center">
+                    <p className="mt-4 text-center text-sm font-semibold">
                       {publication.title}
                     </p>
                     {publication.subtitle && (
-                      <p className="mt-1 text-xs text-center">
+                      <p className="mt-1 text-center text-xs">
                         {publication.subtitle}
                       </p>
                     )}
@@ -145,11 +148,11 @@ const ItemComponent = ({
                         ? `/publications/${publication.file?.name}`
                         : '#'
                     }
-                    className="relative group"
+                    className="group relative"
                     target="_blank"
                     referrerPolicy="no-referrer"
                   >
-                    <div className="absolute top-0 left-0 w-full h-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                    <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
                     <img
                       className="aspect-[3/4] h-full w-full rounded-md object-cover"
@@ -169,11 +172,11 @@ const ItemComponent = ({
                     target="_blank"
                     href={`/publications/${publication.file?.name}`}
                   >
-                    <p className="mt-4 text-sm font-semibold text-center">
+                    <p className="mt-4 text-center text-sm font-semibold">
                       {publication.title}
                     </p>
                     {publication.subtitle && (
-                      <p className="mt-1 text-xs text-center">
+                      <p className="mt-1 text-center text-xs">
                         {publication.subtitle}
                       </p>
                     )}
@@ -189,7 +192,7 @@ const ItemComponent = ({
           <ItemsList
             items={item.children}
             publications={publications}
-            className="pt-0 ml-4"
+            className="ml-4 pt-0"
           />
         </React.Fragment>
       )}
@@ -199,7 +202,6 @@ const ItemComponent = ({
 
 // Main component that receives the data
 const ItemsList = ({ items, publications, className }) => {
-  console.log(items, publications, className);
   return (
     <div className="flex flex-col gap-4">
       {items.map(

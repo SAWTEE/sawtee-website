@@ -24,7 +24,7 @@ export default function CreateArticleForm({ tags, volumes }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     slug: '',
-    trade_insight_volume_id: 0,
+    publication_id: 0,
     subtitle: null,
     excerpt: '',
     tags: [],
@@ -71,11 +71,8 @@ export default function CreateArticleForm({ tags, volumes }) {
       onError: errors => {
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
-            if (key !== 'trade_insight_volume_id') continue;
-            if (
-              key === 'trade_insight_volume_id' &&
-              data.trade_insight_volume_id === 0
-            ) {
+            if (key !== 'publication_id') continue;
+            if (key === 'publication_id' && data.publication_id === 0) {
               const value =
                 'The trade insight volume id field is required. Please select a volume.';
               reset(key);
@@ -141,7 +138,7 @@ export default function CreateArticleForm({ tags, volumes }) {
 
           <Input
             type="date"
-            className="block mt-1"
+            className="mt-1 block"
             placeholder="Select Date"
             id="published_at"
             name="published_at"
@@ -155,7 +152,7 @@ export default function CreateArticleForm({ tags, volumes }) {
           )}
         </div>
 
-        <div className="flex flex-col col-span-2 gap-4">
+        <div className="col-span-2 flex flex-col gap-4">
           <div className="col-span-1">
             <Label htmlFor="author">Author</Label>
             <Input
@@ -171,15 +168,15 @@ export default function CreateArticleForm({ tags, volumes }) {
 
           <div className="col-span-1">
             <fieldset required className="mx-2">
-              <Label as="legend" htmlFor="category_id">
+              <Label as="legend" htmlFor="publication_id">
                 Volume
               </Label>
 
               <Select
-                name="trade_insight_volume_id"
-                value={data.trade_insight_volume_id}
+                name="publication_id"
+                value={data.publication_id}
                 onValueChange={value => {
-                  setData('trade_insight_volume_id', Number(value));
+                  setData('publication_id', Number(value));
 
                   //   setSelectedCategory(
                   //     volumes.filter(vol => vol.id === Number(value))[0]?.volume
@@ -202,9 +199,9 @@ export default function CreateArticleForm({ tags, volumes }) {
                 </SelectContent>
               </Select>
 
-              {errors.trade_insight_volume_id && (
+              {errors.publication_id && (
                 <InputError className={'mt-2'}>
-                  {errors.trade_insight_volume_id}
+                  {errors.publication_id}
                 </InputError>
               )}
             </fieldset>
@@ -240,7 +237,7 @@ export default function CreateArticleForm({ tags, volumes }) {
           )}
         </div>
 
-        <div className="flex flex-col col-span-2 gap-4">
+        <div className="col-span-2 flex flex-col gap-4">
           <div className="cols-span-1">
             <Label htmlFor="meta_title">Meta Title</Label>
             <Input
@@ -259,7 +256,7 @@ export default function CreateArticleForm({ tags, volumes }) {
             <Textarea
               id="meta_description"
               name="meta_description"
-              className="block mt-1"
+              className="mt-1 block"
               placeholder="enter meta_description"
               rows={8}
               onChange={e => setData('meta_description', e.target.value)}

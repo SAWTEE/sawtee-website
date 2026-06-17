@@ -138,14 +138,14 @@ export default function EditPublishedStory({ fellows, publishedStory }) {
         {data.images.length > 0 && (
           <div className="col-span-2">
             <p>Previous Images</p>
-            <div className="flex flex-wrap gap-2 mt-1">
-            {data.images.map(image => {
-              return (
+            <div className="mt-1 flex flex-wrap gap-2">
+              {data.images.map(image => {
+                return (
                   <div className="aspect-square w-[6rem]">
                     <img src={image.original_url} alt={image.file_name} />
                   </div>
-              );
-            })}
+                );
+              })}
             </div>
           </div>
         )}

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string("title");
-            $table->foreignId('trade_insight_volume_id')->constrained()->onDelete('cascade');
+            $table->foreignId('publication_id')->constrained()->onDelete('cascade');
             $table->string('slug')->nullable();
             $table->string("subtitle")->nullable();
             $table->text("excerpt")->nullable();

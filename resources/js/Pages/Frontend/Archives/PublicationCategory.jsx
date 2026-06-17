@@ -6,7 +6,6 @@ import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import MainLayout from '../../../components/Layouts/MainLayout';
 import PageLayout from '../../../components/Layouts/PageLayout';
-import { slugify } from '../../../lib/utils';
 
 export default function Publications({
   category,
@@ -17,7 +16,6 @@ export default function Publications({
   showSubscriptionBox = true,
   srcSet,
 }) {
-  console.log('publications', publications, category);
   return (
     <MainLayout>
       <WebsiteHead
@@ -46,7 +44,11 @@ export default function Publications({
                           {category.slug === 'trade-insight' ? (
                             <a
                               title={publication.title}
-                              href={`/category/publications/${category?.slug}/${publication.subtitle_slug}`}
+                              href={
+                                publication.volume_slug
+                                  ? `/category/publications/${category?.slug}/${publication.volume_slug}`
+                                  : `/publications/${publication.file?.name}`
+                              }
                               className="group relative"
                               referrerPolicy="no-referrer"
                             >

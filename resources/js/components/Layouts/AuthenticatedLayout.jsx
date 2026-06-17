@@ -40,8 +40,10 @@ export default function Authenticated({ user, children }) {
                     <BreadcrumbLink href={`/admin/` + sections[1]}>
                       {sections[1]
                         ? sections[1].charAt(0).toUpperCase() +
-                          sections[1].slice(1).replaceAll('-', ' ')
-                          .split('?')[0]
+                          sections[1]
+                            .slice(1)
+                            .replaceAll('-', ' ')
+                            .split('?')[0]
                         : 'Home'}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
@@ -58,12 +60,12 @@ export default function Authenticated({ user, children }) {
                   )}
                 </BreadcrumbList>
               </Breadcrumb>
-              <div className="ml-auto px-8 flex items-center gap-2">
+              <div className="ml-auto flex items-center gap-2 px-8">
                 <ModeToggle />
               </div>
             </div>
           </header>
-          <div className=" p-8">{children}</div>
+          <div className="p-8">{children}</div>
         </SidebarInset>
       </SidebarProvider>
     </ThemeProvider>

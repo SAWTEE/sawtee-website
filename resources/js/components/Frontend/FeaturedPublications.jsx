@@ -6,7 +6,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
   return (
     <Glassbox className="bg-white dark:bg-bgDarker">
       <SimpleList
-        className="max-w-lg mx-auto border-none rounded-xl"
+        className="mx-auto max-w-lg rounded-xl border-none"
         heading={'Featured publications'}
       >
         {publications
@@ -30,9 +30,13 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
                     target="_blank"
                     rel="noopener noreferrer"
                     className="group-hover:opacity-80"
-                    href={`/category/publications/${publication.category.slug}/${publication.subtitle_slug}`}
+                    href={
+                      publication.volume_slug
+                        ? `/category/publications/${publication.category.slug}/${publication.volume_slug}`
+                        : `/publications/${publication.file?.name}`
+                    }
                   >
-                    <p className="font-sans text-sm font-semibold leading-4 md:text-md text-secondary-foreground group-hover:underline">
+                    <p className="md:text-md font-sans text-sm font-semibold leading-4 text-secondary-foreground group-hover:underline">
                       {publication.title}
                     </p>
 
@@ -49,7 +53,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
                     className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md"
                   >
                     <img
-                      className="object-cover w-full h-full border"
+                      className="h-full w-full border object-cover"
                       src={media}
                       alt={publication.title}
                       loading="lazy"
@@ -63,7 +67,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
       <hr className="my-6" />
       {blogPosts && blogPosts.length > 0 && (
         <SimpleList
-          className="max-w-lg mx-auto border-none rounded-xl"
+          className="mx-auto max-w-lg rounded-xl border-none"
           heading={'Blogs and Articles'}
         >
           {blogPosts
@@ -86,7 +90,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
                       className="group-hover:opacity-80"
                       href={`/category/${post.category.slug}/${post.slug}`}
                     >
-                      <p className="font-sans text-sm font-semibold leading-4 md:text-md text-secondary-foreground group-hover:underline">
+                      <p className="md:text-md font-sans text-sm font-semibold leading-4 text-secondary-foreground group-hover:underline">
                         {post.title}
                       </p>
 
@@ -103,7 +107,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
                       className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md"
                     >
                       <img
-                        className="object-cover w-full h-full border"
+                        className="h-full w-full border object-cover"
                         src={media}
                         alt={post.title}
                         loading="lazy"

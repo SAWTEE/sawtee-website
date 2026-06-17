@@ -1,13 +1,13 @@
 <?php return array (
   'barryvdh/laravel-debugbar' => 
   array (
-    'aliases' => 
-    array (
-      'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
-    ),
     'providers' => 
     array (
       0 => 'Barryvdh\\Debugbar\\ServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
     ),
   ),
   'barryvdh/laravel-ide-helper' => 
@@ -33,13 +33,13 @@
   ),
   'intervention/image' => 
   array (
-    'aliases' => 
-    array (
-      'Image' => 'Intervention\\Image\\Facades\\Image',
-    ),
     'providers' => 
     array (
       0 => 'Intervention\\Image\\ImageServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Image' => 'Intervention\\Image\\Facades\\Image',
     ),
   ),
   'laravel/breeze' => 
@@ -121,24 +121,24 @@
   ),
   'spatie/laravel-google-fonts' => 
   array (
-    'aliases' => 
-    array (
-      'GoogleFonts' => 'Spatie\\GoogleFonts\\GoogleFontsFacade',
-    ),
     'providers' => 
     array (
       0 => 'Spatie\\GoogleFonts\\GoogleFontsServiceProvider',
     ),
+    'aliases' => 
+    array (
+      'GoogleFonts' => 'Spatie\\GoogleFonts\\GoogleFontsFacade',
+    ),
   ),
   'spatie/laravel-ignition' => 
   array (
-    'aliases' => 
-    array (
-      'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
-    ),
     'providers' => 
     array (
       0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
     ),
   ),
   'spatie/laravel-medialibrary' => 

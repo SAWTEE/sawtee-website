@@ -1,10 +1,10 @@
 import {
-    NavigationMenu,
-    NavigationMenuContent,
-    NavigationMenuItem,
-    NavigationMenuLink,
-    NavigationMenuList,
-    NavigationMenuTrigger,
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
 import { Link, usePage } from '@inertiajs/react';
@@ -44,7 +44,7 @@ export default function DesktopNavigation({ menu }) {
               <NavigationMenuLink
                 asChild
                 active={active}
-                className="p-0 "
+                className="p-0"
                 onMouseEnter={() => handleHoverButton(index)}
               >
                 <Link href={menuItem.url}>
@@ -87,7 +87,7 @@ const DropDown = ({ className, menuItem }) => {
   return (
     <ul
       className={cn(
-        'dropdown-menu left-50 absolute hidden w-full min-w-64 border rounded-md mt-1 shadow-lg',
+        'dropdown-menu left-50 absolute mt-1 hidden w-full min-w-64 rounded-md border shadow-lg',
         className
       )}
     >
@@ -103,14 +103,14 @@ const DropDown = ({ className, menuItem }) => {
 const ListItem = React.forwardRef(({ className, item, ...props }, ref) => {
   return (
     <li
-    className={cn(
-          'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-          className
-        )}
+      className={cn(
+        'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+        className
+      )}
     >
       <Link
         ref={ref}
-className="flex w-full items-center justify-between"
+        className="flex w-full items-center justify-between"
         {...props}
       >
         <span className="mr-1 font-medium leading-none">{item.title}</span>

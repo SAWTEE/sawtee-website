@@ -51,15 +51,21 @@ const ArchivePost = ({ post, showFallbackImage }) => {
         </Link>
       </div>
       <div className="space-y-4 px-6">
-       {/* code changes for infocus external link */}
-          <a 
-  href={post.link ? post.link : (post.category.parent ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}` : `/category/${post.category.slug}/${post.slug}`)} 
-  className="primary-link"
->
-  <h3 className="inline-block text-lg font-medium leading-5 tracking-wide text-secondary-foreground/90 transition duration-500 ease-in-out hover:text-secondary-foreground/80 hover:underline hover:underline-offset-2">
-    {post.title}
-  </h3>
-</a>
+        {/* code changes for infocus external link */}
+        <a
+          href={
+            post.link
+              ? post.link
+              : post.category.parent
+                ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
+                : `/category/${post.category.slug}/${post.slug}`
+          }
+          className="primary-link"
+        >
+          <h3 className="inline-block text-lg font-medium leading-5 tracking-wide text-secondary-foreground/90 transition duration-500 ease-in-out hover:text-secondary-foreground/80 hover:underline hover:underline-offset-2">
+            {post.title}
+          </h3>
+        </a>
         <p
           className="line-clamp-3 text-sm text-secondary-foreground/70"
           dangerouslySetInnerHTML={{ __html: post.excerpt }}
@@ -70,7 +76,11 @@ const ArchivePost = ({ post, showFallbackImage }) => {
           </span>
 
           <ExploreButton
-            link={post.category?.parent ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}` : `/category/${post.category.slug}/${post.slug}`}
+            link={
+              post.category?.parent
+                ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
+                : `/category/${post.category.slug}/${post.slug}`
+            }
             text="Read more"
           />
         </div>

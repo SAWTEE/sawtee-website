@@ -139,12 +139,12 @@ export default function CreateMemberInstitute({ open, setOpen, members }) {
               </Select>
             </div>
           </div>
-        <DialogFooter className="pt-4">
-          <Button variant="outline" onClick={() => setOpen(!open)}>
-            Cancel
-          </Button>
-          <Button type="submit">Save</Button>
-        </DialogFooter>
+          <DialogFooter className="pt-4">
+            <Button variant="outline" onClick={() => setOpen(!open)}>
+              Cancel
+            </Button>
+            <Button type="submit">Save</Button>
+          </DialogFooter>
         </form>
       </DialogContent>
     </Dialog>
