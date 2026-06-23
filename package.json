@@ -7,7 +7,7 @@
     "build": "vite build && vite build --ssr",
     "lint": "eslint --fix .",
     "format": "prettier 'resources/{js,jsx}/**/*.{js,jsx}' --write",
-    "pre-commit": "npm run format && lint-staged && pretty-quick --staged"
+    "pre-commit": "npm install && npm run format && lint-staged && pretty-quick --staged"
   },
   "devDependencies": {
     "@inertiajs/react": "^2.0.3",
