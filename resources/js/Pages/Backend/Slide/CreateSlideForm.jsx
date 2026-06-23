@@ -17,7 +17,7 @@ import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 function CreateSlideForm({ open, setOpen, slider }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { setData, post, processing, errors, reset } = useForm({
     title: '',
     subtitle: '',
     slider_id: slider.id,

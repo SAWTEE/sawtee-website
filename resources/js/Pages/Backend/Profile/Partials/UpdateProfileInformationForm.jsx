@@ -12,11 +12,10 @@ export default function UpdateProfileInformation({
 }) {
   const user = usePage().props.auth.user;
   const { toast } = useToast();
-  const { data, setData, patch, errors, processing, recentlySuccessful } =
-    useForm({
-      name: user.name,
-      email: user.email,
-    });
+  const { data, setData, patch, errors, processing } = useForm({
+    name: user.name,
+    email: user.email,
+  });
 
   const submit = e => {
     e.preventDefault();

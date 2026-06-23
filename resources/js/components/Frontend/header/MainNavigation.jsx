@@ -5,7 +5,6 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
   NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from '@/components/ui/navigation-menu';
 import { ChevronDownIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';

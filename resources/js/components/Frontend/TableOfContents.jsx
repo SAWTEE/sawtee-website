@@ -1,7 +1,4 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Badge } from '@/components/ui/badge';
 import { Link } from '@inertiajs/react';
 
 export const TableOfContents = ({ articles, volumeSlug }) => {
@@ -11,7 +8,8 @@ export const TableOfContents = ({ articles, volumeSlug }) => {
 
       {articles && articles.length > 0 ? (
         <ul className="flex flex-col gap-1 pt-10">
-          {articles.map((article, index) => {
+          {articles.map(article => {
+            console.log(article);
             return (
               <li className="group mb-4" key={article.id}>
                 {/* Article Item Container */}

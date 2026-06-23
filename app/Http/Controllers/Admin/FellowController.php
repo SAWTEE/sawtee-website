@@ -72,7 +72,7 @@ class FellowController extends Controller
         $validated = $request->validate([
             "name" => "required|string",
             "designation" => "required|string",
-            "designation" => "required|string",
+            "experience" => "required|string",
             "description" => "required|string",
         ]);
 

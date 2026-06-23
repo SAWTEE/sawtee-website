@@ -19,7 +19,7 @@ export default function PublicationsArchive({
   featured_image,
   srcSet,
 }) {
-  const isTradeInsightCategory = category.slug === 'trade-insight';
+  // const isTradeInsightCategory = category.slug === 'trade-insight';
   return (
     <MainLayout>
       <WebsiteHead

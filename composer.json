@@ -10,7 +10,6 @@
   "require": {
     "php": "^8.1",
     "doctrine/dbal": "^3.7",
-    "enflow/laravel-social-share": "^3.3",
     "guzzlehttp/guzzle": "^7.2",
     "inertiajs/inertia-laravel": "^2.0",
     "intervention/image": "*",

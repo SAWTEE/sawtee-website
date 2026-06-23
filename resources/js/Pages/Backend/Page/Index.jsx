@@ -9,7 +9,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
 export default function Index({ auth, pages }) {
-  const { processing, get, delete: destroy } = useForm();
+  const { get, delete: destroy } = useForm();
 
   const { toast } = useToast();
   const handleEdit = (e, id) => {

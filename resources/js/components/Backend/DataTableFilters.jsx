@@ -40,7 +40,7 @@ export function GlobalFilter({ globalFilter, setGlobalFilter }) {
 }
 
 export function TypeFilter({ data, value, label, route }) {
-  const [selectedType, setSelectedType] = useState(value);
+  const [selectedType = null, setSelectedType] = useState(value);
   function handleTypeFilter(id) {
     setSelectedType(id);
     router.visit(route, {

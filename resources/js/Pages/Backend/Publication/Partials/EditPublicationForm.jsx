@@ -5,12 +5,7 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import ContentEditor from '@/components/Backend/ContentEditor';
-import {
-  Field,
-  FieldDescription,
-  FieldGroup,
-  FieldLabel,
-} from '@/components/ui/field';
+import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import {
   Select,
   SelectContent,
@@ -20,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 
 import { useForm } from '@inertiajs/react';
@@ -237,9 +231,7 @@ export default function EditPublicationForm({ publication, categories, tags }) {
             />
 
             {errors.image && (
-              <FormErrorMessage className="mt-2">
-                {errors.image}
-              </FormErrorMessage>
+              <InputError className="mt-2">{errors.image}</InputError>
             )}
           </div>
 

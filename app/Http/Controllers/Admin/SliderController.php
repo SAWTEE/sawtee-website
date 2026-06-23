@@ -8,6 +8,8 @@ use App\Models\Slide;
 use App\Models\Slider;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
+use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class SliderController extends Controller
 {
@@ -70,8 +72,12 @@ class SliderController extends Controller
     public function update(Request $request, Slider $slider, Slide $slide)
     {
         if ($request->hasFile('image')) {
-            $slide->image()->delete();
-            $slide->addMediaFromRequest('image')->toMediaCollection('slides');
+            $slide->image->delete();
+            try {
+                $slide->addMediaFromRequest('image')->toMediaCollection('slides');
+            } catch (FileDoesNotExist|FileIsTooBig $e) {
+
+            }
         }
         $slider->update($request->all());
         return to_route('admin.sliders.index');

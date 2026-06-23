@@ -7,7 +7,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 export default function Index({ auth, sections }) {
   const { toast } = useToast();
-  const { processing, delete: destroy, get } = useForm();
+  const { delete: destroy, get } = useForm();
 
   const handleEdit = (e, id) => {
     e.preventDefault();

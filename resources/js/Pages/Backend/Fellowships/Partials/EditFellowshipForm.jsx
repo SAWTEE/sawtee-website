@@ -15,7 +15,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function EditFellowshipForm({ open, setOpen, fellowship }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     title: fellowship.title,
     description: fellowship.description,
     year: fellowship.year,

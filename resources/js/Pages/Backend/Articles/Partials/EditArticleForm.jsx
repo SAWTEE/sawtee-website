@@ -34,7 +34,7 @@ export default function EditArticleForm({ article, tags, volumes }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: article.title,
     slug: article.slug,
-    trade_insight_volume_id: article.trade_insight_volume_id ?? null,
+    publication_id: article.publication_id ?? null,
     subtitle: article.subtitle,
     excerpt: article.excerpt,
     author: article.author,
@@ -61,8 +61,7 @@ export default function EditArticleForm({ article, tags, volumes }) {
 
   const [selectedVolume, setSelectedVolume] = React.useState(
     volumes
-      ? volumes.filter(volume => volume.id === data.trade_insight_volume_id)[0]
-          .id
+      ? volumes.filter(volume => volume.id === data.publication_id)[0].id
       : null
   );
 

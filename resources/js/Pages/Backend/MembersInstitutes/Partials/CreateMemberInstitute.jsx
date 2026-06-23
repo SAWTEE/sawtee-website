@@ -20,7 +20,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 export default function CreateMemberInstitute({ open, setOpen, members }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     name: '',
     link: '',
     logo_image_src: '',

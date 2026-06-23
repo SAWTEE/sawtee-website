@@ -17,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 
 export default function EditTheme({ theme, open, setOpen }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     title: theme.title,
     description: theme.description,
   });

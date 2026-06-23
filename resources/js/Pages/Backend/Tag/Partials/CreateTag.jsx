@@ -16,7 +16,7 @@ import {
 import { useForm } from '@inertiajs/react';
 
 export default function CreateTag({ open, setOpen }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { setData, post, processing, errors, reset } = useForm({
     name: '',
   });
   const { toast } = useToast();

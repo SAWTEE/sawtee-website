@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment } from 'react';
 
-const Contact = ({ content, pageData }) => {
+const Contact = ({ pageData }) => {
   return (
     <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
       <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">

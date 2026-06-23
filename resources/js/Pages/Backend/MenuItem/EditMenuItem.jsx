@@ -29,7 +29,7 @@ export default function EditMenuItem({
   setMenuItem,
   menuItems,
 }) {
-  const { data, setData, patch, processing, errors, reset } = useForm({
+  const { data, setData, patch, processing, reset } = useForm({
     title: item.title,
     name: item.name,
     menu_id: item.menu_id,
@@ -50,7 +50,7 @@ export default function EditMenuItem({
           description: 'Menu Item Updated Successfully',
         });
         setMenuItem(null);
-        reset('parent_id', 'menu_id', 'title', 'name', 'url', 'order');
+        reset();
         onClose(!isOpen);
       },
     });

@@ -11,7 +11,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
       >
         {publications
           .sort((a, b) => a.created_at - b.created_at)
-          .map((publication, idx) => {
+          .map(publication => {
             const media = publication.media.length
               ? publication.media.filter(
                   media =>
@@ -72,7 +72,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
         >
           {blogPosts
             .sort((a, b) => a.created_at - b.created_at)
-            .map((post, idx) => {
+            .map(post => {
               const media = post.media.length
                 ? post.media.filter(
                     media => media.collection_name === 'post-featured-image'

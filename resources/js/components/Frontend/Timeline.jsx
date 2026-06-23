@@ -1,11 +1,10 @@
-import { Link } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
 import ListItem from '../shared/ListItem';
 
 export default function VerticalTimeline({ items }) {
   return (
     <div className={'-my-6'}>
-      {items.map((item, index) => {
+      {items.map(item => {
         const file = item.media.filter(
           m => m.collection_name === 'post-files'
         )[0];

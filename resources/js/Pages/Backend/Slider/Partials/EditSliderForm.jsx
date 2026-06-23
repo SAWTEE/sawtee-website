@@ -16,9 +16,9 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import { AlertCircleIcon, PlusIcon } from 'lucide-react';
-import React, { useState } from 'react';
 import CreateSlideForm from '../../Slide/CreateSlideForm';
 import Slides from '../../Slide/Slides';
+import { useState } from 'react';
 
 export default function EditSliderForm({ slider, slides, pages }) {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,7 +26,7 @@ export default function EditSliderForm({ slider, slides, pages }) {
     page_id: slider.page_id,
   });
   const { toast } = useToast();
-  const [createSlide, setCreateSlide] = React.useState(false);
+  const [createSlide, setCreateSlide] = useState(false);
 
   const submit = e => {
     e.preventDefault();

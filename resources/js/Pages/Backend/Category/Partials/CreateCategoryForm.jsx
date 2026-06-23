@@ -31,7 +31,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 export default function CreateCategoryForm({ open, setOpen, categories }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     name: '',
     slug: '',
     type: 'post',
@@ -74,15 +74,7 @@ export default function CreateCategoryForm({ open, setOpen, categories }) {
           title: 'Category Created.',
           description: 'Category Created Successfully',
         });
-        reset(
-          'name',
-          'slug',
-          'type',
-          'parent_id',
-          'image',
-          'meta_title',
-          'meta_description'
-        );
+        reset();
         setOpen(false);
       },
       onError: errors => {

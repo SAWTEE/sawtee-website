@@ -14,7 +14,6 @@ import {
   UsersIcon,
   Wand,
   UserPen,
-  SquareLibrary,
   ReceiptText,
 } from 'lucide-react';
 

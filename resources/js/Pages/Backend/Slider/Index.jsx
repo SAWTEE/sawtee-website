@@ -12,7 +12,7 @@ import CreateSliderForm from './Partials/CreateSliderForm';
 
 export default function Index({ auth, sliders, pages }) {
   const { toast } = useToast();
-  const { processing, delete: destroy, get } = useForm();
+  const { delete: destroy, get } = useForm();
   const [sliderModal, setSliderModal] = React.useState(false);
 
   const handleEdit = (e, id) => {

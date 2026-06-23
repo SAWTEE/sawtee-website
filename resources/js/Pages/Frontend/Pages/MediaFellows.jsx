@@ -17,7 +17,7 @@ export default function MediaFellows() {
   return (
     <div className="mx-auto max-w-2xl px-8 py-20 md:px-0">
       <Glassbox className="mt-8 px-6 text-slate-800">
-        {sortByYear?.map(({ year, description, fellows }, i) => {
+        {sortByYear?.map(({ year, description, fellows }) => {
           return (
             <Accordion
               type="single"

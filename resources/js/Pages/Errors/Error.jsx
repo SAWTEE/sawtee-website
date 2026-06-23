@@ -1,7 +1,7 @@
 import { Head, Link } from '@inertiajs/react';
 import MainLayout from '../../components/Layouts/MainLayout';
 
-const ErrorPage = ({ status, message }) => {
+const ErrorPage = ({ status }) => {
   const title = {
     503: '503: Service Unavailable',
     500: '500: Server Error',
@@ -20,13 +20,13 @@ const ErrorPage = ({ status, message }) => {
       <Head>
         <title>{title}</title>
       </Head>
-      <div class="flex h-screen items-center justify-center bg-gray-100">
-        <div class="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
-          <h1 class="mb-8 text-4xl font-bold text-gray-800">{title}</h1>
-          <p class="mb-6 text-gray-600">{description}</p>
+      <div className="flex h-screen items-center justify-center bg-gray-100">
+        <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-lg">
+          <h1 className="mb-8 text-4xl font-bold text-gray-800">{title}</h1>
+          <p className="mb-6 text-gray-600">{description}</p>
           <Link
             href="/"
-            class="inline-block rounded-lg bg-sky-500 px-6 py-3 font-semibold text-white hover:bg-sky-600"
+            className="inline-block rounded-lg bg-sky-500 px-6 py-3 font-semibold text-white hover:bg-sky-600"
           >
             Go back to homepage
           </Link>

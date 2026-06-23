@@ -11,7 +11,7 @@ import 'swiper/css';
 import 'swiper/css/scrollbar';
 import { Badge } from '../ui/badge';
 
-const MultiPostsCarousel = ({ children, data, ...rest }) => {
+const MultiPostsCarousel = ({ data }) => {
   return (
     <Carousel
       opts={{

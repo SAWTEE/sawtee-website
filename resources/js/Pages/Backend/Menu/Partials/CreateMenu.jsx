@@ -16,7 +16,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function CreateMenu({ open, setOpen }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { setData, post, processing, errors, reset } = useForm({
     title: '',
     location: '',
   });

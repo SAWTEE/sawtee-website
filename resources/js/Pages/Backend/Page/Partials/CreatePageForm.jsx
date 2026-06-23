@@ -206,9 +206,7 @@ export default function CreatePageForm() {
           />
 
           {errors.content && (
-            <InputErrorMessage className="mt-2">
-              {errors.content}
-            </InputErrorMessage>
+            <InputError className="mt-2">{errors.content}</InputError>
           )}
         </div>
 

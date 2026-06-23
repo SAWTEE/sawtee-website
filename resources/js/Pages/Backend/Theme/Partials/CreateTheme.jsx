@@ -15,8 +15,8 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
-export default function CreateTheme({ oepn, setOpen }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+export default function CreateTheme({ open, setOpen }) {
+  const { setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',
   });

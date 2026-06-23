@@ -26,7 +26,7 @@ export default function EditMemberInstitute({
   institute,
   members,
 }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     name: institute.name,
     link: institute.link,
     logo_image_src: institute.logo_image_src,

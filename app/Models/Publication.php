@@ -18,10 +18,6 @@ use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
-
-/**
- * @mixin IdeHelperPublication
- */
 class Publication extends Model implements HasMedia
 {
     use HasFactory;

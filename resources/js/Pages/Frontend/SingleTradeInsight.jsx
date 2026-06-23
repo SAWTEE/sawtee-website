@@ -1,7 +1,6 @@
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
-import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { TableOfContents } from '@/components/Frontend/TableOfContents';
 import MainLayout from '@/components/Layouts/MainLayout';
@@ -17,6 +16,7 @@ export default function SingleTradeInsight({
   tradeInsights,
   showSubscriptionBox = true,
 }) {
+  console.log(tradeInsightVolume);
   return (
     <MainLayout>
       <WebsiteHead
@@ -27,15 +27,15 @@ export default function SingleTradeInsight({
       <PageLayout title={tradeInsightVolume.volume} featured_image={null}>
         <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
           <div className="">
-            <div class="flex flex-col justify-center gap-4 md:flex-row md:items-center lg:gap-4">
+            <div className="flex flex-col justify-center gap-4 md:flex-row md:items-center lg:gap-4">
               <img
-                class="aspect-auto w-full max-w-[300px] rounded-sm object-cover md:w-[30%] md:rounded-t-lg"
+                className="aspect-auto w-full max-w-[300px] rounded-sm object-cover md:w-[30%] md:rounded-t-lg"
                 src={media}
                 alt={tradeInsightVolume.volume}
               />
 
-              <div class="md:w-[70 %] flex w-full flex-col gap-4 rounded-md md:p-4">
-                <h2 class="text-xl font-semibold text-gray-900 dark:text-white md:text-3xl">
+              <div className="md:w-[70 %] flex w-full flex-col gap-4 rounded-md md:p-4">
+                <h2 className="text-xl font-semibold text-gray-900 dark:text-white md:text-3xl">
                   {tradeInsightVolume.subtitle
                     ? tradeInsightVolume.subtitle
                     : tradeInsightVolume.volume}
@@ -49,7 +49,7 @@ export default function SingleTradeInsight({
                 />
                 <div className="mt-4 flex gap-4">
                   <a
-                    href={tradeInsightVolume.full_article_link}
+                    href={`/publications/${tradeInsightVolume.file?.name}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-block"
@@ -71,7 +71,7 @@ export default function SingleTradeInsight({
                   </h3>
                   <TableOfContents
                     articles={tradeInsightVolume.articles}
-                    volumeSlug={tradeInsightVolume.slug}
+                    volumeSlug={tradeInsightVolume.volume_slug}
                   />
                 </div>
               </div>
@@ -105,7 +105,7 @@ export default function SingleTradeInsight({
                           </Link>
                           {post.volume && (
                             <p className="mt-2 text-xs text-muted-foreground">
-                              {formatDate(post.volume)}
+                              {post.volume}
                             </p>
                           )}
                         </li>

@@ -8,9 +8,8 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { slugify } from '@/lib/helpers';
 import { cn, htmlToText } from '@/lib/utils';
-import LogoCarousel from '@/components/Frontend/LogoCarousel';
 
-export default function SectionTemplate({ sections, content, pageData }) {
+export default function SectionTemplate({ sections, pageData }) {
   const logos = [];
   pageData.forEach(country =>
     country.institutes.map(
@@ -87,7 +86,7 @@ const Members = ({ memberInstitutions }) => {
 };
 
 const PageSection = ({ section, sections }) => {
-  const { title, slug, description } = section;
+  const { title, description } = section;
 
   const isTabs = section.type === 'tabs';
   const isAccordian = section.type === 'accordian';

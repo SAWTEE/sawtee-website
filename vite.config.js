@@ -25,7 +25,7 @@ export default defineConfig({
   server: {
     cors: {
       origin:
-        /^https?:\/\/(?:(?:[^:]+\.)?localhost|sawtee\.test|127\.0\.0\.1|\[::1\])(?::\d+)?$/,
+        /^https?:\/\/(?:(?:[^:]+\.)?localhost|sawtee\.test|127\.0\.0\.1|\[::1])(?::\d+)?$/,
     },
   },
 });

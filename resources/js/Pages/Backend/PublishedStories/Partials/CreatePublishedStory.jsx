@@ -1,4 +1,3 @@
-import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,10 +11,9 @@ import {
 } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
 
 export default function CreatePublishedStory({ fellows }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     title: '',
     fellow_id: undefined,
     link: '',

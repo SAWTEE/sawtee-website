@@ -10,7 +10,7 @@ import { Head, useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import CreateMenu from './Partials/CreateMenu';
 export default function Index({ auth, menus }) {
-  const { processing, get, delete: destroy } = useForm();
+  const { get, delete: destroy } = useForm();
   const [createMenu, setCreateMenu] = useState(false);
   const { toast } = useToast();
 

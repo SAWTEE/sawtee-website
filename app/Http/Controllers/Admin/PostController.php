@@ -30,7 +30,7 @@ class PostController extends Controller
 
         $posts = Post::with(['category', 'tags', 'theme'])
             ->whereIn('category_id', $parent_and_subcategory_ids)
-            ->idDescending()
+            ->orderByDesc('posts.id')
             ->get();
             // dd($posts);
 

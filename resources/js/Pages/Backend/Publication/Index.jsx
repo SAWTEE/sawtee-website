@@ -79,12 +79,12 @@ export default function Index({
         <DataTableColumnHeader column={column} title="Subtitle" />
       ),
     },
-    {
-      accessorKey: 'description',
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Description" />
-      ),
-    },
+    // {
+    //   accessorKey: 'description',
+    //   header: ({ column }) => (
+    //     <DataTableColumnHeader column={column} title="Description" />
+    //   ),
+    // },
     {
       accessorKey: 'category.name',
       header: ({ column }) => (

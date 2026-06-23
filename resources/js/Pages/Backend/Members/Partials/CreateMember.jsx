@@ -12,8 +12,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function CreateMember({ open, setOpen, members }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+export default function CreateMember({ open, setOpen }) {
+  const { setData, post, errors, reset } = useForm({
     country: '',
   });
   const { toast } = useToast();

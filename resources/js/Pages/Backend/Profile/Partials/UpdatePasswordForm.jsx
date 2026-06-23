@@ -12,12 +12,11 @@ export default function UpdatePasswordForm({ className = '' }) {
   const currentPasswordInput = useRef();
   const { toast } = useToast();
 
-  const { data, setData, errors, put, reset, processing, recentlySuccessful } =
-    useForm({
-      current_password: '',
-      password: '',
-      password_confirmation: '',
-    });
+  const { data, setData, errors, put, reset, processing } = useForm({
+    current_password: '',
+    password: '',
+    password_confirmation: '',
+  });
 
   const updatePassword = e => {
     e.preventDefault();

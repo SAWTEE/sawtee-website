@@ -22,7 +22,6 @@ use App\Http\Controllers\Admin\FellowController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\InstituteController;
 use App\Http\Controllers\Admin\PublishedStoryController;
-use App\Http\Controllers\Admin\TradeInsightVolumeController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SearchController;
@@ -54,7 +53,6 @@ Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
 Route::get('/search', SearchController::class);
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
-// Route::get('/trade-insight/{volume}/{article?}', [FrontendController::class, 'trade_insight_volume'])->name('trade-insight-volume.show');
 Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
 Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags']);
 Route::get('/themes/{themes:slug}/{subcategory?}/{post?}', [FrontendController::class, 'themes']);
@@ -99,7 +97,6 @@ Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.'
     Route::patch('/menus/edit-menu-item/{id}', [MenuController::class, 'editMenuItem'])->name('editMenuItem.menu');
     Route::delete('/menus/delete-menu-item/{id}', [MenuController::class, 'deleteMenuItem'])->name('deleteMenuItem.menu');
     Route::post('/menus/add-custom-link', [MenuController::class, 'addCustomLink'])->name('addCustomLink.menu');
-    Route::resource('/trade-insight-volumes', TradeInsightVolumeController::class);
     Route::resource('/articles', ArticleController::class);
     Route::resource('/fellowships', FellowshipController::class);
     Route::resource('/fellows', FellowController::class);

@@ -15,7 +15,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 
 import { useForm } from '@inertiajs/react';
@@ -211,9 +210,7 @@ export default function CreatePublicationForm({ categories, tags }) {
             />
 
             {errors.image && (
-              <FormErrorMessage className="mt-2">
-                {errors.image}
-              </FormErrorMessage>
+              <InputError className="mt-2">{errors.image}</InputError>
             )}
           </div>
 

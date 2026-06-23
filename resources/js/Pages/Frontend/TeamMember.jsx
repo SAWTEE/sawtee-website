@@ -1,7 +1,7 @@
-const TeamMember = ({ member, ...rest }) => {
-  const avatar = member.media.filter(
-    media => media.collection_name === 'avatar'
-  )[0];
+const TeamMember = ({ member }) => {
+  // const avatar = member.media.filter(
+  //   media => media.collection_name === 'avatar'
+  // )[0];
   return member.name;
 };
 

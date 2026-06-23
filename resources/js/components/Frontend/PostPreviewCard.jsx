@@ -1,4 +1,3 @@
-import PostCategories from '@/components/Frontend/post/post-categories';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';

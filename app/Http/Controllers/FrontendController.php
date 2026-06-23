@@ -16,13 +16,14 @@ use App\Models\Tag;
 use App\Models\Team;
 use App\Models\Theme;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class FrontendController extends Controller
 {
     /**
      * Retrieves data for the home page and renders the 'Frontend/Pages/Home' view.
      *
-     * @return \Inertia\Response
+     * @return Response
      */
     public function index()
     {
@@ -31,7 +32,6 @@ class FrontendController extends Controller
         $featured_publications = Publication::whereHas('tags', function ($query) {
             return $query->where('name', 'featured');
         })->with(['file', 'category'])->latest()->limit(3)->get();
-        $featured_blog_posts = [];
         $featured_Opinion_in_lead = Post::with(['category', 'tags', 'media'])
             ->whereHas('category', function ($query) {
                 $query->where('slug', 'opinion-in-lead');
@@ -75,7 +75,7 @@ class FrontendController extends Controller
             $responsive = $media?->getSrcSet('responsive');
 
             if ($responsive) {
-                array_push($slidesResponsiveImages, $responsive);
+                $slidesResponsiveImages[] = $responsive;
             }
         }
 
@@ -128,7 +128,7 @@ class FrontendController extends Controller
      * Retrieves a page by its slug and loads associated sections and themes if necessary.
      *
      * @param  string  $slug The slug of the page to retrieve
-     * @return \Inertia\Response
+     * @return Response
      */
     public function page(string $slug)
     {
@@ -162,7 +162,7 @@ class FrontendController extends Controller
         $tag = Tag::where('name', str_replace('-', ' ', $slug))->firstOrFail();
 
         $posts = $tag->posts()->paginate(10);
-        if (! $post) {
+        if (!$post) {
             $post = $tag->publications()->paginate(10);
         }
 
@@ -200,7 +200,7 @@ class FrontendController extends Controller
      * @param  string  $slug The slug of the category.
      * @param  string|null  $subcategory The slug of the subcategory (optional).
      * @param  string|null  $post The slug of the post (optional).
-     * @return \Inertia\Response The rendered Inertia response.
+     * @return Response The rendered Inertia response.
      *
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the category is not found.
      */
@@ -319,8 +319,8 @@ class FrontendController extends Controller
                 $article = Article::where('slug', $article)->firstOrFail();
                 $media = $article->getFirstMediaUrl('article-featured-image');
                 $srcSet = $article->getFirstMedia('article-featured-image')?->getSrcSet('responsive');
-                $related_articles = Article::where('trade_insight_volume_id', $trade_insight_volume->id)
-                    ->where('slug', '!=', $article)
+                $related_articles = Article::where('publication_id', $trade_insight_volume->id)
+                    ->where('id', '!=', $article->id)
                     ->latest()
                     ->take(5)
                     ->get();

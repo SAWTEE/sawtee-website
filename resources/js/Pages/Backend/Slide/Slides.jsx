@@ -9,7 +9,7 @@ import EditSlideForm from './EditSlideForm';
 
 const Slides = ({ slides, slider }) => {
   const { toast } = useToast();
-  const { processing, delete: destroy } = useForm();
+  const { delete: destroy } = useForm();
   const [editSlide, setEditSlide] = useState(null);
   const [editSlideFormShow, setEditSlideFormShow] = useState(false);
 

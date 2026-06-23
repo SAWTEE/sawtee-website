@@ -17,7 +17,7 @@ import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 export default function CreateFellow({ fellowships }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     name: '',
     fellowship_id: undefined,
     designation: '',

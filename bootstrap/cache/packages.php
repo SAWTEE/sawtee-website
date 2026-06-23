@@ -1,13 +1,13 @@
 <?php return array (
   'barryvdh/laravel-debugbar' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Barryvdh\\Debugbar\\ServiceProvider',
-    ),
     'aliases' => 
     array (
       'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
+    ),
+    'providers' => 
+    array (
+      0 => 'Barryvdh\\Debugbar\\ServiceProvider',
     ),
   ),
   'barryvdh/laravel-ide-helper' => 
@@ -121,24 +121,24 @@
   ),
   'spatie/laravel-google-fonts' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\GoogleFonts\\GoogleFontsServiceProvider',
-    ),
     'aliases' => 
     array (
       'GoogleFonts' => 'Spatie\\GoogleFonts\\GoogleFontsFacade',
     ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\GoogleFonts\\GoogleFontsServiceProvider',
+    ),
   ),
   'spatie/laravel-ignition' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    ),
     'aliases' => 
     array (
       'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     ),
   ),
   'spatie/laravel-medialibrary' => 

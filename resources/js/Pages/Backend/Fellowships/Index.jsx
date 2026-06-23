@@ -6,7 +6,7 @@ import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/components/ui/use-toast';
 import { Head, useForm } from '@inertiajs/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CreateFellowshipForm from './Partials/CreateFellowshipForm';
 import EditFellowshipForm from './Partials/EditFellowshipForm';
 

@@ -53,7 +53,6 @@ const PaginationButton = ({
 };
 
 const Pagination = ({
-  links,
   prevPage,
   nextPage,
   currentPage,

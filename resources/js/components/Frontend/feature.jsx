@@ -1,5 +1,4 @@
 import { cn } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
 import { ExternalLink } from 'lucide-react';
 import Title from '@/components/Frontend/title';
 

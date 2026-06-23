@@ -24,6 +24,7 @@ import { useEffect, useState } from 'react';
 import { Input } from '@/components/ui/input';
 import MenuItemsList from './MenuList';
 import EditMenuForm from './Partials/EditMenu';
+import InputError from '@/components/Backend/InputError.jsx';
 
 export default function ManageMenu({
   auth,
@@ -38,7 +39,6 @@ export default function ManageMenu({
   const { get } = useForm();
   const [editMenu, setEditMenu] = useState(false);
   const [menu, setMenu] = useState(desiredMenu);
-  const { toast } = useToast();
 
   const handleMenuSlected = id => {
     get(route('admin.manage.menus', id));
@@ -191,7 +191,7 @@ const AddToMenu = ({ options, name, menu, menuItems }) => {
           description: 'Menu Created Successfully',
         });
 
-        reset('name', 'title', 'order', 'parent_id', 'url');
+        reset();
       },
       onError: errors => {
         console.error(errors);

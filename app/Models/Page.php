@@ -14,9 +14,6 @@ use Spatie\Sluggable\SlugOptions;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 
-/**
- * @mixin IdeHelperPage
- */
 class Page extends Model implements HasMedia
 {
     use HasFactory;

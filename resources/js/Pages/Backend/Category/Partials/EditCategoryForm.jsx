@@ -38,7 +38,7 @@ export default function EditCategoryForm({
   category,
   categories,
 }) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, errors, reset } = useForm({
     name: category.name,
     type: category.type,
     slug: category.slug,

@@ -112,7 +112,7 @@ class Category extends Model implements HasMedia
   {
     $array = [];
     foreach ($children as $subcategory) {
-      array_push($array, $subcategory->id);
+      $array[] = $subcategory->id;
       if (count($subcategory->children)) {
         $array = array_merge($array, $this->getChildrenIds($subcategory->children));
       }
@@ -120,7 +120,7 @@ class Category extends Model implements HasMedia
     return $array;
   }
 
-  public function getAllPublicationsPost($category)
+  public function getAllPublicationsPost($category): ?array
   {
     if (!empty($category)) {
       $array = [];
@@ -135,7 +135,7 @@ class Category extends Model implements HasMedia
     }
   }
 
-  public function getAllChildrenPosts($children)
+  public function getAllChildrenPosts($children): array
   {
     $array = [];
     foreach ($children as $subcategory) {

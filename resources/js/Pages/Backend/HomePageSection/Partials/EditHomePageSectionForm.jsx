@@ -7,7 +7,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 export default function EditHomePageSectionForm({ section }) {
-  const { data, setData, post, processing, errors, reset, patch } = useForm({
+  const { data, setData, processing, errors, reset, patch } = useForm({
     name: section.name,
     description: section.description,
     order: section.order,

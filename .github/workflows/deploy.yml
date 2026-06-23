@@ -137,11 +137,6 @@ jobs:
             # chmod -R 775 bootstrap/cache
             # chmod -R 755 public
 
-            # Create storage link if it doesn't exist
-            if [ ! -L public/storage ]; then
-              php artisan storage:link
-            fi
-
             # # Create backups directory if it doesn't exist
             mkdir -p backups
 
@@ -199,6 +194,11 @@ jobs:
             php artisan view:cache
             php artisan google-fonts:fetch
             # php artisan inertia:start-ssr
+
+            # Create storage link if it doesn't exist
+            if [ ! -L public/storage ]; then
+                php artisan storage:link
+            fi
 
             # Test database connection
             echo "Testing database connection..."
