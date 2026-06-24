@@ -5,10 +5,7 @@ import MainLayout from '@/components/Layouts/MainLayout';
 import PageLayout from '@/components/Layouts/PageLayout';
 import { Button } from '@/components/ui/button';
 
-export default function SingleTradeInsight({
-  tradeInsightVolume,
-  media,
-}) {
+export default function SingleTradeInsight({ tradeInsightVolume, media }) {
   return (
     <MainLayout>
       <WebsiteHead
