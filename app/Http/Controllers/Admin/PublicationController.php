@@ -62,7 +62,7 @@ class PublicationController extends Controller
             'title' => 'required|string|max:255',
             'slug' => 'nullable|string|unique:pubications|max:255',
             'subtitle' => 'nullable|string|max:255',
-            'volume' => 'nullable|string|unique:pubications|max:255',
+            'volume' => 'nullable|string|max:255',
             'volume_slug' => 'nullable|string|unique:pubications|max:255',
             'description' => 'nullable|string|max:2000',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
@@ -93,7 +93,7 @@ class PublicationController extends Controller
             $publication->file()->save($file);
         }
 
-        return redirect()->route('admin.publications.index');
+        return to_route('admin.publications.index');
     }
 
     /**

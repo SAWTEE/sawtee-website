@@ -23,7 +23,7 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
   ],
-  plugins: ['prettier'],
+  plugins: ['prettier', 'react'],
   rules: {
     'react/jsx-first-prop-new-line': [2, 'multiline'],
     'react/jsx-max-props-per-line': [2, { maximum: 1, when: 'multiline' }],
@@ -38,6 +38,6 @@ module.exports = {
     ],
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
-    'no-console': 2,
+    'no-console': 'warn',
   },
 };

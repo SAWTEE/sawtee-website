@@ -25,7 +25,7 @@ export default function CreatePublicationForm({ categories, tags }) {
     category_id: '',
     title: '',
     subtitle: '',
-    volume: '',
+    volume: null,
     description: '',
     image: null,
     file: '',
@@ -87,7 +87,7 @@ export default function CreatePublicationForm({ categories, tags }) {
   return (
     <form onSubmit={submit}>
       <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12 flex flex-col gap-8 self-center px-4 md:col-span-8">
+        <div className="col-span-12 flex flex-col gap-8 px-4 md:col-span-8">
           <div className="mx-2">
             <Label htmlFor="title">Title/Issue</Label>
             <Input
@@ -154,7 +154,7 @@ export default function CreatePublicationForm({ categories, tags }) {
             )}
           </div>
         </div>
-        <div className="col-span-12 flex flex-col gap-8 self-center px-3 md:col-span-4">
+        <div className="col-span-12 flex flex-col gap-8 px-3 md:col-span-4">
           <fieldset className="mx-2">
             <Label as="legend" htmlFor="category_id">
               Category

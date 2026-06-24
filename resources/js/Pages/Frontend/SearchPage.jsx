@@ -31,7 +31,6 @@ export default function SearchPage({ posts, query }) {
       },
     });
   }
-  console.log('SearchPage posts:', posts);
 
   return (
     <>

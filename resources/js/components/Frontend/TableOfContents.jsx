@@ -9,13 +9,12 @@ export const TableOfContents = ({ articles, volumeSlug }) => {
       {articles && articles.length > 0 ? (
         <ul className="flex flex-col gap-1 pt-10">
           {articles.map(article => {
-            console.log(article);
             return (
               <li className="group mb-4" key={article.id}>
                 {/* Article Item Container */}
                 <div className="flex w-full flex-1 flex-col gap-1.5">
                   <Link
-                    className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                    className="text-xl text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 md:text-2xl"
                     href={`/category/publications/trade-insight/${volumeSlug}/${article.slug}`}
                   >
                     {article.title}

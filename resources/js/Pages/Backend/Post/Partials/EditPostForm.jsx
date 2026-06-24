@@ -86,7 +86,6 @@ export default function EditPostForm({
       ? categories.filter(cat => cat.id === data.category_id)[0].name
       : null
   );
-  console.log(selectedCategory);
 
   // function setDataTags(selectedValues) {
   //   const array = [];

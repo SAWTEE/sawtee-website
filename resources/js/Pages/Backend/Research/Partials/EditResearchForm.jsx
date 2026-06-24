@@ -40,7 +40,6 @@ export default function EditResearchForm({ research }) {
     research.file ? research.file.name : null
   );
 
-  console.log('Research Data:', data, 'Research:', research);
   const submit = e => {
     e.preventDefault();
     post(

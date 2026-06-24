@@ -313,7 +313,6 @@ class FrontendController extends Controller
             $trade_insight_volume = Publication::with('articles', 'media')->whereHas('category', function ($query) {
                 $query->where('slug', 'trade-insight');
             })->where('volume_slug', $post)->firstOrFail();
-            // dd($trade_insight_volume);
             $isArticleSlug = Article::where('slug', $article)->exists();
             if ($isArticleSlug) {
                 $article = Article::where('slug', $article)->firstOrFail();
@@ -335,14 +334,8 @@ class FrontendController extends Controller
 
             } else {
                 $media = $trade_insight_volume->getFirstMediaUrl('publication_featured_image');
-                // dd($media);
-                $trade_insights = Publication::with('media', 'category')->whereHas('category', function ($query) {
-                    $query->where('slug', 'trade-insight');
-                })->where('id', '!=', $trade_insight_volume->id)->orderByDesc('id')->limit(5)->get();
-
                 return Inertia::render('Frontend/SingleTradeInsight', [
                     'tradeInsightVolume' => $trade_insight_volume,
-                    'tradeInsights' => $trade_insights,
                     'media' => $media,
                 ]);
             }
