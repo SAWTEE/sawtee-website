@@ -1,23 +1,26 @@
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
+import tailwindcss from '@tailwindcss/vite';
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
     laravel({
-      input: ['resources/css/index.css', 'resources/js/app.jsx'],
-      ssr: 'resources/js/ssr.jsx',
+      input: ['resources/css/index.css', 'resources/js/app.tsx'],
+      ssr: 'resources/js/ssr.tsx',
       refresh: true,
     }),
     react(),
+    tailwindcss(),
   ],
+  resolve: {
+    alias: {
+      '@': resolve(__dirname, 'resources/js'),
+    },
+  },
   optimizeDeps: {
-    include: [
-      'react',
-      'react-dom',
-      '@inertiajs/react',
-      // Add other dependencies you're using
-    ],
+    include: ['react', 'react-dom', '@inertiajs/react'],
   },
   ssr: {
     noExternal: ['laravel-vite-plugin', '@inertiajs/server'],

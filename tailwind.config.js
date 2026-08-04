@@ -1,14 +1,12 @@
-import forms from '@tailwindcss/forms';
-import typograpgy from '@tailwindcss/typography';
 import defaultTheme from 'tailwindcss/defaultTheme';
 /** @type {import('tailwindcss').Config} */
-module.exports = {
+export default {
   darkMode: ['class'],
   content: [
     './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
     './storage/framework/views/*.php',
     './resources/views/**/*.blade.php',
-    './resources/js/**/*.jsx',
+    './resources/js/**/*.{js,jsx,ts,tsx}',
   ],
   prefix: '',
   theme: {
@@ -174,5 +172,5 @@ module.exports = {
   		}
   	}
   },
-  plugins: [forms, typograpgy, require('tailwindcss-animate')],
+  plugins: [],
 };

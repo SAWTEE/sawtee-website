@@ -1,6 +1,9 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@config '../../tailwind.config.js';
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin 'tailwindcss-animate';
+@custom-variant dark (&:is(.dark *));
 
 @layer base {
   :root {

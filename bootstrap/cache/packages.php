@@ -3,25 +3,11 @@
   array (
     'aliases' => 
     array (
-      'Debugbar' => 'Barryvdh\\Debugbar\\Facades\\Debugbar',
+      'Debugbar' => 'Fruitcake\\LaravelDebugbar\\Facades\\Debugbar',
     ),
     'providers' => 
     array (
-      0 => 'Barryvdh\\Debugbar\\ServiceProvider',
-    ),
-  ),
-  'barryvdh/laravel-ide-helper' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider',
-    ),
-  ),
-  'enflow/laravel-social-share' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Enflow\\SocialShare\\SocialShareServiceProvider',
+      0 => 'Fruitcake\\LaravelDebugbar\\ServiceProvider',
     ),
   ),
   'inertiajs/inertia-laravel' => 
@@ -29,17 +15,6 @@
     'providers' => 
     array (
       0 => 'Inertia\\ServiceProvider',
-    ),
-  ),
-  'intervention/image' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Intervention\\Image\\ImageServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Image' => 'Intervention\\Image\\Facades\\Image',
     ),
   ),
   'laravel/breeze' => 
@@ -112,13 +87,6 @@
       0 => 'Pest\\Laravel\\PestServiceProvider',
     ),
   ),
-  'rahulalam31/laravel-abuse-ip' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'RahulAlam31\\LaravelAbuseIp\\AbuseIPServiceProvider',
-    ),
-  ),
   'spatie/laravel-google-fonts' => 
   array (
     'aliases' => 
@@ -152,7 +120,7 @@
   array (
     'providers' => 
     array (
-      0 => 'Tightenco\\Ziggy\\ZiggyServiceProvider',
+      0 => 'Tighten\\Ziggy\\ZiggyServiceProvider',
     ),
   ),
 );

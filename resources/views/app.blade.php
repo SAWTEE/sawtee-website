@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title inertia>{{ config('app.name', 'SAWTEE') }}</title>
+    <title data-inertia>{{ config('app.name', 'SAWTEE') }}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 
     <!-- Loads default(Inter) google fonts -->
@@ -35,7 +35,7 @@
 
     @routes
     @viteReactRefresh
-    @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
+    @vite(['resources/css/index.css', 'resources/js/app.tsx'])
     @inertiaHead
 </head>
 
