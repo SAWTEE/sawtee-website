@@ -11,7 +11,7 @@ test('email verification screen can be rendered', function () {
         'email_verified_at' => null,
     ]);
 
-    $response = $this->actingAs($user)->get('/verify-email');
+    $response = $this->actingAs($user)->get('/admin/verify-email');
 
     $response->assertStatus(200);
 });
@@ -24,7 +24,7 @@ test('email can be verified', function () {
     Event::fake();
 
     $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
+        'admin.verification.verify',
         now()->addMinutes(60),
         ['id' => $user->id, 'hash' => sha1($user->email)]
     );
@@ -42,7 +42,7 @@ test('email is not verified with invalid hash', function () {
     ]);
 
     $verificationUrl = URL::temporarySignedRoute(
-        'verification.verify',
+        'admin.verification.verify',
         now()->addMinutes(60),
         ['id' => $user->id, 'hash' => sha1('wrong-email')]
     );

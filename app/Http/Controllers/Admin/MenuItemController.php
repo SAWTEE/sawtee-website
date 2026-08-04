@@ -46,7 +46,7 @@ class MenuItemController extends Controller
      */
     public function edit(MenuItem $menuItem)
     {
-        return Inertia::render('Backend/Menu/EditMenuItem', ['menu_item' => $menuItem]);
+        return Inertia::render('Backend/MenuItem/EditMenuItem', ['menu_item' => $menuItem]);
     }
 
     /**

@@ -102,7 +102,7 @@ const PageSection = ({ section, sections }) => {
       {isTabs && childSections.length > 0 && (
         <div className="px-6 py-4">
           <Tabs defaultValue={childSections[0].title} orientation="vertical">
-            <TabsList className="grid h-auto w-full grid-cols-3 bg-bgDarker bg-opacity-60 p-2">
+            <TabsList className="grid h-auto w-full grid-cols-3 bg-bgDarker/60 p-2">
               {childSections.map(({ title }) => (
                 <TabsTrigger key={title} value={title}>
                   <p className="font-sans text-lg font-bold md:text-xl">
@@ -115,7 +115,7 @@ const PageSection = ({ section, sections }) => {
               <TabsContent
                 key={title}
                 value={title}
-                className="space-y-2 rounded-xl bg-bgDarker bg-opacity-60 p-6 leading-8 text-zinc-700 dark:text-zinc-300"
+                className="space-y-2 rounded-xl bg-bgDarker/60 p-6 leading-8 text-zinc-700 dark:text-zinc-300"
               >
                 {description && (
                   <p className="list-decimal px-4">{htmlToText(description)}</p>
@@ -136,7 +136,7 @@ const PageSection = ({ section, sections }) => {
                     {title}
                   </p>
                 </AccordionTrigger>
-                <AccordionContent className="rounded-md bg-bgDarker bg-opacity-60">
+                <AccordionContent className="rounded-md bg-bgDarker/60">
                   <div
                     className="p-6 text-lg leading-8 text-zinc-700 dark:text-zinc-300"
                     // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>

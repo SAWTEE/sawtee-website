@@ -18,7 +18,7 @@ import { useForm } from '@inertiajs/react';
 import React from 'react';
 
 export default function CreateSectionForm({ sections, pages }) {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',
     type: 'default',

@@ -17,16 +17,29 @@ class UpdateAbuseIps extends Command
     {
         $this->info('Fetching IP blocklist...');
 
-        $ips = $this->fetchIpsFromSources(config('abuseip.source'));
+        $ips = $this->fetchIpsFromSources(config('abuseip.source', []));
 
-        if (empty($ips)) {
+        if ($ips === []) {
             $this->error('Failed to fetch IP blocklist');
 
             return;
         }
 
         if (config('abuseip.storage.compress')) {
-            $ips = array_map(fn (string $ip) => ip2long($ip), $ips);
+            $ips = array_values(array_filter(
+                array_map(function (string $ip) {
+                    $long = ip2long($ip);
+
+                    return $long === false ? null : $long;
+                }, $ips),
+                fn ($ip) => $ip !== null
+            ));
+        }
+
+        if ($ips === []) {
+            $this->error('Failed to parse IP blocklist');
+
+            return;
         }
 
         file_put_contents(
@@ -50,7 +63,9 @@ class UpdateAbuseIps extends Command
         $ips = [];
 
         foreach ($sources as $source) {
-            $response = Http::get($source);
+            $response = Http::timeout(15)
+                ->connectTimeout(5)
+                ->get($source);
 
             if ($response->successful()) {
                 $ips = array_merge($ips, $this->parseBlocklist($response->body()));
@@ -66,9 +81,9 @@ class UpdateAbuseIps extends Command
     {
         $lines = explode("\n", $blocklist);
 
-        return array_filter(
+        return array_values(array_filter(
             array_map(fn ($line) => preg_replace('/\s*#.*$/', '', trim($line)), $lines),
-            fn ($line) => filter_var($line, FILTER_VALIDATE_IP) !== false
-        );
+            fn ($line) => filter_var($line, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) !== false
+        ));
     }
 }

@@ -19,7 +19,7 @@ import { SocialMenu } from '../header/social-menu';
 import { MapModel } from '../MapModal';
 import { SubscribeForm } from '../NewsletterCallout';
 
-export default function Footer({ menu, socialMenu }) {
+export default function Footer({ menu = [], socialMenu = [] }) {
   const [mapModal, setMapModal] = useState(false);
 
   return (
@@ -44,8 +44,7 @@ export default function Footer({ menu, socialMenu }) {
               />
             </div>
           </div>
-          {menu &&
-            Object.entries(menu).map(([key, item]) => {
+          {Object.entries(menu ?? []).map(([key, item]) => {
               return (
                 <div
                   key={key}

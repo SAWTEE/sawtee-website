@@ -92,7 +92,7 @@ export default function OurWork({ themes, sections }) {
                 href={`/category/${link}`}
                 className="group absolute inset-0 flex h-full w-full flex-col items-center justify-between"
               >
-                <h2 className="title group-hover:bg-theme-500/70text-zinc-300 w-full self-start py-6 text-center text-lg md:text-2xl">
+                <h2 className="title group-hover:bg-theme-500/70 text-zinc-300 w-full self-start py-6 text-center text-lg md:text-2xl">
                   {title}
                 </h2>
                 {description && (

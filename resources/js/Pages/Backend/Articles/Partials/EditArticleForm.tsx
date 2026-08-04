@@ -115,9 +115,13 @@ export default function EditArticleForm({ article, tags, volumes }) {
   }, [tags]);
 
   React.useEffect(() => {
-    article.tags.map(tag => {
-      setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
-    });
+    setArticleTags(
+      article.tags.map(tag => ({ value: tag.id, label: tag.name }))
+    );
+    setData(
+      'tags',
+      article.tags.map(tag => tag.id)
+    );
   }, [article]);
 
   return (

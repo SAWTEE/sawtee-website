@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Spatie\Image\Manipulations;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -45,21 +45,21 @@ class Article extends Model implements HasMedia
             ->startSlugSuffixFrom(2);
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         // @phpstan-ignore-next-line
         $this->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_MAX, 300, 200)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->fit(Fit::Max, 300, 200)
+            ->format('webp')
             ->quality(75)
             ->nonQueued();
 
         // @phpstan-ignore-next-line
         $this->addMediaConversion('responsive')
-            ->fit(Manipulations::FIT_MAX, 1200, 800)
+            ->fit(Fit::Max, 1200, 800)
             ->performOnCollections('article-featured-image')
             ->quality(75)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->format('webp')
             ->withResponsiveImages()
             ->nonQueued();
     }

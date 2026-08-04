@@ -3,7 +3,24 @@
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
-@custom-variant dark (&:is(.dark *));
+
+/* Match Tailwind v3 `darkMode: ['class']` (html/body.dark toggles). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+  Preserve v3 utility looks for unchanged class names after the v4 scale shift
+  (shadow-sm / blur-sm / ring defaults). Custom shadcn radii stay in JS config.
+*/
+@theme {
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --drop-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.1), 0 1px 1px rgb(0 0 0 / 0.06);
+  --drop-shadow: 0 1px 2px rgb(0 0 0 / 0.1), 0 1px 1px rgb(0 0 0 / 0.06);
+  --blur-sm: 4px;
+  --blur: 8px;
+  --default-ring-width: 3px;
+  --default-ring-color: var(--color-blue-500);
+}
 
 @layer base {
   :root {
@@ -63,8 +80,7 @@
     --color-grey-lighter: #a6a6a6;
     --color-light-acc: #bfbfbf;
     --color-light: #d9d9d9;
-    --linkcolor: "#006181";
-    --color-border: "#ebebeb";
+    --linkcolor: #006181;
     --color-text: var(--color-dark);
     --color-text-reverse: var(--color-light);
   }
@@ -115,12 +131,28 @@
 }
 
 @layer base {
-  * {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
     @apply border-border;
     box-sizing: border-box;
   }
+
   body {
     @apply bg-bodyBackground dark:bg-background text-foreground;
+  }
+
+  /* Preserve Tailwind v3 preflight defaults that changed in v4. */
+  button:not(:disabled),
+  [role='button']:not(:disabled) {
+    cursor: pointer;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-gray-400);
   }
 
 
@@ -148,16 +180,6 @@
   .experience-text > a:hover {
     @apply underline underline-offset-4 opacity-70;
   }
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-* {
-    margin: 0;
 }
 
 html {

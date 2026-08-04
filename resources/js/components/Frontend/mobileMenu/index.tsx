@@ -72,18 +72,17 @@ const DropDownMenu = ({ menuItem, index, className }) => {
 };
 
 const MobileMenu = ({
-  menu = null,
+  menu = [],
   showSocialLinks = false,
   socialLinks = null,
 }) => {
   return (
     <ScrollArea className="h-full px-4">
-      {menu &&
-        menu.map((menuItem, index) => (
-          <React.Fragment key={menuItem.title}>
-            <DropDownMenu menuItem={menuItem} index={index} />
-          </React.Fragment>
-        ))}
+      {(menu ?? []).map((menuItem, index) => (
+        <React.Fragment key={menuItem.title}>
+          <DropDownMenu menuItem={menuItem} index={index} />
+        </React.Fragment>
+      ))}
 
       {showSocialLinks && (
         <div className="mx-auto my-5 p-5">

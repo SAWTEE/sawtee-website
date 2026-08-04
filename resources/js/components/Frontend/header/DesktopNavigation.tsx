@@ -13,7 +13,7 @@ import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 import MegaMenu from './MegaMenu';
 
-export default function DesktopNavigation({ menu }) {
+export default function DesktopNavigation({ menu = [] }) {
   const { url, props } = usePage();
   const { experts } = props;
 
@@ -31,7 +31,7 @@ export default function DesktopNavigation({ menu }) {
       viewport={false}
     >
       <NavigationMenuList className="gap-4">
-        {menu.map((menuItem, index) => {
+        {(menu ?? []).map((menuItem, index) => {
           const active = menuItem.url === `${url}`;
           const hasMegaMenu =
             menuItem.name === 'Our Work' || menuItem.name === 'Know Us';

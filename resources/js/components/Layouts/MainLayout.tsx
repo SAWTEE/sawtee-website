@@ -23,7 +23,8 @@ export default function MainLayout({ children, ...rest }) {
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const page = usePage();
-  const { primaryMenu, footerMenu } = page.props;
+  const primaryMenu = page.props.primaryMenu ?? [];
+  const footerMenu = page.props.footerMenu ?? [];
 
   const toggleVisibility = () => {
     if (typeof window !== 'undefined' && window.scrollY > 570) {

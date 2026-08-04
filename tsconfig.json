@@ -20,7 +20,7 @@
     "paths": {
       "@/*": ["resources/js/*"]
     },
-    "types": ["vite/client"]
+    "types": ["vite/client", "vitest/globals"]
   },
   "include": ["resources/js/**/*.ts", "resources/js/**/*.tsx", "resources/js/**/*.d.ts"],
   "exclude": ["node_modules", "public", "vendor"]

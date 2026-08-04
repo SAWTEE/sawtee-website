@@ -15,6 +15,7 @@ use App\Models\Slider;
 use App\Models\Tag;
 use App\Models\Team;
 use App\Models\Theme;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -68,8 +69,15 @@ class FrontendController extends Controller
             ->limit(6)
             ->get();
 
-        $slider = Slider::where('page_id', Page::where('name', 'home')->first()->id)->latest()->first();
-        $slides = $slider ? Slide::where('slider_id', $slider->id)->with('media')->orderBy('id', 'DESC')->take(5)->get() : [];
+        $homePage = Page::where(function ($query) {
+            $query->where('name', 'home')->orWhere('slug', 'home');
+        })->first();
+        $slider = $homePage
+            ? Slider::where('page_id', $homePage->id)->latest()->first()
+            : null;
+        $slides = $slider
+            ? Slide::where('slider_id', $slider->id)->with('media')->orderBy('id', 'DESC')->take(5)->get()
+            : collect();
         foreach ($slides as $slide) {
             $media = $slide->getFirstMedia('slides');
             $responsive = $media?->getSrcSet('responsive');
@@ -127,7 +135,7 @@ class FrontendController extends Controller
     /**
      * Retrieves a page by its slug and loads associated sections and themes if necessary.
      *
-     * @param  string  $slug The slug of the page to retrieve
+     * @param  string  $slug  The slug of the page to retrieve
      * @return Response
      */
     public function page(string $slug)
@@ -162,7 +170,7 @@ class FrontendController extends Controller
         $tag = Tag::where('name', str_replace('-', ' ', $slug))->firstOrFail();
 
         $posts = $tag->posts()->paginate(10);
-        if (!$post) {
+        if (! $post) {
             $post = $tag->publications()->paginate(10);
         }
 
@@ -197,12 +205,12 @@ class FrontendController extends Controller
     /**
      * Retrieves the category, subcategory, and post information based on the provided slugs.
      *
-     * @param  string  $slug The slug of the category.
-     * @param  string|null  $subcategory The slug of the subcategory (optional).
-     * @param  string|null  $post The slug of the post (optional).
+     * @param  string  $slug  The slug of the category.
+     * @param  string|null  $subcategory  The slug of the subcategory (optional).
+     * @param  string|null  $post  The slug of the post (optional).
      * @return Response The rendered Inertia response.
      *
-     * @throws \Illuminate\Database\Eloquent\ModelNotFoundException If the category is not found.
+     * @throws ModelNotFoundException If the category is not found.
      */
     public function category($slug, $subcategory = null, $post = null, $article = null)
     {
@@ -334,6 +342,7 @@ class FrontendController extends Controller
 
             } else {
                 $media = $trade_insight_volume->getFirstMediaUrl('publication_featured_image');
+
                 return Inertia::render('Frontend/SingleTradeInsight', [
                     'tradeInsightVolume' => $trade_insight_volume,
                     'media' => $media,

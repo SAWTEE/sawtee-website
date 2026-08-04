@@ -1,6 +1,5 @@
-import { createInertiaApp } from '@inertiajs/react';
+import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
 import { route as ziggyRoute } from '../../vendor/tightenco/ziggy';
 
@@ -11,20 +10,25 @@ createServer(page =>
     page,
     render: ReactDOMServer.renderToString,
     title: title => `${title} - ${appName}`,
-    resolve: name =>
-      resolvePageComponent(
-        `./Pages/${name}.tsx`,
-        import.meta.glob('./Pages/**/*.tsx')
-      ),
+    resolve: name => {
+      const pages = import.meta.glob<ResolvedComponent>('./Pages/**/*.tsx');
+      const importPage = pages[`./Pages/${name}.tsx`];
+
+      if (!importPage) {
+        throw new Error(`Page not found: ./Pages/${name}.tsx`);
+      }
+
+      return importPage();
+    },
     setup: ({ App, props }) => {
       const ziggy = (page.props as { ziggy?: Record<string, unknown> }).ziggy ?? {};
 
-      // @ts-expect-error Ziggy route helper assigned for SSR
-      global.route = (name, params, absolute) =>
+      // Ziggy SSR helper for page components.
+      (globalThis as any).route = (name: any, params: any, absolute: any) =>
         ziggyRoute(name, params, absolute, {
           ...ziggy,
           location: new URL(String(ziggy.location ?? '')),
-        });
+        } as any);
 
       return <App {...props} />;
     },

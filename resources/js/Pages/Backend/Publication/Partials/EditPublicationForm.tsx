@@ -21,7 +21,7 @@ import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 
 export default function EditPublicationForm({ publication, categories, tags }) {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors, reset } = useForm({
     category_id: publication.category_id,
     title: publication.title,
     subtitle: publication.subtitle || '',

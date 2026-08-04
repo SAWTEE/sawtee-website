@@ -189,8 +189,8 @@ const Globeanime = ({ darkMode = false }) => {
           style={{ left: dot.left, top: dot.top }}
           className="animate-fade-in absolute flex h-[3.6%] w-[2.5%] origin-center items-center justify-center opacity-0 transition-opacity delay-75"
         >
-          <span className="absolute inset-0 h-full w-full rounded-full bg-black bg-opacity-20 dark:bg-white" />
-          <span className="absolute h-4/5 w-4/5 rounded-full bg-black bg-opacity-90 dark:bg-white" />
+          <span className="absolute inset-0 h-full w-full rounded-full bg-black/20 dark:bg-white" />
+          <span className="absolute h-4/5 w-4/5 rounded-full bg-black/90 dark:bg-white" />
         </div>
       ))}
       <div className="absolute left-[51.15%] top-[10%] h-[20%] w-px overflow-hidden">

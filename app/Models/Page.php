@@ -5,23 +5,24 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Spatie\Image\Manipulations;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-
 
 class Page extends Model implements HasMedia
 {
     use HasFactory;
-    use InteractsWithMedia;
     use HasSlug;
+    use InteractsWithMedia;
+
     protected $fillable = ['name', 'slug', 'content', 'meta_title', 'meta_description', 'page_template'];
 
     protected $casts = ['pageData' => 'json'];
+
     /**
      * Get the options for generating the slug.
      */
@@ -36,7 +37,7 @@ class Page extends Model implements HasMedia
 
     public function pageData(): MorphMany
     {
-        return $this->morphMany(File::class, "fileable");
+        return $this->morphMany(File::class, 'fileable');
     }
 
     public function sections(): HasMany
@@ -54,22 +55,21 @@ class Page extends Model implements HasMedia
         return $this->hasMany(Slider::class);
     }
 
-
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this
             ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_MAX, 300, 100)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->fit(Fit::Max, 300, 100)
+            ->format('webp')
             ->quality(75)
             ->nonQueued();
 
         $this
             ->addMediaConversion('responsive')
-            ->fit(Manipulations::FIT_MAX, 1200, 400)
+            ->fit(Fit::Max, 1200, 400)
             ->performOnCollections('page-media')
             ->quality(75)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->format('webp')
             ->withResponsiveImages()
             ->nonQueued();
     }
@@ -80,8 +80,6 @@ class Page extends Model implements HasMedia
     {
         $this->addMediaCollection('page-media')->singleFile();
     }
-
-
 
     /**
      * Get the route key for the model.

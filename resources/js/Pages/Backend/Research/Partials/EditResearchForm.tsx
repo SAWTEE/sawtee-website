@@ -22,7 +22,7 @@ import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 
 export default function EditResearchForm({ research }) {
-  const { data, setData, post, processing, errors } = useForm({
+  const { data, setData, post, processing, errors, reset } = useForm({
     title: research.title ?? '',
     subtitle: research.subtitle ?? '',
     description: research.description ?? '',

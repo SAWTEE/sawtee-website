@@ -1,4 +1,5 @@
 import { ArrowLeft } from 'lucide-react';
+import { Link } from '@inertiajs/react';
 import PrimaryButton from '../Backend/PrimaryButton';
 
 const Page404 = ({ status, message }) => (
