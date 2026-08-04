@@ -179,7 +179,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
         </Link>
         {hasChildren && (
           <DropDown
-            className="left-full top-0 z-20 mt-0 min-w-64"
+            className="left-full top-0 z-20 min-w-64 pt-0"
             key={item.title}
             menuItem={item}
           />

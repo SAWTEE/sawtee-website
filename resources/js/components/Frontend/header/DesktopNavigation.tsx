@@ -107,7 +107,9 @@ const DropDown = ({
       className={cn(
         // Keep `hidden`; reveal only via CSS `.dropdown:hover > .dropdown-menu`
         // (direct-child combinator — must not use cascading group-hover names).
-        'dropdown-menu absolute left-0 z-50 mt-1 hidden w-full min-w-64 rounded-md border shadow-lg',
+        // Use `pt-*` (not `mt-*`) so padding bridges the gap between trigger and
+        // panel — margin leaves a dead zone that closes the menu on slow pointer travel.
+        'dropdown-menu absolute left-0 z-50 hidden w-full min-w-64 rounded-md border pt-2 shadow-lg',
         className
       )}
     >
@@ -151,7 +153,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
         </Link>
         {hasChildren && (
           <DropDown
-            className="left-full top-0 z-20 mt-0 min-w-64"
+            className="left-full top-0 z-20 min-w-64 pt-0"
             key={item.title}
             menuItem={item}
           />

@@ -115,8 +115,13 @@ describe('DesktopNavigation', () => {
     const dropdownRoot = container.querySelector('.dropdown');
     expect(dropdownRoot).toBeTruthy();
 
-    const submenu = container.querySelector(':scope > .dropdown-menu, .dropdown > .dropdown-menu');
-    expect(submenu ?? container.querySelector('.dropdown-menu')).toBeTruthy();
+    const submenu =
+      container.querySelector('.dropdown > .dropdown-menu') ??
+      container.querySelector('.dropdown-menu');
+    expect(submenu).toBeTruthy();
+    // Hover bridge: padding (not margin) so the pointer can travel into the panel
+    expect(submenu?.className).toMatch(/\bpt-/);
+    expect(submenu?.className).not.toMatch(/\bmt-/);
   });
 
   it('scopes nested submenus so ancestor hover does not open grandchildren', () => {
