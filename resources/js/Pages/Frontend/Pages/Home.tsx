@@ -64,15 +64,22 @@ const Home = ({
         </DialogContent>
       </Dialog> */}
 
-      <Section className="carousel-section px-4 py-4 md:px-8 md:py-5 lg:px-12 lg:py-4">
+      <Section className="carousel-section px-4 py-5 md:px-8 md:py-6 lg:px-12 lg:py-6">
         <div
           className={cn(
-            'mx-auto grid grid-cols-1 items-stretch gap-6 lg:gap-8',
-            FeaturedPublicationSectionIsVisible?.show === 1 && 'lg:grid-cols-6'
+            'mx-auto grid grid-cols-1 items-start gap-6 lg:gap-8',
+            FeaturedPublicationSectionIsVisible?.show === 1 && 'lg:grid-cols-12'
           )}
           id="carousel-section"
         >
-          <div className="overflow-hidden rounded-md ring-1 ring-black/5 dark:ring-white/10 lg:col-span-4">
+          <div
+            className={cn(
+              'min-w-0',
+              FeaturedPublicationSectionIsVisible?.show === 1
+                ? 'lg:col-span-8'
+                : 'lg:col-span-12'
+            )}
+          >
             {slides &&
             homePageSections?.find(h => h.name === 'Carousel')?.show ? (
               <CarouselSection
@@ -83,18 +90,12 @@ const Home = ({
           </div>
           {featuredPublications &&
             FeaturedPublicationSectionIsVisible?.show === 1 && (
-              <div
-                className={
-                  slides
-                    ? 'self-stretch lg:col-span-2'
-                    : 'self-end lg:col-span-2'
-                }
-              >
+              <aside className="min-w-0 lg:col-span-4">
                 <FeaturedPublications
                   publications={featuredPublications}
                   blogPosts={featuredBlogPosts}
                 />
-              </div>
+              </aside>
             )}
         </div>
       </Section>
@@ -161,7 +162,7 @@ const Section = ({ children = undefined, title = null, className = '', dark = un
   return (
     <section
       className={cn(
-        'mx-auto w-full px-6 py-12 dark:bg-background md:px-20 md:py-20',
+        'mx-auto w-full px-6 py-12 dark:bg-background md:px-20 md:py-16 lg:py-20',
         dark ? 'bg-bgDarker' : 'bg-bodyBackground',
         className
       )}

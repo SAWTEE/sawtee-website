@@ -37,7 +37,12 @@ const FullWidthCarousel = ({
   }
 
   return (
-    <div className={cn('relative w-full', className)}>
+    <div
+      className={cn(
+        'relative w-full overflow-hidden rounded-md bg-theme-900 ring-1 ring-black/10 dark:ring-white/10',
+        className
+      )}
+    >
       <Carousel
         setApi={setApi}
         opts={{ loop: true, align: 'start' }}

@@ -1,126 +1,183 @@
-import Glassbox from './Glassbox';
-import SimpleList from './SimpleList';
+import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
+import type { ReactNode } from 'react';
 
-export const FeaturedPublications = ({ publications = undefined, blogPosts = undefined }: any) => {
+export const FeaturedPublications = ({
+  publications = undefined,
+  blogPosts = undefined,
+}: any) => {
   return (
-    <Glassbox className="bg-white dark:bg-bgDarker">
-      <SimpleList
-        className="mx-auto max-w-lg rounded-xl border-none"
-        heading={'Featured publications'}
-      >
-        {publications
-          .sort((a: any, b: any) => a.created_at - b.created_at)
-          .map((publication: any) => {
-            const media = publication.media.length
-              ? publication.media.filter(
-                  // @ts-ignore allowlist-migration
-                  media =>
-                    media.collection_name === 'publication_featured_image'
-                )[0].original_url
-              : `https://placehold.co/120x150/eee/000/webp?text=No+image`;
-            return (
-              <li
-                className={
-                  'group mb-4 flex w-full cursor-pointer items-center justify-between gap-6 last:mb-0'
-                }
-                key={publication.id}
-              >
-                <div className="w-2/3 max-w-full grow">
-                  <a
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="group-hover:opacity-80"
-                    href={
-                      publication.volume_slug
-                        ? `/category/publications/${publication.category.slug}/${publication.volume_slug}`
-                        : `/publications/${publication.file?.name}`
-                    }
-                  >
-                    <p className="md:text-md font-sans text-sm font-semibold leading-4 text-secondary-foreground group-hover:underline">
-                      {publication.title}
-                    </p>
+    <div className="rounded-md border border-borderColor/80 bg-white px-4 py-5 shadow-sm dark:bg-bgDarker sm:px-5 sm:py-6">
+      <PublicationList
+        heading="Featured publications"
+        items={publications}
+        kind="publication"
+      />
 
-                    <p className="mt-1 text-xs text-muted-foreground">
-                      {publication.subtitle}
-                    </p>
-                  </a>
-                </div>
-
-                {media && (
-                  <div
-                    title={publication.title}
-                    aria-label={publication.title}
-                    className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md"
-                  >
-                    <img
-                      className="h-full w-full border object-cover"
-                      src={media}
-                      alt={publication.title}
-                      loading="lazy"
-                    />
-                  </div>
-                )}
-              </li>
-            );
-          })}
-      </SimpleList>
-      <hr className="my-6" />
-      {blogPosts && blogPosts.length > 0 && (
-        <SimpleList
-          className="mx-auto max-w-lg rounded-xl border-none"
-          heading={'Blogs and Articles'}
-        >
-          {blogPosts
-            .sort((a: any, b: any) => a.created_at - b.created_at)
-            .map((post: any) => {
-              const media = post.media.length
-                ? post.media.filter(
-                    // @ts-ignore allowlist-migration
-                    media => media.collection_name === 'post-featured-image'
-                  )[0].original_url
-                : `https://placehold.co/120x150/eee/000/webp?text=No+image`;
-              return (
-                <li
-                  className={
-                    'group mb-4 flex w-full cursor-pointer items-center justify-between gap-6 last:mb-0'
-                  }
-                  key={post.id}
-                >
-                  <div className="w-2/3 max-w-full grow">
-                    <Link
-                      className="group-hover:opacity-80"
-                      href={`/category/${post.category.slug}/${post.slug}`}
-                    >
-                      <p className="md:text-md font-sans text-sm font-semibold leading-4 text-secondary-foreground group-hover:underline">
-                        {post.title}
-                      </p>
-
-                      <p className="mt-1 text-xs text-muted-foreground">
-                        {post.subtitle}
-                      </p>
-                    </Link>
-                  </div>
-
-                  {media && (
-                    <div
-                      title={post.title}
-                      aria-label={post.title}
-                      className="mx-auto h-[90px] w-1/3 max-w-16 overflow-hidden rounded-md"
-                    >
-                      <img
-                        className="h-full w-full border object-cover"
-                        src={media}
-                        alt={post.title}
-                        loading="lazy"
-                      />
-                    </div>
-                  )}
-                </li>
-              );
-            })}
-        </SimpleList>
-      )}
-    </Glassbox>
+      {blogPosts && blogPosts.length > 0 ? (
+        <>
+          <div
+            className="my-5 border-t border-borderColor/70 dark:border-white/10"
+            aria-hidden
+          />
+          <PublicationList
+            heading="Blogs and articles"
+            items={blogPosts}
+            kind="post"
+          />
+        </>
+      ) : null}
+    </div>
   );
 };
+
+type ListKind = 'publication' | 'post';
+
+function PublicationList({
+  heading,
+  items,
+  kind,
+}: {
+  heading: string;
+  items: any[] | undefined;
+  kind: ListKind;
+}) {
+  if (!items?.length) {
+    return null;
+  }
+
+  const sorted = [...items].sort(
+    (a: any, b: any) => a.created_at - b.created_at
+  );
+
+  return (
+    <div>
+      <h3 className="mb-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
+        {heading}
+      </h3>
+      <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
+        {sorted.map((item: any) => {
+          const media = resolveMedia(item, kind);
+          const href = resolveHref(item, kind);
+
+          return (
+            <li key={item.id} className="group py-3 first:pt-0 last:pb-0">
+              <ItemLink kind={kind} href={href}>
+                <ListCopy title={item.title} subtitle={item.subtitle} />
+                {media ? (
+                  <ListThumb src={media} alt={item.title} kind={kind} />
+                ) : null}
+              </ItemLink>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
+  );
+}
+
+function ItemLink({
+  kind,
+  href,
+  children,
+}: {
+  kind: ListKind;
+  href: string;
+  children: ReactNode;
+}) {
+  const className = 'flex items-start justify-between gap-3';
+
+  if (kind === 'post') {
+    return (
+      <Link href={href} className={className}>
+        {children}
+      </Link>
+    );
+  }
+
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={className}
+    >
+      {children}
+    </a>
+  );
+}
+
+function ListCopy({
+  title,
+  subtitle,
+}: {
+  title: string;
+  subtitle?: string | null;
+}) {
+  return (
+    <div className="min-w-0 flex-1">
+      <p className="font-sans text-sm font-semibold leading-snug text-secondary-foreground transition-colors group-hover:text-theme-700 group-hover:underline group-hover:underline-offset-2 dark:group-hover:text-theme-300 md:text-[0.9375rem]">
+        {title}
+      </p>
+      {subtitle ? (
+        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+          {subtitle}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function ListThumb({
+  src,
+  alt,
+  kind,
+}: {
+  src: string;
+  alt: string;
+  kind: ListKind;
+}) {
+  return (
+    <div
+      title={alt}
+      aria-hidden
+      className={cn(
+        'shrink-0 overflow-hidden rounded-sm border border-borderColor/70 bg-muted/30',
+        kind === 'publication' ? 'h-[72px] w-14' : 'h-14 w-14'
+      )}
+    >
+      <img
+        className="h-full w-full object-cover"
+        src={src}
+        alt=""
+        loading="lazy"
+      />
+    </div>
+  );
+}
+
+function resolveMedia(item: any, kind: ListKind): string | null {
+  if (!item.media?.length) {
+    return `https://placehold.co/120x150/eee/000/webp?text=No+image`;
+  }
+
+  const collection =
+    kind === 'publication'
+      ? 'publication_featured_image'
+      : 'post-featured-image';
+
+  return (
+    item.media.find((media: any) => media.collection_name === collection)
+      ?.original_url ?? `https://placehold.co/120x150/eee/000/webp?text=No+image`
+  );
+}
+
+function resolveHref(item: any, kind: ListKind): string {
+  if (kind === 'publication') {
+    return item.volume_slug
+      ? `/category/publications/${item.category.slug}/${item.volume_slug}`
+      : `/publications/${item.file?.name}`;
+  }
+
+  return `/category/${item.category.slug}/${item.slug}`;
+}
