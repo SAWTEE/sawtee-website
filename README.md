@@ -84,6 +84,20 @@ Recommended deploy flow:
 
 Do not set `ASSET_URL=public` — leave `ASSET_URL` empty unless you use a CDN with a full absolute URL.
 
+
+
+## Caching (shared-hosting safe)
+
+Menus, home page sections, and the XML sitemap use **explicit cache keys** with TTLs (not Redis cache tags), so the site works on typical shared hosting with `file` or `array` cache drivers.
+
+- Menus: ~1 hour (`menus.location.{header|footer}`)
+- Home assembler payload: ~5 minutes (`home.page.data`)
+- Sitemap XML: ~1 hour (`sitemap.xml`)
+
+Observers clear these keys when pages, posts, publications, articles, categories, menus, or home sections are saved/deleted.
+
+**Optional advanced tip:** If you later run Redis and want tag-based invalidation, you can introduce cache tags around the same keys — but tags are **not required** for production on shared hosting.
+
 ## License
 
 The project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

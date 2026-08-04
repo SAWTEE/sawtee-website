@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSeoMeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,6 +17,7 @@ use Spatie\Sluggable\SlugOptions;
 class Article extends Model implements HasMedia
 {
     use HasFactory;
+    use HasSeoMeta;
     use HasSlug;
     use InteractsWithMedia;
 
@@ -72,7 +74,12 @@ class Article extends Model implements HasMedia
 
     public function volume(): BelongsTo
     {
-        return $this->belongsTo(Publication::class);
+        return $this->belongsTo(Publication::class, 'publication_id');
+    }
+
+    public function publication(): BelongsTo
+    {
+        return $this->belongsTo(Publication::class, 'publication_id');
     }
 
     public function tags(): BelongsToMany

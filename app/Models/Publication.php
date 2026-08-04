@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSeoMeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -20,11 +21,12 @@ use Spatie\Sluggable\SlugOptions;
 class Publication extends Model implements HasMedia
 {
     use HasFactory;
+    use HasSeoMeta;
     use HasSlug;
     use InteractsWithMedia;
     use Searchable;
 
-    protected $fillable = ['title', 'subtitle', 'description', 'volume', 'category_id'];
+    protected $fillable = ['title', 'subtitle', 'description', 'volume', 'category_id', 'meta_title', 'meta_description'];
 
     protected $with = ['media', 'file'];
 

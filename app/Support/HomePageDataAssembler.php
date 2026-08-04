@@ -11,6 +11,7 @@ use App\Models\Slider;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 
 class HomePageDataAssembler
 {
@@ -21,8 +22,18 @@ class HomePageDataAssembler
      */
     public function assemble(): array
     {
-        $slidesResponsiveImages = [];
+        return Cache::remember(
+            ContentCache::homeKey(),
+            ContentCache::HOME_TTL,
+            fn () => $this->build()
+        );
+    }
 
+    /**
+     * @return array<string, mixed>
+     */
+    protected function build(): array
+    {
         $featuredPublications = Publication::query()
             ->whereHas('tags', fn (Builder $query) => $query->where('name', 'featured'))
             ->with(['file', 'category'])

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSeoMeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -15,6 +16,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class Research extends Model implements HasMedia
 {
     use HasFactory;
+    use HasSeoMeta;
     use InteractsWithMedia;
     use Searchable;
 

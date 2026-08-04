@@ -5,6 +5,7 @@ namespace App\Support;
 use App\Models\Menu;
 use App\Models\MenuItem;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 
 class MenuTreeBuilder
@@ -15,6 +16,18 @@ class MenuTreeBuilder
      * @return Collection<int, MenuItem>
      */
     public function forLocation(string $location): Collection
+    {
+        return Cache::remember(
+            ContentCache::menuKey($location),
+            ContentCache::MENU_TTL,
+            fn () => $this->buildForLocation($location)
+        );
+    }
+
+    /**
+     * @return Collection<int, MenuItem>
+     */
+    protected function buildForLocation(string $location): Collection
     {
         try {
             $menu = Menu::query()->where('location', $location)->first();
