@@ -5,7 +5,6 @@ import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
 import WebsiteHead from '@/components/Frontend/Head';
 import MultiPostsCarousel from '@/components/Frontend/MultiPostsSlider';
 import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
-import Particles from '@/components/Frontend/Particles';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
 import VideoCarousel from '@/components/Frontend/VideoCarousel';
@@ -13,9 +12,7 @@ import FeaturedSection from '@/components/Frontend/feature';
 import Title from '@/components/Frontend/title';
 import ListItem from '@/components/shared/ListItem';
 import { formatDate } from '@/lib/helpers';
-// import { useState } from 'react';
 import { cn } from '@/lib/utils';
-// import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Link } from '@inertiajs/react';
 import MainLayout from '../../../components/Layouts/MainLayout';
 import { features } from '@/lib/data';
@@ -67,17 +64,15 @@ const Home = ({
         </DialogContent>
       </Dialog> */}
 
-      <Section py={4} className="carousel-section px-6 lg:py-4">
+      <Section className="carousel-section py-8 md:py-10">
         <div
           className={cn(
-            'grid grid-cols-1 gap-10',
-            FeaturedPublicationSectionIsVisible?.show === 1 &&
-              'mx-auto lg:grid-cols-6'
+            'mx-auto grid max-w-7xl grid-cols-1 items-stretch gap-8 lg:gap-10',
+            FeaturedPublicationSectionIsVisible?.show === 1 && 'lg:grid-cols-6'
           )}
           id="carousel-section"
         >
-          <div className="place-self-center overflow-hidden rounded-md shadow-xl lg:col-span-4">
-            {/* Carousel Section */}
+          <div className="overflow-hidden rounded-md ring-1 ring-black/5 dark:ring-white/10 lg:col-span-4">
             {slides &&
             homePageSections?.find(h => h.name === 'Carousel')?.show ? (
               <CarouselSection
@@ -86,13 +81,12 @@ const Home = ({
               />
             ) : null}
           </div>
-          {/* Featured Publication Section */}
           {featuredPublications &&
             FeaturedPublicationSectionIsVisible?.show === 1 && (
               <div
                 className={
                   slides
-                    ? 'self-center lg:col-span-2'
+                    ? 'self-stretch lg:col-span-2'
                     : 'self-end lg:col-span-2'
                 }
               >
@@ -122,15 +116,15 @@ const Home = ({
         )}
 
       {features && (
-        <section className="reform-section dark:bg-gray-900">
-          <div className="relative mx-auto px-4 py-16 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8 lg:py-20">
-            <SvgBackground svgStyles={'dark:text-gray-800'} />
-            <Particles className="pointer-events-none absolute inset-0" />
-            <div className="max-w-9xl relative mx-auto">
-              <FeaturedSection features={features} />
-            </div>
+        <Section className="reform-section relative overflow-hidden">
+          <SvgBackground
+            className="opacity-40 dark:opacity-20"
+            svgStyles="dark:text-theme-900 text-theme-100"
+          />
+          <div className="relative mx-auto max-w-5xl">
+            <FeaturedSection features={features} />
           </div>
-        </section>
+        </Section>
       )}
       <Section className="outreach-section">
         <div className="mx-auto max-w-5xl">

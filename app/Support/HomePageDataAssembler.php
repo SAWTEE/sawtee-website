@@ -141,11 +141,8 @@ class HomePageDataAssembler
 
         foreach ($slides as $slide) {
             $media = $slide->getFirstMedia('slides');
-            $responsive = $media?->getSrcSet('responsive');
-
-            if ($responsive) {
-                $slidesResponsiveImages[] = $responsive;
-            }
+            // Keep indexes aligned with $slides so the carousel can pair srcsets safely.
+            $slidesResponsiveImages[] = $media?->getSrcSet('responsive') ?? '';
         }
 
         return [$slides, $slidesResponsiveImages];
