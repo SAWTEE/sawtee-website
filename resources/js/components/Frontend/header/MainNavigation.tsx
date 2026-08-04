@@ -48,9 +48,7 @@ export default function MainNavigation({ menu = [] }: MainNavigationProps) {
             <NavigationMenuItem
               key={menuItem.title}
               className={
-                !hasMegaMenu && hasChildren
-                  ? 'dropdown group/dropdown relative'
-                  : 'relative'
+                !hasMegaMenu && hasChildren ? 'dropdown relative' : 'relative'
               }
             >
               <NavigationMenuLink
@@ -138,8 +136,8 @@ const DropDown = ({
   return (
     <ul
       className={cn(
+        // Reveal only via CSS `.dropdown:hover > .dropdown-menu` (no cascading groups).
         'dropdown-menu absolute left-0 z-50 hidden w-fit pt-2 shadow-lg',
-        'group-hover/dropdown:block group-focus-within/dropdown:block',
         className
       )}
     >
@@ -162,7 +160,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
     const hasChildren = (item.children?.length ?? 0) > 0;
 
     return (
-      <li className="dropdown group/dropdown relative">
+      <li className="dropdown relative">
         <Link
           ref={ref}
           className={cn(
@@ -174,7 +172,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
           <span className="mr-1 font-medium leading-none">{item.title}</span>
           {hasChildren && (
             <ChevronDownIcon
-              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-hover/dropdown:rotate-180"
+              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300"
               aria-hidden="true"
             />
           )}

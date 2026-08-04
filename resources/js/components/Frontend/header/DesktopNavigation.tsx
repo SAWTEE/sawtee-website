@@ -50,9 +50,7 @@ export default function DesktopNavigation({
             <NavigationMenuItem
               key={menuItem.title}
               className={
-                !hasMegaMenu && hasChildren
-                  ? 'dropdown group/dropdown relative'
-                  : 'relative'
+                !hasMegaMenu && hasChildren ? 'dropdown relative' : 'relative'
               }
             >
               <NavigationMenuLink
@@ -107,9 +105,9 @@ const DropDown = ({
   return (
     <ul
       className={cn(
-        // Tailwind v4: utility `hidden` beats @layer base CSS, so reveal via group-hover
+        // Keep `hidden`; reveal only via CSS `.dropdown:hover > .dropdown-menu`
+        // (direct-child combinator — must not use cascading group-hover names).
         'dropdown-menu absolute left-0 z-50 mt-1 hidden w-full min-w-64 rounded-md border shadow-lg',
-        'group-hover/dropdown:block group-focus-within/dropdown:block',
         className
       )}
     >
@@ -134,7 +132,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
     return (
       <li
         className={cn(
-          'dropdown group/dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+          'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
           className
         )}
       >
@@ -146,7 +144,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
           <span className="mr-1 font-medium leading-none">{item.title}</span>
           {hasChildren && (
             <ChevronDownIcon
-              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-hover/dropdown:rotate-180"
+              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300"
               aria-hidden="true"
             />
           )}
