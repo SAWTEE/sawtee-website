@@ -62,7 +62,7 @@ const FullWidthCarousel = ({
                 key={slide.id}
                 className="relative basis-full pl-0"
               >
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-theme-900 sm:aspect-[2/1] lg:aspect-[21/9]">
+                <div className="relative aspect-[16/9] w-full overflow-hidden bg-theme-900 sm:aspect-[2/1] lg:aspect-[2/1]">
                   {imageSrc ? (
                     <img
                       src={imageSrc}

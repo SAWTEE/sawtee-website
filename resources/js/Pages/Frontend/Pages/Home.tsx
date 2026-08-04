@@ -64,10 +64,10 @@ const Home = ({
         </DialogContent>
       </Dialog> */}
 
-      <Section className="carousel-section py-8 md:py-10">
+      <Section className="carousel-section px-4 py-4 md:px-8 md:py-5 lg:px-12 lg:py-4">
         <div
           className={cn(
-            'mx-auto grid max-w-7xl grid-cols-1 items-stretch gap-8 lg:gap-10',
+            'mx-auto grid grid-cols-1 items-stretch gap-6 lg:gap-8',
             FeaturedPublicationSectionIsVisible?.show === 1 && 'lg:grid-cols-6'
           )}
           id="carousel-section"
