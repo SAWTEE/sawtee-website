@@ -10,18 +10,28 @@ import { Head, Link, useForm } from '@inertiajs/react';
 
 type LoginProps = { status?: string; canResetPassword?: boolean };
 
+type LoginForm = {
+  email: string;
+  password: string;
+  remember: boolean;
+};
+
 export default function Login({ status, canResetPassword }: LoginProps) {
-  const { data, setData, post, processing, errors, reset } = useForm({
-    email: '',
-    password: '',
-    remember: false,
-  });
+  const { data, setData, post, processing, errors, reset } = useForm<LoginForm>(
+    {
+      email: '',
+      password: '',
+      remember: false,
+    }
+  );
 
   const { toast } = useToast();
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
 
+    // Always submit a real boolean — Inertia JSON bodies omit unchecked native
+    // checkboxes when not using useForm data; keep remember in the payload.
     post(route('login'), {
       onSuccess: () => {
         toast({
@@ -82,7 +92,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             <Checkbox
               name="remember"
               checked={data.remember}
-              onChange={(e) => setData('remember', e.target.checked)}
+              onChange={e => setData('remember', Boolean(e.target.checked))}
             />
             <span className="ms-2 text-sm text-gray-600">Remember me</span>
           </label>
