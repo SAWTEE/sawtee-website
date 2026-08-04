@@ -13,6 +13,7 @@ use App\Models\Page;
 use App\Models\Post;
 use App\Models\Publication;
 use App\Observers\ContentCacheObserver;
+use App\Support\ContentCache;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\Conversions\FileManipulator as SpatieFileManipulator;
@@ -37,6 +38,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Drop Eloquent-serialized menu/home cache from pre-Laravel-13 / serializable_classes=false.
+        ContentCache::forgetStaleObjectCaches();
+
         $observer = ContentCacheObserver::class;
 
         foreach ([

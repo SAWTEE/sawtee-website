@@ -12,26 +12,46 @@ class ContentCache
 
     public const TAXONOMY_TTL = 1800;
 
+    /**
+     * Bump when cached payload shape changes (e.g. arrays instead of Eloquent).
+     */
+    public const PAYLOAD_VERSION = 'v2';
+
     public static function menuKey(string $location): string
     {
-        return "menus.location.{$location}";
+        return 'menus.'.self::PAYLOAD_VERSION.".location.{$location}";
     }
 
     public static function homeKey(): string
     {
-        return 'home.page.data';
+        return 'home.page.data.'.self::PAYLOAD_VERSION;
     }
 
     public static function forgetMenus(): void
     {
         foreach (['header', 'footer'] as $location) {
+            Cache::forget("menus.location.{$location}");
             Cache::forget(self::menuKey($location));
         }
     }
 
     public static function forgetHome(): void
     {
+        Cache::forget('home.page.data');
         Cache::forget(self::homeKey());
+    }
+
+    /**
+     * Drop legacy Eloquent-serialized cache entries (pre-PAYLOAD_VERSION keys).
+     * Safe to call on every boot: current versioned keys are left intact.
+     */
+    public static function forgetStaleObjectCaches(): void
+    {
+        foreach (['header', 'footer'] as $location) {
+            Cache::forget("menus.location.{$location}");
+        }
+
+        Cache::forget('home.page.data');
     }
 
     public static function forgetAll(): void

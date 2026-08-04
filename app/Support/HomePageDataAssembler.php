@@ -18,15 +18,29 @@ class HomePageDataAssembler
     /**
      * Assemble Inertia props for the frontend home page.
      *
+     * Cached as plain arrays so Laravel 13's cache.serializable_classes=false
+     * does not return __PHP_Incomplete_Class on read.
+     *
      * @return array<string, mixed>
      */
     public function assemble(): array
     {
-        return Cache::remember(
-            ContentCache::homeKey(),
-            ContentCache::HOME_TTL,
-            fn () => $this->build()
-        );
+        $key = ContentCache::homeKey();
+        $cached = Cache::get($key);
+
+        if ($this->isUnusableCacheValue($cached)) {
+            Cache::forget($key);
+            $cached = null;
+        }
+
+        if (is_array($cached)) {
+            return $cached;
+        }
+
+        $payload = $this->build();
+        Cache::put($key, $payload, ContentCache::HOME_TTL);
+
+        return $payload;
     }
 
     /**
@@ -56,17 +70,20 @@ class HomePageDataAssembler
         [$slides, $slidesResponsiveImages] = $this->homeSlides();
 
         return [
-            'slides' => $slides,
-            'infocus' => $this->featuredPostsByCategorySlug('in-focus', 5),
-            'sawteeInMedia' => $this->publishedPostsByCategorySlug('sawtee-in-media', 6),
-            'events' => $this->publishedPostsByCategorySlug('featured-events', 5),
-            'featuredPublications' => $featuredPublications,
-            'featuredBlogPosts' => $featuredBlogPosts,
-            'publications' => $publications,
-            'newsletters' => $this->publishedPostsByCategorySlug('newsletters', 6),
-            'webinars' => $this->publishedPostsByCategorySlug('webinar-series', 5),
+            'slides' => $slides->toArray(),
+            'infocus' => $this->featuredPostsByCategorySlug('in-focus', 5)->toArray(),
+            'sawteeInMedia' => $this->publishedPostsByCategorySlug('sawtee-in-media', 6)->toArray(),
+            'events' => $this->publishedPostsByCategorySlug('featured-events', 5)->toArray(),
+            'featuredPublications' => $featuredPublications->toArray(),
+            'featuredBlogPosts' => array_values(array_map(
+                fn (Post $post) => $post->toArray(),
+                $featuredBlogPosts
+            )),
+            'publications' => $publications->toArray(),
+            'newsletters' => $this->publishedPostsByCategorySlug('newsletters', 6)->toArray(),
+            'webinars' => $this->publishedPostsByCategorySlug('webinar-series', 5)->toArray(),
             'slidesResponsiveImages' => $slidesResponsiveImages,
-            'homePageSections' => HomePageSection::all(),
+            'homePageSections' => HomePageSection::all()->toArray(),
         ];
     }
 
@@ -132,5 +149,36 @@ class HomePageDataAssembler
         }
 
         return [$slides, $slidesResponsiveImages];
+    }
+
+    protected function isUnusableCacheValue(mixed $value): bool
+    {
+        if ($value === null) {
+            return false;
+        }
+
+        if (! is_array($value)) {
+            return true;
+        }
+
+        foreach ([
+            'slides',
+            'infocus',
+            'sawteeInMedia',
+            'events',
+            'featuredPublications',
+            'featuredBlogPosts',
+            'publications',
+            'newsletters',
+            'webinars',
+            'homePageSections',
+        ] as $key) {
+            if (! array_key_exists($key, $value) || ! is_array($value[$key])) {
+                return true;
+            }
+        }
+
+        return ! array_key_exists('slidesResponsiveImages', $value)
+            || ! is_array($value['slidesResponsiveImages']);
     }
 }
