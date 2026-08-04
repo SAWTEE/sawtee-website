@@ -151,6 +151,20 @@ export type ZiggyConfig = {
   routes?: Record<string, unknown>;
 };
 
+export type TrendDirection = 'up' | 'down' | 'neutral';
+
+export type AnalyticsTopPage = {
+  path: string;
+  views: number;
+};
+
+export type AnalyticsSummary = {
+  views_today: number;
+  views_this_week: number;
+  views_this_month: number;
+  top_pages: AnalyticsTopPage[];
+};
+
 export type SharedProps = {
   auth: {
     user: User | null;
@@ -168,6 +182,25 @@ export type SharedProps = {
 export type PageProps<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T & SharedProps;
+
+export type DashboardProps = PageProps<{
+  posts: number;
+  publications: number;
+  researchs: number;
+  postsIncreasePercent: number;
+  publicationsIncreasePercent: number;
+  researchsIncreasePercent: number;
+  postsThisMonth: number;
+  postsLastMonth: number;
+  publicationsThisMonth: number;
+  publicationsLastMonth: number;
+  researchsThisMonth: number;
+  researchsLastMonth: number;
+  postsTrend: TrendDirection;
+  publicationsTrend: TrendDirection;
+  researchsTrend: TrendDirection;
+  analytics: AnalyticsSummary;
+}>;
 
 export type HomePageProps = PageProps<{
   slides?: Slide[];
