@@ -90,7 +90,7 @@ export default function UpdateProfileInformation({
             <p className="mt-2 text-sm text-gray-800">
               Your email address is unverified.
               <Link
-                href={route('admin.verification.send')}
+                href={route('verification.send')}
                 method="post"
                 as="button"
                 className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
