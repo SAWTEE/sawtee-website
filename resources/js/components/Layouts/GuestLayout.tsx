@@ -1,9 +1,12 @@
-// @ts-nocheck
 import ApplicationLogo from '@/components/shared/ApplicationLogo';
 import { Link } from '@inertiajs/react';
 import { ModeToggle } from '../Frontend/header/mode-toggle';
 
-export default function Guest({ children = undefined }) {
+import type { ReactNode } from 'react';
+
+type GuestLayoutProps = { children?: ReactNode };
+
+export default function Guest({ children }: GuestLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
       <div className="absolute bottom-10 right-10">

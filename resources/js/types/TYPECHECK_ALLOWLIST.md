@@ -3,30 +3,24 @@
 Files marked with `// @ts-nocheck` while the shared/core Inertia layer is checked under `strict: true`.
 
 **Strictly typed core (not allowlisted):**
-- `resources/js/types/*` (contracts + Ziggy/shared props)
+- `resources/js/types/*` (contracts + Ziggy/shared props + SEO page prop contracts)
 - `resources/js/lib/utils.ts`
-- `resources/js/components/Layouts/MainLayout.tsx`
-- `resources/js/components/Frontend/header/DesktopNavigation.tsx`
-- `resources/js/components/Frontend/header/MainNavigation.tsx`
-- `resources/js/components/Backend/{InputError,InputLabel,PrimaryButton,SecondaryButton,TextInput}.tsx`
+- `resources/js/components/Layouts/{MainLayout,PageLayout,PostLayout,GuestLayout}.tsx`
+- `resources/js/components/Frontend/header/{DesktopNavigation,MainNavigation,mode-toggle}.tsx`
+- `resources/js/components/Backend/{InputError,InputLabel,PrimaryButton,SecondaryButton,TextInput,Checkbox}.tsx`
 - `resources/js/components/ui/{button,label,input}.tsx`
-- `resources/js/components/shared/theme-provider.tsx`
+- `resources/js/components/shared/{theme-provider,ApplicationLogo}.tsx`
+- Cleared this session: `Page`, `Post`, `SearchPage`, `Category`, `Archives/Archive`, Head/SEO helpers, Backend Auth pages, and several shared Frontend components.
 
 Remove allowlist entries as each file is migrated.
 
-Count: 232
+Count: 196
 
 - `resources/js/Pages/Backend/Articles/Create.tsx`
 - `resources/js/Pages/Backend/Articles/Edit.tsx`
 - `resources/js/Pages/Backend/Articles/Index.tsx`
 - `resources/js/Pages/Backend/Articles/Partials/CreateArticleForm.tsx`
 - `resources/js/Pages/Backend/Articles/Partials/EditArticleForm.tsx`
-- `resources/js/Pages/Backend/Auth/ConfirmPassword.tsx`
-- `resources/js/Pages/Backend/Auth/ForgotPassword.tsx`
-- `resources/js/Pages/Backend/Auth/Login.tsx`
-- `resources/js/Pages/Backend/Auth/Register.tsx`
-- `resources/js/Pages/Backend/Auth/ResetPassword.tsx`
-- `resources/js/Pages/Backend/Auth/VerifyEmail.tsx`
 - `resources/js/Pages/Backend/Category/Index.tsx`
 - `resources/js/Pages/Backend/Category/Partials/CreateCategoryForm.tsx`
 - `resources/js/Pages/Backend/Category/Partials/EditCategoryForm.tsx`
@@ -112,7 +106,6 @@ Count: 232
 - `resources/js/Pages/Backend/Theme/Partials/CreateTheme.tsx`
 - `resources/js/Pages/Backend/Theme/Partials/EditTheme.tsx`
 - `resources/js/Pages/Errors/Error.tsx`
-- `resources/js/Pages/Frontend/Archives/Archive.tsx`
 - `resources/js/Pages/Frontend/Archives/CovidArchive.tsx`
 - `resources/js/Pages/Frontend/Archives/DefaultArchive.tsx`
 - `resources/js/Pages/Frontend/Archives/EventsArchive.tsx`
@@ -123,22 +116,14 @@ Count: 232
 - `resources/js/Pages/Frontend/Archives/ResearchArchive.tsx`
 - `resources/js/Pages/Frontend/Archives/TeamsArchive.tsx`
 - `resources/js/Pages/Frontend/Article.tsx`
-- `resources/js/Pages/Frontend/Category.tsx`
-- `resources/js/Pages/Frontend/Page.tsx`
 - `resources/js/Pages/Frontend/Pages/Contact.tsx`
-- `resources/js/Pages/Frontend/Pages/DefaultPage.tsx`
 - `resources/js/Pages/Frontend/Pages/Home.tsx`
 - `resources/js/Pages/Frontend/Pages/MediaFellows.tsx`
 - `resources/js/Pages/Frontend/Pages/OurWork.tsx`
-- `resources/js/Pages/Frontend/Pages/ReformMonitor.tsx`
 - `resources/js/Pages/Frontend/Pages/SectionTemplate.tsx`
-- `resources/js/Pages/Frontend/Pages/WebinarPost.tsx`
-- `resources/js/Pages/Frontend/Post.tsx`
-- `resources/js/Pages/Frontend/SearchPage.tsx`
 - `resources/js/Pages/Frontend/SingleTradeInsight.tsx`
 - `resources/js/Pages/Frontend/TeamMember.tsx`
 - `resources/js/app.tsx`
-- `resources/js/components/Backend/Checkbox.tsx`
 - `resources/js/components/Backend/ContentEditor.tsx`
 - `resources/js/components/Backend/DangerButton.tsx`
 - `resources/js/components/Backend/DataTableActions.tsx`
@@ -152,20 +137,12 @@ Count: 232
 - `resources/js/components/Backend/NavLink.tsx`
 - `resources/js/components/Frontend/AirBnbCard.tsx`
 - `resources/js/components/Frontend/CardWithEffect.tsx`
-- `resources/js/components/Frontend/ExploreButton.tsx`
 - `resources/js/components/Frontend/FeaturedPublications.tsx`
 - `resources/js/components/Frontend/FullWidthCarousel.tsx`
-- `resources/js/components/Frontend/Glassbox.tsx`
-- `resources/js/components/Frontend/Head.tsx`
 - `resources/js/components/Frontend/LogoCarousel.tsx`
 - `resources/js/components/Frontend/MapModal.tsx`
 - `resources/js/components/Frontend/MultiPostsSlider.tsx`
-- `resources/js/components/Frontend/NewsletterCallout.tsx`
-- `resources/js/components/Frontend/Pagination.tsx`
 - `resources/js/components/Frontend/Particles.tsx`
-- `resources/js/components/Frontend/PostPreviewCard.tsx`
-- `resources/js/components/Frontend/SimpleAlerts.tsx`
-- `resources/js/components/Frontend/SimpleList.tsx`
 - `resources/js/components/Frontend/SvgBackground.tsx`
 - `resources/js/components/Frontend/Swiper.tsx`
 - `resources/js/components/Frontend/TableOfContents.tsx`
@@ -178,27 +155,15 @@ Count: 232
 - `resources/js/components/Frontend/header/ExpertCard.tsx`
 - `resources/js/components/Frontend/header/MegaMenu.tsx`
 - `resources/js/components/Frontend/header/header.tsx`
-- `resources/js/components/Frontend/header/mode-toggle.tsx`
 - `resources/js/components/Frontend/header/searchModal.tsx`
 - `resources/js/components/Frontend/header/social-menu.tsx`
 - `resources/js/components/Frontend/mobileMenu/index.tsx`
 - `resources/js/components/Frontend/page404.tsx`
-- `resources/js/components/Frontend/post/featured-media.tsx`
-- `resources/js/components/Frontend/post/post-categories.tsx`
-- `resources/js/components/Frontend/post/post-header.tsx`
-- `resources/js/components/Frontend/post/post-meta.tsx`
-- `resources/js/components/Frontend/post/post-tags.tsx`
-- `resources/js/components/Frontend/sidebarWidget.tsx`
-- `resources/js/components/Frontend/subscriptionCard.tsx`
 - `resources/js/components/Frontend/title.tsx`
 - `resources/js/components/Layouts/AuthenticatedLayout.tsx`
-- `resources/js/components/Layouts/GuestLayout.tsx`
-- `resources/js/components/Layouts/PageLayout.tsx`
-- `resources/js/components/Layouts/PostLayout.tsx`
 - `resources/js/components/app-sidebar.tsx`
 - `resources/js/components/nav-main.tsx`
 - `resources/js/components/nav-user.tsx`
-- `resources/js/components/shared/ApplicationLogo.tsx`
 - `resources/js/components/shared/BlurIn.tsx`
 - `resources/js/components/shared/FadeText.tsx`
 - `resources/js/components/shared/ListItem.tsx`
@@ -223,7 +188,6 @@ Count: 232
 - `resources/js/components/ui/dropdown-menu.tsx`
 - `resources/js/components/ui/field.tsx`
 - `resources/js/components/ui/multi-select.tsx`
-- `resources/js/components/ui/navigation-menu.tsx`
 - `resources/js/components/ui/popover.tsx`
 - `resources/js/components/ui/radio-group.tsx`
 - `resources/js/components/ui/scroll-area.tsx`

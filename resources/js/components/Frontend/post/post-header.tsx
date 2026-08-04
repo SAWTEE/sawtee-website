@@ -1,17 +1,27 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
+import type { Category } from '@/types';
+import type { ReactNode } from 'react';
 import PostCategories from './post-categories';
 
+type PostHeaderProps = {
+  heading?: string | null;
+  categories?: Category | null;
+  description?: string | null;
+  color?: string;
+  className?: string;
+  textStyle?: string;
+  children?: ReactNode;
+};
+
 const PostHeader = ({
-  heading = undefined,
+  heading,
   categories = null,
-  description = undefined,
-  color = undefined,
+  description,
   className = '',
-  textStyle = undefined,
-  children = undefined,
+  textStyle,
+  children,
   ...rest
-}) => (
+}: PostHeaderProps) => (
   <div
     className={cn('post-header text-left md:text-center', className)}
     {...rest}
@@ -28,7 +38,7 @@ const PostHeader = ({
       </h1>
     )}
 
-    {description && <Text>{description}</Text>}
+    {description && <p>{description}</p>}
     {children}
   </div>
 );

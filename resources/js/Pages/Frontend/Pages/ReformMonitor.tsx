@@ -1,20 +1,13 @@
-// @ts-nocheck
 import SimpleAlerts from '@/components/Frontend/SimpleAlerts';
+import type { HTMLAttributes } from 'react';
 
-const ReformMonitor = ({ content = undefined, ...rest }) => {
-  //   const reportUrl = import.meta.env.VITE_REFORM_PLATFORM_EMBBED_URL;
+type ReformMonitorProps = HTMLAttributes<HTMLElement> & {
+  content?: string | null;
+};
+
+const ReformMonitor = ({ content, ...rest }: ReformMonitorProps) => {
   return (
     <section className="w-full px-10 pb-20 pt-5 lg:px-20" {...rest}>
-      {/* <iframe
-        title="Reform Meter Dashboard_revised"
-        src="https://app.powerbi.com/view?r=eyJrIjoiNzE2YjYyODYtYTFjYy00OTU2LTgzNjQtOGNiYzhjNzBiMDBmIiwidCI6IjE2YWJhZmY3LTMwYjItNDVkYS1iZWMwLWIxY2RjMmZiYzdhZCIsImMiOjEwfQ%3D%3D&amp;embedImagePlaceholder=true"
-        width="100%"
-        height="1200"
-        loading="lazy"
-        allowFullScreen="allowfullscreen"
-        className="mt-10 w-full dark:bg-black"
-      /> */}
-
       {content && <div dangerouslySetInnerHTML={{ __html: content }} />}
 
       <SimpleAlerts

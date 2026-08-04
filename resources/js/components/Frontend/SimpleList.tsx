@@ -1,7 +1,18 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-export default function SimpleList({ heading = undefined, children = undefined, className = '', ...rest }) {
+type SimpleListProps = HTMLAttributes<HTMLDivElement> & {
+  heading?: string | null;
+  children?: ReactNode;
+  className?: string;
+};
+
+export default function SimpleList({
+  heading,
+  children,
+  className = '',
+  ...rest
+}: SimpleListProps) {
   return (
     <div
       className={cn('border-l-2 border-[var(--color-border)] px-6', className)}

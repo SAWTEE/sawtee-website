@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -12,86 +11,72 @@ import LDCArchive from './Archives/LDCArchive';
 import EventsArchive from './Archives/EventsArchive';
 import NewsletterArchive from './Archives/NewsletterArchive';
 import ResearchArchive from './Archives/ResearchArchive';
+import type { FrontendCategoryProps } from '@/types';
+import type { ComponentType, ReactNode } from 'react';
+
+const CovidArchiveView = CovidArchive as ComponentType<{ posts?: unknown }>;
+const LDCArchiveView = LDCArchive as ComponentType<{ posts?: unknown }>;
+const ResearchArchiveView = ResearchArchive as ComponentType<{ posts?: unknown }>;
+const NewsletterArchiveView = NewsletterArchive as ComponentType<{ posts?: unknown }>;
+const EventsArchiveView = EventsArchive as ComponentType<{ posts?: unknown }>;
+const DefaultArchiveView = DefaultArchive as ComponentType<{ posts?: unknown; category?: unknown }>;
+const SubscriptionCardView = SubscriptionCard as ComponentType<any>;
+
+type Props = FrontendCategoryProps & { showSubscriptionBox?: boolean };
 
 export default function Category({
-  category = undefined,
-  posts = undefined,
-  infocus = undefined,
-  sawteeInMedia = undefined,
-  events = undefined,
-  featured_image = undefined,
-  srcSet = undefined,
-  showSubscriptionBox = true}) {
-  const isInFocus = category.slug.includes('infocus');
+  category,
+  posts,
+  infocus,
+  sawteeInMedia,
+  events,
+  featured_image,
+  srcSet,
+  seo,
+  showSubscriptionBox = true,
+}: Props) {
+  const isInFocus = category.slug.includes('infocus') || category.slug.includes('in-focus');
   const isMedia = category.slug.includes('sawtee-in-media');
-  const isResearch = category.slug.includes('research');
   const isEvents = category.slug.includes('featured-events');
+  const paginated =
+    posts && typeof posts === 'object' && posts !== null && 'data' in (posts as object)
+      ? (posts as { data: unknown; links: any; current_page: number; last_page: number; next_page_url?: string | null; prev_page_url?: string | null })
+      : null;
 
-  // Helper function to render the appropriate archive component
-  const renderArchiveComponent = () => {
+  const renderArchiveComponent = (): ReactNode => {
     switch (true) {
       case category.slug.includes('covid'):
-        return <CovidArchive posts={posts.data} />;
+        return <CovidArchiveView posts={paginated?.data} />;
       case category.slug.includes('ldc'):
-        return <LDCArchive posts={posts.data} />;
+        return <LDCArchiveView posts={paginated?.data} />;
       case category.slug.includes('research'):
-        return <ResearchArchive posts={posts} />;
+        return <ResearchArchiveView posts={posts} />;
       case category.slug.includes('newsletters'):
-        return <NewsletterArchive posts={posts.data} />;
+        return <NewsletterArchiveView posts={paginated?.data} />;
       case category.slug.includes('featured-events'):
-        return <EventsArchive posts={posts.data} />;
+        return <EventsArchiveView posts={paginated?.data} />;
       default:
-        return <DefaultArchive posts={posts.data} category={category} />;
+        return <DefaultArchiveView posts={paginated?.data} category={category} />;
     }
   };
 
-  // Helper function to render sidebar widgets
-  const renderSidebarWidgets = () => {
-    return (
-      <div className="flex flex-col gap-12">
-        {showSubscriptionBox && (
-          <Glassbox className={'w-full p-0'}>
-            <SubscriptionCard />
-          </Glassbox>
-        )}
-        {!isMedia && sawteeInMedia && (
-          <SidebarWidget
-            array={sawteeInMedia}
-            title={'Sawtee in Media'}
-            link={'/category/sawtee-in-media'}
-          />
-        )}
-        {!isEvents && events && (
-          <SidebarWidget
-            array={events}
-            title={'Featured Events'}
-            link={'/category/featured-events'}
-          />
-        )}
-        {!isInFocus && infocus && (
-          <SidebarWidget
-            array={infocus}
-            link={'/category/in-focus'}
-            title={'In Focus'}
-          />
-        )}
-      </div>
-    );
-  };
+  const image =
+    typeof featured_image === 'string'
+      ? featured_image
+      : (featured_image as { original_url?: string } | null | undefined)?.original_url;
 
   return (
     <MainLayout>
       <WebsiteHead
-        title={category.meta_title ? category.meta_title : category.name}
-        description={category.meta_description ?? ''}
-        image={
-          featured_image
-            ? featured_image.original_url
-            : '/assets/logo-sawtee.webp'
-        }
-      ></WebsiteHead>
+        title={seo?.title ?? (category.meta_title ? category.meta_title : category.name)}
+        description={seo?.description ?? category.meta_description ?? ''}
+        image={seo?.image ?? (image ? image : '/assets/logo-sawtee.webp')}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
+      />
       <PageLayout
-        featured_image={featured_image}
+        featured_image={image}
         srcSet={srcSet}
         title={category.name}
       >
@@ -99,22 +84,49 @@ export default function Category({
           <section className="archive-list col-span-1 lg:col-span-4">
             <div className="flex w-full flex-col">
               {renderArchiveComponent()}
-              <div className="w-full p-8">
-                {!isResearch && (
+              {paginated && (
+                <div className="w-full p-8">
                   <Pagination
-                    links={posts.links}
-                    currentPage={posts.current_page}
-                    totalPages={posts.last_page}
-                    nextPage={posts.next_page_url}
-                    prevPage={posts.prev_page_url}
+                    links={paginated.links}
+                    currentPage={paginated.current_page}
+                    totalPages={paginated.last_page}
+                    nextPage={paginated.next_page_url}
+                    prevPage={paginated.prev_page_url}
                     className={'mt-8'}
                   />
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </section>
           <aside className="sidebar col-span-1 lg:col-span-2">
-            {renderSidebarWidgets()}
+            <div className="flex flex-col gap-12">
+              {showSubscriptionBox && (
+                <Glassbox className={'w-full p-0'}>
+                  <SubscriptionCardView />
+                </Glassbox>
+              )}
+              {!isMedia && sawteeInMedia && (
+                <SidebarWidget
+                  array={sawteeInMedia}
+                  title={'Sawtee in Media'}
+                  link={'/category/sawtee-in-media'}
+                />
+              )}
+              {!isEvents && events && (
+                <SidebarWidget
+                  array={events}
+                  title={'Featured Events'}
+                  link={'/category/featured-events'}
+                />
+              )}
+              {!isInFocus && infocus && (
+                <SidebarWidget
+                  array={infocus}
+                  link={'/category/in-focus'}
+                  title={'In Focus'}
+                />
+              )}
+            </div>
           </aside>
         </div>
       </PageLayout>

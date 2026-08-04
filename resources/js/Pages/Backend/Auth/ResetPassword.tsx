@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type { FormEvent } from 'react';
 import { useEffect } from 'react';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import InputError from '@/components/Backend/InputError';
@@ -7,7 +7,9 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function ResetPassword({ token = undefined, email = undefined }) {
+type ResetPasswordProps = { token: string; email: string };
+
+export default function ResetPassword({ token, email }: ResetPasswordProps) {
   const { data, setData, post, processing, errors, reset } = useForm({
     token: token,
     email: email,
@@ -21,7 +23,7 @@ export default function ResetPassword({ token = undefined, email = undefined }) 
     };
   }, []);
 
-  const submit = e => {
+  const submit = (e: FormEvent) => {
     e.preventDefault();
 
     post(route('password.store'));
@@ -42,7 +44,7 @@ export default function ResetPassword({ token = undefined, email = undefined }) 
             value={data.email}
             className="mt-1 block w-full"
             autoComplete="username"
-            onChange={e => setData('email', e.target.value)}
+            onChange={(e) => setData('email', e.target.value)}
           />
 
           <InputError message={errors.email} className="mt-2" />
@@ -59,7 +61,7 @@ export default function ResetPassword({ token = undefined, email = undefined }) 
             className="mt-1 block w-full"
             autoComplete="new-password"
             isFocused={true}
-            onChange={e => setData('password', e.target.value)}
+            onChange={(e) => setData('password', e.target.value)}
           />
 
           <InputError message={errors.password} className="mt-2" />
@@ -78,7 +80,7 @@ export default function ResetPassword({ token = undefined, email = undefined }) 
             value={data.password_confirmation}
             className="mt-1 block w-full"
             autoComplete="new-password"
-            onChange={e => setData('password_confirmation', e.target.value)}
+            onChange={(e) => setData('password_confirmation', e.target.value)}
           />
 
           <InputError message={errors.password_confirmation} className="mt-2" />

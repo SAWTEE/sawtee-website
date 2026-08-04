@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type { FormEvent } from 'react';
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -18,7 +18,7 @@ export default function ConfirmPassword() {
     };
   }, [reset]);
 
-  const submit = e => {
+  const submit = (e: FormEvent) => {
     e.preventDefault();
 
     post(route('password.confirm'));
@@ -44,7 +44,7 @@ export default function ConfirmPassword() {
             value={data.password}
             className="mt-1 block w-full"
             isFocused={true}
-            onChange={e => setData('password', e.target.value)}
+            onChange={(e) => setData('password', e.target.value)}
           />
 
           <InputError message={errors.password} className="mt-2" />

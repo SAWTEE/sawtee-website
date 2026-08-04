@@ -1,12 +1,23 @@
-// @ts-nocheck
 import { formatDate } from '@/lib/helpers';
-
+import type { Post } from '@/types';
 import { Link } from '@inertiajs/react';
 import ExploreButton from './ExploreButton';
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
 
-const SidebarWidget = ({ array = undefined, title = undefined, link = undefined, ...rest }) => {
+type SidebarWidgetProps = {
+  array?: Post[] | null;
+  title?: string;
+  link?: string | null;
+  className?: string;
+};
+
+const SidebarWidget = ({
+  array,
+  title,
+  link,
+  ...rest
+}: SidebarWidgetProps) => {
   return (
     <Glassbox
       className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none"
@@ -32,7 +43,12 @@ const SidebarWidget = ({ array = undefined, title = undefined, link = undefined,
         })}
         <ExploreButton
           text={`More ${title}`}
-          link={link ?? `${array[0].category?.slug / array[0].slug}`}
+          link={
+            link ??
+            (array?.[0]
+              ? `/category/${array[0].category?.slug}/${array[0].slug}`
+              : '#')
+          }
           className="p-0"
         />
       </SimpleList>

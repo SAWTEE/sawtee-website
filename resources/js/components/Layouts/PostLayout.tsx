@@ -1,25 +1,25 @@
-// @ts-nocheck
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
+import type { Post } from '@/types';
+import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import SidebarWidget from '../Frontend/sidebarWidget';
-import { useEffect, useRef, useMemo } from 'react';
 
-// Custom reading time calculator
-const calculateReadingTime = (content, options = {}) => {
+const calculateReadingTime = (
+  content: string,
+  options: { wordsPerMinute?: number; emoji?: boolean } = {}
+): string | null => {
   if (!content) return null;
 
   const { wordsPerMinute = 225, emoji = false } = options;
 
-  // Remove HTML tags and get clean text
   const cleanText = content
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/\s+/g, ' ') // Normalize whitespace
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 
   if (!cleanText) return null;
 
-  // Count words
   const words = cleanText.split(/\s+/).length;
   const minutes = Math.ceil(words / wordsPerMinute);
 
@@ -30,13 +30,21 @@ const calculateReadingTime = (content, options = {}) => {
   return `${minutes} min read`;
 };
 
+type PostLayoutProps = {
+  children?: ReactNode;
+  relatedPosts?: Post[];
+  post: Post;
+  featured_image?: string | null;
+  srcSet?: string | null;
+};
+
 const PostLayout = ({
-  children = undefined,
-  relatedPosts = undefined,
-  post = undefined,
-  featured_image = undefined,
-  srcSet = undefined}) => {
-  // Use useMemo to calculate reading time efficiently
+  children,
+  relatedPosts,
+  post,
+  featured_image,
+  srcSet,
+}: PostLayoutProps) => {
   const readingTime = useMemo(() => {
     if (!post.content) return null;
 
@@ -46,17 +54,14 @@ const PostLayout = ({
     });
   }, [post.content]);
 
-  const contentRef = useRef(null);
+  const contentRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (contentRef.current) {
-      // Find all anchor elements within the div
       const anchors = contentRef.current.querySelectorAll('a');
 
-      // Add target="_blank" to each anchor
       anchors.forEach(anchor => {
         anchor.setAttribute('target', '_blank');
-        // Add rel="noopener noreferrer" for security
         anchor.setAttribute('rel', 'noopener noreferrer');
       });
     }
@@ -97,7 +102,7 @@ const PostLayout = ({
             <SidebarWidget
               title="Related Posts"
               array={relatedPosts}
-              link={`/category/${post.category.slug}`}
+              link={`/category/${post.category?.slug}`}
             />
           </aside>
         </div>

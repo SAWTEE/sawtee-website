@@ -1,18 +1,27 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
+import type { PaginationLink } from '@/types';
 import { Link } from '@inertiajs/react';
 import { MoveLeft, MoveRight } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { Button } from '../ui/button';
 
+type PaginationButtonProps = {
+  link?: string | null;
+  isDisabled?: boolean;
+  label?: string;
+  slot?: 'before' | 'after';
+  children?: ReactNode;
+  className?: string;
+};
+
 const PaginationButton = ({
-  link = undefined,
-  isDisabled = undefined,
+  link,
+  isDisabled,
   label = '',
-  icon = undefined,
-  slot = undefined,
-  children = undefined,
+  slot,
+  children,
   ...rest
-}) => {
+}: PaginationButtonProps) => {
   return isDisabled ? (
     <div
       className="group w-full cursor-not-allowed"
@@ -34,7 +43,7 @@ const PaginationButton = ({
   ) : (
     <Link
       className="group w-full"
-      href={link ?? undefined}
+      href={link ?? '#'}
       aria-disabled={isDisabled}
       {...rest}
     >
@@ -53,14 +62,26 @@ const PaginationButton = ({
   );
 };
 
+type PaginationProps = {
+  prevPage?: string | null;
+  nextPage?: string | null;
+  currentPage?: number;
+  totalPages?: number;
+  className?: string;
+  nextButtonLabel?: string;
+  prevButtonLabel?: string;
+  links?: PaginationLink[];
+};
+
 const Pagination = ({
-  prevPage = undefined,
-  nextPage = undefined,
-  currentPage = undefined,
-  totalPages = undefined,
+  prevPage,
+  nextPage,
+  currentPage,
+  totalPages,
   className = '',
   nextButtonLabel = 'Older Posts',
-  prevButtonLabel = 'Newer Posts'}) => {
+  prevButtonLabel = 'Newer Posts',
+}: PaginationProps) => {
   return (
     <div className={cn('flex w-full gap-10', className)}>
       <PaginationButton

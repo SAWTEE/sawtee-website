@@ -1,4 +1,3 @@
-// @ts-nocheck
 export default function NewsletterCallout() {
   return (
     <div className="rounded-lg bg-sky-100 px-6 py-6 dark:bg-sky-900 md:px-12 md:py-12 lg:px-16 lg:py-16 xl:flex xl:items-center">
@@ -16,8 +15,6 @@ export default function NewsletterCallout() {
       <div className="mt-8 sm:w-full sm:max-w-md xl:ml-8 xl:mt-0">
         <div className="mt-3 sm:ml-3 sm:mt-0 sm:flex-shrink-0">
           <SubscribeForm />
-
-          {/* <div data-supascribe-embed-id="164835946128" data-supascribe-subscribe></div> */}
         </div>
       </div>
     </div>

@@ -1,7 +1,12 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
+import type { HTMLAttributes, ReactNode } from 'react';
 
-const Glassbox = ({ children = undefined, className = '', ...rest }) => {
+type GlassboxProps = HTMLAttributes<HTMLDivElement> & {
+  children?: ReactNode;
+  className?: string;
+};
+
+const Glassbox = ({ children, className = '', ...rest }: GlassboxProps) => {
   return (
     <div
       className={cn(

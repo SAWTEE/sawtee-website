@@ -1,5 +1,5 @@
-// @ts-nocheck
-export default function ApplicationLogo(props) {
+import type { SVGProps } from 'react';
+export default function ApplicationLogo(props: SVGProps<SVGSVGElement>) {
   return (
     <svg
       {...props}

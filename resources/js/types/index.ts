@@ -23,6 +23,12 @@ export type Category = {
   name: string;
   slug: string;
   description?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  parent?: Category | null;
+  children?: Category[];
+  resolved_meta_title?: string;
+  resolved_meta_description?: string;
 };
 
 export type Tag = {
@@ -50,12 +56,27 @@ export type Post = {
   excerpt?: string | null;
   content?: string | null;
   status?: string;
+  author?: string | null;
+  link?: string | null;
   published_at?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
   category?: Category | null;
   tags?: Tag[];
   media?: MediaItem[];
   created_at?: string;
   updated_at?: string;
+  resolved_meta_title?: string;
+  resolved_meta_description?: string;
+};
+
+export type SeoMeta = {
+  title: string;
+  description: string;
+  image?: string | null;
+  url?: string | null;
+  type?: string;
+  jsonLd?: Record<string, unknown> | null;
 };
 
 export type Page = {
@@ -65,6 +86,12 @@ export type Page = {
   title?: string | null;
   content?: string | null;
   template?: string | null;
+  page_template?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  pageData?: Record<string, unknown> | null;
+  resolved_meta_title?: string;
+  resolved_meta_description?: string;
 };
 
 export type Publication = {
@@ -138,17 +165,69 @@ export type PageProps<
 > = T & SharedProps;
 
 export type HomePageProps = PageProps<{
-  slides: Slide[];
-  infocus: Post[];
-  sawteeInMedia: Post[];
-  events: Post[];
-  featuredPublications: Publication[];
-  featuredBlogPosts: Post[];
-  publications: Publication[];
-  newsletters: Post[];
-  webinars: Post[];
-  slidesResponsiveImages: string[];
-  homePageSections: HomePageSection[];
+  slides?: Slide[];
+  infocus?: Post[];
+  sawteeInMedia?: Post[];
+  events?: Post[];
+  featuredPublications?: Publication[];
+  featuredBlogPosts?: Post[];
+  publications?: Publication[];
+  newsletters?: Post[];
+  webinars?: Post[];
+  slidesResponsiveImages?: string[];
+  homePageSections?: HomePageSection[];
+  seo?: SeoMeta;
+}>;
+
+export type FrontendPageProps = PageProps<{
+  page: Page;
+  sections?: unknown[];
+  themes?: unknown[] | null;
+  featured_image?: string | MediaItem | null;
+  srcSet?: string | null;
+  seo?: SeoMeta;
+}>;
+
+export type FrontendPostProps = PageProps<{
+  post: Post;
+  category?: Category | null;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  file?: string | null;
+  relatedPosts?: Post[];
+  seo?: SeoMeta;
+}>;
+
+export type FrontendCategoryProps = PageProps<{
+  category: Category;
+  posts?: unknown;
+  infocus?: Post[] | null;
+  sawteeInMedia?: Post[] | null;
+  events?: Post[] | null;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  seo?: SeoMeta;
+}>;
+
+export type FrontendSearchProps = PageProps<{
+  posts?: Paginated<Post & { category?: string; category_slug?: string }>;
+  query?: string;
+  seo?: SeoMeta;
+}>;
+
+export type FrontendArchiveProps = PageProps<{
+  meta_title?: string;
+  meta_description?: string;
+  layout_title?: string;
+  posts?: Paginated<Post> | Post[];
+  sawteeInMedia?: Post[] | null;
+  category?: Category;
+  publications?: unknown;
+  teams?: unknown;
+  infocus?: Post[] | null;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  seo?: SeoMeta;
 }>;
 
 /** Runtime helper used by tests and typed defaults. */

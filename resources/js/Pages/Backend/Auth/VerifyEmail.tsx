@@ -1,12 +1,14 @@
-// @ts-nocheck
+import type { FormEvent } from 'react';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function VerifyEmail({ status = undefined }) {
+type VerifyEmailProps = { status?: string };
+
+export default function VerifyEmail({ status }: VerifyEmailProps) {
   const { post, processing } = useForm({});
 
-  const submit = e => {
+  const submit = (e: FormEvent) => {
     e.preventDefault();
 
     post(route('verification.send'));

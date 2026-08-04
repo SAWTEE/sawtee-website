@@ -1,16 +1,18 @@
-// @ts-nocheck
+import type { FormEvent } from 'react';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function ForgotPassword({ status = undefined }) {
+type ForgotPasswordProps = { status?: string };
+
+export default function ForgotPassword({ status }: ForgotPasswordProps) {
   const { data, setData, post, processing, errors } = useForm({
     email: '',
   });
 
-  const submit = e => {
+  const submit = (e: FormEvent) => {
     e.preventDefault();
 
     post(route('password.email'));
@@ -38,7 +40,7 @@ export default function ForgotPassword({ status = undefined }) {
           value={data.email}
           className="mt-1 block w-full"
           isFocused={true}
-          onChange={e => setData('email', e.target.value)}
+          onChange={(e) => setData('email', e.target.value)}
         />
 
         <InputError message={errors.email} className="mt-2" />

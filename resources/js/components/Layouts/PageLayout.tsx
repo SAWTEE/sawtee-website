@@ -1,17 +1,30 @@
-// @ts-nocheck
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import { cn } from '@/lib/utils';
+import type { ReactNode } from 'react';
 
-const PageLayout = ({ title = undefined, featured_image = undefined, srcSet = undefined, children = undefined }) => {
-  const hasFeaturedImage = featured_image && featured_image !== '';
+type PageLayoutProps = {
+  title?: string | null;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  children?: ReactNode;
+  showBackgroundPattern?: boolean;
+};
+
+const PageLayout = ({
+  title,
+  featured_image,
+  srcSet,
+  children,
+}: PageLayoutProps) => {
+  const hasFeaturedImage = Boolean(featured_image && featured_image !== '');
   return (
     <>
       <div className="relative z-0 h-80 max-h-80 w-full bg-white/20 dark:bg-black/75">
         {hasFeaturedImage ? (
           <FeaturedMedia
-            src={featured_image}
-            srcSet={{ ...srcSet }}
+            src={featured_image as string}
+            srcSet={srcSet ?? undefined}
             className={'max-h-80'}
           />
         ) : (

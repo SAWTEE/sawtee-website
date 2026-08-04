@@ -1,7 +1,18 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-const FeaturedMedia = ({ src = undefined, srcSet = undefined, alt = undefined, className = '' }) => {
+type FeaturedMediaProps = {
+  src?: string | null;
+  srcSet?: string | null;
+  alt?: string | null;
+  className?: string;
+};
+
+const FeaturedMedia = ({
+  src,
+  srcSet,
+  alt,
+  className = '',
+}: FeaturedMediaProps) => {
   return (
     <picture>
       <img
@@ -9,8 +20,8 @@ const FeaturedMedia = ({ src = undefined, srcSet = undefined, alt = undefined, c
           'relative aspect-video h-full w-full bg-bgDarker object-cover',
           className
         )}
-        src={src}
-        srcSet={srcSet}
+        src={src ?? undefined}
+        srcSet={srcSet ?? undefined}
         sizes="(min-width: 1200px) 50vw,100vw"
         alt={alt || 'Hero Image'}
         loading="lazy"

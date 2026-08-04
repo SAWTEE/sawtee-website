@@ -1,4 +1,5 @@
 // @ts-nocheck
+import type { HomePageProps } from '@/types';
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import { FeaturedPublications } from '@/components/Frontend/FeaturedPublications';
 import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
@@ -21,17 +22,19 @@ import MainLayout from '../../../components/Layouts/MainLayout';
 import { features } from '@/lib/data';
 
 const Home = ({
-  infocus = undefined,
-  slides = undefined,
-  events = undefined,
-  featuredPublications = undefined,
-  featuredBlogPosts = undefined,
-  publications = undefined,
-  sawteeInMedia = undefined,
-  newsletters = undefined,
-  webinars = undefined,
-  slidesResponsiveImages = undefined,
-  homePageSections = undefined}) => {
+  infocus,
+  slides,
+  events,
+  featuredPublications,
+  featuredBlogPosts,
+  publications,
+  sawteeInMedia,
+  newsletters,
+  webinars,
+  slidesResponsiveImages,
+  homePageSections,
+  seo,
+}: HomePageProps) => {
   // const [open, setOpen] = useState(true);
 
   const FeaturedPublicationSectionIsVisible = homePageSections?.find(
@@ -41,9 +44,15 @@ const Home = ({
   return (
     <MainLayout>
       <WebsiteHead
-        title={'Home'}
-        description="Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges."
-        image={'/assets/logo-sawtee.webp'}
+        title={seo?.title ?? 'Home'}
+        description={
+          seo?.description ??
+          "Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges."
+        }
+        image={seo?.image ?? '/assets/logo-sawtee.webp'}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
       />
 
       {/* POPUP CODE */}

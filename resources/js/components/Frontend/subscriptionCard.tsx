@@ -1,12 +1,20 @@
-// @ts-nocheck
 import { MailboxIcon } from 'lucide-react';
+import type { ReactNode } from 'react';
 import { SubscribeForm } from './NewsletterCallout';
 
+type SubscriptionCardProps = {
+  children?: ReactNode;
+  showIcon?: boolean;
+  showChildren?: boolean;
+  subText?: string | null;
+};
+
 const SubscriptionCard = ({
-  children = undefined,
+  children,
   showIcon = false,
   showChildren = false,
-  subText = undefined}) => {
+  subText,
+}: SubscriptionCardProps) => {
   return (
     <div className="relative w-full text-center">
       {showIcon && (

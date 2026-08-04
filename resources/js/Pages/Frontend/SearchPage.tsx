@@ -1,16 +1,21 @@
-// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostPreviewCard from '@/components/Frontend/PostPreviewCard';
 import MainLayout from '@/components/Layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { router } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import type { FrontendSearchProps } from '@/types';
+import { FormEvent, useState, useEffect } from 'react';
 import Pagination from '@/components/Frontend/Pagination';
 
-export default function SearchPage({ posts = undefined, query = undefined }) {
+export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
   const [searchQuery, setSearchQuery] = useState(query ?? '');
-  const [state, setState] = useState({
+  const [state, setState] = useState<{
+    query: string;
+    loading: boolean;
+    error: string | null;
+    data: NonNullable<FrontendSearchProps['posts']>['data'] | null;
+  }>({
     query: '',
     loading: true,
     error: null,
@@ -19,23 +24,39 @@ export default function SearchPage({ posts = undefined, query = undefined }) {
 
   useEffect(() => {
     if (posts) {
-      setState({ ...state, query: query, loading: false, data: posts?.data });
+      setState(prev => ({
+        ...prev,
+        query: query ?? '',
+        loading: false,
+        data: posts.data,
+      }));
     }
-  }, [posts]);
+  }, [posts, query]);
 
-  function handleSubmit(e) {
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     router.visit(`/search`, {
       data: { query: searchQuery, page: 1 },
       onSuccess: () => {
-        setState({ ...state, loading: false, data: posts?.data });
+        setState(prev => ({
+          ...prev,
+          loading: false,
+          data: posts?.data ?? null,
+        }));
       },
     });
   }
 
   return (
     <>
-      <WebsiteHead title={'Search Page'} />
+      <WebsiteHead
+        title={seo?.title ?? 'Search Page'}
+        description={seo?.description}
+        image={seo?.image}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
+      />
 
       <MainLayout>
         <div>
@@ -100,7 +121,7 @@ export default function SearchPage({ posts = undefined, query = undefined }) {
                   );
                 })}
             </div>
-            {state.data && (
+            {state.data && posts && (
               <Pagination
                 links={posts.links}
                 currentPage={posts.current_page}
