@@ -1,4 +1,5 @@
 import type { FormEvent } from 'react';
+import Checkbox from '@/components/Backend/Checkbox';
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -12,6 +13,7 @@ type LoginProps = { status?: string; canResetPassword?: boolean };
 type LoginForm = {
   email: string;
   password: string;
+  remember: boolean;
 };
 
 export default function Login({ status, canResetPassword }: LoginProps) {
@@ -19,6 +21,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     {
       email: '',
       password: '',
+      remember: false,
     }
   );
 
@@ -27,6 +30,8 @@ export default function Login({ status, canResetPassword }: LoginProps) {
   const submit = (e: FormEvent) => {
     e.preventDefault();
 
+    // Always submit a real boolean — Inertia keeps remember in useForm data
+    // (Laravel recaller persistence, not credential autofill).
     post(route('login'), {
       onSuccess: () => {
         toast({
@@ -80,6 +85,17 @@ export default function Login({ status, canResetPassword }: LoginProps) {
           />
 
           <InputError message={errors.password} className="mt-2" />
+        </div>
+
+        <div className="mt-4 block">
+          <label className="flex items-center">
+            <Checkbox
+              name="remember"
+              checked={data.remember}
+              onChange={e => setData('remember', Boolean(e.target.checked))}
+            />
+            <span className="ms-2 text-sm text-gray-600">Remember me</span>
+          </label>
         </div>
 
         <div className="mt-4 flex items-center justify-end">
