@@ -39,17 +39,24 @@ export default function MainNavigation({ menu = [] }: MainNavigationProps) {
       viewport={false}
     >
       <NavigationMenuList>
-        {(menu ?? []).map((menuItem, index) => {
+        {(menu ?? []).map((menuItem: any, index: any) => {
           const active = menuItem.url === `${url}`;
           const hasMegaMenu =
             menuItem.name === 'Our Work' || menuItem.name === 'Know Us';
           const hasChildren = (menuItem.children?.length ?? 0) > 0;
           return (
-            <NavigationMenuItem key={menuItem.title}>
+            <NavigationMenuItem
+              key={menuItem.title}
+              className={
+                !hasMegaMenu && hasChildren
+                  ? 'dropdown group/dropdown relative'
+                  : 'relative'
+              }
+            >
               <NavigationMenuLink
                 asChild
                 active={active}
-                className={hasChildren ? 'dropdown p-0' : 'p-0'}
+                className="p-0"
                 onMouseEnter={() => handleHoverButton(index)}
               >
                 <Link href={menuItem.url}>
@@ -80,11 +87,7 @@ export default function MainNavigation({ menu = [] }: MainNavigationProps) {
                   <MegaMenu item={menuItem} experts={experts} />
                 </NavigationMenuContent>
               )}
-              {!hasMegaMenu && hasChildren && (
-                // <NavigationMenuContent>
-                <DropDown menuItem={menuItem} />
-                // </NavigationMenuContent>
-              )}
+              {!hasMegaMenu && hasChildren && <DropDown menuItem={menuItem} />}
             </NavigationMenuItem>
           );
         })}
@@ -98,7 +101,7 @@ export default function MainNavigation({ menu = [] }: MainNavigationProps) {
 //     <NavigationMenu viewport={false} className="relative">
 //       <NavigationMenuList>
 //         <ul className=" w-full list-none space-y-2">
-//           {menuItem.children?.map(item => {
+//           {menuItem.children?.map((item: any) => {
 //             return (
 //               <NavigationMenuItem key={item.title} className="w-full">
 //                 <NavigationMenuLink asChild className="p-0">
@@ -135,12 +138,13 @@ const DropDown = ({
   return (
     <ul
       className={cn(
-        'dropdown-menu left-50 absolute hidden w-fit pt-2 shadow-lg',
+        'dropdown-menu absolute left-0 z-50 hidden w-fit pt-2 shadow-lg',
+        'group-hover/dropdown:block group-focus-within/dropdown:block',
         className
       )}
     >
       <div className="rounded-lg bg-popover p-4">
-        {menuItem.children?.map(item => {
+        {menuItem.children?.map((item: any) => {
           return <ListItem key={item.title} item={item} href={item.url} />;
         })}
       </div>
@@ -158,7 +162,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
     const hasChildren = (item.children?.length ?? 0) > 0;
 
     return (
-      <li className="dropdown relative">
+      <li className="dropdown group/dropdown relative">
         <Link
           ref={ref}
           className={cn(
@@ -170,14 +174,14 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
           <span className="mr-1 font-medium leading-none">{item.title}</span>
           {hasChildren && (
             <ChevronDownIcon
-              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300"
+              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-hover/dropdown:rotate-180"
               aria-hidden="true"
             />
           )}
         </Link>
         {hasChildren && (
           <DropDown
-            className="left-full top-0 z-20 min-w-64"
+            className="left-full top-0 z-20 mt-0 min-w-64"
             key={item.title}
             menuItem={item}
           />

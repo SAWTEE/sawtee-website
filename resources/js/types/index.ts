@@ -8,14 +8,19 @@ export type User = {
 };
 
 export type MenuItem = {
-  id: number;
+  id?: number;
   title: string;
-  name: string;
+  name?: string;
   url: string;
-  parent_id: number | null;
-  order: number;
-  children?: MenuItem[];
+  parent_id?: number | null;
+  order?: number;
+  children?: MenuItem[] | null;
   menu_id?: number;
+};
+
+export type SocialMenuItem = {
+  name: 'twitter' | 'linkedin' | 'facebook' | 'youtube' | string;
+  link: string;
 };
 
 export type Category = {

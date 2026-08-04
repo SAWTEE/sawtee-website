@@ -1,10 +1,10 @@
-// @ts-nocheck
 import { useTheme } from '@/components/shared/theme-provider';
 import { Separator } from '@/components/ui/separator';
 import { aboutMenuData } from '@/lib/data';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import Globeanime from '../globeanime';
+import type { MenuItem } from '@/types';
 
 const ListVariants = {
   open: {
@@ -32,7 +32,17 @@ const ListContainerVariants = {
   },
 };
 
-const AboutMegaMenu = ({ item = undefined, introText = undefined, introImage = undefined, ...rest }) => {
+type MegaSectionProps = {
+  item: MenuItem;
+  introText?: string;
+  introImage?: string;
+};
+
+const AboutMegaMenu = ({
+  item,
+  introText,
+  ...rest
+}: MegaSectionProps) => {
   const { theme } = useTheme();
   return (
     <ul
@@ -45,11 +55,10 @@ const AboutMegaMenu = ({ item = undefined, introText = undefined, introImage = u
           initial={'closed'}
           whileInView={'open'}
         >
-          {item.children.map(child => {
+          {(item.children ?? []).map((child: any) => {
             return (
               <motion.li
                 key={child.title}
-                as={motion.li}
                 variants={ListVariants}
                 className="lg:text-md relative cursor-pointer pb-4 text-left text-sm font-medium"
               >
@@ -72,98 +81,91 @@ const AboutMegaMenu = ({ item = undefined, introText = undefined, introImage = u
           </p>
         </div>
       </div>
-      {/* <div className="row-span-1 gap-4 md:col-span-5 xl:col-span-3">
-        <p className="pb-4 text-xl font-semibold text-secondary-foreground">
-          Our Experts
-        </p>
-        <div className="grid gap-4 md:grid-cols-6 xl:grid-cols-3">
-          {experts?.map(expert => {
-            return (
-              <div key={expert.name} className="col-span-1">
-                <ExpertCard expert={expert} />
-              </div>
-            );
-          })}
-        </div>
-      </div> */}
     </ul>
   );
 };
 
-const OurWorkMegaMenu = ({ item = undefined, ...rest }) => {
+const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
+  const children = item.children ?? [];
+  const first = children[0];
+
   return (
-    // change the width of ul element to 80vw to revert to the original layout
     <ul className="grid w-[60vw] grid-cols-1 gap-4 p-4 px-8 py-10" {...rest}>
       <div className="mx-auto flex w-full flex-col items-center justify-center gap-10">
-        <Link
-          className="font-serif text-2xl text-secondary-foreground"
-          href={item.children[0].url}
-        >
-          {item.children[0].title}
-        </Link>
-        <motion.ul
-          variants={ListContainerVariants}
-          initial={'closed'}
-          whileInView={'open'}
-          className="grid w-full grid-cols-2 gap-4"
-        >
-          {item.children[0].children.map(grandChild => {
-            return (
-              <motion.li
-                key={grandChild.title}
-                variants={ListVariants}
-                className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
-              >
-                <Link
-                  href={grandChild.url}
-                  className="text-secondary-foreground no-underline"
-                >
-                  {grandChild.title}{' '}
-                </Link>
-              </motion.li>
-            );
-          })}
-        </motion.ul>
+        {first ? (
+          <>
+            <Link
+              className="font-serif text-2xl text-secondary-foreground"
+              href={first.url}
+            >
+              {first.title}
+            </Link>
+            <motion.ul
+              variants={ListContainerVariants}
+              initial={'closed'}
+              whileInView={'open'}
+              className="grid w-full grid-cols-2 gap-4"
+            >
+              {(first.children ?? []).map((grandChild: any) => {
+                return (
+                  <motion.li
+                    key={grandChild.title}
+                    variants={ListVariants}
+                    className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
+                  >
+                    <Link
+                      href={grandChild.url}
+                      className="text-secondary-foreground no-underline"
+                    >
+                      {grandChild.title}{' '}
+                    </Link>
+                  </motion.li>
+                );
+              })}
+            </motion.ul>
+          </>
+        ) : null}
 
         <Separator className="my-4 w-full border-b-2" />
         <div className="grid grid-cols-2 gap-6">
-          {item.children.map((grandChildren, idx) => {
-            if (idx !== 0) {
-              return (
-                <div className="col-span-1 space-y-6" key={grandChildren.title}>
-                  <Link
-                    href={grandChildren.url}
-                    className="text-2xl text-secondary-foreground no-underline"
-                  >
-                    {grandChildren.title}
-                  </Link>
-
-                  <motion.ul
-                    className="grid grid-cols-2 gap-6"
-                    variants={ListContainerVariants}
-                    initial={'closed'}
-                    whileInView={'open'}
-                  >
-                    {grandChildren.children?.map(child => {
-                      return (
-                        <motion.li
-                          key={child.title}
-                          variants={ListVariants}
-                          className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
-                        >
-                          <Link
-                            href={child.url}
-                            className="text-secondary-foreground no-underline"
-                          >
-                            {child.title}
-                          </Link>
-                        </motion.li>
-                      );
-                    })}
-                  </motion.ul>
-                </div>
-              );
+          {children.map((grandChildren: any, idx: any) => {
+            if (idx === 0) {
+              return null;
             }
+            return (
+              <div className="col-span-1 space-y-6" key={grandChildren.title}>
+                <Link
+                  href={grandChildren.url}
+                  className="text-2xl text-secondary-foreground no-underline"
+                >
+                  {grandChildren.title}
+                </Link>
+
+                <motion.ul
+                  className="grid grid-cols-2 gap-6"
+                  variants={ListContainerVariants}
+                  initial={'closed'}
+                  whileInView={'open'}
+                >
+                  {(grandChildren.children ?? []).map((child: any) => {
+                    return (
+                      <motion.li
+                        key={child.title}
+                        variants={ListVariants}
+                        className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
+                      >
+                        <Link
+                          href={child.url}
+                          className="text-secondary-foreground no-underline"
+                        >
+                          {child.title}
+                        </Link>
+                      </motion.li>
+                    );
+                  })}
+                </motion.ul>
+              </div>
+            );
           })}
         </div>
       </div>
@@ -175,7 +177,7 @@ const MegaMenu = ({
   item,
   experts: _experts,
 }: {
-  item: { name: string; children?: any[]; title?: string; url?: string };
+  item: MenuItem;
   experts?: unknown[];
 }) => {
   if (item.name === 'Know Us') {

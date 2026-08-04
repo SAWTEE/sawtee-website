@@ -41,7 +41,7 @@ export default function DesktopNavigation({
       viewport={false}
     >
       <NavigationMenuList className="gap-4">
-        {(menu ?? []).map((menuItem, index) => {
+        {(menu ?? []).map((menuItem: any, index: any) => {
           const active = menuItem.url === `${url}`;
           const hasMegaMenu =
             menuItem.name === 'Our Work' || menuItem.name === 'Know Us';
@@ -49,7 +49,11 @@ export default function DesktopNavigation({
           return (
             <NavigationMenuItem
               key={menuItem.title}
-              className={!hasMegaMenu ? 'dropdown' : ''}
+              className={
+                !hasMegaMenu && hasChildren
+                  ? 'dropdown group/dropdown relative'
+                  : 'relative'
+              }
             >
               <NavigationMenuLink
                 asChild
@@ -103,12 +107,14 @@ const DropDown = ({
   return (
     <ul
       className={cn(
-        'dropdown-menu left-50 absolute mt-1 hidden w-full min-w-64 rounded-md border shadow-lg',
+        // Tailwind v4: utility `hidden` beats @layer base CSS, so reveal via group-hover
+        'dropdown-menu absolute left-0 z-50 mt-1 hidden w-full min-w-64 rounded-md border shadow-lg',
+        'group-hover/dropdown:block group-focus-within/dropdown:block',
         className
       )}
     >
       <div className="rounded-lg bg-popover p-4">
-        {menuItem.children?.map(item => {
+        {menuItem.children?.map((item: any) => {
           return <ListItem key={item.title} item={item} href={item.url} />;
         })}
       </div>
@@ -128,7 +134,7 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
     return (
       <li
         className={cn(
-          'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+          'dropdown group/dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
           className
         )}
       >
@@ -140,14 +146,14 @@ const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
           <span className="mr-1 font-medium leading-none">{item.title}</span>
           {hasChildren && (
             <ChevronDownIcon
-              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300"
+              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300 group-hover/dropdown:rotate-180"
               aria-hidden="true"
             />
           )}
         </Link>
         {hasChildren && (
           <DropDown
-            className="left-[14rem] top-0 z-20 min-w-64"
+            className="left-full top-0 z-20 mt-0 min-w-64"
             key={item.title}
             menuItem={item}
           />

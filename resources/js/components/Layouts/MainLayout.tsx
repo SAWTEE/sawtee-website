@@ -9,7 +9,7 @@ import { usePage } from '@inertiajs/react';
 import { ArrowUpToLineIcon } from 'lucide-react';
 import { register } from 'swiper/element/bundle';
 import SearchModal from '@/components/Frontend/header/searchModal';
-import type { SharedProps } from '@/types';
+import type { MenuItem, SharedProps } from '@/types';
 
 import {
   Sheet,
@@ -25,13 +25,15 @@ type MainLayoutProps = {
   className?: string;
 };
 
-export default function MainLayout({ children, ...rest }: MainLayoutProps) {
+export default function MainLayout({ children, className }: MainLayoutProps) {
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const page = usePage<SharedProps>();
   const primaryMenu = page.props.primaryMenu ?? [];
   const footerMenu = page.props.footerMenu ?? [];
+  const navMenu: MenuItem[] =
+    primaryMenu.length > 0 ? primaryMenu : (mobileMenu as MenuItem[]);
 
   const toggleVisibility = () => {
     if (typeof window !== 'undefined' && window.scrollY > 570) {
@@ -74,7 +76,7 @@ export default function MainLayout({ children, ...rest }: MainLayoutProps) {
           </SheetHeader>
 
           <MobileMenu
-            menu={mobileMenu}
+            menu={navMenu}
             socialLinks={socialMenu}
             showSocialLinks={true}
           />
@@ -83,13 +85,18 @@ export default function MainLayout({ children, ...rest }: MainLayoutProps) {
       <main id="main">
         <Header
           menu={primaryMenu}
-          mobileMenu={mobileMenu}
+          mobileMenu={navMenu}
           socialLinks={socialMenu}
           showMobileMenu={showMobileMenu}
           setShowMobileMenu={setShowMobileMenu}
         />
 
-        <div className="relative mx-auto min-h-screen w-full px-6" {...rest}>
+        <div
+          className={cn(
+            'relative mx-auto min-h-screen w-full overflow-x-clip px-4 sm:px-6',
+            className
+          )}
+        >
           {children}
           <Footer menu={footerMenu} socialMenu={socialMenu} />
         </div>

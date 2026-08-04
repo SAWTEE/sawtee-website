@@ -1,14 +1,19 @@
-// @ts-nocheck
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
+import type { MenuItem } from '@/types';
 import DesktopNavigation from './DesktopNavigation';
 import { ModeToggle } from './mode-toggle';
 import SearchModal from './searchModal';
 
-const SiteHeader = ({ className = '', children = undefined, rest = undefined }) => (
+type SiteHeaderProps = ComponentPropsWithoutRef<'header'> & {
+  children?: ReactNode;
+};
+
+const SiteHeader = ({ className = '', children, ...rest }: SiteHeaderProps) => (
   <header
     className={cn(
-      'ease 0.25s sticky top-0 z-40 flex items-center justify-between bg-white py-2 shadow-md backdrop-blur-xl transition-transform dark:bg-bgDarker',
+      'sticky top-0 z-40 flex items-center justify-between overflow-visible bg-white py-2 shadow-md backdrop-blur-xl transition-transform duration-200 ease-out dark:bg-bgDarker',
       className
     )}
     {...rest}
@@ -17,10 +22,16 @@ const SiteHeader = ({ className = '', children = undefined, rest = undefined }) 
   </header>
 );
 
-const SiteHeaderInner = ({ className = '', children = undefined }) => (
+const SiteHeaderInner = ({
+  className = '',
+  children,
+}: {
+  className?: string;
+  children?: ReactNode;
+}) => (
   <div
     className={cn(
-      'mx-8 flex h-16 w-full items-center justify-between px-4 py-2',
+      'mx-auto flex h-14 w-full max-w-full items-center justify-between px-3 sm:h-16 sm:px-6 md:px-8',
       className
     )}
   >
@@ -28,74 +39,77 @@ const SiteHeaderInner = ({ className = '', children = undefined }) => (
   </div>
 );
 
-const Logo = ({ text = 'SAWTEE', src = undefined }) => {
+const Logo = ({ text = 'SAWTEE', src }: { text?: string; src?: string }) => {
   if (src) {
-    return <img src={src} alt="Logo" className="w-32 object-cover" />;
+    return (
+      <img
+        src={src}
+        alt="Logo"
+        className="h-auto w-24 max-w-full object-contain sm:w-32"
+      />
+    );
   }
   return (
-    <p
-      className={
-        'text-center font-sans font-bold uppercase text-theme-500 md:text-left'
-      }
-    >
+    <p className="text-center font-sans font-bold uppercase text-theme-500 md:text-left">
       {text}
     </p>
   );
 };
 
-export const SiteLogo = ({ src = undefined, established = undefined }) => {
-  // check if the logo is a url,
-  // we assume, if it's a url, it points to an image, else it's a text
+export const SiteLogo = ({
+  src,
+  established,
+}: {
+  src?: string;
+  established?: string | null;
+}) => {
   return (
     <div className="block shrink-0 text-center">
-      <Link href="/" className=" " aria-label="logo">
+      <Link href="/" aria-label="logo">
         <Logo src={src} />
       </Link>
-      {established && (
+      {established ? (
         <p className="text-xs font-semibold">Estd: {established}</p>
-      )}
+      ) : null}
     </div>
   );
 };
 
 type HeaderProps = {
-  menu?: unknown;
-  mobileMenu?: unknown;
+  menu?: MenuItem[] | null;
+  mobileMenu?: MenuItem[] | null;
   socialLinks?: unknown;
   showSocialLinks?: boolean;
   showMobileMenu?: boolean;
   setShowMobileMenu?: (open: boolean) => void;
-  children?: React.ReactNode;
-  visible?: unknown;
+  children?: ReactNode;
   className?: string;
 };
 
 const Header = ({
   menu = null,
-  mobileMenu = null,
-  socialLinks = null,
-  showSocialLinks = false,
   showMobileMenu = false,
   setShowMobileMenu,
-  children = undefined,
-  visible = undefined,
-  ...props
+  className,
 }: HeaderProps) => {
   return (
-    <SiteHeader {...props}>
+    <SiteHeader className={className}>
       <SiteHeaderInner>
-        <div className="flex w-full justify-between">
-          <SiteLogo src={'/assets/logo-sawtee.svg'} established={null} />
-          <DesktopNavigation menu={menu} />
-          <div className="hidden gap-4 lg:flex">
+        <div className="flex w-full min-w-0 items-center justify-between gap-3">
+          <SiteLogo src="/assets/logo-sawtee.svg" />
+          <DesktopNavigation menu={menu ?? []} />
+          <div className="hidden shrink-0 gap-4 lg:flex">
             <ModeToggle />
             <SearchModal />
           </div>
-          <div className="block lg:hidden">
+          <div className="shrink-0 lg:hidden">
             <button
+              type="button"
               onClick={() => setShowMobileMenu?.(!showMobileMenu)}
               className="text-primary hover:opacity-80"
               id="open-sidebar"
+              aria-label="Open menu"
+              aria-expanded={showMobileMenu}
             >
               <svg
                 className="h-6 w-6"
@@ -109,7 +123,7 @@ const Header = ({
                   strokeLinejoin="round"
                   strokeWidth="2"
                   d="M4 6h16M4 12h16M4 18h16"
-                ></path>
+                />
               </svg>
             </button>
           </div>

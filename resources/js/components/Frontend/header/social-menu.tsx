@@ -1,5 +1,6 @@
-// @ts-nocheck
+import type { ReactNode } from 'react';
 import { cn } from '@/lib/utils';
+import type { SocialMenuItem } from '@/types';
 import {
   FacebookIcon,
   LinkedinIcon,
@@ -7,14 +8,26 @@ import {
   YoutubeIcon,
 } from '../../shared/icons';
 
+type SocialMenuProps = {
+  menu?: SocialMenuItem[] | null;
+  className?: string;
+};
+
 // warning for showSocialLinks and menu.length
-export const SocialMenu = ({ menu = undefined, className = '', ...props }) => (
+export const SocialMenu = ({
+  menu,
+  className = '',
+  ...props
+}: SocialMenuProps) => (
   <ul
     className={cn('mt-4 flex space-x-4 sm:justify-center lg:mt-0', className)}
     {...props}
   >
-    {menu?.map(item => {
-      const SocialIcon = icons[item.name];
+    {menu?.map((item: any) => {
+      const SocialIcon = icons[item.name as keyof typeof icons];
+      if (!SocialIcon) {
+        return null;
+      }
       const styles = () => {
         if (item.name === 'twitter') {
           return 'bg-brand-twitter hover:bg-brand-twitter/80';
@@ -28,6 +41,7 @@ export const SocialMenu = ({ menu = undefined, className = '', ...props }) => (
         if (item.name === 'facebook') {
           return 'bg-brand-facebook hover:bg-brand-facebook/80';
         }
+        return '';
       };
       return (
         <SocialMenuItem key={item.name} className={styles()} link={item.link}>
@@ -38,7 +52,15 @@ export const SocialMenu = ({ menu = undefined, className = '', ...props }) => (
   </ul>
 );
 
-const SocialMenuItem = ({ link = undefined, className = '', children = undefined }) => (
+const SocialMenuItem = ({
+  link,
+  className = '',
+  children,
+}: {
+  link?: string;
+  className?: string;
+  children?: ReactNode;
+}) => (
   <li
     className={cn('rounded-full bg-gray-700 hover:bg-gray-700/90', className)}
   >
@@ -60,7 +82,13 @@ const icons = {
   youtube: YoutubeIcon,
 };
 
-const SocialNav = ({ menu = undefined, className = '' }) => (
+const SocialNav = ({
+  menu,
+  className = '',
+}: {
+  menu?: SocialMenuItem[] | null;
+  className?: string;
+}) => (
   <div className={cn('ml-auto block', className)}>
     <SocialMenu menu={menu} />
   </div>

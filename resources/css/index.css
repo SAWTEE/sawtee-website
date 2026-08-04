@@ -170,7 +170,16 @@
     transform: rotate(180deg);
   }
 
-  .dropdown:hover > .dropdown-menu {
+  /*
+    Tailwind v4: utility `hidden` lives in the utilities layer and beats @layer base.
+    Dropdown visibility is handled with group-hover/dropdown:block in the React components.
+    Keep this as a non-layered fallback for any legacy markup still using .dropdown-menu.
+  */
+}
+
+@layer utilities {
+  .dropdown:hover > .dropdown-menu,
+  .dropdown:focus-within > .dropdown-menu {
     display: block;
   }
 
