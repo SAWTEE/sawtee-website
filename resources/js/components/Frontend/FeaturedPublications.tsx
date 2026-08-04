@@ -1,4 +1,3 @@
-import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
@@ -64,9 +63,7 @@ function PublicationList({
             <li key={item.id} className="group py-3 first:pt-0 last:pb-0">
               <ItemLink kind={kind} href={href}>
                 <ListCopy title={item.title} subtitle={item.subtitle} />
-                {media ? (
-                  <ListThumb src={media} alt={item.title} kind={kind} />
-                ) : null}
+                {media ? <ListThumb src={media} alt={item.title} /> : null}
               </ItemLink>
             </li>
           );
@@ -128,23 +125,12 @@ function ListCopy({
   );
 }
 
-function ListThumb({
-  src,
-  alt,
-  kind,
-}: {
-  src: string;
-  alt: string;
-  kind: ListKind;
-}) {
+function ListThumb({ src, alt }: { src: string; alt: string }) {
   return (
     <div
       title={alt}
       aria-hidden
-      className={cn(
-        'shrink-0 overflow-hidden rounded-sm border border-borderColor/70 bg-muted/30',
-        kind === 'publication' ? 'h-[72px] w-14' : 'h-14 w-14'
-      )}
+      className="mx-auto h-[90px] w-1/3 max-w-16 shrink-0 overflow-hidden rounded-md border border-borderColor/70 bg-muted/30"
     >
       <img
         className="h-full w-full object-cover"

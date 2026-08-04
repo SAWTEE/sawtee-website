@@ -67,7 +67,7 @@ const Home = ({
       <Section className="carousel-section px-4 py-5 md:px-8 md:py-6 lg:px-12 lg:py-6">
         <div
           className={cn(
-            'mx-auto grid grid-cols-1 items-start gap-6 lg:gap-8',
+            'mx-auto grid grid-cols-1 items-center gap-6 lg:gap-8',
             FeaturedPublicationSectionIsVisible?.show === 1 && 'lg:grid-cols-12'
           )}
           id="carousel-section"
