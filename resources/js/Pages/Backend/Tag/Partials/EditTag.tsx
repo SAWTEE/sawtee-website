@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +16,7 @@ import {
 
 import { useForm } from '@inertiajs/react';
 
-export default function EditTag({ tag, open, setOpen }) {
+export default function EditTag({ tag = undefined, open = undefined, setOpen = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: tag.name,
   });

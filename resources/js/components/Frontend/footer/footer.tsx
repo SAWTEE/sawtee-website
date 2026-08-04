@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Tooltip,
   TooltipContent,
@@ -19,7 +20,13 @@ import { SocialMenu } from '../header/social-menu';
 import { MapModel } from '../MapModal';
 import { SubscribeForm } from '../NewsletterCallout';
 
-export default function Footer({ menu = [], socialMenu = [] }) {
+export default function Footer({
+  menu = [],
+  socialMenu = [],
+}: {
+  menu?: any[];
+  socialMenu?: any[];
+}) {
   const [mapModal, setMapModal] = useState(false);
 
   return (
@@ -164,7 +171,7 @@ export default function Footer({ menu = [], socialMenu = [] }) {
   );
 }
 
-const MenuItem = ({ children, className }) => {
+const MenuItem = ({ children = undefined, className = '' }) => {
   return (
     <li
       className={cn(

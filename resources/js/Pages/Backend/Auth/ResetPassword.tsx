@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from 'react';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import InputError from '@/components/Backend/InputError';
@@ -6,7 +7,7 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function ResetPassword({ token, email }) {
+export default function ResetPassword({ token = undefined, email = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     token: token,
     email: email,

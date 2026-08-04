@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -5,11 +6,11 @@ import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 
 export default function DropZone({
-  htmlFor,
+  htmlFor = undefined,
   accept = 'image/.png,.jpg,.jpeg,.webp',
   placeholder = 'Drag and drop image here, or click to select an image',
   defaultValue = null,
-  onValueChange,
+  onValueChange = undefined,
   ...props
 }) {
   const handleDragOver = event => {

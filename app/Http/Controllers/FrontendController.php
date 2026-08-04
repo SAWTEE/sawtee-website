@@ -4,17 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Article;
 use App\Models\Category;
-use App\Models\HomePageSection;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Publication;
 use App\Models\Research;
 use App\Models\Section;
-use App\Models\Slide;
-use App\Models\Slider;
 use App\Models\Tag;
 use App\Models\Team;
 use App\Models\Theme;
+use App\Support\HomePageDataAssembler;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,113 +21,10 @@ class FrontendController extends Controller
 {
     /**
      * Retrieves data for the home page and renders the 'Frontend/Pages/Home' view.
-     *
-     * @return Response
      */
-    public function index()
+    public function index(HomePageDataAssembler $homePageData): Response
     {
-        $home_page_sections = HomePageSection::all();
-        $slidesResponsiveImages = [];
-        $featured_publications = Publication::whereHas('tags', function ($query) {
-            return $query->where('name', 'featured');
-        })->with(['file', 'category'])->latest()->limit(3)->get();
-        $featured_Opinion_in_lead = Post::with(['category', 'tags', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'opinion-in-lead');
-            })->whereHas('tags', function ($query) {
-                $query->where('name', 'featured');
-            })
-            ->latest()
-            ->limit(1)
-            ->get();
-
-        $featured_commentary = Post::with(['category', 'tags', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'commentary');
-            })->whereHas('tags', function ($query) {
-                $query->where('name', 'featured');
-            })
-            ->latest()
-            ->limit(1)
-            ->get();
-        // ३. Blog section  (which added to see in home pages blog)
-        $featured_blogs = Post::with(['category', 'tags', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'blog');
-            })->whereHas('tags', function ($query) {
-                $query->where('name', 'featured');
-            })
-            ->latest()
-            ->limit(1)
-            ->get();
-        $featured_blog_posts = [...$featured_Opinion_in_lead, ...$featured_commentary, ...$featured_blogs];
-
-        $publications = Publication::with(['file', 'category'])
-            ->orderBy('id', 'DESC')
-            ->limit(6)
-            ->get();
-
-        $homePage = Page::where(function ($query) {
-            $query->where('name', 'home')->orWhere('slug', 'home');
-        })->first();
-        $slider = $homePage
-            ? Slider::where('page_id', $homePage->id)->latest()->first()
-            : null;
-        $slides = $slider
-            ? Slide::where('slider_id', $slider->id)->with('media')->orderBy('id', 'DESC')->take(5)->get()
-            : collect();
-        foreach ($slides as $slide) {
-            $media = $slide->getFirstMedia('slides');
-            $responsive = $media?->getSrcSet('responsive');
-
-            if ($responsive) {
-                $slidesResponsiveImages[] = $responsive;
-            }
-        }
-
-        $infocus = Post::with(['category', 'tags', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'in-focus');
-            })->whereHas('tags', function ($query) {
-                $query->where('name', 'featured');
-            })
-            ->latest()
-            ->limit(5)
-            ->get();
-        $sawteeInMedia = Post::with(['category', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'sawtee-in-media');
-            })->where('status', 'published')->latest()->take(6)->get();
-
-        $events = Post::with(['category', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'featured-events');
-            })->where('status', 'published')->latest()->take(5)->get();
-
-        $newsletters = Post::with(['category', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'newsletters');
-            })->where('status', 'published')->latest()->take(6)->get();
-
-        // Fetch the webinar series posts
-        $webinars = Post::with(['category', 'media'])
-            ->whereHas('category', function ($query) {
-                $query->where('slug', 'webinar-series');
-            })->where('status', 'published')->latest()->take(5)->get();
-
-        return Inertia::render('Frontend/Pages/Home', [
-            'slides' => $slides,
-            'infocus' => $infocus,
-            'sawteeInMedia' => $sawteeInMedia,
-            'events' => $events,
-            'featuredPublications' => $featured_publications,
-            'featuredBlogPosts' => $featured_blog_posts,
-            'publications' => $publications,
-            'newsletters' => $newsletters,
-            'webinars' => $webinars,
-            'slidesResponsiveImages' => $slidesResponsiveImages,
-            'homePageSections' => $home_page_sections,
-        ]);
+        return Inertia::render('Frontend/Pages/Home', $homePageData->assemble());
     }
 
     /**

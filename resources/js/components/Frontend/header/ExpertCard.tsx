@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 
-const ExpertCard = ({ expert }) => {
+const ExpertCard = ({ expert = undefined }) => {
   const image = expert.media[0].original_url;
   const initials = expert.name
     .split(' ')

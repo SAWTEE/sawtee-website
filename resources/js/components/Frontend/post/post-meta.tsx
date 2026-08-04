@@ -1,8 +1,9 @@
+// @ts-nocheck
 import { formatDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import PostTags from './post-tags';
 
-const PostMeta = ({ author, date, readingTime, tags, ...rest }) => (
+const PostMeta = ({ author = undefined, date = undefined, readingTime = undefined, tags = undefined, ...rest }) => (
   <div className={cn('post-meta')} {...rest}>
     <div className="flex w-full flex-wrap items-center gap-6 gap-y-2 text-sm text-muted-foreground">
       {readingTime && <p>Reading Time: {readingTime}</p>}

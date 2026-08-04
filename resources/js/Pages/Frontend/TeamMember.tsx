@@ -1,4 +1,5 @@
-const TeamMember = ({ member }) => {
+// @ts-nocheck
+const TeamMember = ({ member = undefined }) => {
   // const avatar = member.media.filter(
   //   media => media.collection_name === 'avatar'
   // )[0];

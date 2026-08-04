@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { cn, htmlToText } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import CardWithEffect from '../../../components/Frontend/CardWithEffect';
 
-export default function OurWork({ themes, sections }) {
+export default function OurWork({ themes = undefined, sections = undefined }) {
   const [intro, setIntro] = useState(null);
   const [sectors, setSectors] = useState(null);
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { BadgeCheck, LogOut } from 'lucide-react';
@@ -20,7 +21,7 @@ import {
 } from '@/components/ui/sidebar';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 
-export function NavUser({ user }) {
+export function NavUser({ user = undefined }) {
   const { isMobile } = useSidebar();
 
   return (

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';

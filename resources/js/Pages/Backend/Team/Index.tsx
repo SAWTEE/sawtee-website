@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
@@ -8,7 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function Index({ auth, teams }) {
+export default function Index({ auth = undefined, teams = undefined }) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
 

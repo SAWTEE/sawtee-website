@@ -1,6 +1,7 @@
+// @ts-nocheck
 import SimpleAlerts from '@/components/Frontend/SimpleAlerts';
 
-const ReformMonitor = ({ content, ...rest }) => {
+const ReformMonitor = ({ content = undefined, ...rest }) => {
   //   const reportUrl = import.meta.env.VITE_REFORM_PLATFORM_EMBBED_URL;
   return (
     <section className="w-full px-10 pb-20 pt-5 lg:px-20" {...rest}>

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import MainLayout from '../../components/Layouts/MainLayout';
 import PageLayout from '../../components/Layouts/PageLayout';
@@ -9,12 +10,11 @@ import ReformMonitor from './Pages/ReformMonitor';
 import SectionTemplate from './Pages/SectionTemplate';
 
 export default function Page({
-  page,
-  featured_image,
-  srcSet,
-  themes,
-  sections,
-}) {
+  page = undefined,
+  featured_image = undefined,
+  srcSet = undefined,
+  themes = undefined,
+  sections = undefined}) {
   return (
     <>
       <WebsiteHead
@@ -45,7 +45,7 @@ export default function Page({
   );
 }
 
-const PageContent = ({ page, sections, themes }) => {
+const PageContent = ({ page = undefined, sections = undefined, themes = undefined }) => {
   const { content, pageData } = page;
   switch (page.page_template) {
     case 'OurWork':

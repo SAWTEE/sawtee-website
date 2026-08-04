@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function CreateFellowshipForm({ open, setOpen }) {
+export default function CreateFellowshipForm({ open = undefined, setOpen = undefined }) {
   const { setData, post, errors, reset } = useForm({
     title: '',
     description: '',

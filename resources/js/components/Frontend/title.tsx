@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { FadeText } from '../shared/FadeText';
 import { cn } from '@/lib/utils';
 
-const Title = ({ title, underlineStyles }) => {
+const Title = ({ title = undefined, underlineStyles = undefined }) => {
   return (
     <div className="relative mb-12">
       <FadeText

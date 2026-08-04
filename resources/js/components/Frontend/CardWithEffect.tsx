@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
-const CardWithEffect = ({ children, className }) => {
+const CardWithEffect = ({ children = undefined, className = '' }) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 

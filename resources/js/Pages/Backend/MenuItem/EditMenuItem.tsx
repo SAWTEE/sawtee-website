@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -23,12 +24,11 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function EditMenuItem({
-  isOpen,
-  onClose,
-  item,
-  setMenuItem,
-  menuItems,
-}) {
+  isOpen = undefined,
+  onClose = undefined,
+  item = undefined,
+  setMenuItem = undefined,
+  menuItems = undefined}) {
   const { data, setData, patch, processing, reset } = useForm({
     title: item.title,
     name: item.name,

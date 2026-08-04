@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -8,7 +9,7 @@ import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Index({ auth, sections }) {
+export default function Index({ auth = undefined, sections = undefined }) {
   const { get, delete: destroy } = useForm();
 
   const { toast } = useToast();

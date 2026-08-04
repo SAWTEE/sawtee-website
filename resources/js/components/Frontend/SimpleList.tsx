@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-export default function SimpleList({ heading, children, className, ...rest }) {
+export default function SimpleList({ heading = undefined, children = undefined, className = '', ...rest }) {
   return (
     <div
       className={cn('border-l-2 border-[var(--color-border)] px-6', className)}

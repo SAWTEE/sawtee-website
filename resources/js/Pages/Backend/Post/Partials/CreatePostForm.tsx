@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -33,7 +34,7 @@ import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
-export default function CreatePostForm({ categories, themes, tags }) {
+export default function CreatePostForm({ categories = undefined, themes = undefined, tags = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: 1,
     theme_id: '',

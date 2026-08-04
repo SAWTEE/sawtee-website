@@ -22,6 +22,14 @@ This is a Laravel + Inertia + React application. Requirements:
 
 Stack: **Laravel 13**, **Inertia 3** (`inertiajs/inertia-laravel` + `@inertiajs/react`), **React 19**, **Vite 7**, **TypeScript**, **Tailwind CSS 4**.
 
+## Architecture
+
+**Inertia is the primary data path.** Page and shared props come from Laravel controllers / `HandleInertiaRequests` into React via Inertia — not a parallel JSON REST API. That matches Laravel’s Inertia + React guidance for this CMS: one backend, typed shared props (`resources/js/types`), and no duplicated controllers for a second HTTP surface.
+
+A separate public API would only be justified for mobile apps or third-party consumers. This repo has neither, so we keep Inertia and invest in TypeScript prop contracts instead of REST resources.
+
+TypeScript runs with `strict: true`. Shared/core files are fully checked; remaining legacy pages/components are listed in `resources/js/types/TYPECHECK_ALLOWLIST.md` (`// @ts-nocheck`) and should be migrated over time.
+
 You can find more details on the [Laravel documentation website](https://laravel.com/docs/13.x/installation).
 
 Here are the steps that we suggest you to follow:

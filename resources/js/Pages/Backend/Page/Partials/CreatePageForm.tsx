@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';

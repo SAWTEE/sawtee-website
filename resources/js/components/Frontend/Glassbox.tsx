@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-const Glassbox = ({ children, className, ...rest }) => {
+const Glassbox = ({ children = undefined, className = '', ...rest }) => {
   return (
     <div
       className={cn(

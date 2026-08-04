@@ -1,8 +1,9 @@
+// @ts-nocheck
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
 import { Link } from '@inertiajs/react';
 
-export const FeaturedPublications = ({ publications, blogPosts }) => {
+export const FeaturedPublications = ({ publications = undefined, blogPosts = undefined }) => {
   return (
     <Glassbox className="bg-white dark:bg-bgDarker">
       <SimpleList

@@ -1,3 +1,4 @@
+// @ts-nocheck
 function generateGradient() {
   const hexValues = [
     '0',

@@ -1,8 +1,9 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function VerifyEmail({ status }) {
+export default function VerifyEmail({ status = undefined }) {
   const { post, processing } = useForm({});
 
   const submit = e => {

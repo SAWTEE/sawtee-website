@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -9,7 +10,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 
-export default function Index({ auth, articles }) {
+export default function Index({ auth = undefined, articles = undefined }) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
 

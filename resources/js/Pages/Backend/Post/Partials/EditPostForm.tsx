@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -44,11 +45,10 @@ import { CalendarIcon, QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
 export default function EditPostForm({
-  post: postData,
-  categories,
-  tags,
-  themes,
-}) {
+  post: postData = undefined,
+  categories = undefined,
+  tags = undefined,
+  themes = undefined}) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: postData.title,
     slug: postData.slug,

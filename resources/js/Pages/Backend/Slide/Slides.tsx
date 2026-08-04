@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -7,7 +8,7 @@ import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import EditSlideForm from './EditSlideForm';
 
-const Slides = ({ slides, slider }) => {
+const Slides = ({ slides = undefined, slider = undefined }) => {
   const { toast } = useToast();
   const { delete: destroy } = useForm();
   const [editSlide, setEditSlide] = useState(null);

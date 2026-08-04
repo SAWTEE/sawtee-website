@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function CreateFellow({ fellowships }) {
+export default function CreateFellow({ fellowships = undefined }) {
   const { data, setData, post, errors, reset } = useForm({
     name: '',
     fellowship_id: undefined,

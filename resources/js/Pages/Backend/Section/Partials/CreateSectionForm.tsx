@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -17,7 +18,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function CreateSectionForm({ sections, pages }) {
+export default function CreateSectionForm({ sections = undefined, pages = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',

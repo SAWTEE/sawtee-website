@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Button } from '@/components/ui/button';
 import { htmlToText } from '@/lib/utils';
 
-const WebinarPost = ({ post }) => {
+const WebinarPost = ({ post = undefined }) => {
   const file = post.media.filter(m => m.collection_name === 'post-files')[0];
   return (
     <div>

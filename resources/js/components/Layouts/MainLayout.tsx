@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { ThemeProvider } from '@/components/shared/theme-provider';
 import Footer from '@/components/Frontend/footer/footer';
 import Header from '@/components/Frontend/header/header';
@@ -9,6 +9,7 @@ import { usePage } from '@inertiajs/react';
 import { ArrowUpToLineIcon } from 'lucide-react';
 import { register } from 'swiper/element/bundle';
 import SearchModal from '@/components/Frontend/header/searchModal';
+import type { SharedProps } from '@/types';
 
 import {
   Sheet,
@@ -18,11 +19,17 @@ import {
 } from '@/components/ui/sheet';
 
 import MobileMenu from '../Frontend/mobileMenu';
-export default function MainLayout({ children, ...rest }) {
+
+type MainLayoutProps = {
+  children?: ReactNode;
+  className?: string;
+};
+
+export default function MainLayout({ children, ...rest }: MainLayoutProps) {
   const [visible, setVisible] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const page = usePage();
+  const page = usePage<SharedProps>();
   const primaryMenu = page.props.primaryMenu ?? [];
   const footerMenu = page.props.footerMenu ?? [];
 
@@ -35,22 +42,20 @@ export default function MainLayout({ children, ...rest }) {
   };
 
   useEffect(() => {
-    // Set client-side flag
     setIsClient(true);
 
-    // Only add event listeners on client side
     if (typeof window !== 'undefined') {
       window.addEventListener('scroll', toggleVisibility);
       return () => window.removeEventListener('scroll', toggleVisibility);
     }
-  }, []); // Remove window.scrollY dependency
+  }, []);
 
   const scrollToTop = () => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   };
-  // Register Swiper only on client side
+
   useEffect(() => {
     if (isClient) {
       register();
@@ -62,9 +67,7 @@ export default function MainLayout({ children, ...rest }) {
       <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
         <SheetContent aria-describedby={undefined}>
           <SheetHeader>
-            <SheetTitle className="hidden" ariaLable="Mobile Menu">
-              Mobile Menu
-            </SheetTitle>
+            <SheetTitle className="hidden">Mobile Menu</SheetTitle>
             <div className="mx-auto my-4">
               <SearchModal />
             </div>

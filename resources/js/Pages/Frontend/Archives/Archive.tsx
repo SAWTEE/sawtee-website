@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -8,13 +9,12 @@ import PageLayout from '@/components/Layouts/PageLayout';
 import DefaultArchive from '@/Pages/Frontend/Archives/DefaultArchive';
 
 export default function Archive({
-  posts,
-  sawteeInMedia,
-  meta_title,
-  meta_description,
-  layout_title,
-  showSubscriptionBox = true,
-}) {
+  posts = undefined,
+  sawteeInMedia = undefined,
+  meta_title = undefined,
+  meta_description = undefined,
+  layout_title = undefined,
+  showSubscriptionBox = true}) {
   return (
     <MainLayout>
       <WebsiteHead

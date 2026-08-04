@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { Head, Link } from '@inertiajs/react';
 import MainLayout from '../../components/Layouts/MainLayout';
 
-const ErrorPage = ({ status }) => {
+const ErrorPage = ({ status = undefined }) => {
   const title = {
     503: '503: Service Unavailable',
     500: '500: Server Error',

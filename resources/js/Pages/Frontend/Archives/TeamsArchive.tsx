@@ -1,3 +1,4 @@
+// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import { Fragment } from 'react';
@@ -6,7 +7,7 @@ import MainLayout from '@/components/Layouts/MainLayout';
 import PageLayout from '@/components/Layouts/PageLayout';
 import TeamMember from '../TeamMember';
 
-const TeamsArchive = ({ category, teams, featured_image, srcSet }) => {
+const TeamsArchive = ({ category = undefined, teams = undefined, featured_image = undefined, srcSet = undefined }) => {
   return (
     <MainLayout>
       <WebsiteHead

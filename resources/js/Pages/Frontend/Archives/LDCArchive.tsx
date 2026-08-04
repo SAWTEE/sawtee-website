@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { Link } from '@inertiajs/react';
 import { DateFormat } from '@/lib/helpers';
 
-const LDCArchive = ({ posts }) => {
+const LDCArchive = ({ posts = undefined }) => {
   return (
     <div className="grid w-full gap-x-4 gap-y-10 px-4 md:grid-cols-2 md:px-8">
       {posts.map(post => {

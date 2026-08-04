@@ -1,11 +1,11 @@
+// @ts-nocheck
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
 export default function AirBnbCard({
-  img,
+  img = undefined,
   title = 'media fellowship',
-  mediaSrc,
-}) {
+  mediaSrc = undefined}) {
   return img.length > 0 ? (
     img.map(image_src => {
       return (

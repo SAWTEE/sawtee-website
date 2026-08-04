@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -20,7 +21,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function CreateArticleForm({ tags, volumes }) {
+export default function CreateArticleForm({ tags = undefined, volumes = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     slug: '',

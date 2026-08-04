@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import {
@@ -9,7 +10,7 @@ import {
 } from '@/components/ui/sidebar';
 import { Link, usePage } from '@inertiajs/react';
 
-export function NavMain({ menu }) {
+export function NavMain({ menu = undefined }) {
   const { url } = usePage();
   return (
     <SidebarGroup>

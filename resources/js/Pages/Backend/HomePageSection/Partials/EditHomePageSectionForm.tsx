@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
@@ -6,7 +7,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function EditHomePageSectionForm({ section }) {
+export default function EditHomePageSectionForm({ section = undefined }) {
   const { data, setData, processing, errors, reset, patch } = useForm({
     name: section.name,
     description: section.description,

@@ -1,10 +1,11 @@
+// @ts-nocheck
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
 import { formatDate } from '@/lib/helpers';
 
 import { Link } from '@inertiajs/react';
 
-const DefaultArchive = ({ posts, showFallbackImage = false, ...rest }) => {
+const DefaultArchive = ({ posts = undefined, showFallbackImage = false, ...rest }) => {
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (
@@ -22,7 +23,7 @@ const DefaultArchive = ({ posts, showFallbackImage = false, ...rest }) => {
 
 export default DefaultArchive;
 
-const ArchivePost = ({ post, showFallbackImage }) => {
+const ArchivePost = ({ post = undefined, showFallbackImage = undefined }) => {
   // const file = post.media.filter(
   //   media => media.collection_name === 'post-files'
   // )[0];

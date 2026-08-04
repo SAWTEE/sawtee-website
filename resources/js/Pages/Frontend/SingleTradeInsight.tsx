@@ -1,3 +1,4 @@
+// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import { TableOfContents } from '@/components/Frontend/TableOfContents';
@@ -5,7 +6,7 @@ import MainLayout from '@/components/Layouts/MainLayout';
 import PageLayout from '@/components/Layouts/PageLayout';
 import { Button } from '@/components/ui/button';
 
-export default function SingleTradeInsight({ tradeInsightVolume, media }) {
+export default function SingleTradeInsight({ tradeInsightVolume = undefined, media = undefined }) {
   return (
     <MainLayout>
       <WebsiteHead

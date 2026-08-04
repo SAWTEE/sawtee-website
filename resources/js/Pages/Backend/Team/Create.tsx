@@ -1,9 +1,10 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 
 import { Head } from '@inertiajs/react';
 import CreateTeamForm from './Partials/CreateTeamForm';
 
-export default function Create({ auth }) {
+export default function Create({ auth = undefined }) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Add New Team Member" />

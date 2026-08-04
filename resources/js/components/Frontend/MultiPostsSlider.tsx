@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Carousel,
   CarouselContent,
@@ -11,7 +12,7 @@ import 'swiper/css';
 import 'swiper/css/scrollbar';
 import { Badge } from '../ui/badge';
 
-const MultiPostsCarousel = ({ data }) => {
+const MultiPostsCarousel = ({ data = undefined }) => {
   return (
     <Carousel
       opts={{

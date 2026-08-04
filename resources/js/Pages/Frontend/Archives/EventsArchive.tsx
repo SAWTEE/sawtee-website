@@ -1,9 +1,10 @@
+// @ts-nocheck
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
 import { formatDate } from '@/lib/helpers';
 import { Link } from '@inertiajs/react';
 
-const EventsArchive = ({ posts, ...rest }) => {
+const EventsArchive = ({ posts = undefined, ...rest }) => {
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (

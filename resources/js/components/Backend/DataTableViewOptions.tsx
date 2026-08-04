@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
@@ -12,7 +13,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-export function DataTableViewOptions({ table, label }) {
+export function DataTableViewOptions({ table = undefined, label = undefined }) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

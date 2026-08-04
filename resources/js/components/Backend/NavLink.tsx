@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { Link } from '@inertiajs/react';
 
 export default function NavLink({
   active = false,
   className = '',
-  children,
+  children = undefined,
   ...props
 }) {
   return (

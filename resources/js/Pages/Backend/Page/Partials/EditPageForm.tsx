@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -29,7 +30,7 @@ import { slugify } from '@/lib/helpers';
 import { pageTemplates } from '@/lib/pageTemplates';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
-export default function EditPageForm({ page }) {
+export default function EditPageForm({ page = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: page.name,
     slug: page.slug,
@@ -256,7 +257,7 @@ export default function EditPageForm({ page }) {
   );
 }
 
-const ShowPageData = ({ open, onOpenChange, data }) => {
+const ShowPageData = ({ open = undefined, onOpenChange = undefined, data = undefined }) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>

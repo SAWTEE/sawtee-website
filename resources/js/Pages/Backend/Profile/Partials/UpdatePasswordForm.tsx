@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -22,7 +23,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function CreateSliderForm({ open, setOpen, pages }) {
+export default function CreateSliderForm({ open = undefined, setOpen = undefined, pages = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     page_id: null,

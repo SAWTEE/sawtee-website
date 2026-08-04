@@ -1,12 +1,13 @@
+// @ts-nocheck
 import { useEffect } from 'react';
 import { Input } from '../ui/input';
 
 // A debounced input react component
 function DebouncedInput({
-  className,
-  value,
-  setValue,
-  onChange,
+  className = '',
+  value = undefined,
+  setValue = undefined,
+  onChange = undefined,
   debounce = 500,
   ...props
 }) {

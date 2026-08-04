@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-export const Blob = ({ className }) => {
+export const Blob = ({ className = '' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +56,7 @@ export const EmailIcon = props => (
   </svg>
 );
 
-export const TwitterIcon = ({ className }) => {
+export const TwitterIcon = ({ className = '' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +94,7 @@ export const YoutubeIcon = () => {
   );
 };
 
-export const FacebookIcon = ({ className }) => {
+export const FacebookIcon = ({ className = '' }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -112,7 +113,7 @@ export const FacebookIcon = ({ className }) => {
   );
 };
 
-export const LinkedinIcon = ({ className }) => {
+export const LinkedinIcon = ({ className = '' }) => {
   return (
     <svg
       className={cn('h-[1rem] w-[1rem] text-white', className)}

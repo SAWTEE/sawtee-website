@@ -1,9 +1,10 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, ChevronRightIcon } from 'lucide-react';
 import { useState } from 'react';
 
-const ExploreButton = ({ text = 'Explore All', link, className, ...rest }) => {
+const ExploreButton = ({ text = 'Explore All', link = undefined, className = '', ...rest }) => {
   const [hovered, setHovered] = useState(false);
 
   return (

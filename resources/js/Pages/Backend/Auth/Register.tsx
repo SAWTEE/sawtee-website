@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect } from 'react';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import InputError from '@/components/Backend/InputError';

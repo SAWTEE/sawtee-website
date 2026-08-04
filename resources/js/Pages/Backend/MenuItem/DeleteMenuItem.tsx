@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +12,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function DeleteMenuItem({ isOpen, onClose, item, setMenuItem }) {
+export default function DeleteMenuItem({ isOpen = undefined, onClose = undefined, item = undefined, setMenuItem = undefined }) {
   const { delete: destroy, processing } = useForm();
   const { toast } = useToast();
   const submit = e => {

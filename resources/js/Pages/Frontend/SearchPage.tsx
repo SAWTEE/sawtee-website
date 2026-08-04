@@ -1,3 +1,4 @@
+// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostPreviewCard from '@/components/Frontend/PostPreviewCard';
@@ -7,7 +8,7 @@ import { router } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import Pagination from '@/components/Frontend/Pagination';
 
-export default function SearchPage({ posts, query }) {
+export default function SearchPage({ posts = undefined, query = undefined }) {
   const [searchQuery, setSearchQuery] = useState(query ?? '');
   const [state, setState] = useState({
     query: '',

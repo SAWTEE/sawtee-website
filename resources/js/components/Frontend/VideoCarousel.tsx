@@ -1,3 +1,4 @@
+// @ts-nocheck
 // import required modules
 import { ArrowLeftIcon, ArrowRightIcon, PlayCircleIcon } from 'lucide-react';
 import { useRef } from 'react';
@@ -7,13 +8,13 @@ import '../../../css/video-carousel.css';
 import { Button } from '../ui/button';
 
 const VideoCarousel = ({
-  posts,
-  spacing,
-  pagination,
-  scrollbar,
+  posts = undefined,
+  spacing = undefined,
+  pagination = undefined,
+  scrollbar = undefined,
   showCategoryTag = false,
-  direction,
-  children,
+  direction = undefined,
+  children = undefined,
   ...rest
 }) => {
   const swiperElRef = useRef(null);

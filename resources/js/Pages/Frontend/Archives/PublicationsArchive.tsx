@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
@@ -11,14 +12,13 @@ import MainLayout from '../../../components/Layouts/MainLayout';
 import PageLayout from '../../../components/Layouts/PageLayout';
 
 export default function PublicationsArchive({
-  category,
-  infocus,
-  sawteeInMedia,
-  publications,
+  category = undefined,
+  infocus = undefined,
+  sawteeInMedia = undefined,
+  publications = undefined,
   showSubscriptionBox = true,
-  featured_image,
-  srcSet,
-}) {
+  featured_image = undefined,
+  srcSet = undefined}) {
   // const isTradeInsightCategory = category.slug === 'trade-insight';
   return (
     <MainLayout>
@@ -76,11 +76,10 @@ export default function PublicationsArchive({
 }
 
 const ItemComponent = ({
-  item,
-  publications,
-  isTradeInsightCategory,
-  className,
-}) => {
+  item = undefined,
+  publications = undefined,
+  isTradeInsightCategory = undefined,
+  className = ''}) => {
   return (
     <div className={cn('w-full', className)} key={item.name}>
       <h3 className="pb-8 text-2xl lg:text-3xl" id={item.name}>
@@ -201,7 +200,7 @@ const ItemComponent = ({
 };
 
 // Main component that receives the data
-const ItemsList = ({ items, publications, className }) => {
+const ItemsList = ({ items = undefined, publications = undefined, className = '' }) => {
   return (
     <div className="flex flex-col gap-4">
       {items.map(

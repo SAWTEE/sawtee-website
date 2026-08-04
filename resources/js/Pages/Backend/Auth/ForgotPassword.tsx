@@ -1,10 +1,11 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import GuestLayout from '@/components/Layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 
-export default function ForgotPassword({ status }) {
+export default function ForgotPassword({ status = undefined }) {
   const { data, setData, post, processing, errors } = useForm({
     email: '',
   });

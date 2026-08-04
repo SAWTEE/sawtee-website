@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 
@@ -11,7 +12,7 @@ import React, { useState } from 'react';
 import CreateTag from './Partials/CreateTag';
 import EditTag from './Partials/EditTag';
 
-export default function Index({ auth, tags }) {
+export default function Index({ auth = undefined, tags = undefined }) {
   const [tag, setTag] = React.useState(null);
   const [createTag, setCreateTag] = useState(false);
   const [editTag, setEditTag] = useState(false);

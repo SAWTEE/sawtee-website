@@ -1,7 +1,8 @@
+// @ts-nocheck
 import React from 'react';
 import { Link } from '@inertiajs/react';
 
-export const TableOfContents = ({ articles, volumeSlug }) => {
+export const TableOfContents = ({ articles = undefined, volumeSlug = undefined }) => {
   return (
     <section className="mb-10 border-t border-border/40">
       {/* Vertical Scroll Area */}

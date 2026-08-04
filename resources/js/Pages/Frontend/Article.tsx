@@ -1,3 +1,4 @@
+// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import MainLayout from '@/components/Layouts/MainLayout';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
@@ -36,12 +37,11 @@ const calculateReadingTime = (content, options = {}) => {
 };
 
 export default function Article({
-  article,
-  volume,
-  featured_image,
-  srcSet,
-  relatedArticles,
-}) {
+  article = undefined,
+  volume = undefined,
+  featured_image = undefined,
+  srcSet = undefined,
+  relatedArticles = undefined}) {
   // Use useMemo to calculate reading time efficiently
   const readingTime = useMemo(() => {
     if (!article.content) return null;

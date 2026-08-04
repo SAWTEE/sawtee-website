@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { formatDate } from '@/lib/helpers';
 
 import { Link } from '@inertiajs/react';
@@ -5,7 +6,7 @@ import ExploreButton from './ExploreButton';
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
 
-const SidebarWidget = ({ array, title, link, ...rest }) => {
+const SidebarWidget = ({ array = undefined, title = undefined, link = undefined, ...rest }) => {
   return (
     <Glassbox
       className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none"

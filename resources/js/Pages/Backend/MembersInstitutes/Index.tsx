@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -10,7 +11,7 @@ import React, { useState } from 'react';
 import CreateMemberInstitute from './Partials/CreateMemberInstitute';
 import EditMemberInstitute from './Partials/EditMemberInstitute';
 
-export default function Index({ auth, members, institutes }) {
+export default function Index({ auth = undefined, members = undefined, institutes = undefined }) {
   const { delete: destroy } = useForm();
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);

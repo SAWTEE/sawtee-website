@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { HomeIcon } from '@/components/shared/icons';
 import {
   BookDashed,

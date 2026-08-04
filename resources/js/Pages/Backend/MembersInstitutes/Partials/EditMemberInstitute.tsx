@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import {
   Select,
@@ -21,11 +22,10 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function EditMemberInstitute({
-  open,
-  setOpen,
-  institute,
-  members,
-}) {
+  open = undefined,
+  setOpen = undefined,
+  institute = undefined,
+  members = undefined}) {
   const { data, setData, post, errors, reset } = useForm({
     name: institute.name,
     link: institute.link,

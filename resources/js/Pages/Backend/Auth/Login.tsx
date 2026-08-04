@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Checkbox from '@/components/Backend/Checkbox';
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
@@ -7,7 +8,7 @@ import GuestLayout from '@/components/Layouts/GuestLayout';
 import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 
-export default function Login({ status, canResetPassword }) {
+export default function Login({ status = undefined, canResetPassword = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',

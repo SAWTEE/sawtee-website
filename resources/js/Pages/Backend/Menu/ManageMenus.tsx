@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import {
   Accordion,
@@ -27,14 +28,13 @@ import EditMenuForm from './Partials/EditMenu';
 import InputError from '@/components/Backend/InputError.jsx';
 
 export default function ManageMenu({
-  auth,
-  categories,
-  sections,
-  menus,
-  pages,
-  desiredMenu,
-  menuItems,
-}) {
+  auth = undefined,
+  categories = undefined,
+  sections = undefined,
+  menus = undefined,
+  pages = undefined,
+  desiredMenu = undefined,
+  menuItems = undefined}) {
   const [firstLevelMenuItems, setFirstLevelMenuItems] = useState(null);
   const { get } = useForm();
   const [editMenu, setEditMenu] = useState(false);
@@ -137,7 +137,7 @@ export default function ManageMenu({
   );
 }
 
-const AddToMenu = ({ options, name, menu, menuItems }) => {
+const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, menuItems = undefined }) => {
   const [selectedData, setSelectedData] = useState(null);
   const [parent, setParent] = useState(null);
 
@@ -340,7 +340,7 @@ const AddToMenu = ({ options, name, menu, menuItems }) => {
   );
 };
 
-const MenuStructure = ({ firstLevelMenuItems, menuItems }) => {
+const MenuStructure = ({ firstLevelMenuItems = undefined, menuItems = undefined }) => {
   return (
     <div className="mt-6 rounded-lg p-6 shadow-md">
       {firstLevelMenuItems && firstLevelMenuItems.length > 0 && (

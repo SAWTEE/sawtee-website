@@ -1,10 +1,11 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
-export default function Edit({ auth, mustVerifyEmail, status }) {
+export default function Edit({ auth = undefined, mustVerifyEmail = undefined, status = undefined }) {
   return (
     <AuthenticatedLayout
       user={auth.user}

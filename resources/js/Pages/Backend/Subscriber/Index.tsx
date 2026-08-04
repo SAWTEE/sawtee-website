@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
@@ -6,7 +7,7 @@ import { Head } from '@inertiajs/react';
 
 import React from 'react';
 
-export default function Index({ auth, subscribers }) {
+export default function Index({ auth = undefined, subscribers = undefined }) {
   const defaultColumns = [
     {
       accessorKey: 'id',

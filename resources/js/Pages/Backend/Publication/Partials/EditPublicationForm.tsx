@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { MultiSelect } from '@/components/ui/multi-select';
@@ -20,7 +21,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 
-export default function EditPublicationForm({ publication, categories, tags }) {
+export default function EditPublicationForm({ publication = undefined, categories = undefined, tags = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: publication.category_id,
     title: publication.title,

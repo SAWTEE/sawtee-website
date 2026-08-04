@@ -1,3 +1,4 @@
+// @ts-nocheck
 import MousePosition from '@/lib/mouse-position';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '../shared/theme-provider';

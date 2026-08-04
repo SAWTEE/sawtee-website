@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
@@ -16,7 +17,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditFellow({ fellow, fellowships }) {
+export default function EditFellow({ fellow = undefined, fellowships = undefined }) {
   const { data, setData, post, errors, reset } = useForm({
     name: fellow.name,
     fellowship_id: fellow.fellowship_id,

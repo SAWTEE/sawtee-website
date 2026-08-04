@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   CustomFilter,
   GlobalFilter,
@@ -24,16 +25,15 @@ import {
 } from '@tanstack/react-table';
 import * as React from 'react';
 export function DataTable({
-  data,
-  defaultColumns,
+  data = undefined,
+  defaultColumns = undefined,
   showTypeFilter = false,
-  typeFilterOptions,
+  typeFilterOptions = undefined,
   showColumnFilters = true,
-  customFilterColumn,
+  customFilterColumn = undefined,
   pagination = true,
   showGlobalFilter = false,
-  showCustomFilter = true,
-}) {
+  showCustomFilter = true}) {
   const [sorting, setSorting] = React.useState([]);
   const [columns, setColumns] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});

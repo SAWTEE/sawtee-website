@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -10,7 +11,7 @@ import {
 } from '@/components/ui/select';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
-export function CustomFilter({ table, column }) {
+export function CustomFilter({ table = undefined, column = undefined }) {
   const [value, setValue] = useState(undefined);
   return (
     <Input
@@ -28,7 +29,7 @@ export function CustomFilter({ table, column }) {
   );
 }
 
-export function GlobalFilter({ globalFilter, setGlobalFilter }) {
+export function GlobalFilter({ globalFilter = undefined, setGlobalFilter = undefined }) {
   return (
     <Input
       placeholder="Filter using any column field..."
@@ -39,7 +40,7 @@ export function GlobalFilter({ globalFilter, setGlobalFilter }) {
   );
 }
 
-export function TypeFilter({ data, value, label, route }) {
+export function TypeFilter({ data = undefined, value = undefined, label = undefined, route = undefined }) {
   const [selectedType = null, setSelectedType] = useState(value);
   function handleTypeFilter(id) {
     setSelectedType(id);

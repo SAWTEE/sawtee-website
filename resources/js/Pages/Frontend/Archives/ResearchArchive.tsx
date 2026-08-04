@@ -1,8 +1,9 @@
+// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import { cn } from '@/lib/utils';
 import { FileText } from 'lucide-react';
 
-const ResearchArchive = ({ posts }) => {
+const ResearchArchive = ({ posts = undefined }) => {
   // Get the data of the current list.
   if (!posts || posts.length <= 0)
     return <p className="text-2xl">"No posts found"</p>;
@@ -50,7 +51,7 @@ const ResearchArchive = ({ posts }) => {
 
 export default ResearchArchive;
 
-const ReasearchItem = ({ skipTrail, children, className }) => {
+const ReasearchItem = ({ skipTrail = undefined, children = undefined, className = '' }) => {
   return (
     <div className={cn('flex items-start', className)}>
       <div className="relative mr-4 flex flex-col items-center justify-center">

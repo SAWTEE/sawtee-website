@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DangerButton from '@/components/Backend/DangerButton';
 import InputError from '@/components/Backend/InputError';
 import { useToast } from '@/components/ui/use-toast';

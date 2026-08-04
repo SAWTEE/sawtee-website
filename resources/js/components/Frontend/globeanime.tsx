@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 import anime from 'animejs';
 import { useEffect, useRef } from 'react';

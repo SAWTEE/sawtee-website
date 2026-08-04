@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +17,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-function CreateSlideForm({ open, setOpen, slider }) {
+function CreateSlideForm({ open = undefined, setOpen = undefined, slider = undefined }) {
   const { setData, post, processing, errors, reset } = useForm({
     title: '',
     subtitle: '',

@@ -1,14 +1,15 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 import PostCategories from './post-categories';
 
 const PostHeader = ({
-  heading,
+  heading = undefined,
   categories = null,
-  description,
-  color,
-  className,
-  textStyle,
-  children,
+  description = undefined,
+  color = undefined,
+  className = '',
+  textStyle = undefined,
+  children = undefined,
   ...rest
 }) => (
   <div

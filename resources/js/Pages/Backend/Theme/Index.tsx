@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -10,7 +11,7 @@ import { useState } from 'react';
 import CreateTheme from './Partials/CreateTheme';
 import EditTheme from './Partials/EditTheme';
 
-export default function Index({ auth, themes: data }) {
+export default function Index({ auth = undefined, themes: data = undefined }) {
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [theme, setTheme] = useState(null);

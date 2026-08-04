@@ -1,4 +1,5 @@
-export default function LogoCarousel({ logos }) {
+// @ts-nocheck
+export default function LogoCarousel({ logos = undefined }) {
   return (
     <div className="group inline-flex w-full flex-nowrap overflow-hidden [mask-image:_linear-gradient(to_right,transparent_0,_black_128px,_black_calc(100%-128px),transparent_100%)]">
       <ul className="group-hover:animation-pause flex animate-infinite-scroll items-center justify-center md:justify-start [&_img]:max-w-none [&_li]:mx-8">

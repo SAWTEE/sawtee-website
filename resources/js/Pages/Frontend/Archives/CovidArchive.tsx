@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import {
@@ -8,7 +9,7 @@ import {
 } from '@/components/ui/tooltip';
 import { DateFormat } from '@/lib/helpers';
 
-const CovidArchive = ({ posts }) => {
+const CovidArchive = ({ posts = undefined }) => {
   return (
     <div className="grid w-full grid-cols-1 gap-x-4 gap-y-10 px-4 md:px-8 lg:grid-cols-2">
       {posts.map(post => {

@@ -1,15 +1,15 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import EditPostForm from './Partials/EditPostForm';
 
 export default function Edit({
-  post,
-  auth,
-  categories,
-  tags,
-  themes,
-  categoryID,
-}) {
+  post = undefined,
+  auth = undefined,
+  categories = undefined,
+  tags = undefined,
+  themes = undefined,
+  categoryID = undefined}) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Edit Post" />

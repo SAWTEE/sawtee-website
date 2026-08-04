@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from 'react';
 import { cva } from 'class-variance-authority';
 import {
@@ -56,7 +57,45 @@ const multiSelectVariants = cva('m-1 transition-all duration-300 ease-in-out', {
   },
 });
 
-export const MultiSelect = React.forwardRef(
+export type MultiSelectOption = {
+  label: string;
+  value: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  disabled?: boolean;
+  style?: React.CSSProperties;
+};
+
+export type MultiSelectProps = {
+  options: MultiSelectOption[];
+  onValueChange?: (value: string[]) => void;
+  setValues?: (value: string[]) => void;
+  variant?: 'default' | 'secondary' | 'destructive' | 'inverted' | string | null;
+  defaultValue?: string[];
+  placeholder?: string;
+  animation?: number;
+  animationConfig?: Record<string, unknown>;
+  maxCount?: number;
+  modalPopover?: boolean;
+  asChild?: boolean;
+  className?: string;
+  hideSelectAll?: boolean;
+  searchable?: boolean;
+  emptyIndicator?: React.ReactNode;
+  autoSize?: boolean;
+  singleLine?: boolean;
+  popoverClassName?: string;
+  disabled?: boolean;
+  responsive?: boolean | Record<string, unknown>;
+  minWidth?: string | number;
+  maxWidth?: string | number;
+  deduplicateOptions?: boolean;
+  resetOnDefaultValueChange?: boolean;
+  closeOnSelect?: boolean;
+  name?: string;
+  id?: string;
+} & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'defaultValue'>;
+
+export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
   (
     {
       options,

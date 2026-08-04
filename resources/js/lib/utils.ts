@@ -1,19 +1,19 @@
-import { clsx } from 'clsx';
+import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export function cn(...inputs) {
+export function cn(...inputs: ClassValue[]): string {
   return twMerge(clsx(inputs));
 }
 
-export function htmlToText(html) {
+export function htmlToText(html: string | null | undefined): string | undefined {
   if (html == null) return;
   return html.replace(/<[^>]+>/g, '');
 }
 
-export function slugify(text) {
+export function slugify(text: string): string {
   return text
     .toLowerCase()
-    .replace(/[^\w\s-]/g, '') // Remove special chars except word, space, hyphen
-    .replace(/\s+/g, '-') // Replace spaces with hyphens
-    .trim(); // Remove extra whitespace
+    .replace(/[^\w\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .trim();
 }

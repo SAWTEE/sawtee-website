@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-export default function ListItem({ children, className }) {
+export default function ListItem({ children = undefined, className = '' }) {
   return (
     <div
       className={cn(

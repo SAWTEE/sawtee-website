@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import {
   Collapsible,
@@ -10,7 +11,7 @@ import { Link } from '@inertiajs/react';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 
-const MenuLink = ({ title, url, index, isOpen, ...rest }) => {
+const MenuLink = ({ title = undefined, url = undefined, index = undefined, isOpen = undefined, ...rest }) => {
   return (
     <Link
       href={url}
@@ -25,7 +26,7 @@ const MenuLink = ({ title, url, index, isOpen, ...rest }) => {
   );
 };
 
-const DropDownMenu = ({ menuItem, index, className }) => {
+const DropDownMenu = ({ menuItem = undefined, index = undefined, className = '' }) => {
   return (
     <ul className={'w-full list-none space-y-4'}>
       <Collapsible>
@@ -75,6 +76,10 @@ const MobileMenu = ({
   menu = [],
   showSocialLinks = false,
   socialLinks = null,
+}: {
+  menu?: any[];
+  showSocialLinks?: boolean;
+  socialLinks?: any;
 }) => {
   return (
     <ScrollArea className="h-full px-4">

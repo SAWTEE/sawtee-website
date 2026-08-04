@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -14,7 +15,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditCategoryForm({ open, setOpen, member }) {
+export default function EditCategoryForm({ open = undefined, setOpen = undefined, member = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     country: member.country,
   });

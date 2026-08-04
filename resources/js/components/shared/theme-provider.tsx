@@ -1,15 +1,29 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from 'react';
 
-const initialState = {
-  theme: 'system',
-  setTheme: () => null,
+type Theme = 'dark' | 'light' | 'system';
+
+type ThemeProviderState = {
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  resolvedTheme?: 'dark' | 'light';
+  systemTheme?: 'dark' | 'light';
 };
 
-const ThemeProviderContext = createContext(initialState);
+const initialState: ThemeProviderState = {
+  theme: 'system',
+  setTheme: () => undefined,
+};
 
-// Helper function to safely access localStorage
+const ThemeProviderContext = createContext<ThemeProviderState>(initialState);
+
 const safeLocalStorage = {
-  getItem: key => {
+  getItem: (key: string) => {
     try {
       if (typeof window !== 'undefined') {
         return localStorage.getItem(key);
@@ -19,19 +33,18 @@ const safeLocalStorage = {
     }
     return null;
   },
-  setItem: (key, value) => {
+  setItem: (key: string, value: string) => {
     try {
       if (typeof window !== 'undefined') {
         localStorage.setItem(key, value);
       }
     } catch (error) {
-      console.warn('Failed to set item in localStorage:', error);
+      console.warn('Failed to set item from localStorage:', error);
     }
   },
 };
 
-// Helper function to get system theme
-const getSystemTheme = () => {
+const getSystemTheme = (): 'dark' | 'light' => {
   if (typeof window !== 'undefined') {
     return window.matchMedia('(prefers-color-scheme: dark)').matches
       ? 'dark'
@@ -40,12 +53,20 @@ const getSystemTheme = () => {
   return 'light';
 };
 
-// Helper function to get resolved theme
-const getResolvedTheme = theme => {
+const getResolvedTheme = (theme: Theme): 'dark' | 'light' => {
   if (theme === 'system') {
     return getSystemTheme();
   }
   return theme;
+};
+
+type ThemeProviderProps = {
+  children?: ReactNode;
+  defaultTheme?: Theme;
+  storageKey?: string;
+  attribute?: string;
+  enableSystem?: boolean;
+  disableTransitionOnChange?: boolean;
 };
 
 export function ThemeProvider({
@@ -56,10 +77,10 @@ export function ThemeProvider({
   enableSystem = true,
   disableTransitionOnChange = true,
   ...props
-}) {
-  const [theme, setTheme] = useState(() => {
+}: ThemeProviderProps) {
+  const [theme, setTheme] = useState<Theme>(() => {
     const stored = safeLocalStorage.getItem(storageKey);
-    return stored || defaultTheme;
+    return (stored as Theme) || defaultTheme;
   });
 
   const [mounted, setMounted] = useState(false);
@@ -68,8 +89,7 @@ export function ThemeProvider({
     setMounted(true);
   }, []);
 
-  // Handle theme changes
-  const applyTheme = newTheme => {
+  const applyTheme = (newTheme: Theme) => {
     if (typeof window === 'undefined') return;
 
     const root = window.document.documentElement;
@@ -97,14 +117,12 @@ export function ThemeProvider({
     }
   };
 
-  // Apply theme when it changes
   useEffect(() => {
     if (mounted) {
       applyTheme(theme);
     }
   }, [theme, mounted]);
 
-  // Listen for system theme changes
   useEffect(() => {
     if (!mounted || !enableSystem) return;
 
@@ -120,9 +138,9 @@ export function ThemeProvider({
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme, mounted, enableSystem]);
 
-  const value = {
+  const value: ThemeProviderState = {
     theme,
-    setTheme: newTheme => {
+    setTheme: (newTheme: Theme) => {
       safeLocalStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
     },

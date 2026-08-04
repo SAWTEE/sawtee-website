@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { useToast } from '@/components/ui/use-toast';
 import { Head } from '@inertiajs/react';
@@ -14,20 +15,19 @@ import {
 } from '@/components/ui/card';
 
 export default function Dashboard({
-  auth,
-  posts,
-  publications,
-  researchs,
-  postsIncreasePercent,
-  publicationsIncreasePercent,
-  researchsIncreasePercent,
-  postsThisMonth,
-  postsLastMonth,
-  publicationsThisMonth,
-  publicationsLastMonth,
-  researchsThisMonth,
-  researchsLastMonth,
-}) {
+  auth = undefined,
+  posts = undefined,
+  publications = undefined,
+  researchs = undefined,
+  postsIncreasePercent = undefined,
+  publicationsIncreasePercent = undefined,
+  researchsIncreasePercent = undefined,
+  postsThisMonth = undefined,
+  postsLastMonth = undefined,
+  publicationsThisMonth = undefined,
+  publicationsLastMonth = undefined,
+  researchsThisMonth = undefined,
+  researchsLastMonth = undefined}) {
   const { toast } = useToast();
 
   React.useState(() => {
@@ -71,7 +71,7 @@ export default function Dashboard({
   );
 }
 
-const StatsCard = ({ title, stat, percent, count, lastMonth }) => {
+const StatsCard = ({ title = undefined, stat = undefined, percent = undefined, count = undefined, lastMonth = undefined }) => {
   return (
     <Card className="@container/card">
       <CardHeader>

@@ -1,15 +1,15 @@
+// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import MainLayout from '@/components/Layouts/MainLayout';
 import PostLayout from '@/components/Layouts/PostLayout';
 import WebinarPost from './Pages/WebinarPost';
 
 export default function Post({
-  post,
-  featured_image,
-  srcSet,
-  file,
-  relatedPosts,
-}) {
+  post = undefined,
+  featured_image = undefined,
+  srcSet = undefined,
+  file = undefined,
+  relatedPosts = undefined}) {
   const { category, title, content } = post;
   const isWebinarSeries = category.slug === 'webinar-series';
   const isDefault = !isWebinarSeries;

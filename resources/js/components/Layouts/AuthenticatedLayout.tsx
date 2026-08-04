@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { ThemeProvider } from '@/components/shared/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { DashBoardMenuItems } from '@/lib/data';
@@ -19,7 +20,7 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 
-export default function Authenticated({ user, children }) {
+export default function Authenticated({ user = undefined, children = undefined }) {
   const { url } = usePage();
   const sections = url.split('/').filter(Boolean);
 

@@ -11,14 +11,24 @@ import { Link, usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
+import type { ComponentPropsWithoutRef } from 'react';
+import type { MenuItem, SharedProps } from '@/types';
 import MegaMenu from './MegaMenu';
 
-export default function DesktopNavigation({ menu = [] }) {
-  const { url, props } = usePage();
+type DesktopNavigationProps = {
+  menu?: MenuItem[];
+};
+
+export default function DesktopNavigation({
+  menu = [],
+}: DesktopNavigationProps) {
+  const { url, props } = usePage<SharedProps>();
   const { experts } = props;
 
-  const [elementFocused, setElementFocused] = React.useState(null);
-  const handleHoverButton = index => {
+  const [elementFocused, setElementFocused] = React.useState<number | null>(
+    null
+  );
+  const handleHoverButton = (index: number | null) => {
     setElementFocused(index);
   };
 
@@ -35,7 +45,7 @@ export default function DesktopNavigation({ menu = [] }) {
           const active = menuItem.url === `${url}`;
           const hasMegaMenu =
             menuItem.name === 'Our Work' || menuItem.name === 'Know Us';
-          const hasChildren = menuItem.children.length > 0;
+          const hasChildren = (menuItem.children?.length ?? 0) > 0;
           return (
             <NavigationMenuItem
               key={menuItem.title}
@@ -83,7 +93,13 @@ export default function DesktopNavigation({ menu = [] }) {
   );
 }
 
-const DropDown = ({ className, menuItem }) => {
+const DropDown = ({
+  className = '',
+  menuItem,
+}: {
+  className?: string;
+  menuItem: MenuItem;
+}) => {
   return (
     <ul
       className={cn(
@@ -100,35 +116,44 @@ const DropDown = ({ className, menuItem }) => {
   );
 };
 
-const ListItem = React.forwardRef(({ className, item, ...props }, ref) => {
-  return (
-    <li
-      className={cn(
-        'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-        className
-      )}
-    >
-      <Link
-        ref={ref}
-        className="flex w-full items-center justify-between"
-        {...props}
+type ListItemProps = ComponentPropsWithoutRef<typeof Link> & {
+  item: MenuItem;
+  className?: string;
+};
+
+const ListItem = React.forwardRef<HTMLAnchorElement, ListItemProps>(
+  ({ className = '', item, ...props }, ref) => {
+    const hasChildren = (item.children?.length ?? 0) > 0;
+
+    return (
+      <li
+        className={cn(
+          'dropdown relative flex w-full select-none items-center justify-between space-y-1 rounded-md p-2 leading-none no-underline outline-none transition-colors hover:bg-bgDarker hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+          className
+        )}
       >
-        <span className="mr-1 font-medium leading-none">{item.title}</span>
-        {item.children.length > 0 && (
-          <ChevronDownIcon
-            className="relative top-[1px] ml-1 h-3 w-3 transition duration-300"
-            aria-hidden="true"
+        <Link
+          ref={ref}
+          className="flex w-full items-center justify-between"
+          {...props}
+        >
+          <span className="mr-1 font-medium leading-none">{item.title}</span>
+          {hasChildren && (
+            <ChevronDownIcon
+              className="relative top-[1px] ml-1 h-3 w-3 transition duration-300"
+              aria-hidden="true"
+            />
+          )}
+        </Link>
+        {hasChildren && (
+          <DropDown
+            className="left-[14rem] top-0 z-20 min-w-64"
+            key={item.title}
+            menuItem={item}
           />
         )}
-      </Link>
-      {item.children.length > 0 && (
-        <DropDown
-          className="left-[14rem] top-0 z-20 min-w-64"
-          key={item.title}
-          menuItem={item}
-        />
-      )}
-    </li>
-  );
-});
+      </li>
+    );
+  }
+);
 ListItem.displayName = 'ListItem';

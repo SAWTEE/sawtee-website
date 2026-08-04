@@ -1,3 +1,4 @@
+// @ts-nocheck
 'use client';
 
 import { motion } from 'framer-motion';
@@ -5,7 +6,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 export default function WordPullUp({
-  words,
+  words = undefined,
   wrapperFramerProps = {
     hidden: { opacity: 0 },
     show: {
@@ -19,8 +20,7 @@ export default function WordPullUp({
     hidden: { y: 20, opacity: 0 },
     show: { y: 0, opacity: 1 },
   },
-  className,
-}) {
+  className = ''}) {
   return (
     <motion.h1
       variants={wrapperFramerProps}

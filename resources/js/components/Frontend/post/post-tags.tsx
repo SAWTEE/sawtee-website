@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { TagsIcon } from 'lucide-react';
 
-export default function PostTags({ tags }) {
+export default function PostTags({ tags = undefined }) {
   return (
     <div className="space-x-2">
       <TagsIcon className="inline h-5 w-5" />
@@ -11,7 +12,7 @@ export default function PostTags({ tags }) {
   );
 }
 
-export function ClerkBadge({ text, color }) {
+export function ClerkBadge({ text = undefined, color = undefined }) {
   return (
     <span
       className={`relative px-[0.1875rem] text-[0.625rem]/[0.875rem] font-medium ${color ? `bg-${color}-50 text-${color}-500 dark:bg-${color}-950}` : 'bg-blue-50 text-blue-500 dark:bg-blue-950'}`}

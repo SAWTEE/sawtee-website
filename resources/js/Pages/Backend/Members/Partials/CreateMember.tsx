@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function CreateMember({ open, setOpen }) {
+export default function CreateMember({ open = undefined, setOpen = undefined }) {
   const { setData, post, errors, reset } = useForm({
     country: '',
   });

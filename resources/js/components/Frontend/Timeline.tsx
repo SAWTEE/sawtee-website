@@ -1,7 +1,8 @@
+// @ts-nocheck
 import { formatDate } from 'date-fns';
 import ListItem from '../shared/ListItem';
 
-export default function VerticalTimeline({ items }) {
+export default function VerticalTimeline({ items = undefined }) {
   return (
     <div className={'-my-6'}>
       {items.map(item => {

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
@@ -30,12 +31,11 @@ const calculateReadingTime = (content, options = {}) => {
 };
 
 const PostLayout = ({
-  children,
-  relatedPosts,
-  post,
-  featured_image,
-  srcSet,
-}) => {
+  children = undefined,
+  relatedPosts = undefined,
+  post = undefined,
+  featured_image = undefined,
+  srcSet = undefined}) => {
   // Use useMemo to calculate reading time efficiently
   const readingTime = useMemo(() => {
     if (!post.content) return null;

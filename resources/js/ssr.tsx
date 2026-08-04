@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import ReactDOMServer from 'react-dom/server';

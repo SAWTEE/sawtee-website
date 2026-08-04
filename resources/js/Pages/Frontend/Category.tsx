@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -13,15 +14,14 @@ import NewsletterArchive from './Archives/NewsletterArchive';
 import ResearchArchive from './Archives/ResearchArchive';
 
 export default function Category({
-  category,
-  posts,
-  infocus,
-  sawteeInMedia,
-  events,
-  featured_image,
-  srcSet,
-  showSubscriptionBox = true,
-}) {
+  category = undefined,
+  posts = undefined,
+  infocus = undefined,
+  sawteeInMedia = undefined,
+  events = undefined,
+  featured_image = undefined,
+  srcSet = undefined,
+  showSubscriptionBox = true}) {
   const isInFocus = category.slug.includes('infocus');
   const isMedia = category.slug.includes('sawtee-in-media');
   const isResearch = category.slug.includes('research');

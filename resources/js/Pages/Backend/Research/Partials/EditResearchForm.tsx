@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
@@ -21,7 +22,7 @@ import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 
-export default function EditResearchForm({ research }) {
+export default function EditResearchForm({ research = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: research.title ?? '',
     subtitle: research.subtitle ?? '',

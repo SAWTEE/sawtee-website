@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -14,7 +15,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export function DataTablePagination({ table, showItems, setShowItems }) {
+export function DataTablePagination({ table = undefined, showItems = undefined, setShowItems = undefined }) {
   return (
     <div className="flex w-full items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">

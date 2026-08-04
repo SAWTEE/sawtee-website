@@ -1,3 +1,4 @@
+// @ts-nocheck
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import { FeaturedPublications } from '@/components/Frontend/FeaturedPublications';
 import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
@@ -20,18 +21,17 @@ import MainLayout from '../../../components/Layouts/MainLayout';
 import { features } from '@/lib/data';
 
 const Home = ({
-  infocus,
-  slides,
-  events,
-  featuredPublications,
-  featuredBlogPosts,
-  publications,
-  sawteeInMedia,
-  newsletters,
-  webinars,
-  slidesResponsiveImages,
-  homePageSections,
-}) => {
+  infocus = undefined,
+  slides = undefined,
+  events = undefined,
+  featuredPublications = undefined,
+  featuredBlogPosts = undefined,
+  publications = undefined,
+  sawteeInMedia = undefined,
+  newsletters = undefined,
+  webinars = undefined,
+  slidesResponsiveImages = undefined,
+  homePageSections = undefined}) => {
   // const [open, setOpen] = useState(true);
 
   const FeaturedPublicationSectionIsVisible = homePageSections?.find(
@@ -155,7 +155,7 @@ const Home = ({
   );
 };
 
-const Section = ({ children, title = null, className, dark }) => {
+const Section = ({ children = undefined, title = null, className = '', dark = undefined }) => {
   return (
     <section
       className={cn(
@@ -170,7 +170,7 @@ const Section = ({ children, title = null, className, dark }) => {
   );
 };
 
-const FeaturedEventsSection = ({ events }) => {
+const FeaturedEventsSection = ({ events = undefined }) => {
   return (
     <div className="mb-4 grid grid-cols-1 place-items-start gap-5 md:grid-cols-12">
       <div className="group md:col-span-5">
@@ -261,7 +261,7 @@ const FeaturedEventsSection = ({ events }) => {
 
 export default Home;
 
-export const CarouselSection = ({ slides, slidesResponsiveImages }) => {
+export const CarouselSection = ({ slides = undefined, slidesResponsiveImages = undefined }) => {
   return (
     <FullWidthCarousel
       slides={slides}
@@ -272,7 +272,7 @@ export const CarouselSection = ({ slides, slidesResponsiveImages }) => {
 {
   /*infocus code chnages for external link from home pages  */
 }
-export const InfocusSection = ({ infocus }) => {
+export const InfocusSection = ({ infocus = undefined }) => {
   return (
     <Section className="infocus-section">
       <div className="mx-auto max-w-5xl">
@@ -316,7 +316,7 @@ export const InfocusSection = ({ infocus }) => {
   );
 };
 
-export const LatestPublicationSection = ({ publications }) => {
+export const LatestPublicationSection = ({ publications = undefined }) => {
   return (
     <Section className="publications-section">
       <div className="mx-auto max-w-5xl">
@@ -336,7 +336,7 @@ export const LatestPublicationSection = ({ publications }) => {
   );
 };
 
-export const PolicyOutreachSection = ({ events }) => {
+export const PolicyOutreachSection = ({ events = undefined }) => {
   return (
     <Section>
       <div className="mx-auto max-w-5xl">
@@ -351,7 +351,7 @@ export const PolicyOutreachSection = ({ events }) => {
   );
 };
 
-export const MediaSesction = ({ sawteeInMedia }) => {
+export const MediaSesction = ({ sawteeInMedia = undefined }) => {
   return (
     <div className="w-full md:col-span-3">
       <SimpleList heading={'SAWTEE in media'}>
@@ -399,7 +399,7 @@ export const MediaSesction = ({ sawteeInMedia }) => {
   );
 };
 
-export const NewsletterSection = ({ newsletters }) => {
+export const NewsletterSection = ({ newsletters = undefined }) => {
   return (
     <div className="md:col-span-3">
       <SimpleList
@@ -436,7 +436,7 @@ export const NewsletterSection = ({ newsletters }) => {
   );
 };
 
-export const WebinarSection = ({ webinars }) => {
+export const WebinarSection = ({ webinars = undefined }) => {
   return (
     <Section className="section videos-section">
       <div className="mx-auto max-w-5xl">

@@ -33,3 +33,22 @@ test('home page returns 200 with seeded menus', function () {
             ->has('primaryMenu', 1)
         );
 });
+
+test('home page exposes assembler payload keys', function () {
+    $this->get(route('home'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Frontend/Pages/Home')
+            ->has('slides')
+            ->has('infocus')
+            ->has('sawteeInMedia')
+            ->has('events')
+            ->has('featuredPublications')
+            ->has('featuredBlogPosts')
+            ->has('publications')
+            ->has('newsletters')
+            ->has('webinars')
+            ->has('slidesResponsiveImages')
+            ->has('homePageSections')
+        );
+});

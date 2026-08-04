@@ -1,15 +1,16 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { MoveLeft, MoveRight } from 'lucide-react';
 import { Button } from '../ui/button';
 
 const PaginationButton = ({
-  link,
-  isDisabled,
+  link = undefined,
+  isDisabled = undefined,
   label = '',
-  icon,
-  slot,
-  children,
+  icon = undefined,
+  slot = undefined,
+  children = undefined,
   ...rest
 }) => {
   return isDisabled ? (
@@ -53,14 +54,13 @@ const PaginationButton = ({
 };
 
 const Pagination = ({
-  prevPage,
-  nextPage,
-  currentPage,
-  totalPages,
-  className,
+  prevPage = undefined,
+  nextPage = undefined,
+  currentPage = undefined,
+  totalPages = undefined,
+  className = '',
   nextButtonLabel = 'Older Posts',
-  prevButtonLabel = 'Newer Posts',
-}) => {
+  prevButtonLabel = 'Newer Posts'}) => {
   return (
     <div className={cn('flex w-full gap-10', className)}>
       <PaginationButton

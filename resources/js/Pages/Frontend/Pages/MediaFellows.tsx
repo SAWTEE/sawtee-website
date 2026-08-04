@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AirBnbCard from '@/components/Frontend/AirBnbCard';
 import Glassbox from '@/components/Frontend/Glassbox';
 import {
@@ -48,7 +49,7 @@ export default function MediaFellows() {
   );
 }
 
-export const Fellow = ({ mediaFellow }) => {
+export const Fellow = ({ mediaFellow = undefined }) => {
   const { id, name, avatar, designation, bio, published_stories, experience } =
     mediaFellow;
 

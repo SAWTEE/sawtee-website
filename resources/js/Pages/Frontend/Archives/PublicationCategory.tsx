@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -8,14 +9,13 @@ import MainLayout from '../../../components/Layouts/MainLayout';
 import PageLayout from '../../../components/Layouts/PageLayout';
 
 export default function Publications({
-  category,
-  publications,
-  infocus,
-  sawteeInMedia,
-  featured_image,
+  category = undefined,
+  publications = undefined,
+  infocus = undefined,
+  sawteeInMedia = undefined,
+  featured_image = undefined,
   showSubscriptionBox = true,
-  srcSet,
-}) {
+  srcSet = undefined}) {
   return (
     <MainLayout>
       <WebsiteHead

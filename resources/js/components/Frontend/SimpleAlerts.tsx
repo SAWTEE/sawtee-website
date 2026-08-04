@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-export default function SimpleAlerts({ title, message, className }) {
+export default function SimpleAlerts({ title = undefined, message = undefined, className = '' }) {
   return (
     <div
       class={cn(

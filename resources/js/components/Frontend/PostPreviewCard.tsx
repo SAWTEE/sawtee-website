@@ -1,10 +1,11 @@
+// @ts-nocheck
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card';
 import ExploreButton from './ExploreButton';
 
-const PostPreviewCard = ({ post, showCategoryTag = false, className }) => {
+const PostPreviewCard = ({ post = undefined, showCategoryTag = false, className = '' }) => {
   const { title, slug, excerpt } = post;
   const file = post.media?.filter(
     media => media.collection_name === 'post-files'

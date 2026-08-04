@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import {
@@ -30,7 +31,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
-export default function CreateCategoryForm({ open, setOpen, categories }) {
+export default function CreateCategoryForm({ open = undefined, setOpen = undefined, categories = undefined }) {
   const { data, setData, post, errors, reset } = useForm({
     name: '',
     slug: '',

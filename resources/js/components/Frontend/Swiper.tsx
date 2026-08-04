@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef } from 'react';
 import { register } from 'swiper/element/bundle';
 

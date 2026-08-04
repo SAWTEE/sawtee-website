@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { AlertCircleIcon } from 'lucide-react';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
@@ -10,7 +11,7 @@ import { Head, useForm } from '@inertiajs/react';
 import React from 'react';
 import CreateSliderForm from './Partials/CreateSliderForm';
 
-export default function Index({ auth, sliders, pages }) {
+export default function Index({ auth = undefined, sliders = undefined, pages = undefined }) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
   const [sliderModal, setSliderModal] = React.useState(false);

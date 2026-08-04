@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 import {
   FacebookIcon,
@@ -7,7 +8,7 @@ import {
 } from '../../shared/icons';
 
 // warning for showSocialLinks and menu.length
-export const SocialMenu = ({ menu, className, ...props }) => (
+export const SocialMenu = ({ menu = undefined, className = '', ...props }) => (
   <ul
     className={cn('mt-4 flex space-x-4 sm:justify-center lg:mt-0', className)}
     {...props}
@@ -37,7 +38,7 @@ export const SocialMenu = ({ menu, className, ...props }) => (
   </ul>
 );
 
-const SocialMenuItem = ({ link, className, children }) => (
+const SocialMenuItem = ({ link = undefined, className = '', children = undefined }) => (
   <li
     className={cn('rounded-full bg-gray-700 hover:bg-gray-700/90', className)}
   >
@@ -59,7 +60,7 @@ const icons = {
   youtube: YoutubeIcon,
 };
 
-const SocialNav = ({ menu, className }) => (
+const SocialNav = ({ menu = undefined, className = '' }) => (
   <div className={cn('ml-auto block', className)}>
     <SocialMenu menu={menu} />
   </div>

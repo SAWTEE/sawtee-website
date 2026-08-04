@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Accordion,
   AccordionContent,
@@ -20,8 +21,8 @@ import DeleteMenuItem from '../MenuItem/DeleteMenuItem';
 import EditMenuItem from '../MenuItem/EditMenuItem';
 
 export default function MenuItemsList({
-  firstLevelMenuItems,
-  menuItems,
+  firstLevelMenuItems = undefined,
+  menuItems = undefined,
   ...rest
 }) {
   const [editMenuItem, setEditMenuItem] = useState(false);

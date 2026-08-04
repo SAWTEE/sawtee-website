@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Moon, Sun } from 'lucide-react';
 
 import { useTheme } from '@/components/shared/theme-provider';

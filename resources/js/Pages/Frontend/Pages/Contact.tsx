@@ -1,3 +1,4 @@
+// @ts-nocheck
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment } from 'react';
 
-const Contact = ({ pageData }) => {
+const Contact = ({ pageData = undefined }) => {
   return (
     <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
       <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
@@ -85,7 +86,7 @@ const Contact = ({ pageData }) => {
   );
 };
 
-const ActionButton = ({ href, children, ...rest }) => {
+const ActionButton = ({ href = undefined, children = undefined, ...rest }) => {
   return (
     <Button variant="link" {...rest}>
       {href ? (

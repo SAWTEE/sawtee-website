@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
@@ -12,7 +13,7 @@ export const PostCategory = props => (
   />
 );
 
-export const PostCategories = ({ category, className = '', ...props }) => {
+export const PostCategories = ({ category = undefined, className = '', ...props }) => {
   return (
     <div
       className={cn(

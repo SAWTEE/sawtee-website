@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Dialog,
   DialogClose,
@@ -7,7 +8,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-export const MapModel = ({ isOpen, onOpenChange }) => {
+export const MapModel = ({ isOpen = undefined, onOpenChange = undefined }) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">

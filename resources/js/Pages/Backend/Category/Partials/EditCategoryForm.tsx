@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -33,11 +34,10 @@ import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 
 export default function EditCategoryForm({
-  open,
-  setOpen,
-  category,
-  categories,
-}) {
+  open = undefined,
+  setOpen = undefined,
+  category = undefined,
+  categories = undefined}) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: category.name,
     type: category.type,

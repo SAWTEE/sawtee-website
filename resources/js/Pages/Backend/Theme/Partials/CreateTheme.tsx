@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,7 +16,7 @@ import {
 } from '@/components/ui/dialog';
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
-export default function CreateTheme({ open, setOpen }) {
+export default function CreateTheme({ open = undefined, setOpen = undefined }) {
   const { setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',

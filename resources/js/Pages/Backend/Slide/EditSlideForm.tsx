@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,7 +17,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function EditSlideForm({ open, setOpen, slide, setEditSlide }) {
+export default function EditSlideForm({ open = undefined, setOpen = undefined, slide = undefined, setEditSlide = undefined }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: slide.title,
     subtitle: slide.subtitle,

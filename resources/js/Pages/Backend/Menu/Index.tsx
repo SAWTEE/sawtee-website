@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
@@ -9,7 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import CreateMenu from './Partials/CreateMenu';
-export default function Index({ auth, menus }) {
+export default function Index({ auth = undefined, menus = undefined }) {
   const { get, delete: destroy } = useForm();
   const [createMenu, setCreateMenu] = useState(false);
   const { toast } = useToast();

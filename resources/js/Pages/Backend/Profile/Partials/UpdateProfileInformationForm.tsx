@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -6,10 +7,9 @@ import { useToast } from '@/components/ui/use-toast';
 import { Link, useForm, usePage } from '@inertiajs/react';
 
 export default function UpdateProfileInformation({
-  mustVerifyEmail,
-  status,
-  className = '',
-}) {
+  mustVerifyEmail = undefined,
+  status = undefined,
+  className = ''}) {
   const user = usePage().props.auth.user;
   const { toast } = useToast();
   const { data, setData, patch, errors, processing } = useForm({

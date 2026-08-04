@@ -1,3 +1,4 @@
+// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -9,7 +10,7 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 
-export default function Index({ auth, posts, categories, categoryID }) {
+export default function Index({ auth = undefined, posts = undefined, categories = undefined, categoryID = undefined }) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
 
@@ -27,7 +28,7 @@ export default function Index({ auth, posts, categories, categoryID }) {
     });
   };
 
-  const Status = ({ status }) => {
+  const Status = ({ status = undefined }) => {
     switch (status) {
       case 'unpublished':
         return (

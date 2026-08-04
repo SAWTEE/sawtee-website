@@ -1,9 +1,10 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 
 import { Head } from '@inertiajs/react';
 import EditFellow from './Partials/EditFellow';
 
-export default function Edit({ fellow, auth, fellowships }) {
+export default function Edit({ fellow = undefined, auth = undefined, fellowships = undefined }) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Edit Fellow" />

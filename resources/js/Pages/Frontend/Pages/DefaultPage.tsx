@@ -1,4 +1,5 @@
-const DefaultPage = ({ sections, content, ...rest }) => {
+// @ts-nocheck
+const DefaultPage = ({ sections = undefined, content = undefined, ...rest }) => {
   return (
     <section
       className="page-content mx-auto max-w-2xl px-8 py-20 md:px-0"

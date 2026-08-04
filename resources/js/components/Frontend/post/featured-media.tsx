@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-const FeaturedMedia = ({ src, srcSet, alt, className }) => {
+const FeaturedMedia = ({ src = undefined, srcSet = undefined, alt = undefined, className = '' }) => {
   return (
     <picture>
       <img

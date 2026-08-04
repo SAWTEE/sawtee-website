@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as React from 'react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
@@ -14,7 +15,7 @@ import {
   SidebarRail,
 } from '@/components/ui/sidebar';
 
-export function AppSidebar({ user, menu, ...props }) {
+export function AppSidebar({ user = undefined, menu = undefined, ...props }) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

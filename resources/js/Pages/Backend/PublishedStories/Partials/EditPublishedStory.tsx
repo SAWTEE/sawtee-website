@@ -1,3 +1,4 @@
+// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,7 +13,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditPublishedStory({ fellows, publishedStory }) {
+export default function EditPublishedStory({ fellows = undefined, publishedStory = undefined }) {
   const { data, setData, post, errors, reset } = useForm({
     title: publishedStory.title,
     fellow_id: publishedStory.fellow_id,

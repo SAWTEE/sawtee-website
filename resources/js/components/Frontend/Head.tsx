@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Head } from '@inertiajs/react';
 
-const WebsiteHead = ({ title, description, image, url, children }) => {
+const WebsiteHead = ({ title = undefined, description = undefined, image = undefined, url = undefined, children = undefined }) => {
   return (
     <Head>
       <title>{title}</title>

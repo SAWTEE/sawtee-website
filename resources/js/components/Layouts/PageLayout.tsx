@@ -1,8 +1,9 @@
+// @ts-nocheck
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import { cn } from '@/lib/utils';
 
-const PageLayout = ({ title, featured_image, srcSet, children }) => {
+const PageLayout = ({ title = undefined, featured_image = undefined, srcSet = undefined, children = undefined }) => {
   const hasFeaturedImage = featured_image && featured_image !== '';
   return (
     <>

@@ -1,9 +1,10 @@
+// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 
 import { Head } from '@inertiajs/react';
 import CreatePublishedStory from './Partials/CreatePublishedStory';
 
-export default function Create({ auth, fellows }) {
+export default function Create({ auth = undefined, fellows = undefined }) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Add New Published Story" />

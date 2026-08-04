@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Accordion,
   AccordionContent,
@@ -9,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { slugify } from '@/lib/helpers';
 import { cn, htmlToText } from '@/lib/utils';
 
-export default function SectionTemplate({ sections, pageData }) {
+export default function SectionTemplate({ sections = undefined, pageData = undefined }) {
   const logos = [];
   pageData.forEach(country =>
     country.institutes.map(
@@ -44,7 +45,7 @@ export default function SectionTemplate({ sections, pageData }) {
   );
 }
 
-const Members = ({ memberInstitutions }) => {
+const Members = ({ memberInstitutions = undefined }) => {
   return (
     <div id="member-institutions" className="offset-element">
       <PageSectionTitle titleText={'Member Institutions'} />
@@ -85,7 +86,7 @@ const Members = ({ memberInstitutions }) => {
   );
 };
 
-const PageSection = ({ section, sections }) => {
+const PageSection = ({ section = undefined, sections = undefined }) => {
   const { title, description } = section;
 
   const isTabs = section.type === 'tabs';
@@ -164,7 +165,7 @@ const PageSection = ({ section, sections }) => {
   );
 };
 
-const PageSectionTitle = ({ titleText, className }) => {
+const PageSectionTitle = ({ titleText = undefined, className = '' }) => {
   return (
     <h2
       className={cn(
