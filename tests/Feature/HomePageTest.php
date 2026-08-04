@@ -50,5 +50,7 @@ test('home page exposes assembler payload keys', function () {
             ->has('webinars')
             ->has('slidesResponsiveImages')
             ->has('homePageSections')
+            ->has('seo.title')
+            ->has('seo.description')
         );
 });
