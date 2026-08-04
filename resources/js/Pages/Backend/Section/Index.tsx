@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -6,16 +5,16 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
-export default function Index({ auth = undefined, sections = undefined }) {
+export default function Index({ auth = undefined, sections = undefined }: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.sections.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.sections.destroy', id), {
       preserveScroll: true,
@@ -31,19 +30,19 @@ export default function Index({ auth = undefined, sections = undefined }) {
   const defaultColumns = [
     {
       accessorKey: 'id',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="ID" />;
       },
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Title" />;
       },
     },
     {
       accessorKey: 'type',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Type" />;
       },
     },
@@ -51,8 +50,9 @@ export default function Index({ auth = undefined, sections = undefined }) {
     {
       accessorKey: 'parent_id',
       header: 'Parent Section',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return sections.find(
+          // @ts-ignore allowlist-migration
           section => section.id === row.getValue('parent_id')
         )?.title;
       },
@@ -60,14 +60,14 @@ export default function Index({ auth = undefined, sections = undefined }) {
     },
     {
       accessorKey: 'page.name',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="For Page" />;
       },
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <DataTableActions
           id={row.original.id}
           handleDelete={handleDelete}

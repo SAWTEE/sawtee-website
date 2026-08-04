@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
@@ -10,17 +9,17 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import CreateMenu from './Partials/CreateMenu';
-export default function Index({ auth = undefined, menus = undefined }) {
+export default function Index({ auth = undefined, menus = undefined }: any) {
   const { get, delete: destroy } = useForm();
   const [createMenu, setCreateMenu] = useState(false);
   const { toast } = useToast();
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.manage.menus', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.delete.menu', id), {
       preserveState: true,
@@ -43,19 +42,19 @@ export default function Index({ auth = undefined, menus = undefined }) {
   const defaultColumns = [
     {
       accessorKey: 'id',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="ID" />;
       },
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Title" />;
       },
     },
     {
       accessorKey: 'location',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Location" />;
       },
     },
@@ -63,7 +62,7 @@ export default function Index({ auth = undefined, menus = undefined }) {
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <DataTableActions
           id={row.original.id}
           handleDelete={handleDelete}

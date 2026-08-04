@@ -1,25 +1,25 @@
-// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import { cn } from '@/lib/utils';
 import { FileText } from 'lucide-react';
 
-const ResearchArchive = ({ posts = undefined }) => {
+const ResearchArchive = ({ posts = undefined }: any) => {
   // Get the data of the current list.
   if (!posts || posts.length <= 0)
     return <p className="text-2xl">"No posts found"</p>;
 
+  // @ts-ignore allowlist-migration
   const sortedPosts = Object.entries(posts).sort(([a], [b]) => b - a);
 
   return (
     <div className="mx-auto mb-5 flex w-full max-w-3xl flex-col items-start justify-start gap-10">
-      {sortedPosts.map(tagitem => {
+      {sortedPosts.map((tagitem: any) => {
         return (
           <div className="z-10 w-full" key={tagitem[0]}>
             <h2 className="my-5 text-lg font-bold md:text-xl xl:text-2xl">
               {tagitem[0]}
             </h2>
             <Glassbox className={'w-full rounded-xl p-4 text-left'}>
-              {tagitem[1].map((researchItem, idx) => (
+              {tagitem[1].map((researchItem: any, idx: any) => (
                 <ReasearchItem
                   key={researchItem.id}
                   skipTrail={idx !== tagitem[1].length - 1}
@@ -51,7 +51,7 @@ const ResearchArchive = ({ posts = undefined }) => {
 
 export default ResearchArchive;
 
-const ReasearchItem = ({ skipTrail = undefined, children = undefined, className = '' }) => {
+const ReasearchItem = ({ skipTrail = undefined, children = undefined, className = '' }: any) => {
   return (
     <div className={cn('flex items-start', className)}>
       <div className="relative mr-4 flex flex-col items-center justify-center">

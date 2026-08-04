@@ -1,14 +1,14 @@
-// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
-export default function Edit({ auth = undefined, mustVerifyEmail = undefined, status = undefined }) {
+export default function Edit({ auth = undefined, mustVerifyEmail = undefined, status = undefined }: any) {
   return (
     <AuthenticatedLayout
       user={auth.user}
+      // @ts-ignore allowlist-migration
       header={
         <h2 className="text-xl font-semibold leading-tight text-gray-800">
           Profile

@@ -1,4 +1,3 @@
-// @ts-nocheck
 function generateGradient() {
   const hexValues = [
     '0',
@@ -18,7 +17,7 @@ function generateGradient() {
     'e',
   ];
 
-  function populate(a) {
+  function populate(a: any) {
     let b;
     for (let i = 0; i < 6; i++) {
       const x = Math.round(Math.random() * 14);

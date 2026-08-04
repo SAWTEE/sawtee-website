@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -22,20 +21,23 @@ export default function CreateTeamForm() {
   const { toast } = useToast();
   const [image, setImage] = React.useState(null);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.teams.store'), {
@@ -94,6 +96,7 @@ export default function CreateTeamForm() {
             id="designation"
             name="designation"
             placeholder="enter member designation"
+            // @ts-ignore allowlist-migration
             onChange={e => setData('designation', e.target.value)}
           />
           {errors.designation && (
@@ -107,6 +110,7 @@ export default function CreateTeamForm() {
             id="order"
             name="order"
             defaultValue={data.order}
+            // @ts-ignore allowlist-migration
             onChange={e => setData('order', e.target.value)}
           />
           {errors.order && <InputError mt={2}>{errors.order}</InputError>}

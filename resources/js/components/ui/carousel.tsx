@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { ArrowLeftIcon, ArrowRightIcon } from '@radix-ui/react-icons';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -50,6 +49,7 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
     const [canScrollPrev, setCanScrollPrev] = React.useState(false);
     const [canScrollNext, setCanScrollNext] = React.useState(false);
 
+    // @ts-ignore allowlist-migration
     const onSelect = React.useCallback(api => {
       if (!api) {
         return;
@@ -68,6 +68,7 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
     }, [api]);
 
     const handleKeyDown = React.useCallback(
+      // @ts-ignore allowlist-migration
       event => {
         if (event.key === 'ArrowLeft') {
           event.preventDefault();
@@ -104,6 +105,7 @@ const Carousel = React.forwardRef<HTMLDivElement, CarouselProps>(
 
     return (
       <CarouselContext.Provider
+        // @ts-ignore allowlist-migration
         value={{
           carouselRef,
           api: api,
@@ -176,8 +178,11 @@ const CarouselPrevious = React.forwardRef<HTMLSpanElement, React.ComponentPropsW
 
     return (
       <Button
+        // @ts-ignore allowlist-migration
         ref={ref}
+        // @ts-ignore allowlist-migration
         variant={variant}
+        // @ts-ignore allowlist-migration
         size={size}
         className={cn(
           'absolute h-8 w-8 rounded-full',
@@ -204,8 +209,11 @@ const CarouselNext = React.forwardRef<HTMLSpanElement, React.ComponentPropsWitho
 
     return (
       <Button
+        // @ts-ignore allowlist-migration
         ref={ref}
+        // @ts-ignore allowlist-migration
         variant={variant}
+        // @ts-ignore allowlist-migration
         size={size}
         className={cn(
           'absolute h-8 w-8 rounded-full',

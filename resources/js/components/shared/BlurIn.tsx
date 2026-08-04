@@ -1,11 +1,10 @@
-// @ts-nocheck
 'use client';
 
 import { motion } from 'framer-motion';
 
 import { cn } from '@/lib/utils';
 
-const BlurIn = ({ word = undefined, className = '', variant = undefined, duration = 1 }) => {
+const BlurIn = ({ word = undefined, className = '', variant = undefined, duration = 1 }: any) => {
   const defaultVariants = {
     hidden: { filter: 'blur(10px)', opacity: 0 },
     visible: { filter: 'blur(0px)', opacity: 1 },

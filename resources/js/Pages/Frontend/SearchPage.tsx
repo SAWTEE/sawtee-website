@@ -110,7 +110,7 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
             )}
             <div className="grid place-items-center gap-10 md:grid-cols-2">
               {state.data &&
-                state.data?.map(post => {
+                state.data?.map((post: any) => {
                   return (
                     <PostPreviewCard
                       className="w-full"

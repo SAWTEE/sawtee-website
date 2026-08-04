@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import {
   Select,
@@ -25,7 +24,7 @@ export default function EditMemberInstitute({
   open = undefined,
   setOpen = undefined,
   institute = undefined,
-  members = undefined}) {
+  members = undefined}: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: institute.name,
     link: institute.link,
@@ -34,6 +33,7 @@ export default function EditMemberInstitute({
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -54,6 +54,7 @@ export default function EditMemberInstitute({
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',
@@ -134,6 +135,7 @@ export default function EditMemberInstitute({
               <Label htmlFor="member_id">Select Member Country</Label>
               <Select
                 name="member_id"
+                // @ts-ignore allowlist-migration
                 id="member_id"
                 value={data.member_id}
                 onValueChange={value => setData('member_id', value)}
@@ -142,7 +144,7 @@ export default function EditMemberInstitute({
                   <SelectValue placeholder="Select member country" />
                 </SelectTrigger>
                 <SelectContent>
-                  {members.map(member => (
+                  {members.map((member: any) => (
                     <SelectItem key={member.id} value={member.id}>
                       {member.country}
                     </SelectItem>

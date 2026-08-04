@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { cva } from 'class-variance-authority';
 import {
@@ -138,6 +137,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
     const prevIsOpen = React.useRef(isPopoverOpen);
     const prevSearchValue = React.useRef(searchValue);
 
+    // @ts-ignore allowlist-migration
     const announce = React.useCallback((message, priority = 'polite') => {
       if (priority === 'assertive') {
         setAssertiveMessage(message);
@@ -155,23 +155,26 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
     const prevDefaultValueRef = React.useRef(defaultValue);
 
+    // @ts-ignore allowlist-migration
     const isGroupedOptions = React.useCallback(opts => {
       return opts.length > 0 && 'heading' in opts[0];
     }, []);
 
-    const arraysEqual = React.useCallback((a, b) => {
+    const arraysEqual = React.useCallback((a: any, b: any) => {
       if (a.length !== b.length) return false;
       const sortedA = [...a].sort();
       const sortedB = [...b].sort();
-      return sortedA.every((val, index) => val === sortedB[index]);
+      return sortedA.every((val: any, index: any) => val === sortedB[index]);
     }, []);
 
     // Helper function to check if a value is selected
     const isValueSelected = React.useCallback(
+      // @ts-ignore allowlist-migration
       optionValue => {
         return selectedValues.some(selectedValue => {
           // If selectedValues contains objects, compare by value property
           if (typeof selectedValue === 'object' && selectedValue !== null) {
+            // @ts-ignore allowlist-migration
             return selectedValue.value === optionValue;
           }
           // If selectedValues contains primitive values, compare directly
@@ -183,7 +186,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
     // Helper function to get selected value keys for internal operations
     const getSelectedValueKeys = React.useCallback(() => {
-      return selectedValues.map(selectedValue => {
+      return selectedValues.map((selectedValue: any) => {
         if (typeof selectedValue === 'object' && selectedValue !== null) {
           return selectedValue.value;
         }
@@ -195,6 +198,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       setSelectedValues(defaultValue);
       setIsPopoverOpen(false);
       setSearchValue('');
+      // @ts-ignore allowlist-migration
       onValueChange(defaultValue);
     }, [defaultValue, onValueChange]);
 
@@ -202,27 +206,38 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
     React.useImperativeHandle(
       ref,
+      // @ts-ignore allowlist-migration
       () => ({
         reset: resetToDefault,
         getSelectedValues: () => selectedValues,
+        // @ts-ignore allowlist-migration
         setSelectedValues: values => {
           setSelectedValues(values);
+          // @ts-ignore allowlist-migration
           onValueChange(values);
         },
         clear: () => {
           setSelectedValues([]);
+          // @ts-ignore allowlist-migration
           onValueChange([]);
         },
         focus: () => {
           if (buttonRef.current) {
+            // @ts-ignore allowlist-migration
             buttonRef.current.focus();
+            // @ts-ignore allowlist-migration
             const originalOutline = buttonRef.current.style.outline;
+            // @ts-ignore allowlist-migration
             const originalOutlineOffset = buttonRef.current.style.outlineOffset;
+            // @ts-ignore allowlist-migration
             buttonRef.current.style.outline = '2px solid hsl(var(--ring))';
+            // @ts-ignore allowlist-migration
             buttonRef.current.style.outlineOffset = '2px';
             setTimeout(() => {
               if (buttonRef.current) {
+                // @ts-ignore allowlist-migration
                 buttonRef.current.style.outline = originalOutline;
+                // @ts-ignore allowlist-migration
                 buttonRef.current.style.outlineOffset = originalOutlineOffset;
               }
             }, 1000);
@@ -269,6 +284,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
           tablet: { maxCount: 4, hideIcons: false, compactMode: false },
           desktop: { maxCount: 6, hideIcons: false, compactMode: false },
         };
+        // @ts-ignore allowlist-migration
         const currentSettings = defaultResponsive[screenSize];
         return {
           maxCount: currentSettings?.maxCount ?? maxCount,
@@ -278,8 +294,11 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       }
       const currentSettings = responsive[screenSize];
       return {
+        // @ts-ignore allowlist-migration
         maxCount: currentSettings?.maxCount ?? maxCount,
+        // @ts-ignore allowlist-migration
         hideIcons: currentSettings?.hideIcons ?? false,
+        // @ts-ignore allowlist-migration
         compactMode: currentSettings?.compactMode ?? false,
       };
     };
@@ -334,14 +353,16 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       if (options.length === 0) return [];
       let allOptions;
       if (isGroupedOptions(options)) {
-        allOptions = options.flatMap(group => group.options);
+        allOptions = options.flatMap((group: any) => group.options);
       } else {
         allOptions = options;
       }
       const valueSet = new Set();
+      // @ts-ignore allowlist-migration
       const duplicates = [];
+      // @ts-ignore allowlist-migration
       const uniqueOptions = [];
-      allOptions.forEach(option => {
+      allOptions.forEach((option: any) => {
         if (valueSet.has(option.value)) {
           duplicates.push(option.value);
           if (!deduplicateOptions) {
@@ -357,6 +378,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
           ? 'automatically removed'
           : 'detected';
         console.warn(
+          // @ts-ignore allowlist-migration
           `MultiSelect: Duplicate option values ${action}: ${duplicates.join(
             ', '
           )}. ` +
@@ -367,10 +389,12 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
             }`
         );
       }
+      // @ts-ignore allowlist-migration
       return deduplicateOptions ? uniqueOptions : allOptions;
     }, [options, deduplicateOptions, isGroupedOptions]);
 
     const getOptionByValue = React.useCallback(
+      // @ts-ignore allowlist-migration
       value => {
         const option = getAllOptions().find(option => option.value === value);
         if (!option && process.env.NODE_ENV === 'development') {
@@ -388,9 +412,10 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       if (options.length === 0) return [];
       if (isGroupedOptions(options)) {
         return options
-          .map(group => ({
+          .map((group: any) => ({
             ...group,
             options: group.options.filter(
+              // @ts-ignore allowlist-migration
               option =>
                 option.label
                   .toLowerCase()
@@ -398,7 +423,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                 option.value.toLowerCase().includes(searchValue.toLowerCase())
             ),
           }))
-          .filter(group => group.options.length > 0);
+          .filter((group: any) => group.options.length > 0);
       }
       return options.filter(
         option =>
@@ -408,6 +433,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       );
     }, [options, searchValue, searchable, isGroupedOptions]);
 
+    // @ts-ignore allowlist-migration
     const handleInputKeyDown = event => {
       if (event.key === 'Enter') {
         setIsPopoverOpen(true);
@@ -415,10 +441,12 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
         const newSelectedValues = [...selectedValues];
         newSelectedValues.pop();
         setSelectedValues(newSelectedValues);
+        // @ts-ignore allowlist-migration
         onValueChange(newSelectedValues);
       }
     };
 
+    // @ts-ignore allowlist-migration
     const toggleOption = optionValue => {
       if (disabled) return;
       const option = getOptionByValue(optionValue);
@@ -429,7 +457,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
       if (isCurrentlySelected) {
         // Remove the option
-        newSelectedValues = selectedValues.filter(selectedValue => {
+        newSelectedValues = selectedValues.filter((selectedValue: any) => {
           if (typeof selectedValue === 'object' && selectedValue !== null) {
             return selectedValue.value !== optionValue;
           }
@@ -441,12 +469,13 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       }
 
       setSelectedValues(newSelectedValues);
+      // @ts-ignore allowlist-migration
       onValueChange(newSelectedValues);
 
       // Call setValues if provided (for your use case)
       if (setValues) {
         const selectedOptions = newSelectedValues
-          .map(value =>
+          .map((value: any) =>
             getAllOptions().find(
               opt =>
                 opt.value === (typeof value === 'object' ? value.value : value)
@@ -464,6 +493,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
     const handleClear = () => {
       if (disabled) return;
       setSelectedValues([]);
+      // @ts-ignore allowlist-migration
       onValueChange([]);
       if (setValues) {
         setValues([]);
@@ -482,10 +512,11 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
         responsiveSettings.maxCount
       );
       setSelectedValues(newSelectedValues);
+      // @ts-ignore allowlist-migration
       onValueChange(newSelectedValues);
       if (setValues) {
         const selectedOptions = newSelectedValues
-          .map(value =>
+          .map((value: any) =>
             getAllOptions().find(
               opt =>
                 opt.value === (typeof value === 'object' ? value.value : value)
@@ -498,14 +529,15 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
     const toggleAll = () => {
       if (disabled) return;
-      const allOptions = getAllOptions().filter(option => !option.disabled);
+      const allOptions = getAllOptions().filter((option: any) => !option.disabled);
       const selectedValueKeys = getSelectedValueKeys();
 
       if (selectedValueKeys.length === allOptions.length) {
         handleClear();
       } else {
-        const allValues = allOptions.map(option => option.value);
+        const allValues = allOptions.map((option: any) => option.value);
         setSelectedValues(allValues);
+        // @ts-ignore allowlist-migration
         onValueChange(allValues);
         if (setValues) {
           setValues(allOptions);
@@ -550,14 +582,14 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
     React.useEffect(() => {
       const selectedCount = selectedValues.length;
       const allOptions = getAllOptions();
-      const totalOptions = allOptions.filter(opt => !opt.disabled).length;
+      const totalOptions = allOptions.filter((opt: any) => !opt.disabled).length;
       if (selectedCount !== prevSelectedCount.current) {
         const diff = selectedCount - prevSelectedCount.current;
         if (diff > 0) {
           const selectedValueKeys = getSelectedValueKeys();
           const addedItems = selectedValueKeys.slice(-diff);
           const addedLabels = addedItems
-            .map(value => allOptions.find(opt => opt.value === value)?.label)
+            .map((value: any) => allOptions.find(opt => opt.value === value)?.label)
             .filter(Boolean);
 
           if (addedLabels.length === 1) {
@@ -643,7 +675,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
               : `${selectedValues.length} option${
                   selectedValues.length === 1 ? '' : 's'
                 } selected: ${getSelectedValueKeys()
-                  .map(value => getOptionByValue(value)?.label)
+                  .map((value: any) => getOptionByValue(value)?.label)
                   .filter(Boolean)
                   .join(', ')}`}
           </div>
@@ -695,7 +727,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   >
                     {getSelectedValueKeys()
                       .slice(0, responsiveSettings.maxCount)
-                      .map(value => {
+                      .map((value: any) => {
                         const option = getOptionByValue(value);
                         const IconComponent = option?.icon;
                         const customStyle = option?.style;
@@ -717,6 +749,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                             key={value}
                             className={cn(
                               getBadgeAnimationClass(),
+                              // @ts-ignore allowlist-migration
                               multiSelectVariants({ variant }),
                               customStyle?.gradient &&
                                 'border-transparent text-white',
@@ -792,6 +825,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                         className={cn(
                           'border-foreground/1 bg-transparent text-foreground hover:bg-transparent',
                           getBadgeAnimationClass(),
+                          // @ts-ignore allowlist-migration
                           multiSelectVariants({ variant }),
                           responsiveSettings.compactMode &&
                             'px-1.5 py-0.5 text-xs',
@@ -918,7 +952,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                       role="option"
                       aria-selected={
                         getSelectedValueKeys().length ===
-                        getAllOptions().filter(opt => !opt.disabled).length
+                        getAllOptions().filter((opt: any) => !opt.disabled).length
                       }
                       aria-label={`Select all ${
                         getAllOptions().length
@@ -929,7 +963,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                         className={cn(
                           'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
                           getSelectedValueKeys().length ===
-                            getAllOptions().filter(opt => !opt.disabled).length
+                            getAllOptions().filter((opt: any) => !opt.disabled).length
                             ? 'bg-primary text-primary-foreground'
                             : 'opacity-50 [&_svg]:invisible'
                         )}
@@ -948,9 +982,9 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   </CommandGroup>
                 )}
                 {isGroupedOptions(filteredOptions) ? (
-                  filteredOptions.map(group => (
+                  filteredOptions.map((group: any) => (
                     <CommandGroup key={group.heading} heading={group.heading}>
-                      {group.options.map(option => {
+                      {group.options.map((option: any) => {
                         const isSelected = isValueSelected(option.value);
                         return (
                           <CommandItem
@@ -993,7 +1027,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                   ))
                 ) : (
                   <CommandGroup>
-                    {filteredOptions.map(option => {
+                    {filteredOptions.map((option: any) => {
                       const isSelected = isValueSelected(option.value);
                       return (
                         <CommandItem

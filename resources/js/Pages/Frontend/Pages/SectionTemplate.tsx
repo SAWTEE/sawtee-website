@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Accordion,
   AccordionContent,
@@ -10,11 +9,11 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { slugify } from '@/lib/helpers';
 import { cn, htmlToText } from '@/lib/utils';
 
-export default function SectionTemplate({ sections = undefined, pageData = undefined }) {
+export default function SectionTemplate({ sections, pageData }: any) {
   const logos = [];
-  pageData.forEach(country =>
+  pageData.forEach((country: any) =>
     country.institutes.map(
-      member =>
+      (member: any) =>
         member.logo &&
         logos.push({
           alt: member.member_name,
@@ -25,7 +24,7 @@ export default function SectionTemplate({ sections = undefined, pageData = undef
   );
   return (
     <div className="page-content mx-auto max-w-2xl px-[32px] py-[80px] text-lg leading-8 md:px-0">
-      {sections?.map(section => {
+      {sections?.map((section: any) => {
         if (section.parent_id === null) {
           return (
             <PageSection
@@ -45,15 +44,15 @@ export default function SectionTemplate({ sections = undefined, pageData = undef
   );
 }
 
-const Members = ({ memberInstitutions = undefined }) => {
+const Members = ({ memberInstitutions = undefined }: any) => {
   return (
     <div id="member-institutions" className="offset-element">
       <PageSectionTitle titleText={'Member Institutions'} />
 
-      {memberInstitutions?.map(({ country, institutes, id }) => {
+      {memberInstitutions?.map(({ country, institutes, id }: any) => {
         return (
-          <Accordion key={id} collapsible className="w-full">
-            <AccordionItem border="none" value={country}>
+          <Accordion key={id} type="single" collapsible className="w-full">
+            <AccordionItem value={country}>
               <AccordionTrigger>
                 <p className="font-sans text-xl font-bold text-primary md:text-2xl">
                   {country}
@@ -61,13 +60,13 @@ const Members = ({ memberInstitutions = undefined }) => {
               </AccordionTrigger>
               <AccordionContent className="ml-6">
                 <ol className="list-decimal space-y-2 text-zinc-700 dark:text-zinc-300">
-                  {institutes.map(({ member_name, member_website_link }) => {
+                  {institutes.map(({ member_name, member_website_link }: any) => {
                     return (
                       <li key={member_name} className="text-lg">
                         <a
                           target="_blank"
                           title={member_name}
-                          ariaLabel={member_name}
+                          aria-label={member_name}
                           href={member_website_link}
                           rel="noreferrer"
                         >
@@ -86,7 +85,7 @@ const Members = ({ memberInstitutions = undefined }) => {
   );
 };
 
-const PageSection = ({ section = undefined, sections = undefined }) => {
+const PageSection = ({ section = undefined, sections = undefined }: any) => {
   const { title, description } = section;
 
   const isTabs = section.type === 'tabs';
@@ -95,7 +94,7 @@ const PageSection = ({ section = undefined, sections = undefined }) => {
 
   const sectionID = slugify(title);
 
-  const childSections = sections.filter(sec => sec.parent_id === section.id);
+  const childSections = sections.filter((sec: any) => sec.parent_id === section.id);
   return (
     <div id={sectionID} className="offset-element">
       <PageSectionTitle titleText={title} />
@@ -104,7 +103,7 @@ const PageSection = ({ section = undefined, sections = undefined }) => {
         <div className="px-6 py-4">
           <Tabs defaultValue={childSections[0].title} orientation="vertical">
             <TabsList className="grid h-auto w-full grid-cols-3 bg-bgDarker/60 p-2">
-              {childSections.map(({ title }) => (
+              {childSections.map(({ title }: any) => (
                 <TabsTrigger key={title} value={title}>
                   <p className="font-sans text-lg font-bold md:text-xl">
                     {title}
@@ -112,7 +111,7 @@ const PageSection = ({ section = undefined, sections = undefined }) => {
                 </TabsTrigger>
               ))}
             </TabsList>
-            {childSections.map(({ description, title }) => (
+            {childSections.map(({ description, title }: any) => (
               <TabsContent
                 key={title}
                 value={title}
@@ -128,9 +127,9 @@ const PageSection = ({ section = undefined, sections = undefined }) => {
       )}
 
       {isAccordian &&
-        childSections?.map(({ title, description }) => {
+        childSections?.map(({ title, description }: any) => {
           return (
-            <Accordion key={title} collapsible className="w-full">
+            <Accordion key={title} type="single" collapsible className="w-full">
               <AccordionItem value={title}>
                 <AccordionTrigger>
                   <p className="font-sans text-lg font-bold text-primary md:text-xl">
@@ -165,7 +164,7 @@ const PageSection = ({ section = undefined, sections = undefined }) => {
   );
 };
 
-const PageSectionTitle = ({ titleText = undefined, className = '' }) => {
+const PageSectionTitle = ({ titleText = undefined, className = '' }: any) => {
   return (
     <h2
       className={cn(

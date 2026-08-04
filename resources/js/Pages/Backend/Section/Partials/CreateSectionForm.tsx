@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -18,7 +17,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function CreateSectionForm({ sections = undefined, pages = undefined }) {
+export default function CreateSectionForm({ sections = undefined, pages = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',
@@ -34,20 +33,23 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
   const sectionTypes = ['default', 'tabs', 'accordian', 'members'];
   const [image, setImage] = React.useState(null);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.sections.store'), {
@@ -62,6 +64,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -111,8 +114,10 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
 
             <Select
               name="page_id"
+              // @ts-ignore allowlist-migration
               id="page_id"
               onValueChange={value => {
+                // @ts-ignore allowlist-migration
                 setData('page_id', value);
               }}
             >
@@ -124,7 +129,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
                   <SelectLabel>Pages</SelectLabel>
                   {pages &&
                     pages.length > 0 &&
-                    pages.map(item => (
+                    pages.map((item: any) => (
                       <SelectItem key={item.id} value={item.id.toString()}>
                         {item.name}
                       </SelectItem>
@@ -143,6 +148,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
               className="mt-1"
               defaultValue={0}
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('order', Number(e.target.value));
               }}
             />
@@ -172,6 +178,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
 
               <Select
                 name="type"
+                // @ts-ignore allowlist-migration
                 id="type"
                 onValueChange={value => setData('type', value)}
               >
@@ -181,7 +188,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Section Types</SelectLabel>
-                    {sectionTypes.map(item => (
+                    {sectionTypes.map((item: any) => (
                       <SelectItem key={item} value={item.toString()}>
                         {item}
                       </SelectItem>
@@ -201,9 +208,11 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
 
               <Select
                 name="parent_id"
+                // @ts-ignore allowlist-migration
                 id="parent_id"
                 disabled={data.type === 'default'}
                 onValueChange={value => {
+                  // @ts-ignore allowlist-migration
                   setData('parent_id', value);
                 }}
               >
@@ -213,7 +222,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
                 <SelectContent className="w-[300px]">
                   <SelectGroup>
                     <SelectLabel>Sections</SelectLabel>
-                    {sections?.map(item => (
+                    {sections?.map((item: any) => (
                       <SelectItem key={item.id} value={item.id.toString()}>
                         {item.title}
                       </SelectItem>
@@ -232,7 +241,7 @@ export default function CreateSectionForm({ sections = undefined, pages = undefi
             id="description"
             className="mt-1"
             initialValue=""
-            onChange={(evt, editor) =>
+            onChange={(evt: any, editor: any) =>
               setData('description', editor.getContent())
             }
           />

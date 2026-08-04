@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useEffect } from 'react';
 import { Input } from '../ui/input';
 
@@ -10,7 +9,7 @@ function DebouncedInput({
   onChange = undefined,
   debounce = 500,
   ...props
-}) {
+}: any) {
   useEffect(() => {
     const timeout = setTimeout(() => {
       setValue(value);

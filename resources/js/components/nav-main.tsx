@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import {
@@ -9,16 +8,18 @@ import {
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
 import { Link, usePage } from '@inertiajs/react';
+import type { DashboardMenuItem } from '@/components/app-sidebar';
 
-export function NavMain({ menu = undefined }) {
+export function NavMain({ menu }: { menu?: DashboardMenuItem[] }) {
   const { url } = usePage();
   return (
     <SidebarGroup>
       <SidebarGroupLabel>SAWTEE CMS Menu</SidebarGroupLabel>
       <SidebarMenu>
-        {menu?.map(menuItem => {
+        {menu?.map((menuItem: any) => {
           const routeLink = route(menuItem.route);
           const active = routeLink.includes(url);
+          const Icon = menuItem.icon;
           return (
             <Link
               key={menuItem.name}
@@ -26,8 +27,10 @@ export function NavMain({ menu = undefined }) {
               preserveState
             >
               <SidebarMenuItem>
-                <SidebarMenuButton isActive={active} tooltip={menuItem.name}>
-                  {menuItem.icon && <menuItem.icon />}
+                <SidebarMenuButton
+                  {...({ isActive: active, tooltip: menuItem.name } as any)}
+                >
+                  {Icon ? <Icon /> : null}
                   <span>{menuItem.name}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>

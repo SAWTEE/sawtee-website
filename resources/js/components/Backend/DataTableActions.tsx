@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   AlertDialog,
   AlertDialogAction,
@@ -22,7 +21,7 @@ import {
 import { cn } from '@/lib/utils';
 import { MoreHorizontal } from 'lucide-react';
 
-export default function DataTableActions({ id = undefined, handleEdit = undefined, handleDelete = undefined }) {
+export default function DataTableActions({ id = undefined, handleEdit = undefined, handleDelete = undefined }: any) {
   return (
     <AlertDialog>
       <AlertDialogContent>

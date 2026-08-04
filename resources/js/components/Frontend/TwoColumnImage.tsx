@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Link } from '@inertiajs/react';
 import { ExternalLink } from 'lucide-react';
 import { Blob } from '../shared/icons';
@@ -7,10 +6,10 @@ export const TwoColumnImageSection = ({
   data = undefined,
   showBlobIcon = false,
   showBorderBox = false,
-  children = undefined}) => {
+  children = undefined}: any) => {
   return (
     <div className="mx-auto grid max-w-5xl grid-cols-2 items-center justify-center gap-10">
-      {data.map(item => {
+      {data.map((item: any) => {
         return (
           <div
             key={item.id}

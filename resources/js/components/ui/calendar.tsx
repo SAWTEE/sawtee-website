@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons';
 import { DayPicker } from 'react-day-picker';
@@ -6,7 +5,7 @@ import { DayPicker } from 'react-day-picker';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 
-function Calendar({ className = '', classNames = undefined, showOutsideDays = true, ...props }) {
+function Calendar({ className = '', classNames = undefined, showOutsideDays = true, ...props }: any) {
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}

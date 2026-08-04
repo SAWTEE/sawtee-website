@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -31,7 +30,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function EditArticleForm({ article = undefined, tags = undefined, volumes = undefined }) {
+export default function EditArticleForm({ article = undefined, tags = undefined, volumes = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: article.title,
     slug: article.slug,
@@ -42,6 +41,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
     tags: [],
     published_at: article.published_at,
     image: article.media?.filter(
+      // @ts-ignore allowlist-migration
       m => m.collection_name === 'article-featured-image'
     )[0],
     meta_title: article.meta_title,
@@ -55,21 +55,22 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
   );
   const [articleTags, setArticleTags] = React.useState([]);
 
-  function setDataTags(selectedValues) {
-    const tagIds = selectedValues.map(item => item.value);
+  function setDataTags(selectedValues: any) {
+    const tagIds = selectedValues.map((item: any) => item.value);
     setData('tags', tagIds);
   }
 
   const [selectedVolume, setSelectedVolume] = React.useState(
     volumes
-      ? volumes.filter(volume => volume.id === data.publication_id)[0].id
+      ? volumes.filter((volume: any) => volume.id === data.publication_id)[0].id
       : null
   );
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -80,6 +81,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -98,6 +100,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',
@@ -112,16 +115,16 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   React.useEffect(() => {
     setArticleTags(
-      article.tags.map(tag => ({ value: tag.id, label: tag.name }))
+      article.tags.map((tag: any) => ({ value: tag.id, label: tag.name }))
     );
     setData(
       'tags',
-      article.tags.map(tag => tag.id)
+      article.tags.map((tag: any) => tag.id)
     );
   }, [article]);
 
@@ -188,6 +191,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
                   id="published_at"
                   mode="single"
                   selected={data.published_at}
+                  // @ts-ignore allowlist-migration
                   onSelect={value => {
                     const formatedDate = format(
                       new Date(value),
@@ -195,6 +199,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
                     );
                     setData('published_at', formatedDate);
                   }}
+                  // @ts-ignore allowlist-migration
                   disabled={date =>
                     date > new Date() || date < new Date('1900-01-01')
                   }
@@ -224,6 +229,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
           </div>
 
           <div className="col-span-1">
+            {/* @ts-ignore allowlist-migration */}
             <fieldset required className="mx-2">
               <Label as="legend" htmlFor="category_id">
                 Volume
@@ -233,10 +239,11 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
                 name="trade_insight_volume_id"
                 value={selectedVolume}
                 onValueChange={value => {
+                  // @ts-ignore allowlist-migration
                   setData('trade_insight_volume_id', Number(value));
 
                   setSelectedVolume(
-                    volumes.filter(vol => vol.id === Number(value))[0]?.volume
+                    volumes.filter((vol: any) => vol.id === Number(value))[0]?.volume
                   );
                 }}
               >
@@ -248,7 +255,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
                     <SelectLabel>Volumes</SelectLabel>
                   </SelectGroup>
 
-                  {volumes.map(volume => (
+                  {volumes.map((volume: any) => (
                     <SelectItem key={volume.id} value={volume.id}>
                       {volume.volume}
                     </SelectItem>
@@ -256,8 +263,10 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
                 </SelectContent>
               </Select>
 
+              {/* @ts-ignore allowlist-migration */}
               {errors.trade_insight_volume_id && (
                 <InputError className={'mt-2'}>
+                  {/* @ts-ignore allowlist-migration */}
                   {errors.trade_insight_volume_id}
                 </InputError>
               )}
@@ -274,6 +283,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
               placeholder="Select Tags"
               variant="inverted"
               maxCount={2}
+              // @ts-ignore allowlist-migration
               onValueChange={setArticleTags}
               setValues={setDataTags}
             />
@@ -343,7 +353,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
             name="content"
             initialValue={data.content ?? ''}
             id="content"
-            onChange={(evt, editor) => setData('content', editor.getContent())}
+            onChange={(evt: any, editor: any) => setData('content', editor.getContent())}
           />
 
           {errors.content && (

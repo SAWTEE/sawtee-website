@@ -1,12 +1,11 @@
-// @ts-nocheck
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
 
-const ExpertCard = ({ expert = undefined }) => {
+const ExpertCard = ({ expert = undefined }: any) => {
   const image = expert.media[0].original_url;
   const initials = expert.name
     .split(' ')
-    .map(name => name[0])
+    .map((name: any) => name[0])
     .join('');
   return (
     <Card className="border-none bg-[rgba(0,0,0,0.4)]">

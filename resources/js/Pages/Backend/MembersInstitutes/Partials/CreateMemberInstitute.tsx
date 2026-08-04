@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +19,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function CreateMemberInstitute({ open = undefined, setOpen = undefined, members = undefined }) {
+export default function CreateMemberInstitute({ open = undefined, setOpen = undefined, members = undefined }: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: '',
     link: '',
@@ -29,6 +28,7 @@ export default function CreateMemberInstitute({ open = undefined, setOpen = unde
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -46,6 +46,7 @@ export default function CreateMemberInstitute({ open = undefined, setOpen = unde
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -124,14 +125,16 @@ export default function CreateMemberInstitute({ open = undefined, setOpen = unde
               <Label htmlFor="member_id">Select Member Country</Label>
               <Select
                 name="member_id"
+                // @ts-ignore allowlist-migration
                 value={data.member_id}
+                // @ts-ignore allowlist-migration
                 onValueChange={value => setData('member_id', Number(value))}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select member country" />
                 </SelectTrigger>
                 <SelectContent>
-                  {members.map(member => (
+                  {members.map((member: any) => (
                     <SelectItem key={member.id} value={member.id}>
                       {member.country}
                     </SelectItem>

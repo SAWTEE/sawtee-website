@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -18,7 +17,7 @@ import { useEffect, useState } from 'react';
 export default function SearchModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  function handleSubmit(e) {
+  function handleSubmit(e: any) {
     e.preventDefault();
     router.visit(`/search`, {
       data: { query: searchQuery, page: 1 },
@@ -27,6 +26,7 @@ export default function SearchModal() {
   }
 
   useEffect(() => {
+    // @ts-ignore allowlist-migration
     const handleKeyDown = event => {
       if (event.key === '/' && !isOpen) {
         event.preventDefault();
@@ -50,6 +50,7 @@ export default function SearchModal() {
       open={isOpen}
       onOpenChange={() => {
         setIsOpen(!isOpen);
+        // @ts-ignore allowlist-migration
         setSearchQuery(null);
       }}
     >

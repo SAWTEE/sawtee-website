@@ -1,4 +1,3 @@
-// @ts-nocheck
 import AirBnbCard from '@/components/Frontend/AirBnbCard';
 import Glassbox from '@/components/Frontend/Glassbox';
 import {
@@ -18,7 +17,7 @@ export default function MediaFellows() {
   return (
     <div className="mx-auto max-w-2xl px-8 py-20 md:px-0">
       <Glassbox className="mt-8 px-6 text-slate-800">
-        {sortByYear?.map(({ year, description, fellows }) => {
+        {sortByYear?.map(({ year, description, fellows }: any) => {
           return (
             <Accordion
               type="single"
@@ -36,7 +35,7 @@ export default function MediaFellows() {
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
 
-                  {fellows.map(fellow => {
+                  {fellows.map((fellow: any) => {
                     return <Fellow mediaFellow={fellow} />;
                   })}
                 </AccordionContent>
@@ -49,12 +48,19 @@ export default function MediaFellows() {
   );
 }
 
-export const Fellow = ({ mediaFellow = undefined }) => {
-  const { id, name, avatar, designation, bio, published_stories, experience } =
-    mediaFellow;
+export const Fellow = ({ mediaFellow }: any) => {
+  const {
+    id,
+    name,
+    avatar,
+    designation,
+    bio,
+    published_stories,
+    experience,
+  } = mediaFellow ?? {};
 
   return (
-    <div className="my-10" id={id} my={10}>
+    <div className="my-10" id={id}>
       <div className="flex items-center">
         <Avatar>
           <AvatarImage src={avatar} alt={name} />
@@ -78,7 +84,7 @@ export const Fellow = ({ mediaFellow = undefined }) => {
           </AccordionTrigger>
           <AccordionContent>
             <ol className="ml-6 list-decimal">
-              {published_stories?.map(({ title, link }) => {
+              {published_stories?.map(({ title, link }: any) => {
                 return (
                   <li key={title} className="text-lg">
                     <a
@@ -94,7 +100,7 @@ export const Fellow = ({ mediaFellow = undefined }) => {
             </ol>
 
             <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {published_stories?.map(({ image_src, title, media_src }, i) => {
+              {published_stories?.map(({ image_src, title, media_src }: any, i: any) => {
                 return (
                   <div key={i} className="grid gap-4">
                     <AirBnbCard
@@ -113,7 +119,7 @@ export const Fellow = ({ mediaFellow = undefined }) => {
             {'Experience with the Fellowship'}
           </AccordionTrigger>
           <AccordionContent>
-            {experience?.map(exp => {
+            {experience?.map((exp: any) => {
               return (
                 <p
                   className="experience-text my-2 text-lg"

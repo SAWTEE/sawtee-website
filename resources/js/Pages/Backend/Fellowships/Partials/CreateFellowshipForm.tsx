@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function CreateFellowshipForm({ open = undefined, setOpen = undefined }) {
+export default function CreateFellowshipForm({ open = undefined, setOpen = undefined }: any) {
   const { setData, post, errors, reset } = useForm({
     title: '',
     description: '',
@@ -22,6 +21,7 @@ export default function CreateFellowshipForm({ open = undefined, setOpen = undef
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -39,6 +39,7 @@ export default function CreateFellowshipForm({ open = undefined, setOpen = undef
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -84,6 +85,7 @@ export default function CreateFellowshipForm({ open = undefined, setOpen = undef
                   id="year"
                   name="year"
                   placeholder="enter year"
+                  // @ts-ignore allowlist-migration
                   onChange={e => setData('year', Number(e.target.value))}
                 />
                 {errors.year && (

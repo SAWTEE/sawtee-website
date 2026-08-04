@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -21,7 +20,7 @@ import CreateSlideForm from '../../Slide/CreateSlideForm';
 import Slides from '../../Slide/Slides';
 import { useState } from 'react';
 
-export default function EditSliderForm({ slider = undefined, slides = undefined, pages = undefined }) {
+export default function EditSliderForm({ slider = undefined, slides = undefined, pages = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: slider.name,
     page_id: slider.page_id,
@@ -29,6 +28,7 @@ export default function EditSliderForm({ slider = undefined, slides = undefined,
   const { toast } = useToast();
   const [createSlide, setCreateSlide] = useState(false);
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -47,6 +47,7 @@ export default function EditSliderForm({ slider = undefined, slides = undefined,
         onError: errors => {
           console.error(errors);
           if (errors.title) {
+            // @ts-ignore allowlist-migration
             reset('title');
           }
         },
@@ -80,6 +81,7 @@ export default function EditSliderForm({ slider = undefined, slides = undefined,
             <div className="col-span-1">
               <Label htmlFor="pages">Page</Label>
               <Select
+                // @ts-ignore allowlist-migration
                 id="pages"
                 name="pages"
                 value={data.page_id}
@@ -93,7 +95,7 @@ export default function EditSliderForm({ slider = undefined, slides = undefined,
                   <SelectGroup>
                     <SelectLabel>Pages</SelectLabel>
 
-                    {pages.map(page => (
+                    {pages.map((page: any) => (
                       <SelectItem key={page.id} value={page.id}>
                         {page.name}
                       </SelectItem>

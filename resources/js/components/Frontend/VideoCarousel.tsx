@@ -1,4 +1,3 @@
-// @ts-nocheck
 // import required modules
 import { ArrowLeftIcon, ArrowRightIcon, PlayCircleIcon } from 'lucide-react';
 import { useRef } from 'react';
@@ -16,7 +15,7 @@ const VideoCarousel = ({
   direction = undefined,
   children = undefined,
   ...rest
-}) => {
+}: any) => {
   const swiperElRef = useRef(null);
 
   return (
@@ -42,6 +41,7 @@ const VideoCarousel = ({
               aria-label="previous"
               size="icon"
               variant="ghost"
+              // @ts-ignore allowlist-migration
               onClick={() => swiperElRef.current.swiper.slidePrev()}
             >
               <ArrowLeftIcon className="h-4 w-4" />
@@ -53,15 +53,17 @@ const VideoCarousel = ({
               size="icon"
               variant="ghost"
               aria-label="next"
+              // @ts-ignore allowlist-migration
               onClick={() => swiperElRef.current.swiper.slideNext()}
             >
               <ArrowRightIcon className="h-4 w-4" />
             </Button>
           </div>
-          {posts.map(article => {
+          {posts.map((article: any) => {
             const media =
               article.media.length > 0
                 ? article.media?.filter(
+                    // @ts-ignore allowlist-migration
                     m => m.collection_name === 'post-featured-image'
                   )[0]
                 : null;
@@ -99,12 +101,14 @@ const VideoCarousel = ({
           class="thumbs-swiper"
           space-between="10"
           slides-per-view="5"
+          // @ts-ignore allowlist-migration
           direction="vertical"
           free-mode="true"
           watch-slides-progress="true"
         >
-          {posts.map(article => {
+          {posts.map((article: any) => {
             const media = article.media.filter(
+              // @ts-ignore allowlist-migration
               m => m.collection_name === 'post-featured-image'
             )[0];
             return (

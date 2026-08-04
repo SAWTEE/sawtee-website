@@ -1,8 +1,7 @@
-// @ts-nocheck
 import { useEffect, useRef } from 'react';
 import { register } from 'swiper/element/bundle';
 
-export function Swiper(props) {
+export function Swiper(props: any) {
   const swiperRef = useRef(null);
   const { children, ...rest } = props;
 
@@ -16,9 +15,11 @@ export function Swiper(props) {
     };
 
     // Assign it to swiper element
+    // @ts-ignore allowlist-migration
     Object.assign(swiperRef.current, params);
 
     // initialize swiper
+    // @ts-ignore allowlist-migration
     swiperRef.current.initialize();
   }, []);
 
@@ -29,7 +30,7 @@ export function Swiper(props) {
   );
 }
 
-export function SwiperSlide(props) {
+export function SwiperSlide(props: any) {
   const { children, ...rest } = props;
 
   return <swiper-slide {...rest}>{children}</swiper-slide>;

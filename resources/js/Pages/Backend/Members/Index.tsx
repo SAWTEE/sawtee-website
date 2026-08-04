@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -11,21 +10,22 @@ import React, { useState } from 'react';
 import CreateMember from './Partials/CreateMember';
 import EditMember from './Partials/EditMember';
 
-export default function Index({ auth = undefined, members = undefined }) {
+export default function Index({ auth = undefined, members = undefined }: any) {
   const { delete: destroy } = useForm();
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [member, setMember] = useState(undefined);
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     // get(route('admin.categories.edit', id));
+    // @ts-ignore allowlist-migration
     const Member = members.find(m => m.id === id);
     setMember(Member);
     setEditFormOpen(!editFormOpen);
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.members.destroy', id), {
       preserveScroll: true,
@@ -48,7 +48,7 @@ export default function Index({ auth = undefined, members = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -59,7 +59,7 @@ export default function Index({ auth = undefined, members = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -72,20 +72,20 @@ export default function Index({ auth = undefined, members = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'country',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Country" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

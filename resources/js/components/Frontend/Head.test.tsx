@@ -22,7 +22,7 @@ function collectText(node: ReactNode, into: string[] = []): string[] {
     return into;
   }
   if (Array.isArray(node)) {
-    node.forEach(child => collectText(child, into));
+    node.forEach((child: any) => collectText(child, into));
     return into;
   }
   if (isValidElement(node)) {

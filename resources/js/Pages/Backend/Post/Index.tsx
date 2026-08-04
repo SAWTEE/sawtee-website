@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -10,11 +9,11 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 
-export default function Index({ auth = undefined, posts = undefined, categories = undefined, categoryID = undefined }) {
+export default function Index({ auth = undefined, posts = undefined, categories = undefined, categoryID = undefined }: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.posts.destroy', id), {
       preserveState: true,
@@ -28,7 +27,7 @@ export default function Index({ auth = undefined, posts = undefined, categories 
     });
   };
 
-  const Status = ({ status = undefined }) => {
+  const Status = ({ status = undefined }: any) => {
     switch (status) {
       case 'unpublished':
         return (
@@ -51,6 +50,7 @@ export default function Index({ auth = undefined, posts = undefined, categories 
     }
   };
 
+  // @ts-ignore allowlist-migration
   const handleEdit = (e, post_id, category_id) => {
     e.preventDefault();
     get(route('admin.posts.edit', post_id, category_id));
@@ -59,7 +59,7 @@ export default function Index({ auth = undefined, posts = undefined, categories 
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -70,7 +70,7 @@ export default function Index({ auth = undefined, posts = undefined, categories 
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -83,28 +83,28 @@ export default function Index({ auth = undefined, posts = undefined, categories 
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
     },
     {
       accessorKey: 'theme',
       header: 'Theme',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return row.original.theme ? row.original.theme.title : 'N/A';
       },
     },
     {
       accessorKey: 'tags',
       header: 'Tags',
-      cell: ({ row }) => {
-        return row.original.tags?.map(tag => (
+      cell: ({ row }: any) => {
+        return row.original.tags?.map((tag: any) => (
           <TWTags key={tag.id} colorScheme="blue" className="ml-2">
             {tag.name}
           </TWTags>
@@ -114,20 +114,20 @@ export default function Index({ auth = undefined, posts = undefined, categories 
     {
       accessorKey: 'status',
       header: 'Status',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return <Status status={row.original.status} />;
       },
     },
     {
       accessorKey: 'author',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Author" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

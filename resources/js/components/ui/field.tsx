@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useMemo } from 'react';
 import { cva } from 'class-variance-authority';
 
@@ -6,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
 
-function FieldSet({ className = '', ...props }) {
+function FieldSet({ className = '', ...props }: any) {
   return (
     <fieldset
       data-slot="field-set"
@@ -20,7 +19,7 @@ function FieldSet({ className = '', ...props }) {
   );
 }
 
-function FieldLegend({ className = '', variant = 'legend', ...props }) {
+function FieldLegend({ className = '', variant = 'legend', ...props }: any) {
   return (
     <legend
       data-slot="field-legend"
@@ -36,7 +35,7 @@ function FieldLegend({ className = '', variant = 'legend', ...props }) {
   );
 }
 
-function FieldGroup({ className = '', ...props }) {
+function FieldGroup({ className = '', ...props }: any) {
   return (
     <div
       data-slot="field-group"
@@ -73,7 +72,7 @@ const fieldVariants = cva(
   }
 );
 
-function Field({ className = '', orientation = 'vertical', ...props }) {
+function Field({ className = '', orientation = 'vertical', ...props }: any) {
   return (
     <div
       role="group"
@@ -85,7 +84,7 @@ function Field({ className = '', orientation = 'vertical', ...props }) {
   );
 }
 
-function FieldContent({ className = '', ...props }) {
+function FieldContent({ className = '', ...props }: any) {
   return (
     <div
       data-slot="field-content"
@@ -98,7 +97,7 @@ function FieldContent({ className = '', ...props }) {
   );
 }
 
-function FieldLabel({ className = '', ...props }) {
+function FieldLabel({ className = '', ...props }: any) {
   return (
     <Label
       data-slot="field-label"
@@ -113,7 +112,7 @@ function FieldLabel({ className = '', ...props }) {
   );
 }
 
-function FieldTitle({ className = '', ...props }) {
+function FieldTitle({ className = '', ...props }: any) {
   return (
     <div
       data-slot="field-label"
@@ -126,7 +125,7 @@ function FieldTitle({ className = '', ...props }) {
   );
 }
 
-function FieldDescription({ className = '', ...props }) {
+function FieldDescription({ className = '', ...props }: any) {
   return (
     <p
       data-slot="field-description"
@@ -141,7 +140,7 @@ function FieldDescription({ className = '', ...props }) {
   );
 }
 
-function FieldSeparator({ children = undefined, className = '', ...props }) {
+function FieldSeparator({ children = undefined, className = '', ...props }: any) {
   return (
     <div
       data-slot="field-separator"
@@ -165,7 +164,7 @@ function FieldSeparator({ children = undefined, className = '', ...props }) {
   );
 }
 
-function FieldError({ className = '', children = undefined, errors = undefined, ...props }) {
+function FieldError({ className = '', children = undefined, errors = undefined, ...props }: any) {
   const content = useMemo(() => {
     if (children) {
       return children;
@@ -182,7 +181,7 @@ function FieldError({ className = '', children = undefined, errors = undefined, 
     return (
       <ul className="ml-4 flex list-disc flex-col gap-1">
         {errors.map(
-          (error, index) =>
+          (error: any, index: any) =>
             error?.message && <li key={index}>{error.message}</li>
         )}
       </ul>

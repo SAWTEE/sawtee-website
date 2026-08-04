@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -16,12 +15,13 @@ import {
 
 import { useForm } from '@inertiajs/react';
 
-export default function CreateTag({ open = undefined, setOpen = undefined }) {
+export default function CreateTag({ open = undefined, setOpen = undefined }: any) {
   const { setData, post, processing, errors, reset } = useForm({
     name: '',
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.tags.store'), {

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
@@ -7,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment } from 'react';
 
-const Contact = ({ pageData = undefined }) => {
+const Contact = ({ pageData = undefined }: any) => {
   return (
     <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
       <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
@@ -26,7 +25,7 @@ const Contact = ({ pageData = undefined }) => {
               </p>
             </h4>
             <div className="flex flex-col items-center gap-3 py-3 md:py-6 lg:items-start lg:py-8">
-              {pageData.phone_numbers.map(number => {
+              {pageData.phone_numbers.map((number: any) => {
                 return (
                   <Fragment key={number}>
                     <ActionButton href={`tel:${number}`}>
@@ -74,6 +73,7 @@ const Contact = ({ pageData = undefined }) => {
               src={pageData.map_url}
               width="100%"
               height="500"
+              // @ts-ignore allowlist-migration
               allowFullScreen="true"
               loading="lazy"
               title="map"
@@ -86,7 +86,7 @@ const Contact = ({ pageData = undefined }) => {
   );
 };
 
-const ActionButton = ({ href = undefined, children = undefined, ...rest }) => {
+const ActionButton = ({ href = undefined, children = undefined, ...rest }: any) => {
   return (
     <Button variant="link" {...rest}>
       {href ? (

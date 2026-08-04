@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -38,6 +37,7 @@ export default function CreatePageForm() {
   const [filename, setFilename] = React.useState(null);
 
   React.useEffect(() => {
+    // @ts-ignore allowlist-migration
     if (data.page_template === ('About' || 'Contact' || 'MediaFellows')) {
       toast({
         title: 'Please add json page data',
@@ -47,6 +47,7 @@ export default function CreatePageForm() {
     }
   }, [data.page_template]);
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.pages.store'), {
@@ -64,16 +65,18 @@ export default function CreatePageForm() {
     });
   };
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
@@ -105,7 +108,9 @@ export default function CreatePageForm() {
             id="slug"
             name="slug"
             value={slug ? slug : ''}
+            // @ts-ignore allowlist-migration
             onChange={e => setData('slug', e.target.value)}
+            // @ts-ignore allowlist-migration
             display="flex"
             mt={1}
           />
@@ -122,7 +127,9 @@ export default function CreatePageForm() {
               id="file"
               name="file"
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setFilename(e.target.files[0].name);
+                // @ts-ignore allowlist-migration
                 setData('file', e.target.files[0]);
               }}
             />
@@ -162,6 +169,7 @@ export default function CreatePageForm() {
           <div className="col-span-1">
             <Label htmlFor="page_template">Page Template</Label>
             <Select
+              // @ts-ignore allowlist-migration
               placeholder="Select menu to edit"
               value={data.page_template}
               name="page_template"
@@ -174,7 +182,7 @@ export default function CreatePageForm() {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Page Templates</SelectLabel>
-                  {pageTemplates?.map(template => (
+                  {pageTemplates?.map((template: any) => (
                     <SelectItem key={template} value={template}>
                       {template}
                     </SelectItem>
@@ -201,7 +209,7 @@ export default function CreatePageForm() {
           <ContentEditor
             name="content"
             id="content"
-            onChange={(evt, editor) => {
+            onChange={(evt: any, editor: any) => {
               setData('content', editor.getContent());
             }}
           />

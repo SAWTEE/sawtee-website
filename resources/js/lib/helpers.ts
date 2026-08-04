@@ -1,5 +1,4 @@
-// @ts-nocheck
-export function slugify(inputString) {
+export function slugify(inputString: any) {
   return inputString
     .toString()
     .toLowerCase()
@@ -11,7 +10,9 @@ export function slugify(inputString) {
 }
 
 export const createExcerpt = (
+  // @ts-ignore allowlist-migration
   content,
+  // @ts-ignore allowlist-migration
   maxNumberOfWords,
   trailingIndicator = '...'
 ) => {
@@ -23,9 +24,9 @@ export const createExcerpt = (
   return output;
 };
 
-// export function filterByReference(arr1, arr2) {
+// export function filterByReference(arr1: any, arr2: any) {
 //   let res = [];
-//   res = arr1.filter(el => {
+//   res = arr1.filter((el: any) => {
 //     return !arr2.find(element => {
 //       return element.id === el.id;
 //     });
@@ -33,19 +34,21 @@ export const createExcerpt = (
 //   return res;
 // }
 
-// export function toTitleCase(str) {
+// export function toTitleCase(str: any) {
 //   return str.replace(
 //     /\w\S*/g,
 //     txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase()
 //   );
 // }
 
+// @ts-ignore allowlist-migration
 export const createArrayRange = (startingNumber, endingNumber, step = 1) =>
   Array.from(
     { length: (endingNumber - startingNumber) / step + 1 },
-    (value, index) => startingNumber + index * step
+    (value: any, index: any) => startingNumber + index * step
   );
 
+// @ts-ignore allowlist-migration
 export const fetcher = async url => {
   const res = await fetch(url);
 
@@ -54,7 +57,9 @@ export const fetcher = async url => {
   if (!res.ok) {
     const error = new Error('An error occurred while fetching the data.');
     // Attach extra info to the error object.
+    // @ts-ignore allowlist-migration
     error.info = await res.json();
+    // @ts-ignore allowlist-migration
     error.status = res.status;
     throw error;
   }
@@ -62,21 +67,24 @@ export const fetcher = async url => {
   return res.json();
 };
 
-export function splitPosts(data) {
+export function splitPosts(data: any) {
+  // @ts-ignore allowlist-migration
   const firstThreePosts = [];
+  // @ts-ignore allowlist-migration
   const otherPosts = [];
 
-  data.forEach((item, idx) => {
+  data.forEach((item: any, idx: any) => {
     if (idx < 3) firstThreePosts.push(item);
     else otherPosts.push(item);
   });
 
+  // @ts-ignore allowlist-migration
   return [firstThreePosts, otherPosts];
 }
 
-// export const formatedDate = (date) => dayjs(date).fromNow();
+// export const formatedDate = (date: any) => dayjs(date).fromNow();
 
-// export function formatDateWithMoment(date, format) {
+// export function formatDateWithMoment(date: any, format: any) {
 //   return dayjs(date).format(format ? format : "MMM DD, YYYY");
 // }
 
@@ -95,6 +103,7 @@ const monthNames = [
   'December',
 ];
 
+// @ts-ignore allowlist-migration
 const formatDay = day => {
   const dayString = day.toString();
   const lastLetter = dayString[dayString.length - 1];
@@ -116,7 +125,7 @@ const formatDay = day => {
   return result;
 };
 
-export function formatedDate(date) {
+export function formatedDate(date: any) {
   const jsDate = new Date(date);
   const day = jsDate.getDate();
   const month = jsDate.getMonth();
@@ -125,7 +134,7 @@ export function formatedDate(date) {
   return `${formatDay(day)} ${monthNames[month]}, ${year}`;
 }
 
-export function formatDate(date) {
+export function formatDate(date: any) {
   const jsDate = new Date(date);
   const day = jsDate.getDate();
   const month = jsDate.getMonth();
@@ -134,7 +143,7 @@ export function formatDate(date) {
   return `${day} ${monthNames[month]}, ${year}`;
 }
 
-export function DateFormat(date) {
+export function DateFormat(date: any) {
   const jsDate = new Date(date);
 
   const month = jsDate.getMonth();
@@ -142,21 +151,25 @@ export function DateFormat(date) {
   return `${monthNames[month]} ${year}`;
 }
 
-export function isUrl(str) {
+export function isUrl(str: any) {
   // let regexp =
   //   /(ftp|http|https):\/\/(\w+:?\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!-/]))?/;
   const regexp = /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([/\w.-]+)*\/?$/;
   return regexp.test(str);
 }
 
-export function debounce(fn) {
+export function debounce(fn: any) {
+  // @ts-ignore allowlist-migration
   let queued = null;
   return [
+    // @ts-ignore allowlist-migration
     (...args) => {
+      // @ts-ignore allowlist-migration
       if (queued) cancelAnimationFrame(queued);
       queued = requestAnimationFrame(fn.bind(fn, ...args));
     },
     () => {
+      // @ts-ignore allowlist-migration
       cancelAnimationFrame(queued);
     },
   ];

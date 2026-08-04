@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { MultiSelect } from '@/components/ui/multi-select';
@@ -21,7 +20,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 
-export default function EditPublicationForm({ publication = undefined, categories = undefined, tags = undefined }) {
+export default function EditPublicationForm({ publication = undefined, categories = undefined, tags = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: publication.category_id,
     title: publication.title,
@@ -36,15 +35,17 @@ export default function EditPublicationForm({ publication = undefined, categorie
   const [tagOptions, setTagOptions] = useState([]);
   const [publicationTags, setPublicationTags] = React.useState([]);
 
-  function setDataTags(selectedValues) {
-    const tagIds = selectedValues.map(item => item.value);
+  function setDataTags(selectedValues: any) {
+    const tagIds = selectedValues.map((item: any) => item.value);
+    // @ts-ignore allowlist-migration
     setData('tags', tagIds);
   }
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -56,15 +57,16 @@ export default function EditPublicationForm({ publication = undefined, categorie
   }
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   // React.useEffect(() => {
-  //   publication.tags.map(tag => {
+  //   publication.tags.map((tag: any) => {
   //     setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
   //   });
   // }, [publication]);
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -82,7 +84,9 @@ export default function EditPublicationForm({ publication = undefined, categorie
         onError: () => {
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
+              // @ts-ignore allowlist-migration
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',
@@ -164,7 +168,7 @@ export default function EditPublicationForm({ publication = undefined, categorie
               name="description"
               initialValue={data.description || ''}
               id="description"
-              onChange={(evt, editor) =>
+              onChange={(evt: any, editor: any) =>
                 setData('description', editor.getContent())
               }
             />
@@ -195,7 +199,7 @@ export default function EditPublicationForm({ publication = undefined, categorie
                   <SelectLabel>Categories</SelectLabel>
                 </SelectGroup>
 
-                {categories.map(category => (
+                {categories.map((category: any) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>
@@ -218,6 +222,7 @@ export default function EditPublicationForm({ publication = undefined, categorie
                 placeholder="Select Tags"
                 variant="inverted"
                 maxCount={2}
+                // @ts-ignore allowlist-migration
                 onValueChange={setPublicationTags}
                 setValues={setDataTags}
               />
@@ -256,6 +261,7 @@ export default function EditPublicationForm({ publication = undefined, categorie
                 className="mt-1"
                 name="file"
                 onChange={e => {
+                  // @ts-ignore allowlist-migration
                   setData('file', e.target.files[0]);
                 }}
               />

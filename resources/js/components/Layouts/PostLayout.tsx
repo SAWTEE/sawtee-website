@@ -60,7 +60,7 @@ const PostLayout = ({
     if (contentRef.current) {
       const anchors = contentRef.current.querySelectorAll('a');
 
-      anchors.forEach(anchor => {
+      anchors.forEach((anchor: any) => {
         anchor.setAttribute('target', '_blank');
         anchor.setAttribute('rel', 'noopener noreferrer');
       });

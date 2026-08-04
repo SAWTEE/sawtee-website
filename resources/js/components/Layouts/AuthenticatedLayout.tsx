@@ -1,4 +1,4 @@
-// @ts-nocheck
+import type { ReactNode } from 'react';
 import { ThemeProvider } from '@/components/shared/theme-provider';
 import { Toaster } from '@/components/ui/toaster';
 import { DashBoardMenuItems } from '@/lib/data';
@@ -19,8 +19,17 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import type { User } from '@/types';
 
-export default function Authenticated({ user = undefined, children = undefined }) {
+type AuthenticatedLayoutProps = {
+  user?: User | null;
+  children?: ReactNode;
+};
+
+export default function Authenticated({
+  user,
+  children,
+}: AuthenticatedLayoutProps) {
   const { url } = usePage();
   const sections = url.split('/').filter(Boolean);
 
@@ -29,7 +38,7 @@ export default function Authenticated({ user = undefined, children = undefined }
       <SidebarProvider>
         <Toaster />
 
-        <AppSidebar user={user} menu={DashBoardMenuItems} />
+        <AppSidebar user={user ?? undefined} menu={DashBoardMenuItems} />
         <SidebarInset className="bg-sidebar">
           <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
             <div className="flex w-full items-center gap-2 px-4">
@@ -48,17 +57,17 @@ export default function Authenticated({ user = undefined, children = undefined }
                         : 'Home'}
                     </BreadcrumbLink>
                   </BreadcrumbItem>
-                  {sections[2] && (
+                  {sections[2] ? (
                     <BreadcrumbSeparator className="hidden md:block" />
-                  )}
-                  {sections[2] && (
+                  ) : null}
+                  {sections[2] ? (
                     <BreadcrumbItem>
                       <BreadcrumbPage>
                         {sections[2].charAt(0).toUpperCase() +
                           sections[2].slice(1)}
                       </BreadcrumbPage>
                     </BreadcrumbItem>
-                  )}
+                  ) : null}
                 </BreadcrumbList>
               </Breadcrumb>
               <div className="ml-auto flex items-center gap-2 px-8">

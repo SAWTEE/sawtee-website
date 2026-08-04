@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
@@ -7,7 +6,7 @@ import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
-export default function EditHomePageSectionForm({ section = undefined }) {
+export default function EditHomePageSectionForm({ section = undefined }: any) {
   const { data, setData, processing, errors, reset, patch } = useForm({
     name: section.name,
     description: section.description,
@@ -16,6 +15,7 @@ export default function EditHomePageSectionForm({ section = undefined }) {
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     patch(route('admin.home-page-sections.update', section.id), {
@@ -60,6 +60,7 @@ export default function EditHomePageSectionForm({ section = undefined }) {
             name="description"
             value={data.description ?? ''}
             onChange={e => setData('description', e.target.value)}
+            // @ts-ignore allowlist-migration
             mt={1}
           />
           {errors.description && (

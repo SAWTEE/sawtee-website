@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Toast,
   ToastClose,
@@ -14,6 +13,7 @@ export function Toaster() {
 
   return (
     <ToastProvider>
+      {/* @ts-ignore allowlist-migration */}
       {toasts.map(function ({ id, title, description, action, ...props }) {
         return (
           <Toast key={id} {...props}>

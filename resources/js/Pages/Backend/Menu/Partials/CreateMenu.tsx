@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -16,13 +15,14 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function CreateMenu({ open = undefined, setOpen = undefined }) {
+export default function CreateMenu({ open = undefined, setOpen = undefined }: any) {
   const { setData, post, processing, errors, reset } = useForm({
     title: '',
     location: '',
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 

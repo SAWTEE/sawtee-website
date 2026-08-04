@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -9,16 +8,16 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function Index({ auth = undefined, pages = undefined }) {
+export default function Index({ auth = undefined, pages = undefined }: any) {
   const { get, delete: destroy } = useForm();
 
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.pages.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.pages.destroy', id), {
       onSuccess: () => {
@@ -40,32 +39,32 @@ export default function Index({ auth = undefined, pages = undefined }) {
   const defaultColumns = [
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
     },
     {
       accessorKey: 'slug',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Slug" />
       ),
     },
     {
       accessorKey: 'sections_count',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Sections Count" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <DataTableActions
           id={row.original.id}
           handleDelete={handleDelete}

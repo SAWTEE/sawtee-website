@@ -1,10 +1,9 @@
-// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 
 import { Head } from '@inertiajs/react';
 import EditPublicationForm from './Partials/EditPublicationForm';
 
-export default function Edit({ publication = undefined, auth = undefined, categories = undefined, tags = undefined }) {
+export default function Edit({ publication = undefined, auth = undefined, categories = undefined, tags = undefined }: any) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Edit Publication" />

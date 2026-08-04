@@ -1,10 +1,9 @@
-// @ts-nocheck
 export default function DangerButton({
   className = '',
   disabled = undefined,
   children = undefined,
   ...props
-}) {
+}: any) {
   return (
     <button
       {...props}

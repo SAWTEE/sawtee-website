@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
@@ -37,6 +36,7 @@ export default function CreateResearchForm() {
   const { toast } = useToast();
   const [image, setImage] = useState(null);
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.research.store'), {
@@ -50,6 +50,7 @@ export default function CreateResearchForm() {
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -106,6 +107,7 @@ export default function CreateResearchForm() {
               id="description"
               rows={6}
               className="mt-1"
+              // @ts-ignore allowlist-migration
               resize={'vertical'}
               placeholder="Describe your research here."
               onChange={e => setData('description', e.target.value)}
@@ -180,6 +182,7 @@ export default function CreateResearchForm() {
               name="year"
               id="year"
               className="mt-1"
+              // @ts-ignore allowlist-migration
               onChange={e => setData('year', Number(e.target.value))}
             />
             {errors.year && (
@@ -197,6 +200,7 @@ export default function CreateResearchForm() {
               name="file"
               className="mt-1"
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('file', e.target.files[0]);
               }}
             />
@@ -245,7 +249,9 @@ export default function CreateResearchForm() {
               className="mt-1"
               placeholder="Browse Image"
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('image', e.target.files[0]);
+                // @ts-ignore allowlist-migration
                 setImage(URL.createObjectURL(e.target.files[0]));
               }}
             />

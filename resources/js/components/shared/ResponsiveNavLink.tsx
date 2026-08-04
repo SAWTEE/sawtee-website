@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Link } from '@inertiajs/react';
 
 export default function ResponsiveNavLink({
@@ -6,7 +5,7 @@ export default function ResponsiveNavLink({
   className = '',
   children = undefined,
   ...props
-}) {
+}: any) {
   return (
     <Link
       {...props}

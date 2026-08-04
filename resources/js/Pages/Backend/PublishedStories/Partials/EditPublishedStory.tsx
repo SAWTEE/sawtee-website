@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,18 +12,18 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditPublishedStory({ fellows = undefined, publishedStory = undefined }) {
+export default function EditPublishedStory({ fellows, publishedStory }: any) {
   const { data, setData, post, errors, reset } = useForm({
     title: publishedStory.title,
     fellow_id: publishedStory.fellow_id,
     link: publishedStory.link,
     images: publishedStory.media?.filter(
-      m => m.collection_name === 'published-story-images'
+      (m: any) => m.collection_name === 'published-story-images'
     ),
   });
   const { toast } = useToast();
 
-  const submit = e => {
+  const submit = (e: any) => {
     e.preventDefault();
 
     post(
@@ -41,11 +40,11 @@ export default function EditPublishedStory({ fellows = undefined, publishedStory
           });
           reset();
         },
-        onError: errors => {
+        onError: (errors: any) => {
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
-              reset(key);
+              reset(key as any);
               return toast({
                 title: 'Uh oh, Something went wrong',
                 description: `${key.toUpperCase()} field error` + `: ${value}`,
@@ -67,7 +66,7 @@ export default function EditPublishedStory({ fellows = undefined, publishedStory
             name="title"
             className="col-span-3"
             value={data.title}
-            onChange={e => setData('title', e.target.value)}
+            onChange={(e: any) => setData('title', e.target.value)}
             required
           />
 
@@ -81,7 +80,7 @@ export default function EditPublishedStory({ fellows = undefined, publishedStory
             id="link"
             name="link"
             value={data.link}
-            onChange={e => setData('link', e.target.value)}
+            onChange={(e: any) => setData('link', e.target.value)}
           />
 
           <InputError className="mt-2">{errors.link}</InputError>
@@ -90,17 +89,15 @@ export default function EditPublishedStory({ fellows = undefined, publishedStory
         <div className="col-span-2">
           <Label htmlFor="fellow_id">Select Fellow</Label>
           <Select
-            name="fellow_id"
-            id="fellow_id"
-            value={data.fellow_id ?? ''}
+            value={String(data.fellow_id ?? '')}
             onValueChange={value => setData('fellow_id', Number(value))}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select fellow" />
             </SelectTrigger>
             <SelectContent>
-              {fellows.map(fellow => (
-                <SelectItem key={fellow.id} value={fellow.id}>
+              {fellows.map((fellow: any) => (
+                <SelectItem key={fellow.id} value={String(fellow.id)}>
                   {fellow.name}
                 </SelectItem>
               ))}
@@ -124,13 +121,13 @@ export default function EditPublishedStory({ fellows = undefined, publishedStory
             accept="image/*"
             id="images"
             name="images"
-            onChange={e => {
+            onChange={(e: any) => {
               setData('images', Array.from(e.target.files));
             }}
           />
 
-          {errors.image && (
-            <InputError className="mt-2">{errors.image}</InputError>
+          {(errors as any).image && (
+            <InputError className="mt-2">{(errors as any).image}</InputError>
           )}
         </div>
 
@@ -138,7 +135,7 @@ export default function EditPublishedStory({ fellows = undefined, publishedStory
           <div className="col-span-2">
             <p>Previous Images</p>
             <div className="mt-1 flex flex-wrap gap-2">
-              {data.images.map(image => {
+              {data.images.map((image: any) => {
                 return (
                   <div className="aspect-square w-[6rem]">
                     <img src={image.original_url} alt={image.file_name} />

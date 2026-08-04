@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   CustomFilter,
   GlobalFilter,
@@ -33,7 +32,7 @@ export function DataTable({
   customFilterColumn = undefined,
   pagination = true,
   showGlobalFilter = false,
-  showCustomFilter = true}) {
+  showCustomFilter = true}: any) {
   const [sorting, setSorting] = React.useState([]);
   const [columns, setColumns] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});
@@ -49,10 +48,12 @@ export function DataTable({
     columns,
     data,
     getCoreRowModel: getCoreRowModel(),
+    // @ts-ignore allowlist-migration
     onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    // @ts-ignore allowlist-migration
     onColumnFiltersChange: setColumnFilters,
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
@@ -96,9 +97,9 @@ export function DataTable({
       <div className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map(headerGroup => (
+            {table.getHeaderGroups().map((headerGroup: any) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map(header => {
+                {headerGroup.headers.map((header: any) => {
                   return (
                     <TableHead
                       key={Math.random() + header.id}
@@ -120,12 +121,12 @@ export function DataTable({
           </TableHeader>
           <TableBody>
             {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map(row => (
+              table.getRowModel().rows.map((row: any) => (
                 <TableRow
                   key={`row_${row.id}`}
                   data-state={row.getIsSelected() && 'selected'}
                 >
-                  {row.getVisibleCells().map(cell => {
+                  {row.getVisibleCells().map((cell: any) => {
                     return (
                       <TableCell
                         key={Math.random() + cell.id}

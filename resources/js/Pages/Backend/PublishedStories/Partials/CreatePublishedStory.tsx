@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -13,7 +12,7 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function CreatePublishedStory({ fellows = undefined }) {
+export default function CreatePublishedStory({ fellows = undefined }: any) {
   const { data, setData, post, errors, reset } = useForm({
     title: '',
     fellow_id: undefined,
@@ -22,6 +21,7 @@ export default function CreatePublishedStory({ fellows = undefined }) {
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -38,6 +38,7 @@ export default function CreatePublishedStory({ fellows = undefined }) {
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -83,15 +84,17 @@ export default function CreatePublishedStory({ fellows = undefined }) {
           <Label htmlFor="fellow_id">Select Fellow</Label>
           <Select
             name="fellow_id"
+            // @ts-ignore allowlist-migration
             id="fellow_id"
             value={data.fellow_id ?? ''}
+            // @ts-ignore allowlist-migration
             onValueChange={value => setData('fellow_id', Number(value))}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select fellow" />
             </SelectTrigger>
             <SelectContent>
-              {fellows.map(fellow => (
+              {fellows.map((fellow: any) => (
                 <SelectItem key={fellow.id} value={fellow.id}>
                   {fellow.name}
                 </SelectItem>
@@ -116,6 +119,7 @@ export default function CreatePublishedStory({ fellows = undefined }) {
             id="images"
             name="images"
             onChange={e => {
+              // @ts-ignore allowlist-migration
               setData('images', Array.from(e.target.files));
             }}
           />

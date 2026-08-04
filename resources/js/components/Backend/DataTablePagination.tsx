@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   ChevronLeftIcon,
   ChevronRightIcon,
@@ -15,7 +14,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 
-export function DataTablePagination({ table = undefined, showItems = undefined, setShowItems = undefined }) {
+export function DataTablePagination({ table = undefined, showItems = undefined, setShowItems = undefined }: any) {
   return (
     <div className="flex w-full items-center justify-between px-2">
       <div className="flex-1 text-sm text-muted-foreground">
@@ -35,7 +34,7 @@ export function DataTablePagination({ table = undefined, showItems = undefined, 
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top">
-              {[10, 20, 30, 40, 50].map(pageSize => (
+              {[10, 20, 30, 40, 50].map((pageSize: any) => (
                 <SelectItem key={pageSize} value={`${pageSize}`}>
                   {pageSize}
                 </SelectItem>

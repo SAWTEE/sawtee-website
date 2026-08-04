@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons';
 import { Command as CommandPrimitive } from 'cmdk';
@@ -8,6 +7,7 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 
 const Command = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>(({ className, ...props }, ref) => (
   <CommandPrimitive
+    // @ts-ignore allowlist-migration
     ref={ref}
     className={cn(
       'flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground',
@@ -18,7 +18,7 @@ const Command = React.forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement>>
 ));
 Command.displayName = CommandPrimitive.displayName;
 
-const CommandDialog = ({ children = undefined, ...props }) => {
+const CommandDialog = ({ children = undefined, ...props }: any) => {
   return (
     <Dialog {...props}>
       <DialogContent className="overflow-hidden p-0">
@@ -56,7 +56,7 @@ const CommandList = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Li
 
 CommandList.displayName = CommandPrimitive.List.displayName;
 
-const CommandEmpty = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Empty>, React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>>((props, ref) => (
+const CommandEmpty = React.forwardRef<React.ElementRef<typeof CommandPrimitive.Empty>, React.ComponentPropsWithoutRef<typeof CommandPrimitive.Empty>>((props: any, ref: any) => (
   <CommandPrimitive.Empty
     ref={ref}
     className="py-6 text-center text-sm"
@@ -105,7 +105,7 @@ const CommandItem = React.forwardRef<React.ElementRef<typeof CommandPrimitive.It
 
 CommandItem.displayName = CommandPrimitive.Item.displayName;
 
-const CommandShortcut = ({ className = '', ...props }) => {
+const CommandShortcut = ({ className = '', ...props }: any) => {
   return (
     <span
       className={cn(

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -6,6 +5,7 @@ import { cn } from '@/lib/utils';
 const Table = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'div'>>(({ className, ...props }, ref) => (
   <div className="relative w-full overflow-auto">
     <table
+      // @ts-ignore allowlist-migration
       ref={ref}
       className={cn('w-full caption-bottom text-sm', className)}
       {...props}

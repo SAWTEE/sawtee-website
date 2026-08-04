@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { XIcon } from 'lucide-react';
 import { Button } from '../ui/button';
@@ -12,16 +11,19 @@ export default function DropZone({
   defaultValue = null,
   onValueChange = undefined,
   ...props
-}) {
+}: any) {
+  // @ts-ignore allowlist-migration
   const handleDragOver = event => {
     event.stopPropagation();
     event.preventDefault();
   };
+  // @ts-ignore allowlist-migration
   const handleDrop = event => {
     event.stopPropagation();
     event.preventDefault();
     onValueChange(Array.from(event.dataTransfer.files)[0]);
   };
+  // @ts-ignore allowlist-migration
   const handleFileSelect = event => {
     event.stopPropagation();
     onValueChange(Array.from(event.target.files)[0]);

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -21,7 +20,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function CreateArticleForm({ tags = undefined, volumes = undefined }) {
+export default function CreateArticleForm({ tags = undefined, volumes = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     slug: '',
@@ -41,25 +40,28 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
   const [image, setImage] = React.useState(null);
   const [articleTags, setArticleTags] = React.useState([]);
 
-  function setDataTags(selectedValues) {
-    const tagIds = selectedValues.map(item => item.value);
+  function setDataTags(selectedValues: any) {
+    const tagIds = selectedValues.map((item: any) => item.value);
     setData('tags', tagIds);
   }
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.articles.store'), {
@@ -96,7 +98,7 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   return (
@@ -126,6 +128,7 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
             id="subtitle"
             name="subtitle"
             placeholder="enter subtitle"
+            // @ts-ignore allowlist-migration
             onChange={e => setData('subtitle', e.target.value)}
           />
 
@@ -168,6 +171,7 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
           </div>
 
           <div className="col-span-1">
+            {/* @ts-ignore allowlist-migration */}
             <fieldset required className="mx-2">
               <Label as="legend" htmlFor="publication_id">
                 Volume
@@ -175,12 +179,13 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
 
               <Select
                 name="publication_id"
+                // @ts-ignore allowlist-migration
                 value={data.publication_id}
                 onValueChange={value => {
                   setData('publication_id', Number(value));
 
                   //   setSelectedCategory(
-                  //     volumes.filter(vol => vol.id === Number(value))[0]?.volume
+                  //     volumes.filter((vol: any) => vol.id === Number(value))[0]?.volume
                   //   );
                 }}
               >
@@ -191,8 +196,9 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
                   <SelectGroup>
                     <SelectLabel>Volumes</SelectLabel>
                   </SelectGroup>
+                  {/* @ts-ignore allowlist-migration */}
                   <SelectItem value={0}>Select Trade Insight Volume</SelectItem>
-                  {volumes.map(volume => (
+                  {volumes.map((volume: any) => (
                     <SelectItem key={volume.id} value={volume.id}>
                       {volume.volume}
                     </SelectItem>
@@ -218,6 +224,7 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
               placeholder="Select Tags"
               variant="inverted"
               maxCount={2}
+              // @ts-ignore allowlist-migration
               onValueChange={setArticleTags}
               setValues={setDataTags}
             />
@@ -287,7 +294,7 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
             name="content"
             initialValue=""
             id="content"
-            onChange={(evt, editor) => setData('content', editor.getContent())}
+            onChange={(evt: any, editor: any) => setData('content', editor.getContent())}
           />
 
           {errors.content && (

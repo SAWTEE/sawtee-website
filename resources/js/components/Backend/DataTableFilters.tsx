@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -11,7 +10,7 @@ import {
 } from '@/components/ui/select';
 import { router } from '@inertiajs/react';
 import { useState } from 'react';
-export function CustomFilter({ table = undefined, column = undefined }) {
+export function CustomFilter({ table = undefined, column = undefined }: any) {
   const [value, setValue] = useState(undefined);
   return (
     <Input
@@ -29,7 +28,7 @@ export function CustomFilter({ table = undefined, column = undefined }) {
   );
 }
 
-export function GlobalFilter({ globalFilter = undefined, setGlobalFilter = undefined }) {
+export function GlobalFilter({ globalFilter = undefined, setGlobalFilter = undefined }: any) {
   return (
     <Input
       placeholder="Filter using any column field..."
@@ -40,9 +39,9 @@ export function GlobalFilter({ globalFilter = undefined, setGlobalFilter = undef
   );
 }
 
-export function TypeFilter({ data = undefined, value = undefined, label = undefined, route = undefined }) {
-  const [selectedType = null, setSelectedType] = useState(value);
-  function handleTypeFilter(id) {
+export function TypeFilter({ data = undefined, value = undefined, label = undefined, route = undefined }: any) {
+  const [selectedType, setSelectedType] = useState(value);
+  function handleTypeFilter(id: any) {
     setSelectedType(id);
     router.visit(route, {
       data: { category_id: id },
@@ -62,7 +61,7 @@ export function TypeFilter({ data = undefined, value = undefined, label = undefi
       <SelectContent>
         <SelectGroup>
           <SelectLabel>{label}</SelectLabel>
-          {data?.map(item => (
+          {data?.map((item: any) => (
             <SelectItem key={item.id} value={item.id}>
               {item.name}
             </SelectItem>

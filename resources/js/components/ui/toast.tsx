@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { Cross2Icon } from '@radix-ui/react-icons';
 import * as ToastPrimitives from '@radix-ui/react-toast';
@@ -40,6 +39,7 @@ const Toast = React.forwardRef<React.ElementRef<typeof ToastPrimitives.Root>, Re
   return (
     <ToastPrimitives.Root
       ref={ref}
+      // @ts-ignore allowlist-migration
       className={cn(toastVariants({ variant }), className)}
       {...props}
     />

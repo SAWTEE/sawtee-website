@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -12,15 +11,15 @@ export default function Index({
   auth = undefined,
   publications: data = undefined,
   categories = undefined,
-  categoryID = undefined}) {
+  categoryID = undefined}: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.publications.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.publications.destroy', id), {
       onSuccess: () =>
@@ -28,6 +27,7 @@ export default function Index({
           title: 'Publication Deleted',
           description: `Publication ID:${id} deleted successfully`,
         }),
+      // @ts-ignore allowlist-migration
       onError: toast({
         variant: 'destructive',
         title: 'Uh oh! Something went wrong.',
@@ -39,7 +39,7 @@ export default function Index({
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -50,7 +50,7 @@ export default function Index({
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -63,41 +63,41 @@ export default function Index({
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
     },
     {
       accessorKey: 'subtitle',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Subtitle" />
       ),
     },
     // {
     //   accessorKey: 'description',
-    //   header: ({ column }) => (
+    //   header: ({ column }: any) => (
     //     <DataTableColumnHeader column={column} title="Description" />
     //   ),
     // },
     {
       accessorKey: 'category.name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Category" />
       ),
     },
     {
       accessorKey: 'tags',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Tags" />
       ),
-      cell: ({ row }) => {
-        return row.original.tags?.map(tag => (
+      cell: ({ row }: any) => {
+        return row.original.tags?.map((tag: any) => (
           <span
             key={tag.id}
             className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-500/10"
@@ -110,7 +110,7 @@ export default function Index({
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

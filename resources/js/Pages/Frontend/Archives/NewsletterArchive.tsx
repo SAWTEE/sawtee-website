@@ -1,8 +1,7 @@
-// @ts-nocheck
 import VerticalTimeline from '@/components/Frontend/Timeline';
 // Here we have used react-icons package for the icons
 
-const NewsletterArchive = ({ posts = undefined }) => {
+const NewsletterArchive = ({ posts = undefined }: any) => {
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (

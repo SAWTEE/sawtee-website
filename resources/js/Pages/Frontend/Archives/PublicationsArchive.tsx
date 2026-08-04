@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
@@ -18,7 +17,7 @@ export default function PublicationsArchive({
   publications = undefined,
   showSubscriptionBox = true,
   featured_image = undefined,
-  srcSet = undefined}) {
+  srcSet = undefined}: any) {
   // const isTradeInsightCategory = category.slug === 'trade-insight';
   return (
     <MainLayout>
@@ -79,7 +78,7 @@ const ItemComponent = ({
   item = undefined,
   publications = undefined,
   isTradeInsightCategory = undefined,
-  className = ''}) => {
+  className = ''}: any) => {
   return (
     <div className={cn('w-full', className)} key={item.name}>
       <h3 className="pb-8 text-2xl lg:text-3xl" id={item.name}>
@@ -93,7 +92,7 @@ const ItemComponent = ({
       </h3>
       {publications[item.slug] && publications[item.slug].length > 0 && (
         <div className="grid grid-cols-4 gap-6">
-          {publications[item.slug].map(publication => {
+          {publications[item.slug].map((publication: any) => {
             return isTradeInsightCategory ? (
               <div key={publication.id}>
                 <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
@@ -200,10 +199,11 @@ const ItemComponent = ({
 };
 
 // Main component that receives the data
-const ItemsList = ({ items = undefined, publications = undefined, className = '' }) => {
+const ItemsList = ({ items = undefined, publications = undefined, className = '' }: any) => {
   return (
     <div className="flex flex-col gap-4">
       {items.map(
+        // @ts-ignore allowlist-migration
         (item, i, isTradeInsightCategory = item.slug === 'trade-insight') => (
           <React.Fragment key={item.id}>
             <ItemComponent

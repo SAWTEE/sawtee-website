@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-export const Blob = ({ className = '' }) => {
+export const Blob = ({ className = '' }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -17,6 +16,7 @@ export const Blob = ({ className = '' }) => {
   );
 };
 
+// @ts-ignore allowlist-migration
 export const FaxIcon = props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -30,6 +30,7 @@ export const FaxIcon = props => (
   </svg>
 );
 
+// @ts-ignore allowlist-migration
 export const LocationPin = props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -43,6 +44,7 @@ export const LocationPin = props => (
   </svg>
 );
 
+// @ts-ignore allowlist-migration
 export const EmailIcon = props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +58,7 @@ export const EmailIcon = props => (
   </svg>
 );
 
-export const TwitterIcon = ({ className = '' }) => {
+export const TwitterIcon = ({ className = '' }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -94,7 +96,7 @@ export const YoutubeIcon = () => {
   );
 };
 
-export const FacebookIcon = ({ className = '' }) => {
+export const FacebookIcon = ({ className = '' }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +115,7 @@ export const FacebookIcon = ({ className = '' }) => {
   );
 };
 
-export const LinkedinIcon = ({ className = '' }) => {
+export const LinkedinIcon = ({ className = '' }: any) => {
   return (
     <svg
       className={cn('h-[1rem] w-[1rem] text-white', className)}
@@ -130,6 +132,7 @@ export const LinkedinIcon = ({ className = '' }) => {
   );
 };
 
+// @ts-ignore allowlist-migration
 export const MailBoxIcon = props => (
   <svg
     className="h-6 w-6 text-gray-800 dark:text-white"
@@ -151,6 +154,7 @@ export const MailBoxIcon = props => (
   </svg>
 );
 
+// @ts-ignore allowlist-migration
 export const ToggleIcon = props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -162,6 +166,7 @@ export const ToggleIcon = props => (
   </svg>
 );
 
+// @ts-ignore allowlist-migration
 export const HomeIcon = props => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -185,6 +190,7 @@ export const HomeIcon = props => (
   </svg>
 );
 
+// @ts-ignore allowlist-migration
 export const PhoneOutlineIcon = props => (
   <svg
     aria-hidden="true"
@@ -203,6 +209,7 @@ export const PhoneOutlineIcon = props => (
   </svg>
 );
 
+// @ts-ignore allowlist-migration
 export const CircleIcon = props => (
   <svg viewBox="0 0 200 200" {...props}>
     <path

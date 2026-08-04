@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
@@ -17,6 +16,7 @@ export default function CreateHomePageSectionForm() {
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.home-page-sections.store'), {
@@ -59,6 +59,7 @@ export default function CreateHomePageSectionForm() {
             id="description"
             name="description"
             onChange={e => setData('description', e.target.value)}
+            // @ts-ignore allowlist-migration
             mt={1}
           />
           {errors.description && (
@@ -78,10 +79,12 @@ export default function CreateHomePageSectionForm() {
         </div>
         <div className="col-span-1 flex items-center space-x-2">
           <Switch
+            // @ts-ignore allowlist-migration
             value={data.show}
             className="data-[state=checked]:bg-green-500"
             id="show"
             name="show"
+            // @ts-ignore allowlist-migration
             onChange={e => setData('show', e.target.value)}
           />
           <Label htmlFor="show"> Section Visible</Label>

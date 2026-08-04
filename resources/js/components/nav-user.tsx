@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { BadgeCheck, LogOut } from 'lucide-react';
@@ -20,9 +19,12 @@ import {
   useSidebar,
 } from '@/components/ui/sidebar';
 import { CaretSortIcon } from '@radix-ui/react-icons';
+import type { User } from '@/types';
 
-export function NavUser({ user = undefined }) {
+export function NavUser({ user }: { user?: User }) {
   const { isMobile } = useSidebar();
+  const name = user?.name ?? 'User';
+  const email = user?.email ?? '';
 
   return (
     <SidebarMenu>
@@ -38,15 +40,13 @@ export function NavUser({ user = undefined }) {
                   src={
                     'https://gravatar.com/avatar/e5ce55160e41857f6a007ddeba8b16f3?s=200&d=retro&r=x'
                   }
-                  alt={user.name}
+                  alt={name}
                 />
-                <AvatarFallback className="rounded-lg">
-                  {user.name}
-                </AvatarFallback>
+                <AvatarFallback className="rounded-lg">{name}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{name}</span>
+                <span className="truncate text-xs">{email}</span>
               </div>
               <CaretSortIcon className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -64,15 +64,13 @@ export function NavUser({ user = undefined }) {
                     src={
                       'https://gravatar.com/avatar/e5ce55160e41857f6a007ddeba8b16f3?s=200&d=retro&r=x'
                     }
-                    alt={user.name}
+                    alt={name}
                   />
-                  <AvatarFallback className="rounded-lg">
-                    {user.name}
-                  </AvatarFallback>
+                  <AvatarFallback className="rounded-lg">{name}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{name}</span>
+                  <span className="truncate text-xs">{email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
@@ -89,10 +87,6 @@ export function NavUser({ user = undefined }) {
                   Log out
                 </Link>
               </DropdownMenuItem>
-              {/* <DropdownMenuItem>
-                <Bell />
-                Notifications
-              </DropdownMenuItem> */}
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
           </DropdownMenuContent>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import MousePosition from '@/lib/mouse-position';
 import { useEffect, useRef } from 'react';
 import { useTheme } from '../shared/theme-provider';
@@ -8,7 +7,7 @@ export default function Particles({
   quantity = 30,
   staticity = 50,
   ease = 50,
-}) {
+}: any) {
   const canvasRef = useRef(null);
   const canvasContainerRef = useRef(null);
   const context = useRef(null);
@@ -22,6 +21,7 @@ export default function Particles({
 
   useEffect(() => {
     if (canvasRef.current) {
+      // @ts-ignore allowlist-migration
       context.current = canvasRef.current.getContext('2d');
     }
     initCanvas();
@@ -44,6 +44,7 @@ export default function Particles({
 
   const onMouseMove = () => {
     if (canvasRef.current) {
+      // @ts-ignore allowlist-migration
       const rect = canvasRef.current.getBoundingClientRect();
       const { w, h } = canvasSize.current;
       const x = mousePosition.x - rect.left - w / 2;
@@ -59,12 +60,19 @@ export default function Particles({
   const resizeCanvas = () => {
     if (canvasContainerRef.current && canvasRef.current && context.current) {
       circles.current.length = 0;
+      // @ts-ignore allowlist-migration
       canvasSize.current.w = canvasContainerRef.current.offsetWidth;
+      // @ts-ignore allowlist-migration
       canvasSize.current.h = canvasContainerRef.current.offsetHeight;
+      // @ts-ignore allowlist-migration
       canvasRef.current.width = canvasSize.current.w * dpr;
+      // @ts-ignore allowlist-migration
       canvasRef.current.height = canvasSize.current.h * dpr;
+      // @ts-ignore allowlist-migration
       canvasRef.current.style.width = canvasSize.current.w + 'px';
+      // @ts-ignore allowlist-migration
       canvasRef.current.style.height = canvasSize.current.h + 'px';
+      // @ts-ignore allowlist-migration
       context.current.scale(dpr, dpr);
     }
   };
@@ -94,20 +102,28 @@ export default function Particles({
     };
   };
 
+  // @ts-ignore allowlist-migration
   const drawCircle = (circle, update = false) => {
     if (context.current) {
       const { x, y, translateX, translateY, size, alpha } = circle;
+      // @ts-ignore allowlist-migration
       context.current.translate(translateX, translateY);
+      // @ts-ignore allowlist-migration
       context.current.beginPath();
+      // @ts-ignore allowlist-migration
       context.current.arc(x, y, size, 0, 2 * Math.PI);
+      // @ts-ignore allowlist-migration
       context.current.fillStyle =
         theme === 'dark'
           ? `rgba(255, 255, 255, ${alpha})`
           : `rgba(0, 0, 0, ${alpha})`;
+      // @ts-ignore allowlist-migration
       context.current.fill();
+      // @ts-ignore allowlist-migration
       context.current.setTransform(dpr, 0, 0, dpr, 0, 0);
 
       if (!update) {
+        // @ts-ignore allowlist-migration
         circles.current.push(circle);
       }
     }
@@ -115,6 +131,7 @@ export default function Particles({
 
   const clearContext = () => {
     if (context.current) {
+      // @ts-ignore allowlist-migration
       context.current.clearRect(
         0,
         0,
@@ -133,6 +150,7 @@ export default function Particles({
     }
   };
 
+  // @ts-ignore allowlist-migration
   const remapValue = (value, start1, end1, start2, end2) => {
     const remapped =
       ((value - start1) * (end2 - start2)) / (end1 - start1) + start2;
@@ -141,7 +159,7 @@ export default function Particles({
 
   const animate = () => {
     clearContext();
-    circles.current.forEach((circle, i) => {
+    circles.current.forEach((circle: any, i: any) => {
       // Handle the alpha value
       const edge = [
         circle.x + circle.translateX - circle.size, // distance from left edge
@@ -149,7 +167,7 @@ export default function Particles({
         circle.y + circle.translateY - circle.size, // distance from top edge
         canvasSize.current.h - circle.y - circle.translateY - circle.size, // distance from bottom edge
       ];
-      const closestEdge = edge.reduce((a, b) => Math.min(a, b));
+      const closestEdge = edge.reduce((a: any, b: any) => Math.min(a, b));
       const remapClosestEdge = parseFloat(
         remapValue(closestEdge, 0, 20, 0, 1).toFixed(2)
       );

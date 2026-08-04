@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Tooltip,
   TooltipContent,
@@ -62,7 +61,7 @@ export default function Footer({
                   </h4>
                   <ul className="text-[0.9rem] transition-all duration-500">
                     {item.title.includes('Contact')
-                      ? item.children?.map(child_item => {
+                      ? item.children?.map((child_item: any) => {
                           const { url, title } = child_item;
                           if (title.includes('Address')) {
                             return (
@@ -131,7 +130,7 @@ export default function Footer({
                             );
                           }
                         })
-                      : item.children?.map(child_item => {
+                      : item.children?.map((child_item: any) => {
                           const { url, title } = child_item;
                           return (
                             <MenuItem key={title}>
@@ -171,7 +170,7 @@ export default function Footer({
   );
 }
 
-const MenuItem = ({ children = undefined, className = '' }) => {
+const MenuItem = ({ children = undefined, className = '' }: any) => {
   return (
     <li
       className={cn(

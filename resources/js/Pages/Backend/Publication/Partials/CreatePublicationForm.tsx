@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { MultiSelect } from '@/components/ui/multi-select';
@@ -21,7 +20,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 
-export default function CreatePublicationForm({ categories = undefined, tags = undefined }) {
+export default function CreatePublicationForm({ categories = undefined, tags = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: '',
     title: '',
@@ -39,13 +38,14 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -56,6 +56,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.publications.store'), {
@@ -68,7 +69,9 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
       onError: () => {
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
+            // @ts-ignore allowlist-migration
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -80,8 +83,8 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
     });
   };
 
-  function setDataTags(selectedValues) {
-    const tagIds = selectedValues.map(item => item.value);
+  function setDataTags(selectedValues: any) {
+    const tagIds = selectedValues.map((item: any) => item.value);
     setData('tags', tagIds);
   }
 
@@ -120,6 +123,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
           </div>
 
           {data.category_id ===
+            // @ts-ignore allowlist-migration
             categories.find(category => category.slug === 'trade-insight')
               ?.id && (
             <div className="mx-2">
@@ -129,6 +133,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
                 id="volume"
                 name="volume"
                 className="mt-1"
+                // @ts-ignore allowlist-migration
                 onChange={e => setData('volume', e.target.value)}
               />
 
@@ -145,7 +150,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
               name="description"
               initialValue=""
               id="description"
-              onChange={(evt, editor) =>
+              onChange={(evt: any, editor: any) =>
                 setData('description', editor.getContent())
               }
             />
@@ -165,6 +170,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
               name="category_id"
               value={data.category_id}
               onValueChange={value => {
+                // @ts-ignore allowlist-migration
                 setData('category_id', Number(value));
               }}
             >
@@ -176,7 +182,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
                   <SelectLabel>Categories</SelectLabel>
                 </SelectGroup>
 
-                {categories.map(category => (
+                {categories.map((category: any) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>
@@ -198,6 +204,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
               placeholder="Select Tags"
               variant="inverted"
               maxCount={2}
+              // @ts-ignore allowlist-migration
               onValueChange={setPublicationTags}
               setValues={setDataTags}
             />
@@ -224,6 +231,7 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
               className="mt-1"
               name="file"
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('file', e.target.files[0]);
               }}
             />

@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef } from 'react';
 import { useTheme } from '../shared/theme-provider';
 
-export default function ContentEditor({ initialValue = undefined, ...rest }) {
+export default function ContentEditor({ initialValue = undefined, ...rest }: any) {
   const editorRef = useRef<any>(null);
   const { theme } = useTheme();
   const editorConfig = {
@@ -48,7 +47,7 @@ export default function ContentEditor({ initialValue = undefined, ...rest }) {
       ref={editorRef}
       licenseKey="gpl"
       initialValue={initialValue}
-      onInit={(evt, editor) => {
+      onInit={(evt: any, editor: any) => {
         editorRef.current = editor;
       }}
       init={editorConfig as any}

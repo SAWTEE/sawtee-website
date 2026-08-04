@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -15,7 +14,7 @@ export default function Publications({
   sawteeInMedia = undefined,
   featured_image = undefined,
   showSubscriptionBox = true,
-  srcSet = undefined}) {
+  srcSet = undefined}: any) {
   return (
     <MainLayout>
       <WebsiteHead
@@ -37,7 +36,7 @@ export default function Publications({
             <section className="archive-list md:col-span-2 xl:col-span-4">
               <div>
                 <div className="grid grid-cols-4 gap-6 gap-y-20">
-                  {publications?.data?.map(publication => {
+                  {publications?.data?.map((publication: any) => {
                     return (
                       <div key={publication.id}>
                         <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -10,11 +9,11 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 
-export default function Index({ auth = undefined, articles = undefined }) {
+export default function Index({ auth = undefined, articles = undefined }: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.articles.destroy', id), {
       preserveState: true,
@@ -28,7 +27,7 @@ export default function Index({ auth = undefined, articles = undefined }) {
     });
   };
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.articles.edit', id));
   };
@@ -36,7 +35,7 @@ export default function Index({ auth = undefined, articles = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -47,7 +46,7 @@ export default function Index({ auth = undefined, articles = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -60,27 +59,27 @@ export default function Index({ auth = undefined, articles = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
     },
     {
       accessorKey: 'subtitle',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Subtitle" />
       ),
     },
     {
       accessorKey: 'tags',
       header: 'Tags',
-      cell: ({ row }) => {
-        return row.original.tags?.map(tag => (
+      cell: ({ row }: any) => {
+        return row.original.tags?.map((tag: any) => (
           <TWTags key={tag.id} colorScheme="blue" className="ml-2">
             {tag.name}
           </TWTags>
@@ -89,14 +88,14 @@ export default function Index({ auth = undefined, articles = undefined }) {
     },
     {
       accessorKey: 'author',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Author" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

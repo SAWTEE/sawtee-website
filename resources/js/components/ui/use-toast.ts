@@ -1,4 +1,3 @@
-// @ts-nocheck
 // Inspired by react-hot-toast library
 import * as React from 'react';
 
@@ -21,6 +20,7 @@ function genId() {
 
 const toastTimeouts = new Map();
 
+// @ts-ignore allowlist-migration
 const addToRemoveQueue = toastId => {
   if (toastTimeouts.has(toastId)) {
     return;
@@ -37,7 +37,7 @@ const addToRemoveQueue = toastId => {
   toastTimeouts.set(toastId, timeout);
 };
 
-export const reducer = (state, action) => {
+export const reducer = (state: any, action: any) => {
   switch (action.type) {
     case 'ADD_TOAST':
       return {
@@ -48,7 +48,7 @@ export const reducer = (state, action) => {
     case 'UPDATE_TOAST':
       return {
         ...state,
-        toasts: state.toasts.map(t =>
+        toasts: state.toasts.map((t: any) =>
           t.id === action.toast.id ? { ...t, ...action.toast } : t
         ),
       };
@@ -61,14 +61,14 @@ export const reducer = (state, action) => {
       if (toastId) {
         addToRemoveQueue(toastId);
       } else {
-        state.toasts.forEach(toast => {
+        state.toasts.forEach((toast: any) => {
           addToRemoveQueue(toast.id);
         });
       }
 
       return {
         ...state,
-        toasts: state.toasts.map(t =>
+        toasts: state.toasts.map((t: any) =>
           t.id === toastId || toastId === undefined
             ? {
                 ...t,
@@ -87,25 +87,28 @@ export const reducer = (state, action) => {
       }
       return {
         ...state,
-        toasts: state.toasts.filter(t => t.id !== action.toastId),
+        toasts: state.toasts.filter((t: any) => t.id !== action.toastId),
       };
   }
 };
 
+// @ts-ignore allowlist-migration
 const listeners = [];
 
 let memoryState = { toasts: [] };
 
-function dispatch(action) {
+function dispatch(action: any) {
   memoryState = reducer(memoryState, action);
-  listeners.forEach(listener => {
+  // @ts-ignore allowlist-migration
+  listeners.forEach((listener: any) => {
     listener(memoryState);
   });
 }
 
-function toast({ ...props }) {
+function toast({ ...props }: any) {
   const id = genId();
 
+  // @ts-ignore allowlist-migration
   const update = props =>
     dispatch({
       type: 'UPDATE_TOAST',
@@ -119,6 +122,7 @@ function toast({ ...props }) {
       ...props,
       id,
       open: true,
+      // @ts-ignore allowlist-migration
       onOpenChange: open => {
         if (!open) dismiss();
       },
@@ -138,8 +142,10 @@ function useToast() {
   React.useEffect(() => {
     listeners.push(setState);
     return () => {
+      // @ts-ignore allowlist-migration
       const index = listeners.indexOf(setState);
       if (index > -1) {
+        // @ts-ignore allowlist-migration
         listeners.splice(index, 1);
       }
     };
@@ -148,6 +154,7 @@ function useToast() {
   return {
     ...state,
     toast,
+    // @ts-ignore allowlist-migration
     dismiss: toastId => dispatch({ type: 'DISMISS_TOAST', toastId }),
   };
 }

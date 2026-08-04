@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -19,7 +18,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function EditSectionForm({ sections = undefined, section = undefined, pages = undefined }) {
+export default function EditSectionForm({ sections = undefined, section = undefined, pages = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: section.title,
     description: section.description,
@@ -37,6 +36,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
     section.media.length > 0 ? section.media[0].preview_url : ''
   );
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -55,6 +55,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset([key], { keepErrors: true });
               return toast({
                 title: `${key.toUpperCase()} field error`,
@@ -67,16 +68,19 @@ export default function EditSectionForm({ sections = undefined, section = undefi
     );
   };
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
+      // @ts-ignore allowlist-migration
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
@@ -115,6 +119,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
 
             <Select
               name="page_id"
+              // @ts-ignore allowlist-migration
               id="page_id"
               value={data.page_id.toString()}
               onValueChange={value => {
@@ -129,7 +134,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
                   <SelectLabel>Pages</SelectLabel>
                   {pages &&
                     pages.length > 0 &&
-                    pages.map(item => (
+                    pages.map((item: any) => (
                       <SelectItem key={item.id} value={item.id.toString()}>
                         {item.name}
                       </SelectItem>
@@ -176,6 +181,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
 
               <Select
                 name="type"
+                // @ts-ignore allowlist-migration
                 id="type"
                 value={data.type}
                 onValueChange={value => setData('type', value)}
@@ -186,7 +192,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
                 <SelectContent>
                   <SelectGroup>
                     <SelectLabel>Section Types</SelectLabel>
-                    {sectionTypes.map(item => (
+                    {sectionTypes.map((item: any) => (
                       <SelectItem key={item} value={item.toString()}>
                         {item}
                       </SelectItem>
@@ -206,6 +212,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
 
               <Select
                 name="parent_id"
+                // @ts-ignore allowlist-migration
                 id="parent_id"
                 disabled={data.type === 'default'}
                 value={data.parent_id}
@@ -219,7 +226,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
                 <SelectContent className="w-[300px]">
                   <SelectGroup>
                     <SelectLabel>Sections</SelectLabel>
-                    {sections?.map(item => (
+                    {sections?.map((item: any) => (
                       <SelectItem key={item.id} value={item.id}>
                         {item.title}
                       </SelectItem>
@@ -238,7 +245,7 @@ export default function EditSectionForm({ sections = undefined, section = undefi
             id="description"
             className="mt-1"
             initialValue={data.description}
-            onChange={(evt, editor) =>
+            onChange={(evt: any, editor: any) =>
               setData('description', editor.getContent())
             }
           />

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -8,8 +7,10 @@ import { useForm } from '@inertiajs/react';
 
 import { useRef } from 'react';
 
-export default function UpdatePasswordForm({ className = '' }) {
+export default function UpdatePasswordForm({ className = '' }: any) {
+  // @ts-ignore allowlist-migration
   const passwordInput = useRef();
+  // @ts-ignore allowlist-migration
   const currentPasswordInput = useRef();
   const { toast } = useToast();
 
@@ -19,6 +20,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     password_confirmation: '',
   });
 
+  // @ts-ignore allowlist-migration
   const updatePassword = e => {
     e.preventDefault();
 
@@ -39,11 +41,13 @@ export default function UpdatePasswordForm({ className = '' }) {
         });
         if (errors.password) {
           reset('password', 'password_confirmation');
+          // @ts-ignore allowlist-migration
           passwordInput.current.focus();
         }
 
         if (errors.current_password) {
           reset('current_password');
+          // @ts-ignore allowlist-migration
           currentPasswordInput.current.focus();
         }
       },
@@ -68,6 +72,7 @@ export default function UpdatePasswordForm({ className = '' }) {
 
           <TextInput
             id="current_password"
+            // @ts-ignore allowlist-migration
             ref={currentPasswordInput}
             value={data.current_password}
             onChange={e => setData('current_password', e.target.value)}
@@ -84,6 +89,7 @@ export default function UpdatePasswordForm({ className = '' }) {
 
           <TextInput
             id="password"
+            // @ts-ignore allowlist-migration
             ref={passwordInput}
             value={data.password}
             onChange={e => setData('password', e.target.value)}

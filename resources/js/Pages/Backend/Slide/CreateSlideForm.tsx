@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,7 +16,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-function CreateSlideForm({ open = undefined, setOpen = undefined, slider = undefined }) {
+function CreateSlideForm({ open = undefined, setOpen = undefined, slider = undefined }: any) {
   const { setData, post, processing, errors, reset } = useForm({
     title: '',
     subtitle: '',
@@ -26,20 +25,24 @@ function CreateSlideForm({ open = undefined, setOpen = undefined, slider = undef
   const { toast } = useToast();
   const [image, setImage] = useState(null);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
+      // @ts-ignore allowlist-migration
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -107,6 +110,7 @@ function CreateSlideForm({ open = undefined, setOpen = undefined, slider = undef
                 defaultValue={image}
               />
 
+              {/* @ts-ignore allowlist-migration */}
               {errors.image && <InputError mt={2}>{errors.image}</InputError>}
             </div>
             <div className="space-x-2">

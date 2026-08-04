@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DangerButton from '@/components/Backend/DangerButton';
 import InputError from '@/components/Backend/InputError';
 import { useToast } from '@/components/ui/use-toast';
@@ -18,8 +17,9 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-export default function DeleteUserForm({ className = '' }) {
+export default function DeleteUserForm({ className = '' }: any) {
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
+  // @ts-ignore allowlist-migration
   const passwordInput = useRef();
   const { toast } = useToast();
 
@@ -38,6 +38,7 @@ export default function DeleteUserForm({ className = '' }) {
     setConfirmingUserDeletion(true);
   };
 
+  // @ts-ignore allowlist-migration
   const deleteUser = e => {
     e.preventDefault();
 
@@ -50,6 +51,7 @@ export default function DeleteUserForm({ className = '' }) {
         });
         closeModal();
       },
+      // @ts-ignore allowlist-migration
       onError: () => passwordInput.current.focus(),
       onFinish: () => reset(),
     });
@@ -102,6 +104,7 @@ export default function DeleteUserForm({ className = '' }) {
                     id="password"
                     type="password"
                     name="password"
+                    // @ts-ignore allowlist-migration
                     ref={passwordInput}
                     value={data.password}
                     onChange={e => setData('password', e.target.value)}

@@ -1,17 +1,18 @@
-// @ts-nocheck
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
 import { formatDate } from '@/lib/helpers';
 import { Link } from '@inertiajs/react';
 
-const EventsArchive = ({ posts = undefined, ...rest }) => {
+const EventsArchive = ({ posts = undefined, ...rest }: any) => {
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (
     <div className="grid w-full grid-cols-1 items-start gap-x-6 gap-y-20 p-8">
       {posts.map(
+        // @ts-ignore allowlist-migration
         ({ id, title, slug, media, category, excerpt, published_at }) => {
           const featured_image = media.filter(
+            // @ts-ignore allowlist-migration
             media => media.collection_name === 'post-featured-image'
           )[0];
 

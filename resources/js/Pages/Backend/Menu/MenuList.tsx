@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Accordion,
   AccordionContent,
@@ -24,20 +23,20 @@ export default function MenuItemsList({
   firstLevelMenuItems = undefined,
   menuItems = undefined,
   ...rest
-}) {
+}: any) {
   const [editMenuItem, setEditMenuItem] = useState(false);
   const [deleteMenuItem, setDeleteMenuItem] = useState(false);
   const [menuItem, setMenuItem] = useState(null);
-  const handleEditMenuItem = (e, id) => {
+  const handleEditMenuItem = (e: any, id: any) => {
     e.preventDefault();
-    const newMenuItem = menuItems.filter(MenuItem => MenuItem.id === id)[0];
+    const newMenuItem = menuItems.filter((MenuItem: any) => MenuItem.id === id)[0];
     setMenuItem(newMenuItem);
     setEditMenuItem(!editMenuItem);
   };
 
-  const handleDeleteMenuItem = (e, id) => {
+  const handleDeleteMenuItem = (e: any, id: any) => {
     e.preventDefault();
-    const newMenuItem = menuItems.filter(MenuItem => MenuItem.id === id)[0];
+    const newMenuItem = menuItems.filter((MenuItem: any) => MenuItem.id === id)[0];
     setMenuItem(newMenuItem);
     setDeleteMenuItem(!deleteMenuItem);
   };
@@ -62,7 +61,7 @@ export default function MenuItemsList({
       )}
 
       <div className={cn('space-y-4', rest.className)}>
-        {firstLevelMenuItems?.map(item => {
+        {firstLevelMenuItems?.map((item: any) => {
           return (
             <Accordion
               type="single"

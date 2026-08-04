@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as CheckboxPrimitive from '@radix-ui/react-checkbox';
 import { CheckIcon } from '@radix-ui/react-icons';
 import * as React from 'react';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,9 +11,10 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function DeleteMenuItem({ isOpen = undefined, onClose = undefined, item = undefined, setMenuItem = undefined }) {
+export default function DeleteMenuItem({ isOpen = undefined, onClose = undefined, item = undefined, setMenuItem = undefined }: any) {
   const { delete: destroy, processing } = useForm();
   const { toast } = useToast();
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     destroy(route('admin.deleteMenuItem.menu', item.id), {
@@ -39,9 +39,11 @@ export default function DeleteMenuItem({ isOpen = undefined, onClose = undefined
         </DialogHeader>
         <form onSubmit={submit}>
           <div
+            // @ts-ignore allowlist-migration
             class="mb-4 border-l-4 border-orange-500 bg-orange-100 p-4 text-orange-700"
             role="alert"
           >
+            {/* @ts-ignore allowlist-migration */}
             <p class="font-bold">Be Warned</p>
             <p>
               {item.children.length > 0

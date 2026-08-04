@@ -1,11 +1,11 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
 
-const CardWithEffect = ({ children = undefined, className = '' }) => {
+const CardWithEffect = ({ children = undefined, className = '' }: any) => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
+  // @ts-ignore allowlist-migration
   const handleMouseMove = e => {
     const rect = e.currentTarget.getBoundingClientRect();
     setMousePosition({ x: e.clientX - rect.left, y: e.clientY - rect.top });

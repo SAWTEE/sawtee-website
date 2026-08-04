@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Carousel,
   CarouselContent,
@@ -12,7 +11,7 @@ import 'swiper/css';
 import 'swiper/css/scrollbar';
 import { Badge } from '../ui/badge';
 
-const MultiPostsCarousel = ({ data = undefined }) => {
+const MultiPostsCarousel = ({ data = undefined }: any) => {
   return (
     <Carousel
       opts={{
@@ -21,9 +20,10 @@ const MultiPostsCarousel = ({ data = undefined }) => {
       className="w-full"
     >
       <CarouselContent>
-        {data.map(publication => {
+        {data.map((publication: any) => {
           const media = publication.media.length
             ? publication.media.filter(
+                // @ts-ignore allowlist-migration
                 media => media.collection_name === 'publication_featured_image'
               )[0].original_url
             : '/assets/SM-placeholder-150x150.png';
@@ -37,6 +37,7 @@ const MultiPostsCarousel = ({ data = undefined }) => {
                 style={{
                   backgroundImage: `url(${media})`,
                   backgroundSize: 'cover',
+                  // @ts-ignore allowlist-migration
                   imageBlendMode: 'grayscale',
                 }}
               >

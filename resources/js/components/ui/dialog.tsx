@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { Cross2Icon } from '@radix-ui/react-icons';
@@ -48,7 +47,7 @@ const DialogContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.C
 );
 DialogContent.displayName = DialogPrimitive.Content.displayName;
 
-const DialogHeader = ({ className = '', ...props }) => (
+const DialogHeader = ({ className = '', ...props }: any) => (
   <div
     className={cn(
       'flex flex-col space-y-1.5 text-center sm:text-left',
@@ -59,7 +58,7 @@ const DialogHeader = ({ className = '', ...props }) => (
 );
 DialogHeader.displayName = 'DialogHeader';
 
-const DialogFooter = ({ className = '', ...props }) => (
+const DialogFooter = ({ className = '', ...props }: any) => (
   <div
     className={cn(
       'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2',

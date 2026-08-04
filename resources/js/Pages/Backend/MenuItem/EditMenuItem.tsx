@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -28,7 +27,7 @@ export default function EditMenuItem({
   onClose = undefined,
   item = undefined,
   setMenuItem = undefined,
-  menuItems = undefined}) {
+  menuItems = undefined}: any) {
   const { data, setData, patch, processing, reset } = useForm({
     title: item.title,
     name: item.name,
@@ -39,6 +38,7 @@ export default function EditMenuItem({
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -112,10 +112,12 @@ export default function EditMenuItem({
               <Label htmlFor="parent_id">Select parent</Label>
               <Select
                 name="parent_id"
+                // @ts-ignore allowlist-migration
                 id="parent_id"
                 placeholder="Select parent menu item"
                 value={data.parent_id}
                 className="col-span-3"
+                // @ts-ignore allowlist-migration
                 onChange={e => setData('parent_id', e.target.value)}
               >
                 <SelectTrigger>
@@ -125,6 +127,7 @@ export default function EditMenuItem({
                   <SelectGroup>
                     <SelectLabel>Menu Items</SelectLabel>
                     {menuItems.map(
+                      // @ts-ignore allowlist-migration
                       menuItem =>
                         menuItem.id !== item.id && (
                           <SelectItem key={menuItem.id} value={menuItem.id}>

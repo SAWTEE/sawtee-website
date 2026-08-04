@@ -1,9 +1,8 @@
-// @ts-nocheck
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
 import { Link } from '@inertiajs/react';
 
-export const FeaturedPublications = ({ publications = undefined, blogPosts = undefined }) => {
+export const FeaturedPublications = ({ publications = undefined, blogPosts = undefined }: any) => {
   return (
     <Glassbox className="bg-white dark:bg-bgDarker">
       <SimpleList
@@ -11,10 +10,11 @@ export const FeaturedPublications = ({ publications = undefined, blogPosts = und
         heading={'Featured publications'}
       >
         {publications
-          .sort((a, b) => a.created_at - b.created_at)
-          .map(publication => {
+          .sort((a: any, b: any) => a.created_at - b.created_at)
+          .map((publication: any) => {
             const media = publication.media.length
               ? publication.media.filter(
+                  // @ts-ignore allowlist-migration
                   media =>
                     media.collection_name === 'publication_featured_image'
                 )[0].original_url
@@ -72,10 +72,11 @@ export const FeaturedPublications = ({ publications = undefined, blogPosts = und
           heading={'Blogs and Articles'}
         >
           {blogPosts
-            .sort((a, b) => a.created_at - b.created_at)
-            .map(post => {
+            .sort((a: any, b: any) => a.created_at - b.created_at)
+            .map((post: any) => {
               const media = post.media.length
                 ? post.media.filter(
+                    // @ts-ignore allowlist-migration
                     media => media.collection_name === 'post-featured-image'
                   )[0].original_url
                 : `https://placehold.co/120x150/eee/000/webp?text=No+image`;

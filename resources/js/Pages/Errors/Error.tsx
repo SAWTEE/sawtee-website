@@ -1,8 +1,8 @@
-// @ts-nocheck
 import { Head, Link } from '@inertiajs/react';
 import MainLayout from '../../components/Layouts/MainLayout';
 
-const ErrorPage = ({ status = undefined }) => {
+const ErrorPage = ({ status = undefined }: any) => {
+  // @ts-ignore allowlist-migration
   const title = {
     503: '503: Service Unavailable',
     500: '500: Server Error',
@@ -10,6 +10,7 @@ const ErrorPage = ({ status = undefined }) => {
     403: '403: Forbidden',
   }[status];
 
+  // @ts-ignore allowlist-migration
   const description = {
     503: 'Sorry, we are doing some maintenance. Please check back soon.',
     500: 'Whoops, something went wrong on our servers.',

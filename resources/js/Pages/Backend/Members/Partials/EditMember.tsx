@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -15,12 +14,13 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditCategoryForm({ open = undefined, setOpen = undefined, member = undefined }) {
+export default function EditCategoryForm({ open = undefined, setOpen = undefined, member = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     country: member.country,
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -41,6 +41,7 @@ export default function EditCategoryForm({ open = undefined, setOpen = undefined
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Dialog,
   DialogClose,
@@ -8,7 +7,7 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-export const MapModel = ({ isOpen = undefined, onOpenChange = undefined }) => {
+export const MapModel = ({ isOpen = undefined, onOpenChange = undefined }: any) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
@@ -26,6 +25,7 @@ export const MapModel = ({ isOpen = undefined, onOpenChange = undefined }) => {
             }
             className="aspect-video w-full rounded-md"
             width="100%"
+            // @ts-ignore allowlist-migration
             allowFullScreen="true"
             loading="lazy"
             title="sawtee location map"

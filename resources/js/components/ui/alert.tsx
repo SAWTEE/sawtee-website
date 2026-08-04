@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import { cva } from 'class-variance-authority';
 
@@ -24,6 +23,7 @@ const Alert = React.forwardRef<HTMLDivElement, React.ComponentPropsWithoutRef<'d
   <div
     ref={ref}
     role="alert"
+    // @ts-ignore allowlist-migration
     className={cn(alertVariants({ variant }), className)}
     {...props}
   />

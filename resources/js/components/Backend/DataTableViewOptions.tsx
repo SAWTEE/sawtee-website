@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { DropdownMenuTrigger } from '@radix-ui/react-dropdown-menu';
@@ -13,7 +12,7 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-export function DataTableViewOptions({ table = undefined, label = undefined }) {
+export function DataTableViewOptions({ table = undefined, label = undefined }: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -32,10 +31,11 @@ export function DataTableViewOptions({ table = undefined, label = undefined }) {
         {table
           .getAllColumns()
           .filter(
+            // @ts-ignore allowlist-migration
             column =>
               typeof column.accessorFn !== 'undefined' && column.getCanHide()
           )
-          .map(column => {
+          .map((column: any) => {
             return (
               <DropdownMenuCheckboxItem
                 key={column.id}

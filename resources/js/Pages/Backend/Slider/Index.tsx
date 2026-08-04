@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { AlertCircleIcon } from 'lucide-react';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
@@ -11,17 +10,17 @@ import { Head, useForm } from '@inertiajs/react';
 import React from 'react';
 import CreateSliderForm from './Partials/CreateSliderForm';
 
-export default function Index({ auth = undefined, sliders = undefined, pages = undefined }) {
+export default function Index({ auth = undefined, sliders = undefined, pages = undefined }: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
   const [sliderModal, setSliderModal] = React.useState(false);
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.sliders.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.sliders.destroy', id), {
       preserveScroll: true,
@@ -41,20 +40,20 @@ export default function Index({ auth = undefined, sliders = undefined, pages = u
   const defaultColumns = [
     {
       accessorKey: 'id',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="ID" />;
       },
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Title" />;
       },
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

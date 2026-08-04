@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
 import { createRoot } from 'react-dom/client';
 import '../css/index.css';

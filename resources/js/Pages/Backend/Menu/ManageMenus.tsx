@@ -1,4 +1,3 @@
-// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import {
   Accordion,
@@ -34,26 +33,30 @@ export default function ManageMenu({
   menus = undefined,
   pages = undefined,
   desiredMenu = undefined,
-  menuItems = undefined}) {
+  menuItems = undefined}: any) {
   const [firstLevelMenuItems, setFirstLevelMenuItems] = useState(null);
   const { get } = useForm();
   const [editMenu, setEditMenu] = useState(false);
   const [menu, setMenu] = useState(desiredMenu);
 
+  // @ts-ignore allowlist-migration
   const handleMenuSlected = id => {
     get(route('admin.manage.menus', id));
+    // @ts-ignore allowlist-migration
     setMenu(menus.find(menu => menu.id === id));
   };
 
   useEffect(() => {
+    // @ts-ignore allowlist-migration
     const newMenuItems = [];
     menuItems
-      .toSorted((a, b) => a.order - b.order)
-      ?.map(menuItem => {
+      .toSorted((a: any, b: any) => a.order - b.order)
+      ?.map((menuItem: any) => {
         if (!menuItem.parent_id) {
           newMenuItems.push(menuItem);
         }
       });
+    // @ts-ignore allowlist-migration
     setFirstLevelMenuItems(newMenuItems);
   }, [menuItems]);
 
@@ -68,6 +71,7 @@ export default function ManageMenu({
       {menus.length > 0 && (
         <div className="mb-4 flex max-w-xl space-x-4">
           <Select
+            // @ts-ignore allowlist-migration
             placeholder="Select menu to edit"
             value={menu.id}
             onValueChange={value => handleMenuSlected(value)}
@@ -78,7 +82,7 @@ export default function ManageMenu({
             <SelectContent>
               <SelectGroup>
                 <SelectLabel>Menus</SelectLabel>
-                {menus.map(menu => (
+                {menus.map((menu: any) => (
                   <SelectItem key={menu.id} value={menu.id}>
                     {menu.title}
                   </SelectItem>
@@ -137,7 +141,7 @@ export default function ManageMenu({
   );
 }
 
-const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, menuItems = undefined }) => {
+const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, menuItems = undefined }: any) => {
   const [selectedData, setSelectedData] = useState(null);
   const [parent, setParent] = useState(null);
 
@@ -151,7 +155,7 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
   });
   const { toast } = useToast();
 
-  function handleSelected(selected) {
+  function handleSelected(selected: any) {
     let url = '';
     switch (name) {
       case 'pages':
@@ -175,11 +179,12 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
       ...data,
       title: selected.name || selected.title,
       name: selected.name || selected.title,
-      order: menuItems.filter(menuItem => !menuItem.parent_id).length + 1,
+      order: menuItems.filter((menuItem: any) => !menuItem.parent_id).length + 1,
       url: url,
     });
   }
 
+  // @ts-ignore allowlist-migration
   const addToMenu = e => {
     e.preventDefault();
 
@@ -210,11 +215,14 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
                 <Label htmlFor={name}>Select {name}</Label>
                 <Select
                   name={name}
+                  // @ts-ignore allowlist-migration
                   id={name}
                   placeholder={`Select ${name}`}
+                  // @ts-ignore allowlist-migration
                   value={selectedData ? selectedData.id : ''}
                   onValueChange={value => {
                     const selected = options.filter(
+                      // @ts-ignore allowlist-migration
                       option => option.id === Number(value)
                     )[0];
                     setSelectedData(selected);
@@ -228,7 +236,7 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
                     <SelectGroup>
                       <SelectLabel>Select {name}</SelectLabel>
                     </SelectGroup>
-                    {options?.map(option => {
+                    {options?.map((option: any) => {
                       return (
                         <SelectItem key={option.id} value={option.id}>
                           {option.name || option.title}
@@ -288,12 +296,14 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
               <Label htmlFor="parent_id">Select parent menu item</Label>
               <Select
                 name="parent_id"
+                // @ts-ignore allowlist-migration
                 id="parent_id"
                 placeholder="Select parent"
                 value={data.parent_id}
                 onValueChange={value => {
                   const order =
                     menuItems.filter(
+                      // @ts-ignore allowlist-migration
                       menuItem => menuItem.id === Number(value)
                     )[0].children.length + 1;
                   setData({
@@ -310,7 +320,7 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
                   <SelectGroup>
                     <SelectLabel>Select parent</SelectLabel>
 
-                    {menuItems?.map(menuItem => (
+                    {menuItems?.map((menuItem: any) => (
                       <SelectItem key={menuItem.id} value={menuItem.id}>
                         {menuItem.title}
                       </SelectItem>
@@ -324,6 +334,7 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
             </div>
 
             <Button
+              // @ts-ignore allowlist-migration
               isLoading={processing}
               onClick={e => {
                 addToMenu(e);
@@ -340,7 +351,7 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
   );
 };
 
-const MenuStructure = ({ firstLevelMenuItems = undefined, menuItems = undefined }) => {
+const MenuStructure = ({ firstLevelMenuItems = undefined, menuItems = undefined }: any) => {
   return (
     <div className="mt-6 rounded-lg p-6 shadow-md">
       {firstLevelMenuItems && firstLevelMenuItems.length > 0 && (

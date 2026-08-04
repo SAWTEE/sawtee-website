@@ -1,4 +1,3 @@
-// @ts-nocheck
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +13,7 @@ const FullWidthCarousel = ({
   responsiveImages = undefined,
   autoplay = false,
   ...rest
-}) => {
+}: any) => {
   const [api, setApi] = useState();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
@@ -24,10 +23,14 @@ const FullWidthCarousel = ({
       return;
     }
 
+    // @ts-ignore allowlist-migration
     setCount(api.scrollSnapList().length);
+    // @ts-ignore allowlist-migration
     setCurrent(api.selectedScrollSnap() + 1);
 
+    // @ts-ignore allowlist-migration
     api.on('select', () => {
+      // @ts-ignore allowlist-migration
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
@@ -46,7 +49,7 @@ const FullWidthCarousel = ({
         {...rest}
       >
         <CarouselContent>
-          {slides?.map(slide => (
+          {slides?.map((slide: any) => (
             <CarouselItem
               key={slide.id}
               className="group relative flex w-full items-center justify-center p-0"

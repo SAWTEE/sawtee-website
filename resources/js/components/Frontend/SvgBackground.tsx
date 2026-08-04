@@ -1,7 +1,6 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
 
-export default function SvgBackground({ className = '', svgStyles = undefined }) {
+export default function SvgBackground({ className = '', svgStyles = undefined }: any) {
   return (
     <div
       className={cn(

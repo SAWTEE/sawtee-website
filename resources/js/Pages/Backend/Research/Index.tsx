@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -9,15 +8,15 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function Index({ auth = undefined, researchs: data = undefined }) {
+export default function Index({ auth = undefined, researchs: data = undefined }: any) {
   const { delete: destroy, get } = useForm();
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.research.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.research.destroy', id), {
       onSuccess: () => {
@@ -39,7 +38,7 @@ export default function Index({ auth = undefined, researchs: data = undefined })
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -50,7 +49,7 @@ export default function Index({ auth = undefined, researchs: data = undefined })
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -63,33 +62,33 @@ export default function Index({ auth = undefined, researchs: data = undefined })
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
     },
     {
       accessorKey: 'subtitle',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Subtitle" />
       ),
       enableSorting: false,
     },
     {
       accessorKey: 'description',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Description" />
       ),
       enableSorting: false,
     },
     {
       accessorKey: 'year',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Year" />
       ),
     },
@@ -97,7 +96,7 @@ export default function Index({ auth = undefined, researchs: data = undefined })
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

@@ -1,16 +1,15 @@
-// @ts-nocheck
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
 import { formatDate } from '@/lib/helpers';
 
 import { Link } from '@inertiajs/react';
 
-const DefaultArchive = ({ posts = undefined, showFallbackImage = false, ...rest }) => {
+const DefaultArchive = ({ posts = undefined, showFallbackImage = false, ...rest }: any) => {
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (
     <div className="grid grid-cols-1 gap-10 p-8 xl:grid-cols-2" {...rest}>
-      {posts.map(post => (
+      {posts.map((post: any) => (
         <ArchivePost
           key={post.id}
           post={post}
@@ -23,12 +22,13 @@ const DefaultArchive = ({ posts = undefined, showFallbackImage = false, ...rest 
 
 export default DefaultArchive;
 
-const ArchivePost = ({ post = undefined, showFallbackImage = undefined }) => {
+const ArchivePost = ({ post = undefined, showFallbackImage = undefined }: any) => {
   // const file = post.media.filter(
   //   media => media.collection_name === 'post-files'
   // )[0];
   // const hasContent = post.content !== null || post.content !== '';
   const featured_image = post.media.filter(
+    // @ts-ignore allowlist-migration
     media => media.collection_name === 'post-featured-image'
   )[0];
   return (

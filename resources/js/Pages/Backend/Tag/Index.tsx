@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 
@@ -12,7 +11,7 @@ import React, { useState } from 'react';
 import CreateTag from './Partials/CreateTag';
 import EditTag from './Partials/EditTag';
 
-export default function Index({ auth = undefined, tags = undefined }) {
+export default function Index({ auth = undefined, tags = undefined }: any) {
   const [tag, setTag] = React.useState(null);
   const [createTag, setCreateTag] = useState(false);
   const [editTag, setEditTag] = useState(false);
@@ -20,14 +19,15 @@ export default function Index({ auth = undefined, tags = undefined }) {
   const { delete: destroy } = useForm();
   const { toast } = useToast();
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
+    // @ts-ignore allowlist-migration
     const Tag = tags.find(t => t.id === id);
     setTag(Tag);
     setEditTag(!editTag);
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.tags.destroy', id), {
       preserveState: true,
@@ -50,7 +50,7 @@ export default function Index({ auth = undefined, tags = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -61,7 +61,7 @@ export default function Index({ auth = undefined, tags = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -74,27 +74,27 @@ export default function Index({ auth = undefined, tags = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
 
     {
       accessorKey: 'name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
     },
     {
       accessorKey: 'posts_count',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Post Count" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

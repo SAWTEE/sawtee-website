@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -9,7 +8,8 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 export default function UpdateProfileInformation({
   mustVerifyEmail = undefined,
   status = undefined,
-  className = ''}) {
+  className = ''}: any) {
+  // @ts-ignore allowlist-migration
   const user = usePage().props.auth.user;
   const { toast } = useToast();
   const { data, setData, patch, errors, processing } = useForm({
@@ -17,6 +17,7 @@ export default function UpdateProfileInformation({
     email: user.email,
   });
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -57,6 +58,7 @@ export default function UpdateProfileInformation({
             id="name"
             className="mt-1 block w-full"
             value={data.name}
+            // @ts-ignore allowlist-migration
             onChange={e => setData('name', e.target.value)}
             required
             isFocused
@@ -74,6 +76,7 @@ export default function UpdateProfileInformation({
             type="email"
             className="mt-1 block w-full"
             value={data.email}
+            // @ts-ignore allowlist-migration
             onChange={e => setData('email', e.target.value)}
             required
             autoComplete="username"

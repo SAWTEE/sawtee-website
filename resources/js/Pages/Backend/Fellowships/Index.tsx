@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -11,21 +10,22 @@ import React, { useState } from 'react';
 import CreateFellowshipForm from './Partials/CreateFellowshipForm';
 import EditFellowshipForm from './Partials/EditFellowshipForm';
 
-export default function Index({ auth = undefined, fellowships = undefined }) {
+export default function Index({ auth = undefined, fellowships = undefined }: any) {
   const { delete: destroy } = useForm();
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [fellowship, setFellowship] = useState(undefined);
   const { toast } = useToast();
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
+    // @ts-ignore allowlist-migration
     const FELLOWSHIP = fellowships.find(f => f.id === id);
     setFellowship(FELLOWSHIP);
     setEditFormOpen(!editFormOpen);
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.fellowships.destroy', id), {
       preserveScroll: true,
@@ -47,7 +47,7 @@ export default function Index({ auth = undefined, fellowships = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -58,7 +58,7 @@ export default function Index({ auth = undefined, fellowships = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -71,26 +71,26 @@ export default function Index({ auth = undefined, fellowships = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
     },
     {
       accessorKey: 'year',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Year" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

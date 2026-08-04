@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -23,13 +22,14 @@ import {
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function CreateSliderForm({ open = undefined, setOpen = undefined, pages = undefined }) {
+export default function CreateSliderForm({ open = undefined, setOpen = undefined, pages = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     page_id: null,
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.sliders.store'), {
@@ -43,6 +43,7 @@ export default function CreateSliderForm({ open = undefined, setOpen = undefined
       },
       onError: errors => {
         if (errors.title) {
+          // @ts-ignore allowlist-migration
           reset('title');
         }
       },
@@ -75,8 +76,10 @@ export default function CreateSliderForm({ open = undefined, setOpen = undefined
           <div className="w-[280px]">
             <Label htmlFor="pages">Pages</Label>
             <Select
+              // @ts-ignore allowlist-migration
               id="pages"
               name="pages"
+              // @ts-ignore allowlist-migration
               onValueChange={value => setData('page_id', value)}
               placeholder="Select pages"
             >
@@ -87,7 +90,7 @@ export default function CreateSliderForm({ open = undefined, setOpen = undefined
               <SelectContent className="w-[280px]">
                 <SelectGroup>
                   <SelectLabel>Pages</SelectLabel>
-                  {pages.map(page => (
+                  {pages.map((page: any) => (
                     <SelectItem key={page.id} value={page.id}>
                       {page.name}
                     </SelectItem>

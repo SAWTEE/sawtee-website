@@ -1,15 +1,14 @@
-// @ts-nocheck
 import React from 'react';
 import { Link } from '@inertiajs/react';
 
-export const TableOfContents = ({ articles = undefined, volumeSlug = undefined }) => {
+export const TableOfContents = ({ articles = undefined, volumeSlug = undefined }: any) => {
   return (
     <section className="mb-10 border-t border-border/40">
       {/* Vertical Scroll Area */}
 
       {articles && articles.length > 0 ? (
         <ul className="flex flex-col gap-1 pt-10">
-          {articles.map(article => {
+          {articles.map((article: any) => {
             return (
               <li className="group mb-4" key={article.id}>
                 {/* Article Item Container */}

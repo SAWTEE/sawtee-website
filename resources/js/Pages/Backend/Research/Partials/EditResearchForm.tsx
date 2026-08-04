@@ -1,4 +1,3 @@
-// @ts-nocheck
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
@@ -22,7 +21,7 @@ import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 
-export default function EditResearchForm({ research = undefined }) {
+export default function EditResearchForm({ research = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: research.title ?? '',
     subtitle: research.subtitle ?? '',
@@ -41,6 +40,7 @@ export default function EditResearchForm({ research = undefined }) {
     research.file ? research.file.name : null
   );
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -59,6 +59,7 @@ export default function EditResearchForm({ research = undefined }) {
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',
@@ -119,6 +120,7 @@ export default function EditResearchForm({ research = undefined }) {
               rows={6}
               className="mt-1"
               value={data.description}
+              // @ts-ignore allowlist-migration
               resize={'vertical'}
               placeholder="Describe your research here."
               onChange={e => setData('description', e.target.value)}
@@ -229,7 +231,9 @@ export default function EditResearchForm({ research = undefined }) {
               className="mt-1"
               // value={filename}
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('file', e.target.files[0]);
+                // @ts-ignore allowlist-migration
                 setFilename(e.target.files[0].name);
               }}
             />
@@ -279,7 +283,9 @@ export default function EditResearchForm({ research = undefined }) {
               className="mt-1"
               placeholder="Browse Image"
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('image', e.target.files[0]);
+                // @ts-ignore allowlist-migration
                 setImage(URL.createObjectURL(e.target.files[0]));
               }}
             />

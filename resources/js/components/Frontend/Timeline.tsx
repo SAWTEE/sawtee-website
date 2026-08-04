@@ -1,12 +1,12 @@
-// @ts-nocheck
 import { formatDate } from 'date-fns';
 import ListItem from '../shared/ListItem';
 
-export default function VerticalTimeline({ items = undefined }) {
+export default function VerticalTimeline({ items = undefined }: any) {
   return (
     <div className={'-my-6'}>
-      {items.map(item => {
+      {items.map((item: any) => {
         const file = item.media.filter(
+          // @ts-ignore allowlist-migration
           m => m.collection_name === 'post-files'
         )[0];
         return (

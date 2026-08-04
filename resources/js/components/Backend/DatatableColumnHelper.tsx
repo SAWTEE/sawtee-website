@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,7 +14,7 @@ import {
   EyeNoneIcon,
 } from '@radix-ui/react-icons';
 
-export function DataTableColumnHeader({ column = undefined, title = undefined, className = '' }) {
+export function DataTableColumnHeader({ column = undefined, title = undefined, className = '' }: any) {
   if (!column.getCanSort()) {
     return <div className={cn(className)}>{title}</div>;
   }

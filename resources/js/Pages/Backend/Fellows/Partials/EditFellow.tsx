@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function EditFellow({ fellow = undefined, fellowships = undefined }) {
+export default function EditFellow({ fellow = undefined, fellowships = undefined }: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: fellow.name,
     fellowship_id: fellow.fellowship_id,
@@ -25,6 +24,7 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
     description: fellow.description,
     experience: fellow.experience,
     image: fellow.media?.filter(
+      // @ts-ignore allowlist-migration
       m => m.collection_name === 'profile_picture'
     )[0],
   });
@@ -33,10 +33,11 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
     data.image ? data.image.preview_url : null
   );
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -47,6 +48,7 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -68,6 +70,7 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',
@@ -129,6 +132,7 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
           <Label htmlFor="fellowship_id">Select Fellowship Year</Label>
           <Select
             name="fellowship_id"
+            // @ts-ignore allowlist-migration
             id="fellowship_id"
             value={data.fellowship_id ?? ''}
             onValueChange={value => setData('fellowship_id', Number(value))}
@@ -137,7 +141,7 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
               <SelectValue placeholder="Select fellowship year" />
             </SelectTrigger>
             <SelectContent>
-              {fellowships.map(fellowship => (
+              {fellowships.map((fellowship: any) => (
                 <SelectItem key={fellowship.id} value={fellowship.id}>
                   {fellowship.year}
                 </SelectItem>
@@ -167,7 +171,7 @@ export default function EditFellow({ fellow = undefined, fellowships = undefined
             name="experience"
             initialValue={data.experience}
             id="experience"
-            onChange={(evt, editor) =>
+            onChange={(evt: any, editor: any) =>
               setData('experience', editor.getContent())
             }
           />

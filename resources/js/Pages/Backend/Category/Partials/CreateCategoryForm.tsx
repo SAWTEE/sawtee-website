@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import {
@@ -31,7 +30,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
-export default function CreateCategoryForm({ open = undefined, setOpen = undefined, categories = undefined }) {
+export default function CreateCategoryForm({ open = undefined, setOpen = undefined, categories = undefined }: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: '',
     slug: '',
@@ -47,24 +46,27 @@ export default function CreateCategoryForm({ open = undefined, setOpen = undefin
   const [filteredCategories, setFilteredCategories] = useState(categories);
 
   useEffect(() => {
-    const array = categories.filter(cat => cat.type === data.type);
+    const array = categories.filter((cat: any) => cat.type === data.type);
     setFilteredCategories(array);
   }, [data.type, categories]);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -82,6 +84,7 @@ export default function CreateCategoryForm({ open = undefined, setOpen = undefin
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -198,7 +201,7 @@ export default function CreateCategoryForm({ open = undefined, setOpen = undefin
                         <SelectLabel>Category Types</SelectLabel>
                       </SelectGroup>
 
-                      {['post', 'publication'].map(type => (
+                      {['post', 'publication'].map((type: any) => (
                         <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>
@@ -223,8 +226,9 @@ export default function CreateCategoryForm({ open = undefined, setOpen = undefin
                         <SelectGroup>
                           <SelectLabel className="capitalize">{`categories with type ${data.type}`}</SelectLabel>
                         </SelectGroup>
+                        {/* @ts-ignore allowlist-migration */}
                         <SelectItem value={null}>Select Parent</SelectItem>
-                        {filteredCategories?.map(Category => (
+                        {filteredCategories?.map((Category: any) => (
                           <SelectItem
                             key={Category.id}
                             value={Category.id.toString()}

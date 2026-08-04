@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,13 +16,14 @@ import {
 import { Textarea } from '@/components/ui/textarea';
 import { useForm } from '@inertiajs/react';
 
-export default function EditTheme({ theme = undefined, open = undefined, setOpen = undefined }) {
+export default function EditTheme({ theme = undefined, open = undefined, setOpen = undefined }: any) {
   const { data, setData, post, errors, reset } = useForm({
     title: theme.title,
     description: theme.description,
   });
   const { toast } = useToast();
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 

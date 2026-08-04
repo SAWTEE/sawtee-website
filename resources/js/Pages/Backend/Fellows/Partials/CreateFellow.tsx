@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
@@ -17,7 +16,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
-export default function CreateFellow({ fellowships = undefined }) {
+export default function CreateFellow({ fellowships = undefined }: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: '',
     fellowship_id: undefined,
@@ -29,20 +28,23 @@ export default function CreateFellow({ fellowships = undefined }) {
   const { toast } = useToast();
   const [image, setImage] = useState(null);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -59,6 +61,7 @@ export default function CreateFellow({ fellowships = undefined }) {
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -118,15 +121,17 @@ export default function CreateFellow({ fellowships = undefined }) {
           <Label htmlFor="fellowship_id">Select Fellowship Year</Label>
           <Select
             name="fellowship_id"
+            // @ts-ignore allowlist-migration
             id="fellowship_id"
             value={data.fellowship_id ?? ''}
+            // @ts-ignore allowlist-migration
             onValueChange={value => setData('fellowship_id', Number(value))}
           >
             <SelectTrigger>
               <SelectValue placeholder="Select fellowship year" />
             </SelectTrigger>
             <SelectContent>
-              {fellowships.map(fellowship => (
+              {fellowships.map((fellowship: any) => (
                 <SelectItem key={fellowship.id} value={fellowship.id}>
                   {fellowship.year}
                 </SelectItem>
@@ -156,7 +161,7 @@ export default function CreateFellow({ fellowships = undefined }) {
             name="experience"
             initialValue=""
             id="experience"
-            onChange={(evt, editor) =>
+            onChange={(evt: any, editor: any) =>
               setData('experience', editor.getContent())
             }
           />

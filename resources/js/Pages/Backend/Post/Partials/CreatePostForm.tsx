@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -34,7 +33,7 @@ import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
-export default function CreatePostForm({ categories = undefined, themes = undefined, tags = undefined }) {
+export default function CreatePostForm({ categories = undefined, themes = undefined, tags = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: 1,
     theme_id: '',
@@ -61,9 +60,9 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
   const [image, setImage] = React.useState(null);
   const [postTags, setPostTags] = React.useState([]);
 
-  // function setDataTags(selectedValues) {
+  // function setDataTags(selectedValues: any) {
   //   const array = [];
-  //   selectedValues.map(item => {
+  //   selectedValues.map((item: any) => {
   //     array.push({
   //       post_id: item.id,
   //       tag_id: item.value,
@@ -72,25 +71,28 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
   //   setData('tags', array);
   // }
 
-  function setDataTags(selectedValues) {
-    const tagIds = selectedValues.map(item => item.value);
+  function setDataTags(selectedValues: any) {
+    const tagIds = selectedValues.map((item: any) => item.value);
     setData('tags', tagIds);
   }
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.posts.store'), {
@@ -105,6 +107,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
         for (const key in errors) {
           if (Object.hasOwnProperty.call(errors, key)) {
             const value = errors[key];
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -118,7 +121,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   return (
@@ -138,6 +141,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
               <InputError className="mt-2" message={errors.title} />
             )}
           </div>
+          {/* @ts-ignore allowlist-migration */}
           <div mt={4}>
             <Label htmlFor="content">Content</Label>
 
@@ -146,7 +150,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
               name="content"
               initialValue=""
               id="content"
-              onChange={(evt, editor) =>
+              onChange={(evt: any, editor: any) =>
                 setData('content', editor.getContent())
               }
             />
@@ -172,6 +176,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
         </div>
 
         <div className="col-span-12 flex flex-col gap-8 px-3 md:col-span-4 lg:sticky lg:top-16">
+          {/* @ts-ignore allowlist-migration */}
           <fieldset required className="mx-2">
             <Label as="legend" htmlFor="category_id">
               Category
@@ -179,12 +184,13 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
 
             <Select
               name="category_id"
+              // @ts-ignore allowlist-migration
               value={data.category_id}
               onValueChange={value => {
                 setData('category_id', Number(value));
 
                 setSelectedCategory(
-                  categories.filter(cat => cat.id === Number(value))[0]?.name
+                  categories.filter((cat: any) => cat.id === Number(value))[0]?.name
                 );
               }}
             >
@@ -196,7 +202,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                   <SelectLabel>Categories</SelectLabel>
                 </SelectGroup>
 
-                {categories.map(category => (
+                {categories.map((category: any) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>
@@ -220,6 +226,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
               id="published_at"
               name="published_at"
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setData('published_at', e.target.value);
               }}
             />
@@ -228,6 +235,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
               <InputError className={'mt-2'}>{errors.published_at}</InputError>
             )}
           </div>
+          {/* @ts-ignore allowlist-migration */}
           <fieldset required className="mx-2">
             <Label as="legend" htmlFor="status">
               Status
@@ -240,7 +248,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                 setData('status', value);
               }}
             >
-              {['unpublished', 'draft', 'published'].map(item => {
+              {['unpublished', 'draft', 'published'].map((item: any) => {
                 return (
                   <div
                     key={item}
@@ -325,6 +333,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
               name="link"
               className="mt-1 block"
               autoComplete="link"
+              // @ts-ignore allowlist-migration
               onChange={e => setData('link', e.target.value)}
             />
 
@@ -415,6 +424,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                       name="theme_id"
                       value={data.theme_id}
                       onValueChange={value => {
+                        // @ts-ignore allowlist-migration
                         setData('theme_id', Number(value));
                       }}
                     >
@@ -424,7 +434,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Themes</SelectLabel>
-                          {themes?.map(theme => (
+                          {themes?.map((theme: any) => (
                             <SelectItem key={theme.id} value={theme.id}>
                               {theme.title}
                             </SelectItem>
@@ -451,6 +461,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                       placeholder="Select Tags"
                       variant="inverted"
                       maxCount={2}
+                      // @ts-ignore allowlist-migration
                       onValueChange={setPostTags}
                       setValues={setDataTags}
                     />
@@ -487,6 +498,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                       id="file"
                       name="file"
                       onChange={e => {
+                        // @ts-ignore allowlist-migration
                         setData('file', e.target.files[0]);
                       }}
                     />
@@ -503,6 +515,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                       id="files"
                       name="files"
                       onChange={e => {
+                        // @ts-ignore allowlist-migration
                         setData('files', Array.from(e.target.files));
                       }}
                     />

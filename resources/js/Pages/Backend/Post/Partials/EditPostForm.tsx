@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -48,7 +47,7 @@ export default function EditPostForm({
   post: postData = undefined,
   categories = undefined,
   tags = undefined,
-  themes = undefined}) {
+  themes = undefined}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: postData.title,
     slug: postData.slug,
@@ -59,10 +58,11 @@ export default function EditPostForm({
     status: postData.status,
     author: postData.author,
     image: postData.media?.filter(
+      // @ts-ignore allowlist-migration
       m => m.collection_name === 'post-featured-image'
     )[0],
     tags: [],
-    file: postData.media?.filter(m => m.collection_name === 'post-files')[0],
+    file: postData.media?.filter((m: any) => m.collection_name === 'post-files')[0],
     files: [],
     link: postData.link,
     genre: postData.genre,
@@ -83,13 +83,13 @@ export default function EditPostForm({
   const [tagOptions, setTagOptions] = React.useState([]);
   const [selectedCategory, setSelectedCategory] = React.useState(
     categories
-      ? categories.filter(cat => cat.id === data.category_id)[0].name
+      ? categories.filter((cat: any) => cat.id === data.category_id)[0].name
       : null
   );
 
-  // function setDataTags(selectedValues) {
+  // function setDataTags(selectedValues: any) {
   //   const array = [];
-  //   selectedValues.map(item => {
+  //   selectedValues.map((item: any) => {
   //     array.push({
   //       post_id: item.id,
   //       tag_id: item.value,
@@ -98,15 +98,16 @@ export default function EditPostForm({
   //   setData('tags', array);
   // }
 
-  function setDataTags(selectedValues) {
-    const tagIds = selectedValues.map(item => item.value);
+  function setDataTags(selectedValues: any) {
+    const tagIds = selectedValues.map((item: any) => item.value);
     setData('tags', tagIds);
   }
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -117,6 +118,7 @@ export default function EditPostForm({
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -133,6 +135,7 @@ export default function EditPostForm({
           }),
         onError: errors => {
           for (const [key, value] of Object.entries(errors)) {
+            // @ts-ignore allowlist-migration
             reset(key);
             return toast({
               title: 'Uh oh, Something went wrong',
@@ -146,11 +149,12 @@ export default function EditPostForm({
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map(tag => ({ value: tag.id, label: tag.name })));
+      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
   }, [tags]);
 
   React.useEffect(() => {
-    postData.tags.map(tag => {
+    postData.tags.map((tag: any) => {
+      // @ts-ignore allowlist-migration
       setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
     });
   }, [postData]);
@@ -187,7 +191,7 @@ export default function EditPostForm({
               name="content"
               initialValue={data.content ?? ''}
               id="content"
-              onChange={(evt, editor) => {
+              onChange={(evt: any, editor: any) => {
                 setData('content', editor.getContent());
               }}
             />
@@ -213,6 +217,7 @@ export default function EditPostForm({
         </div>
 
         <div className="col-span-12 flex flex-col gap-8 px-3 md:col-span-4">
+          {/* @ts-ignore allowlist-migration */}
           <fieldset required className="mx-2">
             <Label as="legend" htmlFor="category_id">
               Category
@@ -220,13 +225,14 @@ export default function EditPostForm({
 
             <Select
               name="category_id"
+              // @ts-ignore allowlist-migration
               id="category_id"
               value={data.category_id}
               onValueChange={value => {
                 setData('category_id', Number(value));
 
                 setSelectedCategory(
-                  categories.filter(cat => cat.id === Number(value))[0]?.name
+                  categories.filter((cat: any) => cat.id === Number(value))[0]?.name
                 );
               }}
             >
@@ -238,7 +244,7 @@ export default function EditPostForm({
                   <SelectLabel>Categories</SelectLabel>
                 </SelectGroup>
 
-                {categories.map(category => (
+                {categories.map((category: any) => (
                   <SelectItem key={category.id} value={category.id}>
                     {category.name}
                   </SelectItem>
@@ -279,6 +285,7 @@ export default function EditPostForm({
                   id="published_at"
                   mode="single"
                   selected={data.published_at}
+                  // @ts-ignore allowlist-migration
                   onSelect={value => {
                     // 2025-06-17 00:00:00
                     const formatedDate = format(
@@ -287,6 +294,7 @@ export default function EditPostForm({
                     );
                     setData('published_at', formatedDate);
                   }}
+                  // @ts-ignore allowlist-migration
                   disabled={date =>
                     date > new Date() || date < new Date('1900-01-01')
                   }
@@ -299,6 +307,7 @@ export default function EditPostForm({
               <InputError className={'mt-2'}>{errors.published_at}</InputError>
             )}
           </div>
+          {/* @ts-ignore allowlist-migration */}
           <fieldset required className="mx-2">
             <Label as="legend" htmlFor="status">
               Status
@@ -311,7 +320,7 @@ export default function EditPostForm({
                 setData('status', value);
               }}
             >
-              {['unpublished', 'draft', 'published'].map(item => {
+              {['unpublished', 'draft', 'published'].map((item: any) => {
                 return (
                   <div
                     key={item}
@@ -490,6 +499,7 @@ export default function EditPostForm({
 
                     <Select
                       name="theme_id"
+                      // @ts-ignore allowlist-migration
                       id="theme_id"
                       value={data.theme_id}
                       onValueChange={value => {
@@ -502,7 +512,7 @@ export default function EditPostForm({
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Themes</SelectLabel>
-                          {themes?.map(theme => (
+                          {themes?.map((theme: any) => (
                             <SelectItem key={theme.id} value={theme.id}>
                               {theme.title}
                             </SelectItem>
@@ -529,6 +539,7 @@ export default function EditPostForm({
                       placeholder="Select Tags"
                       variant="inverted"
                       maxCount={2}
+                      // @ts-ignore allowlist-migration
                       onValueChange={setPostTags}
                       setValues={setDataTags}
                     />
@@ -570,7 +581,9 @@ export default function EditPostForm({
                         name="file"
                         placeholder={filename}
                         onChange={e => {
+                          // @ts-ignore allowlist-migration
                           setData('file', e.target.files[0]);
+                          // @ts-ignore allowlist-migration
                           setFilename(e.target.files[0].name);
                         }}
                       />
@@ -580,7 +593,7 @@ export default function EditPostForm({
                   <div className="mx-2">
                     <Label htmlFor="files">Content Files Upload</Label>
 
-                    {files?.map(file => {
+                    {files?.map((file: any) => {
                       return (
                         <Input
                           key={file.name}
@@ -598,7 +611,9 @@ export default function EditPostForm({
                       id="files"
                       name="files"
                       onChange={e => {
+                        // @ts-ignore allowlist-migration
                         setData('files', Array.from(e.target.files));
+                        // @ts-ignore allowlist-migration
                         setFiles(Array.from(e.target.files));
                       }}
                     />

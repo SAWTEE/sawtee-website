@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -9,15 +8,15 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, useForm } from '@inertiajs/react';
 import { Link } from '@inertiajs/react';
 
-export default function Index({ auth = undefined, fellows = undefined }) {
+export default function Index({ auth = undefined, fellows = undefined }: any) {
   const { delete: destroy, get } = useForm();
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.fellows.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.fellows.destroy', id), {
       preserveScroll: true,
@@ -39,7 +38,7 @@ export default function Index({ auth = undefined, fellows = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -50,7 +49,7 @@ export default function Index({ auth = undefined, fellows = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -63,32 +62,32 @@ export default function Index({ auth = undefined, fellows = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
     },
     {
       accessorKey: 'designation',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Designation" />
       ),
     },
     {
       accessorKey: 'fellowship.year',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Fellowship Year" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

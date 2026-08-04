@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -37,7 +36,7 @@ export default function EditCategoryForm({
   open = undefined,
   setOpen = undefined,
   category = undefined,
-  categories = undefined}) {
+  categories = undefined}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: category.name,
     type: category.type,
@@ -52,14 +51,15 @@ export default function EditCategoryForm({
   const [filteredCategories, setFilteredCategories] = useState(categories);
 
   useEffect(() => {
-    const array = categories.filter(cat => cat.type === data.type);
+    const array = categories.filter((cat: any) => cat.type === data.type);
     setFilteredCategories(array);
   }, [data.type, categories]);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -70,6 +70,7 @@ export default function EditCategoryForm({
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -90,6 +91,7 @@ export default function EditCategoryForm({
           for (const key in errors) {
             if (Object.hasOwnProperty.call(errors, key)) {
               const value = errors[key];
+              // @ts-ignore allowlist-migration
               reset(key);
               return toast({
                 title: 'Uh oh, Something went wrong',
@@ -213,7 +215,7 @@ export default function EditCategoryForm({
                         <SelectLabel>Category Types</SelectLabel>
                       </SelectGroup>
 
-                      {['post', 'publication', 'research', 'team'].map(type => (
+                      {['post', 'publication', 'research', 'team'].map((type: any) => (
                         <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>
@@ -238,8 +240,9 @@ export default function EditCategoryForm({
                         <SelectGroup>
                           <SelectLabel>Parent</SelectLabel>
                         </SelectGroup>
+                        {/* @ts-ignore allowlist-migration */}
                         <SelectItem value={null}>Select Parent</SelectItem>
-                        {filteredCategories?.map(Category => (
+                        {filteredCategories?.map((Category: any) => (
                           <SelectItem
                             key={Category.id}
                             value={Category.id.toString().toString()}

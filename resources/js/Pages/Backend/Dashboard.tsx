@@ -1,4 +1,3 @@
-// @ts-nocheck
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
 import { useToast } from '@/components/ui/use-toast';
 import { Head } from '@inertiajs/react';
@@ -27,7 +26,7 @@ export default function Dashboard({
   publicationsThisMonth = undefined,
   publicationsLastMonth = undefined,
   researchsThisMonth = undefined,
-  researchsLastMonth = undefined}) {
+  researchsLastMonth = undefined}: any) {
   const { toast } = useToast();
 
   React.useState(() => {
@@ -38,6 +37,7 @@ export default function Dashboard({
         variant: 'destructive',
       });
     }
+  // @ts-ignore allowlist-migration
   }, [auth]);
 
   return (
@@ -71,7 +71,7 @@ export default function Dashboard({
   );
 }
 
-const StatsCard = ({ title = undefined, stat = undefined, percent = undefined, count = undefined, lastMonth = undefined }) => {
+const StatsCard = ({ title = undefined, stat = undefined, percent = undefined, count = undefined, lastMonth = undefined }: any) => {
   return (
     <Card className="@container/card">
       <CardHeader>

@@ -1,18 +1,18 @@
-// @ts-nocheck
 import { cn, htmlToText } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 import CardWithEffect from '../../../components/Frontend/CardWithEffect';
 
-export default function OurWork({ themes = undefined, sections = undefined }) {
+export default function OurWork({ themes = undefined, sections = undefined }: any) {
   const [intro, setIntro] = useState(null);
   const [sectors, setSectors] = useState(null);
 
-  const Themes = themes.filter(theme => theme.title !== 'Covid');
+  const Themes = themes.filter((theme: any) => theme.title !== 'Covid');
 
   useEffect(() => {
+    // @ts-ignore allowlist-migration
     const intro = sections.find(section => section.title === 'Intro');
-    const sectors = sections.filter(section => section.parent_id !== null);
+    const sectors = sections.filter((section: any) => section.parent_id !== null);
     intro && setIntro(intro);
     sectors && setSectors(sectors);
   }, [sections]);
@@ -37,6 +37,7 @@ export default function OurWork({ themes = undefined, sections = undefined }) {
             </svg>
             <blockquote>
               <p className="text-2xl font-medium italic text-gray-900 dark:text-white">
+                {/* @ts-ignore allowlist-migration */}
                 {htmlToText(intro.description)}
               </p>
             </blockquote>
@@ -45,7 +46,7 @@ export default function OurWork({ themes = undefined, sections = undefined }) {
       )}
 
       <div className="mx-auto mb-10 grid max-w-5xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6">
-        {Themes?.map((theme, index) => {
+        {Themes?.map((theme: any, index: any) => {
           const colSpan = index <= 1 || index === Themes.length - 2 ? 3 : 2;
 
           return (
@@ -77,6 +78,7 @@ export default function OurWork({ themes = undefined, sections = undefined }) {
         })}
       </div>
       <div className="page_content mx-auto grid max-w-5xl items-center gap-8 px-8 py-12 md:grid-cols-2 md:px-4">
+        {/* @ts-ignore allowlist-migration */}
         {sectors?.map(({ id, title, description, media, link }) => {
           return (
             <CardWithEffect key={id} className="cards max-w-lg p-0">

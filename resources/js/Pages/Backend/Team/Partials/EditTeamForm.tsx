@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -10,7 +9,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function EditTeamForm({ team = undefined }) {
+export default function EditTeamForm({ team = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: team.name,
     email: team.email,
@@ -25,20 +24,23 @@ export default function EditTeamForm({ team = undefined }) {
     team.media[0] ? team.media[0].original_url : null
   );
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
       setData('image', image);
     } else {
       setImage(null);
+      // @ts-ignore allowlist-migration
       setData('image', null);
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(

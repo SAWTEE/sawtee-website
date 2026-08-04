@@ -1,4 +1,3 @@
-// @ts-nocheck
 import type { HomePageProps } from '@/types';
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import { FeaturedPublications } from '@/components/Frontend/FeaturedPublications';
@@ -164,7 +163,7 @@ const Home = ({
   );
 };
 
-const Section = ({ children = undefined, title = null, className = '', dark = undefined }) => {
+const Section = ({ children = undefined, title = null, className = '', dark = undefined }: any) => {
   return (
     <section
       className={cn(
@@ -179,7 +178,7 @@ const Section = ({ children = undefined, title = null, className = '', dark = un
   );
 };
 
-const FeaturedEventsSection = ({ events = undefined }) => {
+const FeaturedEventsSection = ({ events = undefined }: any) => {
   return (
     <div className="mb-4 grid grid-cols-1 place-items-start gap-5 md:grid-cols-12">
       <div className="group md:col-span-5">
@@ -193,6 +192,7 @@ const FeaturedEventsSection = ({ events = undefined }) => {
             <img
               src={
                 events[0].media.filter(
+                  // @ts-ignore allowlist-migration
                   item => item.collection_name === 'post-featured-image'
                 )[0]?.original_url ??
                 `https://placehold.co/600x400/eee/000/webp?text=No+Image`
@@ -226,10 +226,11 @@ const FeaturedEventsSection = ({ events = undefined }) => {
       </div>
 
       <div className="grid grid-cols-2 gap-5 md:col-span-7">
-        {events.map((event, index) => {
+        {events.map((event: any, index: any) => {
           const featured_image =
             event.media.length > 0
               ? (event.media.filter(
+                  // @ts-ignore allowlist-migration
                   item => item.collection_name === 'post-featured-image'
                 )[0]?.original_url ??
                 `https://placehold.co/300x160/eee/000/webp?text=No+Image`)
@@ -270,7 +271,7 @@ const FeaturedEventsSection = ({ events = undefined }) => {
 
 export default Home;
 
-export const CarouselSection = ({ slides = undefined, slidesResponsiveImages = undefined }) => {
+export const CarouselSection = ({ slides = undefined, slidesResponsiveImages = undefined }: any) => {
   return (
     <FullWidthCarousel
       slides={slides}
@@ -281,13 +282,13 @@ export const CarouselSection = ({ slides = undefined, slidesResponsiveImages = u
 {
   /*infocus code chnages for external link from home pages  */
 }
-export const InfocusSection = ({ infocus = undefined }) => {
+export const InfocusSection = ({ infocus = undefined }: any) => {
   return (
     <Section className="infocus-section">
       <div className="mx-auto max-w-5xl">
         <Title title={'In focus'} />
         <SimpleList heading={null}>
-          {infocus.map(item => {
+          {infocus.map((item: any) => {
             return (
               <li className="mb-6 flex w-full flex-col gap-3" key={item.id}>
                 {/* मुख्य परिवर्तन यहाँ छ: 'item.link' छ कि छैन भनेर चेक गर्ने */}
@@ -325,7 +326,7 @@ export const InfocusSection = ({ infocus = undefined }) => {
   );
 };
 
-export const LatestPublicationSection = ({ publications = undefined }) => {
+export const LatestPublicationSection = ({ publications = undefined }: any) => {
   return (
     <Section className="publications-section">
       <div className="mx-auto max-w-5xl">
@@ -345,7 +346,7 @@ export const LatestPublicationSection = ({ publications = undefined }) => {
   );
 };
 
-export const PolicyOutreachSection = ({ events = undefined }) => {
+export const PolicyOutreachSection = ({ events = undefined }: any) => {
   return (
     <Section>
       <div className="mx-auto max-w-5xl">
@@ -360,13 +361,14 @@ export const PolicyOutreachSection = ({ events = undefined }) => {
   );
 };
 
-export const MediaSesction = ({ sawteeInMedia = undefined }) => {
+export const MediaSesction = ({ sawteeInMedia = undefined }: any) => {
   return (
     <div className="w-full md:col-span-3">
       <SimpleList heading={'SAWTEE in media'}>
-        {sawteeInMedia.map(item => {
+        {sawteeInMedia.map((item: any) => {
           const hasContent = item.content !== null || '';
           const file = item.media?.filter(
+            // @ts-ignore allowlist-migration
             media => media.collection_name === 'post-files'
           )[0];
 
@@ -400,6 +402,7 @@ export const MediaSesction = ({ sawteeInMedia = undefined }) => {
         })}
       </SimpleList>
       <ExploreButton
+        // @ts-ignore allowlist-migration
         size={['xs', 'sm']}
         text="More in SAWTEE in media "
         link={'/category/sawtee-in-media'}
@@ -408,15 +411,16 @@ export const MediaSesction = ({ sawteeInMedia = undefined }) => {
   );
 };
 
-export const NewsletterSection = ({ newsletters = undefined }) => {
+export const NewsletterSection = ({ newsletters = undefined }: any) => {
   return (
     <div className="md:col-span-3">
       <SimpleList
         heading={'SAWTEE e-newsletters'}
         className={'relative flex w-full flex-col'}
       >
-        {newsletters.map(item => {
+        {newsletters.map((item: any) => {
           const file = item.media.filter(
+            // @ts-ignore allowlist-migration
             m => m.collection_name === 'post-files'
           )[0];
           return (
@@ -437,6 +441,7 @@ export const NewsletterSection = ({ newsletters = undefined }) => {
       </SimpleList>
 
       <ExploreButton
+        // @ts-ignore allowlist-migration
         size="sm"
         text="More newsletters"
         link={'/category/newsletters'}
@@ -445,7 +450,7 @@ export const NewsletterSection = ({ newsletters = undefined }) => {
   );
 };
 
-export const WebinarSection = ({ webinars = undefined }) => {
+export const WebinarSection = ({ webinars = undefined }: any) => {
   return (
     <Section className="section videos-section">
       <div className="mx-auto max-w-5xl">

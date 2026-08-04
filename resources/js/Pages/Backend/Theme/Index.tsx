@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -11,20 +10,21 @@ import { useState } from 'react';
 import CreateTheme from './Partials/CreateTheme';
 import EditTheme from './Partials/EditTheme';
 
-export default function Index({ auth = undefined, themes: data = undefined }) {
+export default function Index({ auth = undefined, themes: data = undefined }: any) {
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [theme, setTheme] = useState(null);
   const { delete: destroy, processing } = useForm();
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
+    // @ts-ignore allowlist-migration
     const THEME = data.find(theme => theme.id === id);
     setTheme(THEME);
     setEditFormOpen(true);
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.themes.destroy', id), {
       onSuccess: () => {
@@ -49,7 +49,7 @@ export default function Index({ auth = undefined, themes: data = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -60,7 +60,7 @@ export default function Index({ auth = undefined, themes: data = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -73,33 +73,33 @@ export default function Index({ auth = undefined, themes: data = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'title',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Title" />
       ),
     },
     {
       accessorKey: 'description',
       header: 'Description',
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <span className="line-clamp-[2]">{row.original.description}</span>
       ),
     },
     {
       accessorKey: 'posts_count',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Post Count" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

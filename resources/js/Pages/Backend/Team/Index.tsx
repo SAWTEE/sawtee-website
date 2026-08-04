@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
@@ -9,16 +8,16 @@ import { useToast } from '@/components/ui/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function Index({ auth = undefined, teams = undefined }) {
+export default function Index({ auth = undefined, teams = undefined }: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
 
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     get(route('admin.teams.edit', id));
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.teams.destroy', id), {
       preserveScroll: true,
@@ -34,34 +33,34 @@ export default function Index({ auth = undefined, teams = undefined }) {
   const defaultColumns = [
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Name" />;
       },
     },
     {
       accessorKey: 'email',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Email" />;
       },
     },
     {
       accessorKey: 'designation',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Designation" />;
       },
     },
     {
       accessorKey: 'media',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Image" />;
       },
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <img
             src={row.original.media[0]?.preview_url}
@@ -74,7 +73,7 @@ export default function Index({ auth = undefined, teams = undefined }) {
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <DataTableActions
           id={row.original.id}
           handleEdit={handleEdit}

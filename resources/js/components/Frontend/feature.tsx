@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { cn } from '@/lib/utils';
 import { ExternalLink } from 'lucide-react';
 import Title from '@/components/Frontend/title';
 
-export default function FeaturedSection({ features = undefined }) {
-  return features.map((feature, index) => (
+export default function FeaturedSection({ features = undefined }: any) {
+  return features.map((feature: any, index: any) => (
     <div
       key={feature.id}
       className="mx-auto mt-6 flex w-[90%] flex-col items-center justify-center gap-4 lg:w-[85%] lg:flex-row xl:w-[80%]"

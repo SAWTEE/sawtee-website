@@ -1,4 +1,3 @@
-// @ts-nocheck
 'use client';
 
 import { motion } from 'framer-motion';
@@ -11,9 +10,10 @@ export function FadeText({
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { type: 'spring' } },
   },
-  text = undefined}) {
+  text = undefined}: any) {
   const directionOffset = useMemo(() => {
     const map = { up: 10, down: -10, left: -10, right: 10 };
+    // @ts-ignore allowlist-migration
     return map[direction];
   }, [direction]);
 

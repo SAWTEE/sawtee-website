@@ -1,9 +1,9 @@
-// @ts-nocheck
 'use client';
+// @ts-ignore allowlist-migration
 import anime from 'animejs';
 import { useEffect, useRef } from 'react';
 
-const Globeanime = ({ darkMode = false }) => {
+const Globeanime = ({ darkMode = false }: any) => {
   const ref = useRef(null);
 
   const stopColor = darkMode ? '#FFFFFF' : '#000000';
@@ -124,7 +124,7 @@ const Globeanime = ({ darkMode = false }) => {
     });
 
     // biome-ignore lint/complexity/noForEach: <explanation>
-    svgs.forEach(s => {
+    svgs.forEach((s: any) => {
       tl.add(
         {
           targets: `#functions-hero #${s.id} linearGradient`,
@@ -145,7 +145,7 @@ const Globeanime = ({ darkMode = false }) => {
       className="absolute inset-0 -left-28 top-4 aspect-[978/678] w-[150%] sm:-left-32 sm:-top-2 md:-left-44 md:w-[150%] lg:-left-10 lg:-top-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
       {/* Animated svgs in globe */}
-      {svgs.map(s => (
+      {svgs.map((s: any) => (
         <svg
           key={s.id}
           id={s.id}
@@ -183,7 +183,7 @@ const Globeanime = ({ darkMode = false }) => {
       ))}
 
       {/* Dots on globe */}
-      {dots.map(dot => (
+      {dots.map((dot: any) => (
         <div
           key={dot.id}
           id={dot.id}
@@ -204,6 +204,7 @@ const Globeanime = ({ darkMode = false }) => {
         width={400}
         height={400}
         className={`h-full w-full ${darkMode ? 'hidden' : 'block'}`} // Hide/show based on dark mode
+        // @ts-ignore allowlist-migration
         quality={100}
         priority="true"
       />
@@ -213,6 +214,7 @@ const Globeanime = ({ darkMode = false }) => {
         width={400}
         height={400}
         className={`h-full w-full ${darkMode ? 'block' : 'hidden'}`} // Hide/show based on dark mode
+        // @ts-ignore allowlist-migration
         quality={100}
         priority="true"
       />

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
@@ -11,21 +10,22 @@ import React, { useState } from 'react';
 import CreateCategoryForm from './Partials/CreateCategoryForm';
 import EditCategoryForm from './Partials/EditCategoryForm';
 
-export default function Index({ auth = undefined, categories = undefined }) {
+export default function Index({ auth = undefined, categories = undefined }: any) {
   const { delete: destroy } = useForm();
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [category, setCatgory] = useState(undefined);
   const { toast } = useToast();
-  const handleEdit = (e, id) => {
+  const handleEdit = (e: any, id: any) => {
     e.preventDefault();
     // get(route('admin.categories.edit', id));
+    // @ts-ignore allowlist-migration
     const cat = categories.find(c => c.id === id);
     setCatgory(cat);
     setEditFormOpen(!editFormOpen);
   };
 
-  const handleDelete = (e, id) => {
+  const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.categories.destroy', id), {
       preserveScroll: true,
@@ -48,7 +48,7 @@ export default function Index({ auth = undefined, categories = undefined }) {
   const defaultColumns = [
     {
       id: 'select',
-      header: ({ table }) => (
+      header: ({ table }: any) => (
         <Checkbox
           checked={
             table.getIsAllPageRowsSelected() ||
@@ -59,7 +59,7 @@ export default function Index({ auth = undefined, categories = undefined }) {
           className="mx-4"
         />
       ),
-      cell: ({ row }) => (
+      cell: ({ row }: any) => (
         <Checkbox
           checked={row.getIsSelected()}
           onCheckedChange={value => row.toggleSelected(!!value)}
@@ -72,39 +72,39 @@ export default function Index({ auth = undefined, categories = undefined }) {
     },
     {
       accessorKey: 'id',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="ID" />
       ),
     },
     {
       accessorKey: 'name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
     },
     {
       accessorKey: 'type',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Type" />
       ),
     },
     // {
     //   accessorKey: 'parent',
     //   header: 'Parent Category',
-    //   cell: ({ row }) => {
+    //   cell: ({ row }: any) => {
     //     return row.original.parent ? row.original.parent.name : 'N/A';
     //   },
     // },
     {
       accessorKey: 'parent.name',
-      header: ({ column }) => (
+      header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Parent Category" />
       ),
     },
     {
       accessorKey: 'id',
       header: 'Actions',
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <DataTableActions
             id={row.original.id}

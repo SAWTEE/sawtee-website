@@ -1,5 +1,4 @@
-// @ts-nocheck
-import * as React from 'react';
+import type { ComponentProps } from 'react';
 import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Link } from '@inertiajs/react';
@@ -14,8 +13,20 @@ import {
   SidebarFooter,
   SidebarRail,
 } from '@/components/ui/sidebar';
+import type { User } from '@/types';
 
-export function AppSidebar({ user = undefined, menu = undefined, ...props }) {
+export type DashboardMenuItem = {
+  name: string;
+  icon?: React.ComponentType<{ className?: string }>;
+  route: string;
+};
+
+type AppSidebarProps = ComponentProps<typeof Sidebar> & {
+  user?: User | null;
+  menu?: DashboardMenuItem[];
+};
+
+export function AppSidebar({ user, menu, ...props }: AppSidebarProps) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
@@ -26,7 +37,6 @@ export function AppSidebar({ user = undefined, menu = undefined, ...props }) {
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
               <Link href="/admin/dashboard" className="flex items-center gap-2">
-                {/* <IconInnerShadowTop className="!size-5" /> */}
                 <ApplicationLogo className="size-5" />
                 <span className="text-base font-semibold">SAWTEE CMS</span>
               </Link>
@@ -38,7 +48,7 @@ export function AppSidebar({ user = undefined, menu = undefined, ...props }) {
         <NavMain menu={menu} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={user ?? undefined} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

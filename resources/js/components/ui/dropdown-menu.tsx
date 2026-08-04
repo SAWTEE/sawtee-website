@@ -1,4 +1,3 @@
-// @ts-nocheck
 import * as React from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import {
@@ -159,7 +158,7 @@ const DropdownMenuSeparator = React.forwardRef<React.ElementRef<typeof DropdownM
 );
 DropdownMenuSeparator.displayName = DropdownMenuPrimitive.Separator.displayName;
 
-const DropdownMenuShortcut = ({ className = '', ...props }) => {
+const DropdownMenuShortcut = ({ className = '', ...props }: any) => {
   return (
     <span
       className={cn('ml-auto text-xs tracking-widest opacity-60', className)}

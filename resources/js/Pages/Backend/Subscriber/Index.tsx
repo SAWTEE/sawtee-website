@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
@@ -7,26 +6,26 @@ import { Head } from '@inertiajs/react';
 
 import React from 'react';
 
-export default function Index({ auth = undefined, subscribers = undefined }) {
+export default function Index({ auth = undefined, subscribers = undefined }: any) {
   const defaultColumns = [
     {
       accessorKey: 'id',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="ID" />;
       },
     },
     {
       accessorKey: 'email',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Email" />;
       },
     },
     {
       accessorKey: 'verified_at',
-      header: ({ column }) => {
+      header: ({ column }: any) => {
         return <DataTableColumnHeader column={column} title="Verified" />;
       },
-      cell: ({ row }) => {
+      cell: ({ row }: any) => {
         return (
           <TWTags colorScheme={row.original.verified_at ? 'green' : 'red'}>
             {row.original.verified_at ? 'Verified' : 'Not Verified'}

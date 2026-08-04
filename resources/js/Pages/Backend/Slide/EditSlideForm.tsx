@@ -1,4 +1,3 @@
-// @ts-nocheck
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -17,7 +16,7 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function EditSlideForm({ open = undefined, setOpen = undefined, slide = undefined, setEditSlide = undefined }) {
+export default function EditSlideForm({ open = undefined, setOpen = undefined, slide = undefined, setEditSlide = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: slide.title,
     subtitle: slide.subtitle,
@@ -27,10 +26,11 @@ export default function EditSlideForm({ open = undefined, setOpen = undefined, s
   const { toast } = useToast();
   const [image, setImage] = React.useState(data.image);
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -41,6 +41,7 @@ export default function EditSlideForm({ open = undefined, setOpen = undefined, s
     }
   }
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
 
@@ -123,6 +124,7 @@ export default function EditSlideForm({ open = undefined, setOpen = undefined, s
                 Save
               </PrimaryButton>
               <Button
+                // @ts-ignore allowlist-migration
                 variant="solid"
                 colorScheme="red"
                 onClick={() => setOpen(!open)}

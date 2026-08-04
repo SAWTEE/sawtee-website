@@ -1,4 +1,3 @@
-// @ts-nocheck
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -30,7 +29,7 @@ import { slugify } from '@/lib/helpers';
 import { pageTemplates } from '@/lib/pageTemplates';
 import { useForm } from '@inertiajs/react';
 import React from 'react';
-export default function EditPageForm({ page = undefined }) {
+export default function EditPageForm({ page = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: page.name,
     slug: page.slug,
@@ -51,6 +50,7 @@ export default function EditPageForm({ page = undefined }) {
   const [filename, setFilename] = React.useState(null);
 
   React.useEffect(() => {
+    // @ts-ignore allowlist-migration
     if (data.page_template === ('About' || 'Contact' || 'MediaFellows')) {
       toast({
         title: 'Please add page data file',
@@ -61,6 +61,7 @@ export default function EditPageForm({ page = undefined }) {
     }
   }, [data.page_template]);
 
+  // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(
@@ -84,10 +85,11 @@ export default function EditPageForm({ page = undefined }) {
     );
   };
 
-  function setDataImage(image) {
+  function setDataImage(image: any) {
     if (image) {
       const reader = new FileReader();
       reader.onload = e => {
+        // @ts-ignore allowlist-migration
         setImage(e.target.result);
       };
       reader.readAsDataURL(image);
@@ -126,6 +128,7 @@ export default function EditPageForm({ page = undefined }) {
             id="slug"
             name="slug"
             value={slug}
+            // @ts-ignore allowlist-migration
             display="flex"
             onChange={e => setSlug(e.target.value)}
             mt={1}
@@ -153,7 +156,9 @@ export default function EditPageForm({ page = undefined }) {
               name="file"
               // placeholder={filename}
               onChange={e => {
+                // @ts-ignore allowlist-migration
                 setFilename(e.target.files[0].name);
+                // @ts-ignore allowlist-migration
                 setData('file', e.target.files[0]);
               }}
             />
@@ -195,6 +200,7 @@ export default function EditPageForm({ page = undefined }) {
           <div className="col-span-1">
             <Label htmlFor="page_template">Page Template</Label>
             <Select
+              // @ts-ignore allowlist-migration
               placeholder="Select menu to edit"
               value={data.page_template}
               name="page_template"
@@ -207,7 +213,7 @@ export default function EditPageForm({ page = undefined }) {
               <SelectContent>
                 <SelectGroup>
                   <SelectLabel>Page Templates</SelectLabel>
-                  {pageTemplates?.map(template => (
+                  {pageTemplates?.map((template: any) => (
                     <SelectItem key={template} value={template}>
                       {template}
                     </SelectItem>
@@ -234,7 +240,7 @@ export default function EditPageForm({ page = undefined }) {
             name="content"
             id="content"
             initialValue={data.content}
-            onChange={(evt, editor) => {
+            onChange={(evt: any, editor: any) => {
               setData('content', editor.getContent());
             }}
           />
@@ -257,7 +263,7 @@ export default function EditPageForm({ page = undefined }) {
   );
 }
 
-const ShowPageData = ({ open = undefined, onOpenChange = undefined, data = undefined }) => {
+const ShowPageData = ({ open = undefined, onOpenChange = undefined, data = undefined }: any) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>

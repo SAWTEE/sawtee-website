@@ -1,4 +1,3 @@
-// @ts-nocheck
 import WebsiteHead from '@/components/Frontend/Head';
 import MainLayout from '@/components/Layouts/MainLayout';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
@@ -12,9 +11,11 @@ import SimpleList from '@/components/Frontend/SimpleList';
 import { useMemo } from 'react';
 
 // Custom reading time calculator
+// @ts-ignore allowlist-migration
 const calculateReadingTime = (content, options = {}) => {
   if (!content) return null;
 
+  // @ts-ignore allowlist-migration
   const { wordsPerMinute = 225, emoji = false } = options;
 
   // Remove HTML tags and get clean text
@@ -41,7 +42,7 @@ export default function Article({
   volume = undefined,
   featured_image = undefined,
   srcSet = undefined,
-  relatedArticles = undefined}) {
+  relatedArticles = undefined}: any) {
   // Use useMemo to calculate reading time efficiently
   const readingTime = useMemo(() => {
     if (!article.content) return null;
@@ -117,7 +118,7 @@ export default function Article({
                   className={'border-none px-8'}
                   heading={'Related Articles'}
                 >
-                  {relatedArticles?.map(post => {
+                  {relatedArticles?.map((post: any) => {
                     return (
                       <li className="group mb-4" key={post.id}>
                         <Link

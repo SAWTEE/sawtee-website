@@ -24,7 +24,7 @@ const SidebarWidget = ({
       {...rest}
     >
       <SimpleList className={'border-none px-8'} heading={title}>
-        {array?.map(post => {
+        {array?.map((post: any) => {
           return (
             <li className="group mb-4" key={post.id}>
               <Link
