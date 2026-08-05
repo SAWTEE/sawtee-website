@@ -111,7 +111,7 @@ Staging enables **`INERTIA_SSR_ENABLED=true`** and uploads the Vite SSR bundle (
 
 1. Create subdomain e.g. `staging.sawtee.org` → document root `…/staging.sawtee.org/public` (or symlink `public` as the docroot).
 2. Create a **separate MySQL database** for staging (never point staging at production DB).
-3. Add GitHub Actions secrets prefixed with `STAGING_` (see workflow): SSH host/user/key/port/target dir, APP_URL/KEY, DB_*, mail, and optional `STAGING_INERTIA_SSR_URL` (default `http://127.0.0.1:13714`). Use [`.env.staging.example`](./.env.staging.example) as the checklist of values (never commit a real `.env.staging`).
+3. Add GitHub Actions `STAGING_*` secrets for app/DB (except password)/drivers/`SSH_TARGET_DIR` (and optional `STAGING_INERTIA_SSR_URL`, default `http://127.0.0.1:13714`). Reuse production secrets for SSH (`SSH_HOST`/`USERNAME`/`KEY`/`PORT`), mail (`MAIL_*`), and `DB_PASSWORD`. Use [`.env.staging.example`](./.env.staging.example) as the checklist of values (never commit a real `.env.staging`).
 4. Create a GitHub **Environment** named `staging` (optional protection rules).
 5. **Node for SSR (required):** classic shared PHP hosting cannot keep Inertia SSR alive. You need one of:
    - cPanel **Setup Node.js App** (Application root = Laravel root, startup via `php artisan inertia:start-ssr` or a wrapper), or

@@ -120,7 +120,7 @@ jobs:
           DB_PORT=${{ secrets.STAGING_DB_PORT }}
           DB_DATABASE=${{ secrets.STAGING_DB_DATABASE }}
           DB_USERNAME=${{ secrets.STAGING_DB_USERNAME }}
-          DB_PASSWORD='${{ secrets.STAGING_DB_PASSWORD }}'
+          DB_PASSWORD='${{ secrets.DB_PASSWORD }}'
 
           BROADCAST_DRIVER=${{ secrets.STAGING_BROADCAST_DRIVER }}
           CACHE_DRIVER=${{ secrets.STAGING_CACHE_DRIVER }}
@@ -129,14 +129,14 @@ jobs:
           SESSION_DRIVER=${{ secrets.STAGING_SESSION_DRIVER }}
           SESSION_LIFETIME=${{ secrets.STAGING_SESSION_LIFETIME }}
 
-          MAIL_MAILER=${{ secrets.STAGING_MAIL_MAILER }}
-          MAIL_HOST=${{ secrets.STAGING_MAIL_HOST }}
-          MAIL_PORT=${{ secrets.STAGING_MAIL_PORT }}
-          MAIL_USERNAME=${{ secrets.STAGING_MAIL_USERNAME }}
-          MAIL_PASSWORD='${{ secrets.STAGING_MAIL_PASSWORD }}'
-          MAIL_ENCRYPTION=${{ secrets.STAGING_MAIL_ENCRYPTION }}
-          MAIL_FROM_ADDRESS='${{ secrets.STAGING_MAIL_FROM_ADDRESS }}'
-          MAIL_FROM_NAME='${{ secrets.STAGING_MAIL_FROM_NAME }}'
+          MAIL_MAILER=${{ secrets.MAIL_MAILER }}
+          MAIL_HOST=${{ secrets.MAIL_HOST }}
+          MAIL_PORT=${{ secrets.MAIL_PORT }}
+          MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD='${{ secrets.MAIL_PASSWORD }}'
+          MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}
+          MAIL_FROM_ADDRESS='${{ secrets.MAIL_FROM_ADDRESS }}'
+          MAIL_FROM_NAME='${{ secrets.MAIL_FROM_NAME }}'
 
           VITE_APP_NAME='${{ secrets.STAGING_APP_NAME }}'
 
@@ -183,10 +183,10 @@ jobs:
       - name: Upload staging files via SSH
         uses: appleboy/scp-action@v1
         with:
-          host: ${{ secrets.STAGING_SSH_HOST }}
-          username: ${{ secrets.STAGING_SSH_USERNAME }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
-          port: ${{ secrets.STAGING_SSH_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           source: './*'
           target: ${{ secrets.STAGING_SSH_TARGET_DIR }}
           overwrite: true
@@ -195,10 +195,10 @@ jobs:
       - name: Post-deploy migrate, optimize, start SSR
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.STAGING_SSH_HOST }}
-          username: ${{ secrets.STAGING_SSH_USERNAME }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
-          port: ${{ secrets.STAGING_SSH_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             set -e
             cd ${{ secrets.STAGING_SSH_TARGET_DIR }}
@@ -236,10 +236,10 @@ jobs:
       - name: Health check
         uses: appleboy/ssh-action@v1.0.0
         with:
-          host: ${{ secrets.STAGING_SSH_HOST }}
-          username: ${{ secrets.STAGING_SSH_USERNAME }}
-          key: ${{ secrets.STAGING_SSH_KEY }}
-          port: ${{ secrets.STAGING_SSH_PORT }}
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.STAGING_SSH_TARGET_DIR }}
             test -f .env && echo "✅ .env exists" || (echo "❌ .env missing" && exit 1)

@@ -10,7 +10,7 @@
 
 1. Subdomain e.g. `staging.sawtee.org` → document root `public/`  
 2. Separate MySQL database  
-3. GitHub Environment `staging` + `STAGING_*` secrets (see main README)  
+3. GitHub Environment `staging` + `STAGING_*` secrets for app/DB/target dir; reuse prod `SSH_*`, `MAIL_*`, and `DB_PASSWORD` (see main README)  
 4. Node available for `php artisan inertia:start-ssr` (cPanel Node App or VPS)  
 5. Push to `staging` → `.github/workflows/deploy-staging.yml`
 
