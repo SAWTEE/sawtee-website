@@ -41,6 +41,9 @@ jobs:
           restore-keys: |
             composer-${{ runner.os }}-php${{ matrix.php }}-
 
+      - name: Ensure bootstrap/cache exists
+        run: mkdir -p bootstrap/cache && chmod -R ug+rwx bootstrap/cache
+
       - name: Install Composer dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
 
@@ -94,6 +97,9 @@ jobs:
         with:
           node-version: '22'
           cache: npm
+
+      - name: Ensure bootstrap/cache exists
+        run: mkdir -p bootstrap/cache && chmod -R ug+rwx bootstrap/cache
 
       - name: Install Composer dependencies
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
