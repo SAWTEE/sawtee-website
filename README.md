@@ -31,7 +31,7 @@ These are the steps required to setup the local development.
 
 This is a Laravel + Inertia + React application. Requirements:
 
-- PHP **8.3+** (Laravel 13)
+- PHP **8.3+** (Laravel 13; staging/CI and current `composer.lock` expect **PHP 8.4+** because Symfony 8.1 requires `>=8.4.1`)
 - HTTP server with PHP support (eg: Apache, Nginx, Caddy, Herd/Valet)
 - Composer
 - MySQL
@@ -86,7 +86,7 @@ npm install
 
 Laravel 13 can run on shared hosting when the host provides:
 
-1. **PHP 8.3+** with common extensions (OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, Fileinfo, etc.)
+1. **PHP 8.4+** on staging/production shared hosting (matches CI; Symfony 8.1 in the lockfile needs `>=8.4.1`) with common extensions (OpenSSL, PDO, Mbstring, Tokenizer, XML, Ctype, Fileinfo, etc.)
 2. Document root pointed at the app’s `public/` directory
 3. MySQL (or compatible) database access
 

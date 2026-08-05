@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php: ['8.3', '8.4']
+        php: ['8.4']
 
     steps:
       - name: Checkout code
@@ -58,14 +58,12 @@ jobs:
           INERTIA_SSR_ENABLED: false
 
       - name: Set up Node.js
-        if: matrix.php == '8.4'
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: npm
 
       - name: Install npm deps, typecheck, and build client + SSR bundles
-        if: matrix.php == '8.4'
         run: |
           npm ci
           npm run typecheck

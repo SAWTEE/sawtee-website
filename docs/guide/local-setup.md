@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- PHP **8.3+**
+- PHP **8.3+** (use **8.4+** to match staging/CI and the locked Symfony 8.1 packages)
 - Composer
 - Node.js **20+**
 - MySQL (or SQLite for a quick smoke test)
