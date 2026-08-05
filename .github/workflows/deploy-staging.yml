@@ -211,6 +211,9 @@ jobs:
 
             echo "Installing Composer dependencies..."
             # Non-interactive SSH on cPanel often lacks composer on PATH
+            export COMPOSER_HOME="${COMPOSER_HOME:-$HOME/.composer}"
+            mkdir -p "$COMPOSER_HOME"
+
             COMPOSER_BIN="$(command -v composer 2>/dev/null || true)"
             if [ -z "$COMPOSER_BIN" ]; then
               for c in "$HOME/bin/composer" /usr/local/bin/composer /opt/cpanel/composer/bin/composer; do
@@ -220,14 +223,28 @@ jobs:
                 fi
               done
             fi
-            if [ -z "$COMPOSER_BIN" ] && [ -f composer.phar ]; then
+            if [ -z "$COMPOSER_BIN" ] && [ -f composer.phar ] && [ -s composer.phar ]; then
+              echo "Reusing existing composer.phar in deploy directory"
               COMPOSER_BIN="php composer.phar"
             fi
             if [ -z "$COMPOSER_BIN" ]; then
-              echo "Composer not on PATH; downloading composer.phar..."
-              php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-              php composer-setup.php --quiet --install-dir=. --filename=composer.phar
-              rm -f composer-setup.php
+              echo "Composer not on PATH; downloading composer.phar directly..."
+              COMPOSER_URL="https://getcomposer.org/download/latest-stable/composer.phar"
+              rm -f composer.phar
+              if command -v curl >/dev/null 2>&1; then
+                curl -fsSL "$COMPOSER_URL" -o composer.phar || true
+              fi
+              if [ ! -s composer.phar ] && command -v wget >/dev/null 2>&1; then
+                wget -q -O composer.phar "$COMPOSER_URL" || true
+              fi
+              if [ ! -s composer.phar ]; then
+                php -r "copy('https://getcomposer.org/download/latest-stable/composer.phar', 'composer.phar');" || true
+              fi
+              if [ ! -f composer.phar ] || [ ! -s composer.phar ]; then
+                echo "Failed to download composer.phar from $COMPOSER_URL"
+                echo "Ensure curl, wget, or PHP allow_url_fopen can reach getcomposer.org"
+                exit 1
+              fi
               COMPOSER_BIN="php composer.phar"
             fi
             echo "Using Composer: $COMPOSER_BIN"
