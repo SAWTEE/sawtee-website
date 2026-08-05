@@ -153,10 +153,12 @@ export default function EditPostForm({
   }, [tags]);
 
   React.useEffect(() => {
-    postData.tags.map((tag: any) => {
-      // @ts-ignore allowlist-migration
-      setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
-    });
+    setPostTags(
+      (postData.tags ?? []).map((tag: any) => ({
+        value: tag.id,
+        label: tag.name,
+      }))
+    );
   }, [postData]);
 
   React.useEffect(() => {

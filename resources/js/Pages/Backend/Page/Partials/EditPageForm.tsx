@@ -50,8 +50,7 @@ export default function EditPageForm({ page = undefined }: any) {
   const [filename, setFilename] = React.useState(null);
 
   React.useEffect(() => {
-    // @ts-ignore allowlist-migration
-    if (data.page_template === ('About' || 'Contact' || 'MediaFellows')) {
+    if (['About', 'Contact', 'MediaFellows'].includes(data.page_template)) {
       toast({
         title: 'Please add page data file',
         variant: 'destructive',

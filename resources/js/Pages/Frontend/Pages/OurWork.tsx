@@ -1,21 +1,15 @@
 import { cn, htmlToText } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
 import CardWithEffect from '../../../components/Frontend/CardWithEffect';
 
-export default function OurWork({ themes = undefined, sections = undefined }: any) {
-  const [intro, setIntro] = useState(null);
-  const [sectors, setSectors] = useState(null);
-
-  const Themes = themes.filter((theme: any) => theme.title !== 'Covid');
-
-  useEffect(() => {
-    // @ts-ignore allowlist-migration
-    const intro = sections.find(section => section.title === 'Intro');
-    const sectors = sections.filter((section: any) => section.parent_id !== null);
-    intro && setIntro(intro);
-    sectors && setSectors(sectors);
-  }, [sections]);
+export default function OurWork({
+  themes = undefined,
+  sections = undefined,
+}: any) {
+  const Themes = (themes ?? []).filter((theme: any) => theme.title !== 'Covid');
+  const intro = sections?.find((section: any) => section.title === 'Intro');
+  const sectors =
+    sections?.filter((section: any) => section.parent_id !== null) ?? [];
 
   return (
     <div className="intro relative mx-auto max-w-7xl px-5 py-20 md:px-10">
@@ -37,7 +31,6 @@ export default function OurWork({ themes = undefined, sections = undefined }: an
             </svg>
             <blockquote>
               <p className="text-2xl font-medium italic text-gray-900 dark:text-white">
-                {/* @ts-ignore allowlist-migration */}
                 {htmlToText(intro.description)}
               </p>
             </blockquote>
@@ -47,19 +40,19 @@ export default function OurWork({ themes = undefined, sections = undefined }: an
 
       <div className="mx-auto mb-10 grid max-w-5xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6">
         {Themes?.map((theme: any, index: any) => {
-          const colSpan = index <= 1 || index === Themes.length - 2 ? 3 : 2;
+          const wide = index <= 1 || index === Themes.length - 2;
 
           return (
             <div
               key={theme.title}
               className={cn(
                 'w-full bg-bgDarker last:col-span-3',
-                `col-span-${colSpan}`
+                wide ? 'lg:col-span-3' : 'lg:col-span-2'
               )}
               id={`theme${theme.id}`}
             >
               <div className="relative h-full">
-                <span className="absolute left-0 top-0 ml-1 mt-1 h-full w-full rounded-lg bg-theme-500" />
+                <span className="absolute top-0 left-0 mt-1 ml-1 h-full w-full rounded-lg bg-theme-500" />
 
                 <div className="relative h-full space-y-2 rounded-lg border-2 border-theme-500 bg-bgDarker p-5">
                   <div className="-mt-1 flex items-center">
@@ -78,15 +71,14 @@ export default function OurWork({ themes = undefined, sections = undefined }: an
         })}
       </div>
       <div className="page_content mx-auto grid max-w-5xl items-center gap-8 px-8 py-12 md:grid-cols-2 md:px-4">
-        {/* @ts-ignore allowlist-migration */}
-        {sectors?.map(({ id, title, description, media, link }) => {
+        {sectors.map(({ id, title, description, media, link }: any) => {
           return (
             <CardWithEffect key={id} className="cards max-w-lg p-0">
               <img
                 className="aspect-square h-full w-full object-cover"
                 alt={title || 'Thematic sector'}
                 src={
-                  media[0]
+                  media?.[0]
                     ? media[0].original_url
                     : '/assets/SM-placeholder-1024x512.png'
                 }
@@ -95,7 +87,7 @@ export default function OurWork({ themes = undefined, sections = undefined }: an
                 href={`/category/${link}`}
                 className="group absolute inset-0 flex h-full w-full flex-col items-center justify-between"
               >
-                <h2 className="title group-hover:bg-theme-500/70 text-zinc-300 w-full self-start py-6 text-center text-lg md:text-2xl">
+                <h2 className="title w-full self-start py-6 text-center text-lg text-zinc-300 group-hover:bg-theme-500/70 md:text-2xl">
                   {title}
                 </h2>
                 {description && (

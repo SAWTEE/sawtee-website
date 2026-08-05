@@ -45,13 +45,17 @@ export default function Article({
   relatedArticles = undefined}: any) {
   // Use useMemo to calculate reading time efficiently
   const readingTime = useMemo(() => {
-    if (!article.content) return null;
+    if (!article?.content) return null;
 
     return calculateReadingTime(article.content, {
       emoji: false,
       wordsPerMinute: 225,
     });
-  }, [article.content]);
+  }, [article?.content]);
+
+  if (!article) {
+    return null;
+  }
 
   const { title, subtitle, content } = article;
   return (

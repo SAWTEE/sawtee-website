@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Throwable;
 
@@ -20,16 +21,16 @@ class Handler extends ExceptionHandler
     ];
 
     /**
-     * A list of error messages
+     * Visitor-facing copy for common HTTP error statuses.
      *
      * @var array<int, string>
      */
     protected $messages = [
-        500 => 'Something went wrong',
-        503 => 'Service unavailable',
-        404 => 'Page Not found',
-        403 => 'Not authorized',
-        419 => 'Page expired, please try again.'
+        403 => 'You do not have permission to view this page.',
+        404 => 'The page you are looking for could not be found.',
+        419 => 'Your session expired. Please reload the page and try again.',
+        500 => 'Something went wrong on our servers.',
+        503 => 'The site is temporarily unavailable. Please check back soon.',
     ];
 
     /**
@@ -39,8 +40,6 @@ class Handler extends ExceptionHandler
     {
         $this->reportable(function (Throwable $e) {
             //
-
-
         });
     }
 
@@ -52,21 +51,17 @@ class Handler extends ExceptionHandler
      *
      * @throws \Throwable
      */
-
     public function render($request, Throwable $e)
     {
         $response = parent::render($request, $e);
         $status = $response->getStatusCode();
 
-        if (app()->environment(['local', 'testing', 'development'])) {
+        if (! $this->shouldRenderBrandedError($request, $status)) {
             return $response;
         }
 
-        if (! array_key_exists($status, $this->messages)) {
-            return $response;
-        }
-
-        if (! $request->isMethod('GET')) {
+        // Non-Inertia form posts: flash and return so the UI can show the message.
+        if (! $request->header('X-Inertia') && ! $request->isMethod('GET')) {
             return back()
                 ->setStatusCode($status)
                 ->with('error', $this->messages[$status]);
@@ -75,13 +70,31 @@ class Handler extends ExceptionHandler
         return Inertia::render('Errors/Error', [
             'status' => $status,
             'message' => $this->messages[$status],
+            'admin' => $request->is('admin', 'admin/*'),
         ])
             ->toResponse($request)
             ->setStatusCode($status);
     }
 
+    /**
+     * Use branded Inertia error pages outside local debug sessions.
+     */
+    protected function shouldRenderBrandedError(Request $request, int $status): bool
+    {
+        if (! array_key_exists($status, $this->messages)) {
+            return false;
+        }
 
+        // Preserve Ignition / detailed exception pages for local debugging.
+        if (config('app.debug') && app()->environment(['local', 'development'])) {
+            return false;
+        }
 
+        // API / JSON clients keep the framework JSON error payload.
+        if ($request->expectsJson() && ! $request->header('X-Inertia')) {
+            return false;
+        }
 
-
+        return true;
+    }
 }

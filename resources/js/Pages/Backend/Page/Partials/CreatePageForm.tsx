@@ -37,8 +37,7 @@ export default function CreatePageForm() {
   const [filename, setFilename] = React.useState(null);
 
   React.useEffect(() => {
-    // @ts-ignore allowlist-migration
-    if (data.page_template === ('About' || 'Contact' || 'MediaFellows')) {
+    if (['About', 'Contact', 'MediaFellows'].includes(data.page_template)) {
       toast({
         title: 'Please add json page data',
         description:

@@ -5,45 +5,25 @@ import MainLayout from '@/layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { router } from '@inertiajs/react';
 import type { FrontendSearchProps } from '@/types';
-import { FormEvent, useState, useEffect } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Pagination from '@/components/Frontend/Pagination';
 
 export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
   const [searchQuery, setSearchQuery] = useState(query ?? '');
-  const [state, setState] = useState<{
-    query: string;
-    loading: boolean;
-    error: string | null;
-    data: NonNullable<FrontendSearchProps['posts']>['data'] | null;
-  }>({
-    query: '',
-    loading: true,
-    error: null,
-    data: null,
-  });
+  const [isSearching, setIsSearching] = useState(false);
+  const results = posts?.data ?? null;
 
   useEffect(() => {
-    if (posts) {
-      setState(prev => ({
-        ...prev,
-        query: query ?? '',
-        loading: false,
-        data: posts.data,
-      }));
-    }
-  }, [posts, query]);
+    setSearchQuery(query ?? '');
+    setIsSearching(false);
+  }, [query, posts]);
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    setIsSearching(true);
     router.visit(`/search`, {
       data: { query: searchQuery, page: 1 },
-      onSuccess: () => {
-        setState(prev => ({
-          ...prev,
-          loading: false,
-          data: posts?.data ?? null,
-        }));
-      },
+      onFinish: () => setIsSearching(false),
     });
   }
 
@@ -88,7 +68,6 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
               htmlFor="search-modal"
               className="font-bold text-slate-800 dark:text-slate-300"
             >
-              {/* Search */}
               <Input
                 id="search-modal"
                 className="[&::-webkit-search-decoration]:none placeholder-text-muted-foreground h-12 w-full appearance-none border bg-bgDarker py-3 text-sm"
@@ -100,7 +79,7 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
             </label>
           </form>
           <div className="mx-auto min-h-96 max-w-5xl px-[32px] py-[20px] text-lg leading-8 md:px-0">
-            {!state.data && searchQuery && (
+            {isSearching && (
               <div className="flex h-20 items-center justify-center space-x-2 bg-white dark:invert">
                 <span className="sr-only">Loading...</span>
                 <div className="h-6 w-6 animate-bounce rounded-full bg-black [animation-delay:-0.3s]"></div>
@@ -109,19 +88,18 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
               </div>
             )}
             <div className="grid place-items-center gap-10 md:grid-cols-2">
-              {state.data &&
-                state.data?.map((post: any) => {
-                  return (
-                    <PostPreviewCard
-                      className="w-full"
-                      key={post.id}
-                      post={post}
-                      showCategoryTag={true}
-                    />
-                  );
-                })}
+              {results?.map((post: any) => {
+                return (
+                  <PostPreviewCard
+                    className="w-full"
+                    key={post.id}
+                    post={post}
+                    showCategoryTag={true}
+                  />
+                );
+              })}
             </div>
-            {state.data && posts && (
+            {results && posts && (
               <Pagination
                 links={posts.links}
                 currentPage={posts.current_page}

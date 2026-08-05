@@ -33,19 +33,16 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
   const navMenu: MenuItem[] =
     primaryMenu.length > 0 ? primaryMenu : (mobileMenu as MenuItem[]);
 
-  const toggleVisibility = () => {
-    if (typeof window !== 'undefined' && window.scrollY > 570) {
-      setVisible(true);
-    } else {
-      setVisible(false);
-    }
-  };
-
   useEffect(() => {
     if (typeof window === 'undefined') {
       return;
     }
 
+    const toggleVisibility = () => {
+      setVisible(window.scrollY > 570);
+    };
+
+    toggleVisibility();
     window.addEventListener('scroll', toggleVisibility, { passive: true });
     return () => window.removeEventListener('scroll', toggleVisibility);
   }, []);

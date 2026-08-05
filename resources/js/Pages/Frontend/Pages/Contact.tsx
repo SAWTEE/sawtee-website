@@ -7,6 +7,23 @@ import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment, type ReactNode } from 'react';
 
 const Contact = ({ pageData = undefined }: any) => {
+  if (!pageData) {
+    return (
+      <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
+        <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
+          <p className="mb-4 text-center text-2xl font-bold md:text-4xl">
+            South Asia Watch on Trade, Economics and Environment (SAWTEE)
+          </p>
+          <p className="text-center text-slate-600 dark:text-slate-300">
+            Contact details are unavailable right now. Please try again later.
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  const phoneNumbers = pageData.phone_numbers ?? [];
+
   return (
     <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
       <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
@@ -21,11 +38,11 @@ const Contact = ({ pageData = undefined }: any) => {
               </p>
               <p className="text-lg font-semibold">
                 Office hours:
-                {` ${pageData.opening_hours}`}
+                {` ${pageData.opening_hours ?? ''}`}
               </p>
             </div>
             <div className="flex flex-col items-center gap-3 py-3 md:py-6 lg:items-start lg:py-8">
-              {pageData.phone_numbers.map((number: any) => {
+              {phoneNumbers.map((number: any) => {
                 return (
                   <Fragment key={number}>
                     <ActionButton href={`tel:${number}`}>
@@ -36,19 +53,26 @@ const Contact = ({ pageData = undefined }: any) => {
                 );
               })}
 
-              <ActionButton>
-                <PhoneOff className="mr-2 h-5 w-5" aria-hidden />
-                {pageData.fax}
-              </ActionButton>
+              {pageData.fax ? (
+                <ActionButton>
+                  <PhoneOff className="mr-2 h-5 w-5" aria-hidden />
+                  {pageData.fax}
+                </ActionButton>
+              ) : null}
 
-              <ActionButton href={`mailto:${pageData.email}`}>
-                <Mail className="mr-2 h-5 w-5" aria-hidden />
-                {pageData.email}
-              </ActionButton>
-              <ActionButton>
-                <MapPin className="mr-2 h-5 w-5" aria-hidden />
-                {pageData.address}
-              </ActionButton>
+              {pageData.email ? (
+                <ActionButton href={`mailto:${pageData.email}`}>
+                  <Mail className="mr-2 h-5 w-5" aria-hidden />
+                  {pageData.email}
+                </ActionButton>
+              ) : null}
+
+              {pageData.address ? (
+                <ActionButton>
+                  <MapPin className="mr-2 h-5 w-5" aria-hidden />
+                  {pageData.address}
+                </ActionButton>
+              ) : null}
             </div>
 
             <SocialMenu
@@ -57,16 +81,18 @@ const Contact = ({ pageData = undefined }: any) => {
             />
           </div>
 
-          <div className="max-h-96 p-8">
-            <Zoom>
-              <img
-                className="aspect-square w-full object-cover"
-                src={pageData.location_image}
-                alt="SAWTEE office location"
-                loading="lazy"
-              />
-            </Zoom>
-          </div>
+          {pageData.location_image ? (
+            <div className="max-h-96 p-8">
+              <Zoom>
+                <img
+                  className="aspect-square w-full object-cover"
+                  src={pageData.location_image}
+                  alt="SAWTEE office location"
+                  loading="lazy"
+                />
+              </Zoom>
+            </div>
+          ) : null}
         </div>
         {pageData.map_url && (
           <div className="mt-8 aspect-video">

@@ -114,10 +114,6 @@ const Globeanime = ({ darkMode = false }: any) => {
   ];
 
   useEffect(() => {
-    animate();
-  }, []);
-
-  const animate = () => {
     const tl = anime.timeline({
       loop: true,
       autoplay: true,
@@ -136,7 +132,12 @@ const Globeanime = ({ darkMode = false }: any) => {
         s.offset
       );
     });
-  };
+
+    return () => {
+      tl.pause();
+      anime.remove('#functions-hero linearGradient');
+    };
+  }, []);
 
   return (
     <div
