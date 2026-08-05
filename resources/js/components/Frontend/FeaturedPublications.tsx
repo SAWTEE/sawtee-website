@@ -1,10 +1,28 @@
+import type { MediaItem, Post, Publication } from '@/types';
 import { Link } from '@inertiajs/react';
-import type { ReactNode } from 'react';
+import type { CSSProperties, ReactNode } from 'react';
+import { useEffect, useRef } from 'react';
+import { register } from 'swiper/element/bundle';
+import 'swiper/css';
+import 'swiper/css/pagination';
+
+type FeaturedPublication = Publication & {
+  subtitle?: string | null;
+  volume_slug?: string | null;
+  created_at?: string | number;
+  media?: MediaItem[];
+  file?: { id?: number; name?: string; url?: string; path?: string } | null;
+};
+
+type FeaturedPublicationsProps = {
+  publications?: FeaturedPublication[];
+  blogPosts?: Post[];
+};
 
 export const FeaturedPublications = ({
-  publications = undefined,
-  blogPosts = undefined,
-}: any) => {
+  publications,
+  blogPosts,
+}: FeaturedPublicationsProps) => {
   return (
     <div className="rounded-md border border-borderColor/80 bg-white px-4 py-5 shadow-sm dark:bg-bgDarker sm:px-5 sm:py-6">
       <PublicationList
@@ -19,11 +37,7 @@ export const FeaturedPublications = ({
             className="my-5 border-t border-borderColor/70 dark:border-white/10"
             aria-hidden
           />
-          <PublicationList
-            heading="Blogs and articles"
-            items={blogPosts}
-            kind="post"
-          />
+          <BlogPostsSlider posts={blogPosts} />
         </>
       ) : null}
     </div>
@@ -38,24 +52,30 @@ function PublicationList({
   kind,
 }: {
   heading: string;
-  items: any[] | undefined;
+  items: FeaturedPublication[] | undefined;
   kind: ListKind;
 }) {
   if (!items?.length) {
     return null;
   }
 
-  const sorted = [...items].sort(
-    (a: any, b: any) => a.created_at - b.created_at
-  );
+  const sorted = [...items].sort((a, b) => {
+    const aTime =
+      typeof a.created_at === 'number'
+        ? a.created_at
+        : Date.parse(String(a.created_at ?? 0));
+    const bTime =
+      typeof b.created_at === 'number'
+        ? b.created_at
+        : Date.parse(String(b.created_at ?? 0));
+    return aTime - bTime;
+  });
 
   return (
     <div>
-      <h3 className="mb-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
-        {heading}
-      </h3>
+      <SectionHeading>{heading}</SectionHeading>
       <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
-        {sorted.map((item: any) => {
+        {sorted.map(item => {
           const media = resolveMedia(item, kind);
           const href = resolveHref(item, kind);
 
@@ -70,6 +90,108 @@ function PublicationList({
         })}
       </ul>
     </div>
+  );
+}
+
+type SwiperElement = HTMLElement & {
+  initialize?: () => void;
+  swiper?: {
+    destroy: (deleteInstance?: boolean, cleanStyles?: boolean) => void;
+  };
+};
+
+function BlogPostsSlider({ posts }: { posts: Post[] }) {
+  const swiperRef = useRef(null);
+  const canSlide = posts.length > 1;
+  const postIds = posts.map(post => post.id).join(',');
+
+  useEffect(() => {
+    register();
+
+    const el = swiperRef.current as SwiperElement | null;
+    if (!el) {
+      return;
+    }
+
+    Object.assign(el, {
+      slidesPerView: 1,
+      spaceBetween: 8,
+      speed: 450,
+      loop: canSlide,
+      watchOverflow: true,
+      autoplay: canSlide
+        ? {
+            delay: 5500,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }
+        : false,
+      pagination: canSlide
+        ? {
+            clickable: true,
+          }
+        : false,
+      keyboard: {
+        enabled: true,
+        onlyInViewport: true,
+      },
+      a11y: {
+        enabled: true,
+        containerMessage: 'Blogs and articles carousel',
+        paginationBulletMessage: 'Go to article {{index}}',
+      },
+    });
+
+    el.initialize?.();
+
+    return () => {
+      el.swiper?.destroy(true, true);
+    };
+  }, [canSlide, postIds]);
+
+  return (
+    <section aria-roledescription="carousel" aria-label="Blogs and articles">
+      <SectionHeading>Blogs and articles</SectionHeading>
+      <swiper-container
+        init="false"
+        ref={swiperRef}
+        class="featured-blog-swiper w-full"
+        style={
+          {
+            '--swiper-pagination-color': 'hsl(var(--theme-color))',
+            '--swiper-pagination-bullet-inactive-color':
+              'hsl(var(--muted-foreground))',
+            '--swiper-pagination-bullet-inactive-opacity': '0.4',
+            '--swiper-pagination-bullet-horizontal-gap': '3px',
+            '--swiper-pagination-bullet-size': '6px',
+            '--swiper-pagination-bottom': '0px',
+            paddingBottom: canSlide ? '1.5rem' : undefined,
+          } as CSSProperties
+        }
+      >
+        {posts.map(post => {
+          const media = resolveMedia(post, 'post');
+          const href = resolveHref(post, 'post');
+
+          return (
+            <swiper-slide key={post.id} class="group !h-auto py-0.5">
+              <ItemLink kind="post" href={href}>
+                <ListCopy title={post.title} subtitle={post.subtitle} />
+                {media ? <ListThumb src={media} alt={post.title} /> : null}
+              </ItemLink>
+            </swiper-slide>
+          );
+        })}
+      </swiper-container>
+    </section>
+  );
+}
+
+function SectionHeading({ children }: { children: ReactNode }) {
+  return (
+    <h3 className="mb-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
+      {children}
+    </h3>
   );
 }
 
@@ -142,7 +264,10 @@ function ListThumb({ src, alt }: { src: string; alt: string }) {
   );
 }
 
-function resolveMedia(item: any, kind: ListKind): string | null {
+function resolveMedia(
+  item: { media?: MediaItem[]; title?: string },
+  kind: ListKind
+): string | null {
   if (!item.media?.length) {
     return `https://placehold.co/120x150/eee/000/webp?text=No+image`;
   }
@@ -153,17 +278,22 @@ function resolveMedia(item: any, kind: ListKind): string | null {
       : 'post-featured-image';
 
   return (
-    item.media.find((media: any) => media.collection_name === collection)
+    item.media.find(media => media.collection_name === collection)
       ?.original_url ?? `https://placehold.co/120x150/eee/000/webp?text=No+image`
   );
 }
 
-function resolveHref(item: any, kind: ListKind): string {
+function resolveHref(
+  item: FeaturedPublication | Post,
+  kind: ListKind
+): string {
   if (kind === 'publication') {
-    return item.volume_slug
-      ? `/category/publications/${item.category.slug}/${item.volume_slug}`
-      : `/publications/${item.file?.name}`;
+    const publication = item as FeaturedPublication;
+    return publication.volume_slug
+      ? `/category/publications/${publication.category?.slug}/${publication.volume_slug}`
+      : `/publications/${publication.file?.name}`;
   }
 
-  return `/category/${item.category.slug}/${item.slug}`;
+  const post = item as Post;
+  return `/category/${post.category?.slug}/${post.slug}`;
 }
