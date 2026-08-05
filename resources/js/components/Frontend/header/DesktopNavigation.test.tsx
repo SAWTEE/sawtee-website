@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { MenuItem } from '@/types';
 import DesktopNavigation from './DesktopNavigation';
@@ -142,5 +142,61 @@ describe('DesktopNavigation', () => {
       'href',
       '/category/events'
     );
+  });
+
+  it('closes multilevel menu when pointer moves to another top-level item', () => {
+    render(
+      <DesktopNavigation
+        menu={[
+          ...publicationsMenu,
+          {
+            id: 10,
+            title: 'About',
+            name: 'About',
+            url: '/about',
+            children: [],
+          },
+        ]}
+      />
+    );
+
+    const publications = screen.getByRole('button', { name: /publications/i });
+    fireEvent.pointerEnter(publications);
+    expect(publications).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.pointerEnter(screen.getByRole('link', { name: 'About' }));
+    expect(publications).toHaveAttribute('aria-expanded', 'false');
+  });
+
+  it('closes multilevel menu when pointer moves to a mega-menu item', () => {
+    render(
+      <DesktopNavigation
+        menu={[
+          ...publicationsMenu,
+          {
+            id: 20,
+            title: 'Our Work',
+            name: 'Our Work',
+            url: '/our-work',
+            children: [
+              {
+                id: 21,
+                title: 'Trade',
+                name: 'Trade',
+                url: '/our-work/trade',
+                children: [],
+              },
+            ],
+          },
+        ]}
+      />
+    );
+
+    const publications = screen.getByRole('button', { name: /publications/i });
+    fireEvent.pointerEnter(publications);
+    expect(publications).toHaveAttribute('aria-expanded', 'true');
+
+    fireEvent.pointerEnter(screen.getByRole('link', { name: /our work/i }));
+    expect(publications).toHaveAttribute('aria-expanded', 'false');
   });
 });

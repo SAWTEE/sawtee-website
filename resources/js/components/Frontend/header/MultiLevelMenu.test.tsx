@@ -133,4 +133,29 @@ describe('MultiLevelMenu', () => {
     expect(external).toHaveAttribute('target', '_blank');
     expect(external).toHaveAttribute('rel', 'noopener noreferrer');
   });
+
+  it('supports controlled open state', () => {
+    const onOpenChange = vi.fn();
+    const { rerender } = render(
+      <MultiLevelMenu
+        item={publicationsItem}
+        open={false}
+        onOpenChange={onOpenChange}
+        openOnHover={false}
+      />
+    );
+
+    const trigger = screen.getByRole('button', { name: /publications/i });
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    rerender(
+      <MultiLevelMenu
+        item={publicationsItem}
+        open
+        onOpenChange={onOpenChange}
+        openOnHover={false}
+      />
+    );
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  });
 });

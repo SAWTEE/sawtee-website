@@ -18,50 +18,97 @@ type DesktopNavigationProps = {
   menu?: MenuItem[];
 };
 
+/** Mega menus share a dedicated layout; names match MegaMenu.tsx. */
+const MEGA_MENU_NAMES = new Set(['Our Work', 'Know Us']);
+
+function menuItemKey(item: MenuItem, index: number): string {
+  if (item.id != null) {
+    return String(item.id);
+  }
+  return `${item.title}-${item.url}-${index}`;
+}
+
+function usesMegaMenu(item: MenuItem): boolean {
+  return item.name != null && MEGA_MENU_NAMES.has(item.name);
+}
+
+function hasMenuChildren(item: MenuItem): boolean {
+  return (item.children?.length ?? 0) > 0;
+}
+
+const topLevelItemClassName =
+  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium dark:text-white';
+
 export default function DesktopNavigation({
   menu = [],
 }: DesktopNavigationProps) {
   const { url, props } = usePage<SharedProps>();
   const { experts } = props;
 
-  const [elementFocused, setElementFocused] = React.useState<number | null>(
-    null
+  // Single source of truth for hover/open highlight across mega, multilevel, and links.
+  const [activeKey, setActiveKey] = React.useState<string | null>(null);
+  const clearTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const activate = React.useCallback((key: string) => {
+    if (clearTimer.current) {
+      clearTimeout(clearTimer.current);
+      clearTimer.current = null;
+    }
+    setActiveKey(key);
+  }, []);
+
+  // Delay clearing so the pointer can cross into portaled dropdown content
+  // without immediately forcing the multilevel menu closed.
+  const scheduleClearActive = React.useCallback(() => {
+    if (clearTimer.current) {
+      clearTimeout(clearTimer.current);
+    }
+    clearTimer.current = setTimeout(() => {
+      setActiveKey(null);
+      clearTimer.current = null;
+    }, 120);
+  }, []);
+
+  React.useEffect(
+    () => () => {
+      if (clearTimer.current) {
+        clearTimeout(clearTimer.current);
+      }
+    },
+    []
   );
-  const handleHoverButton = (index: number | null) => {
-    setElementFocused(index);
-  };
 
   return (
     <NavigationMenu
       className="hidden max-w-full justify-center lg:flex"
-      onMouseLeave={() => {
-        handleHoverButton(null);
-      }}
+      onMouseLeave={scheduleClearActive}
       viewport={false}
     >
       <NavigationMenuList className="gap-4">
         {(menu ?? []).map((menuItem, index) => {
+          const key = menuItemKey(menuItem, index);
           const active = menuItem.url === `${url}`;
-          const hasMegaMenu =
-            menuItem.name === 'Our Work' || menuItem.name === 'Know Us';
-          const hasChildren = (menuItem.children?.length ?? 0) > 0;
+          const highlighted = activeKey === key;
+          const mega = usesMegaMenu(menuItem);
+          const nested = hasMenuChildren(menuItem);
 
-          if (hasMegaMenu) {
+          if (mega) {
             return (
-              <NavigationMenuItem key={menuItem.title} className="relative">
+              <NavigationMenuItem key={key} className="relative" value={key}>
                 <NavigationMenuLink
                   asChild
                   active={active}
                   className="p-0"
-                  onMouseEnter={() => handleHoverButton(index)}
+                  onPointerEnter={() => activate(key)}
+                  onFocus={() => activate(key)}
                 >
                   <Link href={menuItem.url}>
                     <NavigationMenuTrigger
-                      className={cn('bg-transparent dark:text-white')}
-                      hasChildren={hasChildren}
+                      className={cn(topLevelItemClassName)}
+                      hasChildren={nested}
                     >
                       {menuItem.title}
-                      <FocusHighlight active={elementFocused === index} />
+                      <FocusHighlight active={highlighted} />
                     </NavigationMenuTrigger>
                   </Link>
                 </NavigationMenuLink>
@@ -72,41 +119,47 @@ export default function DesktopNavigation({
             );
           }
 
-          if (hasChildren) {
+          if (nested) {
             return (
               <NavigationMenuItem
-                key={menuItem.title}
+                key={key}
                 className="relative"
-                onMouseEnter={() => handleHoverButton(index)}
+                value={key}
+                onPointerEnter={() => activate(key)}
               >
                 <MultiLevelMenu
                   item={menuItem}
-                  triggerClassName="bg-transparent"
-                  triggerAddon={
-                    <FocusHighlight active={elementFocused === index} />
-                  }
+                  triggerClassName={topLevelItemClassName}
+                  triggerAddon={<FocusHighlight active={highlighted} />}
                   openOnHover
+                  open={activeKey === key}
+                  onOpenChange={(open) => {
+                    if (open) {
+                      activate(key);
+                      return;
+                    }
+                    // Functional update avoids stale closures from delayed hover-close.
+                    setActiveKey((current) =>
+                      current === key ? null : current
+                    );
+                  }}
                 />
               </NavigationMenuItem>
             );
           }
 
           return (
-            <NavigationMenuItem key={menuItem.title} className="relative">
+            <NavigationMenuItem key={key} className="relative" value={key}>
               <NavigationMenuLink
                 asChild
                 active={active}
                 className="p-0"
-                onMouseEnter={() => handleHoverButton(index)}
+                onPointerEnter={() => activate(key)}
+                onFocus={() => activate(key)}
               >
-                <Link
-                  href={menuItem.url}
-                  className={cn(
-                    'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium dark:text-white'
-                  )}
-                >
+                <Link href={menuItem.url} className={cn(topLevelItemClassName)}>
                   {menuItem.title}
-                  <FocusHighlight active={elementFocused === index} />
+                  <FocusHighlight active={highlighted} />
                 </Link>
               </NavigationMenuLink>
             </NavigationMenuItem>

@@ -15,6 +15,7 @@ import { ChevronDown } from 'lucide-react';
 import {
   forwardRef,
   useCallback,
+  useEffect,
   useRef,
   useState,
   type ComponentPropsWithoutRef,
@@ -146,6 +147,9 @@ export function MultiLevelMenuItems({
   );
 }
 
+const triggerBaseClassName =
+  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground dark:text-white';
+
 export type MultiLevelMenuProps = {
   /** Parent item: label drives the trigger; `children` form the dropdown tree. */
   item: MultiLevelMenuItem;
@@ -154,8 +158,12 @@ export type MultiLevelMenuProps = {
   align?: 'start' | 'center' | 'end';
   /** Open on pointer hover (desktop nav). Keyboard still uses click/focus. */
   openOnHover?: boolean;
-  /** Initial open state (useful in tests). */
+  /** Uncontrolled initial open state (useful in tests). */
   defaultOpen?: boolean;
+  /** Controlled open state. */
+  open?: boolean;
+  /** Controlled open-change handler. */
+  onOpenChange?: (open: boolean) => void;
   /** Optional overlay inside the trigger (e.g. nav focus highlight). */
   triggerAddon?: ReactNode;
   /** Include a top-level link to the parent URL inside the panel. */
@@ -176,11 +184,26 @@ export default function MultiLevelMenu({
   align = 'start',
   openOnHover = true,
   defaultOpen = false,
+  open: openProp,
+  onOpenChange,
   triggerAddon,
   includeParentLink = true,
 }: MultiLevelMenuProps) {
-  const [open, setOpen] = useState(defaultOpen);
+  const isControlled = openProp !== undefined;
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen);
+  const open = isControlled ? openProp : uncontrolledOpen;
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const setOpen = useCallback(
+    (next: boolean) => {
+      if (!isControlled) {
+        setUncontrolledOpen(next);
+      }
+      onOpenChange?.(next);
+    },
+    [isControlled, onOpenChange]
+  );
 
   const clearCloseTimer = useCallback(() => {
     if (closeTimer.current) {
@@ -192,12 +215,27 @@ export default function MultiLevelMenu({
   const handleOpen = useCallback(() => {
     clearCloseTimer();
     setOpen(true);
-  }, [clearCloseTimer]);
+  }, [clearCloseTimer, setOpen]);
 
   const handleClose = useCallback(() => {
     clearCloseTimer();
     closeTimer.current = setTimeout(() => setOpen(false), 120);
-  }, [clearCloseTimer]);
+  }, [clearCloseTimer, setOpen]);
+
+  // Clear sticky focus/open styles when a parent forces the menu closed
+  // (e.g. another top-level nav item becomes active).
+  useEffect(() => {
+    if (open) {
+      return;
+    }
+    clearCloseTimer();
+    const trigger = triggerRef.current;
+    if (trigger && document.activeElement === trigger) {
+      trigger.blur();
+    }
+  }, [open, clearCloseTimer]);
+
+  useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
 
   const children = item.children ?? [];
 
@@ -209,11 +247,9 @@ export default function MultiLevelMenu({
         onPointerLeave={openOnHover ? handleClose : undefined}
       >
         <button
+          ref={triggerRef}
           type="button"
-          className={cn(
-            'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground dark:text-white',
-            triggerClassName
-          )}
+          className={cn(triggerBaseClassName, triggerClassName)}
           aria-haspopup="menu"
         >
           {item.title}
