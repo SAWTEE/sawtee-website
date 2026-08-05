@@ -7,19 +7,31 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
 test('email verification screen can be rendered', function () {
-    $user = User::factory()->create([
-        'email_verified_at' => null,
-    ]);
+    $user = User::factory()->unverified()->create();
 
-    $response = $this->actingAs($user)->get('/verify-email');
+    $response = $this->actingAs($user)->get(route('verification.notice'));
 
-    $response->assertStatus(200);
+    $response->assertOk();
+});
+
+test('unverified user visiting admin dashboard is redirected to verification notice', function () {
+    $user = User::factory()->unverified()->create();
+
+    $response = $this->actingAs($user)->get('/admin/dashboard');
+
+    $response->assertRedirect(route('verification.notice'));
+});
+
+test('verified user can visit admin dashboard', function () {
+    $user = User::factory()->create();
+
+    $response = $this->actingAs($user)->get('/admin/dashboard');
+
+    $response->assertOk();
 });
 
 test('email can be verified', function () {
-    $user = User::factory()->create([
-        'email_verified_at' => null,
-    ]);
+    $user = User::factory()->unverified()->create();
 
     Event::fake();
 
@@ -37,9 +49,7 @@ test('email can be verified', function () {
 });
 
 test('email is not verified with invalid hash', function () {
-    $user = User::factory()->create([
-        'email_verified_at' => null,
-    ]);
+    $user = User::factory()->unverified()->create();
 
     $verificationUrl = URL::temporarySignedRoute(
         'verification.verify',

@@ -3,94 +3,73 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\FellowRequest;
 use App\Models\Fellow;
 use App\Models\Fellowship;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class FellowController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        return Inertia::render("Backend/Fellows/Index", ["fellows" => Fellow::get()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render("Backend/Fellows/Create", ["fellowships" => Fellowship::get()]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            "name" => "required|string",
-            "fellowship_id" => "required|numeric|exists:fellowships,id",
-            "designation" => "required|string",
-            "experience" => "required|string",
-            "description" => "required|string",
+        return Inertia::render('Backend/Fellows/Index', [
+            'fellows' => Fellow::with(['fellowship', 'media'])->latest()->get(),
         ]);
+    }
 
-        $fellow = Fellow::create($validated);
+    public function create(): Response
+    {
+        return Inertia::render('Backend/Fellows/Create', [
+            'fellowships' => $this->fellowshipOptions(),
+        ]);
+    }
+
+    public function store(FellowRequest $request): RedirectResponse
+    {
+        $fellow = Fellow::create($request->validated());
 
         if ($request->hasFile('image')) {
             $fellow->addMediaFromRequest('image')->toMediaCollection('profile_picture');
         }
 
-        return to_route("admin.fellows.index");
+        return to_route('admin.fellows.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Fellow $fellow)
+    public function edit(Fellow $fellow): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Fellow $fellow)
-    {
-        return Inertia::render("Backend/Fellows/Edit", ["fellow" => $fellow, "fellowships" => Fellowship::get()]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Fellow $fellow)
-    {
-        $validated = $request->validate([
-            "name" => "required|string",
-            "designation" => "required|string",
-            "experience" => "required|string",
-            "description" => "required|string",
+        return Inertia::render('Backend/Fellows/Edit', [
+            'fellow' => $fellow->load(['fellowship', 'media']),
+            'fellowships' => $this->fellowshipOptions(),
         ]);
+    }
 
+    public function update(FellowRequest $request, Fellow $fellow): RedirectResponse
+    {
         if ($request->hasFile('image')) {
+            $fellow->clearMediaCollection('profile_picture');
             $fellow->addMediaFromRequest('image')->toMediaCollection('profile_picture');
         }
 
-        $fellow->update($validated);
+        $fellow->update($request->validated());
 
-        return to_route("admin.fellows.index");
-
+        return to_route('admin.fellows.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Fellow $fellow)
+    public function destroy(Fellow $fellow): RedirectResponse
     {
         $fellow->delete();
+
+        return to_route('admin.fellows.index');
+    }
+
+    /**
+     * @return Collection<int, Fellowship>
+     */
+    private function fellowshipOptions(): Collection
+    {
+        return Fellowship::select(['id', 'title', 'year'])->orderByDesc('year')->get();
     }
 }

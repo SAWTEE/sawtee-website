@@ -11,12 +11,11 @@ class Member extends Model
     use HasFactory;
 
     protected $fillable = [
-        "country",
+        'country',
     ];
-
 
     public function institutes(): HasMany
     {
-        return $this->hasMany(Institute::class)->as('institutes');
+        return $this->hasMany(Institute::class);
     }
 }

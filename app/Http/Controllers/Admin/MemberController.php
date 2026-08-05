@@ -3,77 +3,39 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\MemberRequest;
 use App\Models\Member;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class MemberController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        return Inertia::render("Backend/Members/Index", ["members" => Member::get()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            "country" => "string|required"
+        return Inertia::render('Backend/Members/Index', [
+            'members' => Member::withCount('institutes')->orderBy('country')->get(),
         ]);
-
-        Member::create($validated);
-
-        return to_route("admin.members.index");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Member $member)
+    public function store(MemberRequest $request): RedirectResponse
     {
-        //
+        Member::create($request->validated());
+
+        return to_route('admin.members.index');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Member $member)
+    public function update(MemberRequest $request, Member $member): RedirectResponse
     {
-        //
+        $member->update($request->validated());
+
+        return to_route('admin.members.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Member $member)
-    {
-        $validated = $request->validate([
-            "country" => "string",
-        ]);
-
-        $member->update($validated);
-
-        return to_route("admin.members.index");
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Member $member)
+    public function destroy(Member $member): RedirectResponse
     {
         $member->delete();
+
+        return to_route('admin.members.index');
     }
 }

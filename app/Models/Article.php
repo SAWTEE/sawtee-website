@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSeoMeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Spatie\Image\Manipulations;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
@@ -16,10 +17,9 @@ use Spatie\Sluggable\SlugOptions;
 class Article extends Model implements HasMedia
 {
     use HasFactory;
+    use HasSeoMeta;
     use HasSlug;
     use InteractsWithMedia;
-
-    protected $with = ['media', 'tags'];
 
     protected $fillable = [
         'title',
@@ -35,6 +35,13 @@ class Article extends Model implements HasMedia
     ];
 
     /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'published_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
+    /**
      * Get the options for generating the slug.
      */
     public function getSlugOptions(): SlugOptions
@@ -45,21 +52,21 @@ class Article extends Model implements HasMedia
             ->startSlugSuffixFrom(2);
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         // @phpstan-ignore-next-line
         $this->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_MAX, 300, 200)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->fit(Fit::Max, 300, 200)
+            ->format('webp')
             ->quality(75)
             ->nonQueued();
 
         // @phpstan-ignore-next-line
         $this->addMediaConversion('responsive')
-            ->fit(Manipulations::FIT_MAX, 1200, 800)
+            ->fit(Fit::Max, 1200, 800)
             ->performOnCollections('article-featured-image')
             ->quality(75)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->format('webp')
             ->withResponsiveImages()
             ->nonQueued();
     }
@@ -72,7 +79,12 @@ class Article extends Model implements HasMedia
 
     public function volume(): BelongsTo
     {
-        return $this->belongsTo(Publication::class);
+        return $this->belongsTo(Publication::class, 'publication_id');
+    }
+
+    public function publication(): BelongsTo
+    {
+        return $this->belongsTo(Publication::class, 'publication_id');
     }
 
     public function tags(): BelongsToMany

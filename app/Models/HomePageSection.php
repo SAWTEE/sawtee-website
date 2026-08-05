@@ -15,4 +15,12 @@ class HomePageSection extends Model
         'show',
         'order',
     ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'show' => 'boolean',
+        'order' => 'integer',
+    ];
 }

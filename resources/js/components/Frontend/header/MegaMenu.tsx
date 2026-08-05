@@ -1,0 +1,203 @@
+import { useTheme } from '@/components/shared/theme-provider';
+import { Separator } from '@/components/ui/separator';
+import { aboutMenuData } from '@/lib/data';
+import { Link } from '@inertiajs/react';
+import { motion } from 'framer-motion';
+import { lazy, Suspense } from 'react';
+import type { MenuItem } from '@/types';
+
+const Globeanime = lazy(() => import('../globeanime'));
+
+const ListVariants = {
+  open: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      y: { stiffness: 1000, velocity: -100 },
+    },
+  },
+  closed: {
+    y: 50,
+    opacity: 0,
+    transition: {
+      y: { stiffness: 1000 },
+    },
+  },
+};
+
+const ListContainerVariants = {
+  open: {
+    transition: { staggerChildren: 0.07, delayChildren: 0.2 },
+  },
+  closed: {
+    transition: { staggerChildren: 0.05, staggerDirection: -1 },
+  },
+};
+
+type MegaSectionProps = {
+  item: MenuItem;
+  introText?: string;
+  introImage?: string;
+};
+
+const AboutMegaMenu = ({
+  item,
+  introText,
+  ...rest
+}: MegaSectionProps) => {
+  const { theme } = useTheme();
+  return (
+    <ul
+      className="grid-rows-auto md:grid-rows-[repeat(2, minmax(auto, 250px))] relative mx-auto grid w-[60vw] grid-cols-1 place-items-center gap-4 px-6 py-10 md:grid-cols-5 md:gap-6 xl:grid-rows-[auto]"
+      {...rest}
+    >
+      <div className="col-span-1 place-self-start md:col-span-2">
+        <motion.ul
+          variants={ListContainerVariants}
+          initial={'closed'}
+          whileInView={'open'}
+        >
+          {(item.children ?? []).map((child: any) => {
+            return (
+              <motion.li
+                key={child.title}
+                variants={ListVariants}
+                className="lg:text-md relative cursor-pointer pb-4 text-left text-sm font-medium"
+              >
+                <Link
+                  className="font-serif text-secondary-foreground"
+                  href={child.url}
+                >
+                  {child.title}
+                </Link>
+              </motion.li>
+            );
+          })}
+        </motion.ul>
+      </div>
+      <div className="place-center col-span-4 mx-auto md:col-span-3">
+        <div className="relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-bgDarker bg-cover bg-right-bottom bg-no-repeat dark:bg-[rgba(0,0,0,0.4)]">
+          <Suspense fallback={null}>
+            <Globeanime darkMode={theme === 'dark'} />
+          </Suspense>
+          <p className="flex h-full w-full items-center justify-center self-center p-6 text-justify text-xs leading-normal text-secondary-foreground xl:text-sm xl:leading-6">
+            {introText}
+          </p>
+        </div>
+      </div>
+    </ul>
+  );
+};
+
+const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
+  const children = item.children ?? [];
+  const first = children[0];
+
+  return (
+    <ul className="grid w-[60vw] grid-cols-1 gap-4 p-4 px-8 py-10" {...rest}>
+      <div className="mx-auto flex w-full flex-col items-center justify-center gap-10">
+        {first ? (
+          <>
+            <Link
+              className="font-serif text-2xl text-secondary-foreground"
+              href={first.url}
+            >
+              {first.title}
+            </Link>
+            <motion.ul
+              variants={ListContainerVariants}
+              initial={'closed'}
+              whileInView={'open'}
+              className="grid w-full grid-cols-2 gap-4"
+            >
+              {(first.children ?? []).map((grandChild: any) => {
+                return (
+                  <motion.li
+                    key={grandChild.title}
+                    variants={ListVariants}
+                    className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
+                  >
+                    <Link
+                      href={grandChild.url}
+                      className="text-secondary-foreground no-underline"
+                    >
+                      {grandChild.title}{' '}
+                    </Link>
+                  </motion.li>
+                );
+              })}
+            </motion.ul>
+          </>
+        ) : null}
+
+        <Separator className="my-4 w-full border-b-2" />
+        <div className="grid grid-cols-2 gap-6">
+          {children.map((grandChildren: any, idx: any) => {
+            if (idx === 0) {
+              return null;
+            }
+            return (
+              <div className="col-span-1 space-y-6" key={grandChildren.title}>
+                <Link
+                  href={grandChildren.url}
+                  className="text-2xl text-secondary-foreground no-underline"
+                >
+                  {grandChildren.title}
+                </Link>
+
+                <motion.ul
+                  className="grid grid-cols-2 gap-6"
+                  variants={ListContainerVariants}
+                  initial={'closed'}
+                  whileInView={'open'}
+                >
+                  {(grandChildren.children ?? []).map((child: any) => {
+                    return (
+                      <motion.li
+                        key={child.title}
+                        variants={ListVariants}
+                        className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
+                      >
+                        <Link
+                          href={child.url}
+                          className="text-secondary-foreground no-underline"
+                        >
+                          {child.title}
+                        </Link>
+                      </motion.li>
+                    );
+                  })}
+                </motion.ul>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </ul>
+  );
+};
+
+const MegaMenu = ({
+  item,
+  experts: _experts,
+}: {
+  item: MenuItem;
+  experts?: unknown[];
+}) => {
+  if (item.name === 'Know Us') {
+    return (
+      <AboutMegaMenu
+        item={item}
+        introText={aboutMenuData.introText}
+        introImage={aboutMenuData.introImage}
+      />
+    );
+  }
+  if (item.name === 'Our Work') {
+    return <OurWorkMegaMenu item={item} />;
+  }
+
+  return null;
+};
+
+export default MegaMenu;

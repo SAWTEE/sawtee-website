@@ -3,83 +3,39 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\FellowshipRequest;
 use App\Models\Fellowship;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class FellowshipController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        $fellowships = Fellowship::get();
-        return Inertia::render('Backend/Fellowships/Index', ["fellowships" => $fellowships]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create()
-    // {
-    //     //
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            "title" => "string|max:255",
-            "description" => "string|max:2000",
-            "year" => "required|digits:4|integer|min:2023"
+        return Inertia::render('Backend/Fellowships/Index', [
+            'fellowships' => Fellowship::withCount('fellows')->orderByDesc('year')->get(),
         ]);
-
-        Fellowship::create($validated);
-
-        return to_route("admin.fellowships.index", ["fellowships" => Fellowship::all() ]);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(fellowship $fellowship)
-    // {
-    //     //
-    // }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // public function edit(fellowship $fellowship)
-    // {
-    //     //
-    // }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, fellowship $fellowship)
+    public function store(FellowshipRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            "title" => "string|max:255",
-            "description" => "string|max:2000",
-            "year" => "required|digits:4|integer|min:2023"
-        ]);
+        Fellowship::create($request->validated());
 
-        $fellowship->update($validated);
-
-        return to_route("admin.fellowships.index", ["fellowships" => Fellowship::all() ]);
+        return to_route('admin.fellowships.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(fellowship $fellowship)
+    public function update(FellowshipRequest $request, Fellowship $fellowship): RedirectResponse
+    {
+        $fellowship->update($request->validated());
+
+        return to_route('admin.fellowships.index');
+    }
+
+    public function destroy(Fellowship $fellowship): RedirectResponse
     {
         $fellowship->delete();
-        return to_route("admin.fellowships.index", ["fellowships" => Fellowship::all() ]);
+
+        return to_route('admin.fellowships.index');
     }
 }

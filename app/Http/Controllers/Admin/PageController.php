@@ -3,137 +3,89 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Http\Requests\Admin\PageRequest;
 use App\Models\Page;
-use File;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
-
+use Inertia\Response;
 
 class PageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        $pages = Page::withCount('sections')->latest()->get();
-        return Inertia::render("Backend/Page/Index", ['pages' => $pages]);
+        return Inertia::render('Backend/Page/Index', [
+            'pages' => Page::withCount('sections')->latest()->get(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Backend/Page/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request The HTTP request object.
-     * @return \Illuminate\Http\RedirectResponse The redirect response.
-     */
-    public function store(Request $request)
+    public function store(PageRequest $request): RedirectResponse
     {
-        $validated = $request->validate(['name' => 'required|string|unique:pages|max:255',
-            'slug' => 'nullable|string|unique:pages|max:255',
-            'content' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048',
-            'meta_title' => 'nullable|string|max:255',
-            'meta_description' => 'nullable|string|max:255',
-            'page_template' => 'nullable|string|max:255',
-        ]);
-        if (!$request->meta_title) {
-            $validated["meta_title"] = $validated['name'];
-        }
-
+        $validated = $request->validated();
+        $validated['meta_title'] ??= $validated['name'];
 
         $page = Page::create($validated);
-        if ($request->image) {
+
+        if ($request->hasFile('image')) {
             $page->addMediaFromRequest('image')->toMediaCollection('page-media');
         }
 
-        if($request->file){
-            $file = $request->file;
-            $filename = $file->getClientOriginalName();
-            $file->move(public_path('tmp'), $filename);
-            $jsonData = File::json(public_path('tmp/'. $filename ));
-            $page->pageData = $jsonData;
-            $page->save();
-        }
+        $this->storePageData($page, $request->file('file'));
 
-        return redirect(route('admin.pages.index'));
+        return to_route('admin.pages.index');
     }
 
-
-
-
-
-    /**
-     * Display the specified resource.
-     */
-    public function show()
+    public function edit(Page $page): Response
     {
-
-        //
+        return Inertia::render('Backend/Page/Edit', [
+            'page' => $page->load('media'),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Page $page)
+    public function update(PageRequest $request, Page $page): RedirectResponse
     {
-        return Inertia::render('Backend/Page/Edit', ['page' => $page->load('media')]);
-    }
+        $validated = $request->validated();
+        $validated['meta_title'] ??= $validated['name'];
 
-    /**
-     * Update the specified resource in storage.
-     * @param Request $request The HTTP request object.
-     * @param Page $page The model to update.
-     * @return \Illuminate\Http\RedirectResponse The redirect response.
-     */
-    public function update(Request $request, Page $page)
-    {
-        // $validated = $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'slug' => 'nullable|string|unique:pages|max:255',
-        //     'content' => 'nullable|string',
-        //     // 'image' => 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048','meta_title' => 'nullable|string|max:255',
-        //     'meta_description' => 'nullable|string|max:255',
-        //     'page_template' => 'nullable|string|max:255',
-
-        // ]);
-        $validated = $request->all();
-        if (!$request->meta_title) {
-            $validated["meta_title"] = $validated['name'];
-        }
-
-        if ($request->image) {
+        if ($request->hasFile('image')) {
             $page->addMediaFromRequest('image')->toMediaCollection('page-media');
+        } elseif ($request->mediaWasCleared()) {
+            $page->getFirstMedia('page-media')?->delete();
         }
-        if (!$request->image) {
-            $media = $page->getFirstMedia('page-media');
-            $media?->delete();
-        }
-        if($request->file){
-            $file = $request->file;
-            $filename = $file->getClientOriginalName();
-            $file->move(public_path('tmp'), $filename);
-            $jsonData = File::json(public_path('tmp/'. $filename ));
-            $page->pageData = $jsonData;
-            $page->save();
-        }
+
+        $this->storePageData($page, $request->file('file'));
+
         $page->update($validated);
-        return redirect(route('admin.pages.index'));
+
+        return to_route('admin.pages.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Page $page)
+    public function destroy(Page $page): RedirectResponse
     {
         $page->delete();
-        return redirect(route('admin.pages.index'));
+
+        return to_route('admin.pages.index');
+    }
+
+    /**
+     * Templated pages read their layout from an uploaded JSON document.
+     */
+    private function storePageData(Page $page, ?UploadedFile $upload): void
+    {
+        if (! $upload) {
+            return;
+        }
+
+        $filename = $upload->getClientOriginalName();
+        $upload->move(public_path('tmp'), $filename);
+
+        $page->pageData = File::json(public_path('tmp/'.$filename));
+        $page->save();
     }
 }

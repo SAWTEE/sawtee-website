@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Spatie\Image\Manipulations;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-
 
 class Section extends Model implements HasMedia
 {
@@ -19,6 +18,13 @@ class Section extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = ['title', 'type', 'description', 'parent_id', 'page_id', 'link', 'order'];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'order' => 'integer',
+    ];
 
     public function children(): HasMany
     {
@@ -35,20 +41,20 @@ class Section extends Model implements HasMedia
     //     return $this->morphOne(Image::class, 'imageable');
     // }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         $this
             ->addMediaConversion('preview')
-            ->fit(Manipulations::FIT_MAX, 300, 200)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->fit(Fit::Max, 300, 200)
+            ->format('webp')
             ->quality(75)
             ->nonQueued();
 
         $this
             ->addMediaConversion('responsive')
-            ->fit(Manipulations::FIT_MAX, 1200, 800)
+            ->fit(Fit::Max, 1200, 800)
             ->quality(75)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->format('webp')
             ->withResponsiveImages()
             ->performOnCollections('section-media')
             ->nonQueued();
@@ -64,5 +70,4 @@ class Section extends Model implements HasMedia
     {
         return $this->belongsTo(Page::class, 'page_id');
     }
-
 }

@@ -10,9 +10,21 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class MenuItem extends Model
 {
     use HasFactory;
-    protected $table = 'menu_items';
-    protected $fillable = ['menu_id', 'title', 'name', 'url', 'parent_id', 'order', 'created_at', 'updated_at'];
 
+    protected $table = 'menu_items';
+
+    protected $fillable = ['menu_id', 'title', 'name', 'url', 'parent_id', 'order'];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'order' => 'integer',
+    ];
+
+    /**
+     * Menu items nest arbitrarily deep, so each level pulls its own descendants.
+     */
     public function children(): HasMany
     {
         return $this->hasMany(MenuItem::class, 'parent_id')->with('children');
@@ -20,17 +32,11 @@ class MenuItem extends Model
 
     public function parent(): BelongsTo
     {
-        return $this->belongsTo(MenuItem::class);
+        return $this->belongsTo(MenuItem::class, 'parent_id');
     }
-
-    // public function allChildrens() {
-    //     return $this->children()->all();
-    // }
 
     public function menu(): BelongsTo
     {
-
         return $this->belongsTo(Menu::class);
-
     }
 }

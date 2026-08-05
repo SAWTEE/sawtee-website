@@ -2,59 +2,73 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasSeoMeta;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Spatie\Image\Manipulations;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Laravel\Scout\Searchable;
+use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Laravel\Scout\Searchable;
-use Laravel\Scout\Attributes\SearchUsingFullText;
-use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Spatie\Sluggable\HasSlug;
 use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model implements HasMedia
 {
-    use InteractsWithMedia;
     use HasFactory;
-    use Searchable;
+    use HasSeoMeta;
     use HasSlug;
-
-    // protected $with = ['media', 'tags'];
+    use InteractsWithMedia;
+    use Searchable;
 
     protected $fillable = [
-        "title",
-        "slug",
-        "content",
-        "excerpt",
-        "category_id",
-        "theme_id",
-        "author",
-        "genre",
-        "status",
-        "link",
-        "published_at",
-        "meta_title",
-        "meta_description",
+        'title',
+        'slug',
+        'content',
+        'excerpt',
+        'category_id',
+        'theme_id',
+        'author',
+        'genre',
+        'status',
+        'link',
+        'published_at',
+        'meta_title',
+        'meta_description',
     ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'published_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
+    /**
+     * @param  Builder<Post>  $query
+     */
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('status', 'published');
+    }
 
     /**
      * Get the indexable data array for the model.
      *
      * @return array<string, mixed>
      */
-
-    #[SearchUsingPrefix(["title", "author"])]
+    #[SearchUsingPrefix(['title', 'author'])]
     public function toSearchableArray(): array
     {
         return [
-            "title" => $this->title,
-            "author" => $this->author,
-            "excerpt" => $this->excerpt,
+            'title' => $this->title,
+            'author' => $this->author,
+            'excerpt' => $this->excerpt,
         ];
     }
 
@@ -63,7 +77,7 @@ class Post extends Model implements HasMedia
      */
     public function shouldBeSearchable(): bool
     {
-        return $this->status === "published";
+        return $this->status === 'published';
     }
 
     /**
@@ -72,42 +86,42 @@ class Post extends Model implements HasMedia
     public function getSlugOptions(): SlugOptions
     {
         return SlugOptions::create()
-            ->generateSlugsFrom("title")
-            ->saveSlugsTo("slug")
+            ->generateSlugsFrom('title')
+            ->saveSlugsTo('slug')
             ->startSlugSuffixFrom(2);
     }
 
     public function postContentFiles(): MorphMany
     {
-        return $this->morphMany(File::class, "fileable");
+        return $this->morphMany(File::class, 'fileable');
     }
 
-    public function registerMediaConversions(Media $media = null): void
+    public function registerMediaConversions(?Media $media = null): void
     {
         // @phpstan-ignore-next-line
-        $this->addMediaConversion("preview")
-            ->fit(Manipulations::FIT_MAX, 300, 200)
-            ->format(Manipulations::FORMAT_WEBP)
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 300, 200)
+            ->format('webp')
             ->quality(75)
             ->nonQueued();
 
         // @phpstan-ignore-next-line
-        $this->addMediaConversion("responsive")
-            ->fit(Manipulations::FIT_MAX, 1200, 800)
-            ->performOnCollections("post-featured-image")
+        $this->addMediaConversion('responsive')
+            ->fit(Fit::Max, 1200, 800)
+            ->performOnCollections('post-featured-image')
             ->quality(75)
-            ->format(Manipulations::FORMAT_WEBP)
+            ->format('webp')
             ->withResponsiveImages()
             ->nonQueued();
     }
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection("post-featured-image")->singleFile();
+        $this->addMediaCollection('post-featured-image')->singleFile();
 
-        $this->addMediaCollection("post-content-media");
+        $this->addMediaCollection('post-content-media');
 
-        $this->addMediaCollection("post-files")->singleFile();
+        $this->addMediaCollection('post-files')->singleFile();
     }
 
     public function category(): BelongsTo
@@ -122,11 +136,11 @@ class Post extends Model implements HasMedia
 
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class)->as("tags");
+        return $this->belongsToMany(Tag::class)->as('tags');
     }
 
     public function scopeIdDescending($query)
     {
-        return $query->orderBy("id", "DESC");
+        return $query->orderBy('id', 'DESC');
     }
 }

@@ -1,5 +1,7 @@
 /.phpunit.cache
 /bootstrap/ssr
+/bootstrap/cache/packages.php
+/bootstrap/cache/services.php
 /node_modules
 /public/hot
 /public/
@@ -26,5 +28,7 @@ Homestead.yaml
 npm-debug.log
 /.idea
 /.vscode
-.env.*
 *.sql
+lighthouse.json
+lighthouse.html
+.lighthouseci/

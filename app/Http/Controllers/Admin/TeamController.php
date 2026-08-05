@@ -1,92 +1,62 @@
 <?php
+
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TeamRequest;
 use App\Models\Team;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TeamController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        $teams = Team::with('media')->latest()->get();
         return Inertia::render('Backend/Team/Index', [
-            'teams' => $teams,
+            'teams' => Team::with('media')->ordered()->get(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): Response
     {
         return Inertia::render('Backend/Team/Create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(TeamRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'string|email|unique:teams|max:255',
-            'designation' => 'required|string|max:255',
-            'bio' => 'string|max:2000',
-            'order' => 'required|integer',
-            'image' => 'nullable|image|max:2048',
-        ]);
-        $team = Team::create($validated);
+        $team = Team::create($request->validated());
 
         if ($request->hasFile('image')) {
             $team->addMediaFromRequest('image')->toMediaCollection('avatar');
         }
 
-        return redirect()->route('admin.teams.index');
+        return to_route('admin.teams.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Team $team)
+    public function edit(Team $team): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Team $team)
-    {
-        // dd($team);
         return Inertia::render('Backend/Team/Edit', [
-            'team' => $team->load('media')
+            'team' => $team->load('media'),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Team $team)
+    public function update(TeamRequest $request, Team $team): RedirectResponse
     {
-        $team->update($request->all());
         if ($request->hasFile('image')) {
             $team->clearMediaCollection('avatar');
             $team->addMediaFromRequest('image')->toMediaCollection('avatar');
         }
-        return redirect()->route('admin.teams.index');
+
+        $team->update($request->validated());
+
+        return to_route('admin.teams.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Team $team)
+    public function destroy(Team $team): RedirectResponse
     {
         $team->delete();
-        return redirect()->route('admin.teams.index');
+
+        return to_route('admin.teams.index');
     }
 }

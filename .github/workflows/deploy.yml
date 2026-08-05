@@ -1,16 +1,88 @@
-name: Deploy Laravel to cPanel via SSH
+name: CI and Deploy
 
 on:
   push:
     branches:
       - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
+      - staging
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  deploy:
-    name: 🎉 Deploy to cPanel via SSH
+  # ---------------------------------------------------------------------------
+  # Pull requests + pushes: validate the app without touching production
+  # ---------------------------------------------------------------------------
+  ci:
+    name: CI (PHP ${{ matrix.php }} / Node)
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-php${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            composer-${{ runner.os }}-php${{ matrix.php }}-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare Laravel for tests
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
+          php artisan config:clear
+
+      - name: Run PHP tests
+        run: php artisan test
+        env:
+          APP_ENV: testing
+          ABUSEIP_ENABLED: false
+
+      - name: Set up Node.js
+        if: matrix.php == '8.4'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install npm dependencies and build assets
+        if: matrix.php == '8.4'
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build
+
+  # ---------------------------------------------------------------------------
+  # Production deploy: only on push to main (never on pull_request)
+  # ---------------------------------------------------------------------------
+  deploy:
+    name: Deploy to cPanel via SSH
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -18,98 +90,116 @@ jobs:
       - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          # Match composer.json (^8.3) and production-capable 8.4
+          php-version: '8.4'
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
           coverage: none
+          tools: composer:v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader --no-interaction
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
       - name: Generate .env file from GitHub secrets
         run: |
-          echo "APP_NAME='${{ secrets.APP_NAME }}'" > .env
-          echo "APP_ENV=${{ secrets.APP_ENV }}" >> .env
-          echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
-          echo "APP_DEBUG=${{ secrets.APP_DEBUG }}" >> .env
-          echo "APP_URL=${{ secrets.APP_URL }}" >> .env
-          echo "" >> .env
-          echo "LOG_CHANNEL=${{ secrets.LOG_CHANNEL }}" >> .env
-          echo "LOG_DEPRECATIONS_CHANNEL=${{ secrets.LOG_DEPRECATIONS_CHANNEL }}" >> .env
-          echo "LOG_LEVEL=${{ secrets.LOG_LEVEL }}" >> .env
-          echo "" >> .env
-          echo "DB_CONNECTION=${{ secrets.DB_CONNECTION }}" >> .env
-          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
-          echo "DB_PORT=${{ secrets.DB_PORT }}" >> .env
-          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-          echo "DB_PASSWORD='${{ secrets.DB_PASSWORD }}'" >> .env
-          echo "" >> .env
-          echo "BROADCAST_DRIVER=${{ secrets.BROADCAST_DRIVER }}" >> .env
-          echo "CACHE_DRIVER=${{ secrets.CACHE_DRIVER }}" >> .env
-          echo "FILESYSTEM_DISK=${{ secrets.FILESYSTEM_DISK }}" >> .env
-          echo "QUEUE_CONNECTION=${{ secrets.QUEUE_CONNECTION }}" >> .env
-          echo "SESSION_DRIVER=${{ secrets.SESSION_DRIVER }}" >> .env
-          echo "SESSION_LIFETIME=${{ secrets.SESSION_LIFETIME }}" >> .env
-          echo "" >> .env
-          echo "MEMCACHED_HOST=${{ secrets.MEMCACHED_HOST }}" >> .env
-          echo "" >> .env
-          echo "REDIS_HOST=${{ secrets.REDIS_HOST }}" >> .env
-          echo "REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}" >> .env
-          echo "REDIS_PORT=${{ secrets.REDIS_PORT }}" >> .env
-          echo "" >> .env
-          echo "MAIL_MAILER=${{ secrets.MAIL_MAILER }}" >> .env
-          echo "MAIL_HOST=${{ secrets.MAIL_HOST }}" >> .env
-          echo "MAIL_PORT=${{ secrets.MAIL_PORT }}" >> .env
-          echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
-          echo "MAIL_PASSWORD='${{ secrets.MAIL_PASSWORD }}'" >> .env
-          echo "MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}" >> .env
-          echo "MAIL_FROM_ADDRESS='${{ secrets.MAIL_FROM_ADDRESS }}'" >> .env
-          echo "MAIL_FROM_NAME='${{ secrets.MAIL_FROM_NAME }}'" >> .env
-          echo "" >> .env
-          echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env
-          echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env
-          echo "AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}" >> .env
-          echo "AWS_BUCKET=${{ secrets.AWS_BUCKET }}" >> .env
-          echo "AWS_USE_PATH_STYLE_ENDPOINT=${{ secrets.AWS_USE_PATH_STYLE_ENDPOINT }}" >> .env
-          echo "" >> .env
-          echo "PUSHER_APP_ID=${{ secrets.PUSHER_APP_ID }}" >> .env
-          echo "PUSHER_APP_KEY=${{ secrets.PUSHER_APP_KEY }}" >> .env
-          echo "PUSHER_APP_SECRET=${{ secrets.PUSHER_APP_SECRET }}" >> .env
-          echo "PUSHER_HOST=${{ secrets.PUSHER_HOST }}" >> .env
-          echo "PUSHER_PORT=${{ secrets.PUSHER_PORT }}" >> .env
-          echo "PUSHER_SCHEME=${{ secrets.PUSHER_SCHEME }}" >> .env
-          echo "PUSHER_APP_CLUSTER=${{ secrets.PUSHER_APP_CLUSTER }}" >> .env
-          echo "" >> .env
-          echo "VITE_APP_NAME='${{ secrets.APP_NAME }}'" >> .env
-          echo "VITE_PUSHER_APP_KEY=${{ secrets.VITE_PUSHER_APP_KEY }}" >> .env
-          echo "VITE_PUSHER_HOST=${{ secrets.VITE_PUSHER_HOST }}" >> .env
-          echo "VITE_PUSHER_PORT=${{ secrets.VITE_PUSHER_PORT }}" >> .env
-          echo "VITE_PUSHER_SCHEME=${{ secrets.VITE_PUSHER_SCHEME }}" >> .env
-          echo "VITE_PUSHER_APP_CLUSTER=${{ secrets.VITE_PUSHER_APP_CLUSTER }}" >> .env
+          cat > .env <<EOF
+          APP_NAME='${{ secrets.APP_NAME }}'
+          APP_ENV=${{ secrets.APP_ENV }}
+          APP_KEY=${{ secrets.APP_KEY }}
+          APP_DEBUG=${{ secrets.APP_DEBUG }}
+          APP_URL=${{ secrets.APP_URL }}
+          DEBUGBAR_ENABLED=false
+          ABUSEIP_ENABLED=true
+          ABUSEIP_STORAGE_COMPRESS=true
 
-      # Only run key:generate if APP_KEY is not already set
+          LOG_CHANNEL=${{ secrets.LOG_CHANNEL }}
+          LOG_DEPRECATIONS_CHANNEL=${{ secrets.LOG_DEPRECATIONS_CHANNEL }}
+          LOG_LEVEL=${{ secrets.LOG_LEVEL }}
+
+          DB_CONNECTION=${{ secrets.DB_CONNECTION }}
+          DB_HOST=${{ secrets.DB_HOST }}
+          DB_PORT=${{ secrets.DB_PORT }}
+          DB_DATABASE=${{ secrets.DB_DATABASE }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD='${{ secrets.DB_PASSWORD }}'
+
+          BROADCAST_DRIVER=${{ secrets.BROADCAST_DRIVER }}
+          CACHE_DRIVER=${{ secrets.CACHE_DRIVER }}
+          FILESYSTEM_DISK=${{ secrets.FILESYSTEM_DISK }}
+          QUEUE_CONNECTION=${{ secrets.QUEUE_CONNECTION }}
+          SESSION_DRIVER=${{ secrets.SESSION_DRIVER }}
+          SESSION_LIFETIME=${{ secrets.SESSION_LIFETIME }}
+
+          MEMCACHED_HOST=${{ secrets.MEMCACHED_HOST }}
+
+          REDIS_HOST=${{ secrets.REDIS_HOST }}
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
+          REDIS_PORT=${{ secrets.REDIS_PORT }}
+
+          MAIL_MAILER=${{ secrets.MAIL_MAILER }}
+          MAIL_HOST=${{ secrets.MAIL_HOST }}
+          MAIL_PORT=${{ secrets.MAIL_PORT }}
+          MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD='${{ secrets.MAIL_PASSWORD }}'
+          MAIL_ENCRYPTION=${{ secrets.MAIL_ENCRYPTION }}
+          MAIL_FROM_ADDRESS='${{ secrets.MAIL_FROM_ADDRESS }}'
+          MAIL_FROM_NAME='${{ secrets.MAIL_FROM_NAME }}'
+
+          AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
+          AWS_BUCKET=${{ secrets.AWS_BUCKET }}
+          AWS_USE_PATH_STYLE_ENDPOINT=${{ secrets.AWS_USE_PATH_STYLE_ENDPOINT }}
+
+          PUSHER_APP_ID=${{ secrets.PUSHER_APP_ID }}
+          PUSHER_APP_KEY=${{ secrets.PUSHER_APP_KEY }}
+          PUSHER_APP_SECRET=${{ secrets.PUSHER_APP_SECRET }}
+          PUSHER_HOST=${{ secrets.PUSHER_HOST }}
+          PUSHER_PORT=${{ secrets.PUSHER_PORT }}
+          PUSHER_SCHEME=${{ secrets.PUSHER_SCHEME }}
+          PUSHER_APP_CLUSTER=${{ secrets.PUSHER_APP_CLUSTER }}
+
+          VITE_APP_NAME='${{ secrets.APP_NAME }}'
+          VITE_PUSHER_APP_KEY=${{ secrets.VITE_PUSHER_APP_KEY }}
+          VITE_PUSHER_HOST=${{ secrets.VITE_PUSHER_HOST }}
+          VITE_PUSHER_PORT=${{ secrets.VITE_PUSHER_PORT }}
+          VITE_PUSHER_SCHEME=${{ secrets.VITE_PUSHER_SCHEME }}
+          VITE_PUSHER_APP_CLUSTER=${{ secrets.VITE_PUSHER_APP_CLUSTER }}
+          EOF
+          # Strip leading indentation from the heredoc body
+          sed -i 's/^[[:space:]]*//' .env
+
       - name: Generate application key if not set
         run: |
-          if [ -z "$APP_KEY" ] || [ "$APP_KEY" == "base64:base64:" ]; then
+          if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "base64:base64:" ]; then
             php artisan key:generate --force
           fi
         env:
           APP_KEY: ${{ secrets.APP_KEY }}
 
-      - name: Build assets (if using Laravel Mix)
+      - name: Build frontend assets
         run: |
-          if [ -f package.json ]; then
-            npm ci
-            npm run build
-          fi
+          npm ci
+          npm run build
 
-      - name: Remove unnecessary files
+      - name: Fetch and normalize self-hosted Google Fonts
+        run: |
+          php artisan google-fonts:fetch
+          php artisan google-fonts:normalize-urls
+
+      - name: Remove build-only files before upload
         run: |
           rm -rf node_modules
           rm -rf .git
           rm -rf .github
+          rm -f lighthouse.json lighthouse.html .phpunit.result.cache
 
-      - name: 📂 Upload files via SSH
+      - name: Upload application files via SSH
         uses: appleboy/scp-action@v1
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -118,8 +208,11 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           source: './*'
           target: ${{ secrets.SSH_TARGET_DIR }}
+          overwrite: true
+          # Keep remote files that are not in this upload (e.g. media uploads).
+          rm: false
 
-      - name: Create database backup and run migrations
+      - name: Post-deploy migrate, optimize, fonts
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -127,20 +220,11 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            # Navigate to the application directory
+            set -e
             cd ${{ secrets.SSH_TARGET_DIR }}
 
-            # Set proper permissions
-            # find . -type d -exec chmod 755 {} \;
-            # find . -type f -exec chmod 644 {} \;
-            # chmod -R 775 storage
-            # chmod -R 775 bootstrap/cache
-            # chmod -R 755 public
+            mkdir -p backups storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
 
-            # # Create backups directory if it doesn't exist
-            mkdir -p backups
-
-            # Create database backup with proper error handling
             echo "Creating database backup..."
             if command -v mysqldump >/dev/null 2>&1; then
               BACKUP_FILE="backups/backup_$(date +%Y%m%d_%H%M%S).sql"
@@ -152,69 +236,52 @@ jobs:
                           --triggers \
                           --no-tablespaces \
                           "${{ secrets.DB_DATABASE }}" > "$BACKUP_FILE" 2>/dev/null; then
-                echo "✅ Database backup created successfully: $BACKUP_FILE"
+                echo "✅ Database backup created: $BACKUP_FILE"
               else
-                echo "⚠️  Database backup failed, but continuing deployment..."
-                echo "This might be due to insufficient MySQL privileges."
+                echo "⚠️  Database backup failed, continuing deployment..."
               fi
             else
               echo "⚠️  mysqldump not available, skipping database backup"
             fi
 
-            # Install/update Composer dependencies on server
-            if [ -f composer.json ]; then
-              echo "Installing/updating Composer dependencies..."
-              composer install --no-dev --optimize-autoloader --no-interaction
+            echo "Installing Composer dependencies on server..."
+            composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+            echo "Clearing caches..."
+            php artisan optimize:clear || true
+
+            echo "Running migrations..."
+            php artisan migrate --force
+
+            echo "Fetching fonts with root-relative URLs..."
+            php artisan google-fonts:fetch
+            # Keep public/storage/fonts in sync when it is a real directory (not a symlink)
+            if [ -d public/storage/fonts ] && [ ! -L public/storage ]; then
+              mkdir -p public/storage/fonts
+              cp -R storage/app/public/fonts/. public/storage/fonts/
             fi
+            php artisan google-fonts:normalize-urls
 
-            # Clear any existing caches
-            echo "Clearing application caches..."
-            php artisan config:clear || echo "Config clear failed"
-            php artisan route:clear || echo "Route clear failed"
-            php artisan view:clear || echo "View clear failed"
-            php artisan cache:clear || echo "Cache clear failed"
-
-            # Check current migration status
-            echo "Checking current migration status..."
-            php artisan migrate:status
-
-            # Run migrations
-            echo "Running database migrations..."
-            if php artisan migrate --force; then
-              echo "✅ Migrations completed successfully"
+            if [ ! -e public/storage ]; then
+              php artisan storage:link
+            elif [ -L public/storage ]; then
+              echo "✅ public/storage symlink OK"
             else
-              echo "❌ Migration failed!"
-              exit 1
+              echo "⚠️  public/storage is a real directory (not a symlink); fonts synced + normalized"
             fi
 
-            # Optimize application
-            echo "Optimizing application..."
+            echo "Caching config/routes/views..."
             php artisan config:cache
             php artisan route:cache
             php artisan view:cache
-            php artisan google-fonts:fetch
-            # php artisan inertia:start-ssr
 
-            # Create storage link if it doesn't exist
-            if [ ! -L public/storage ]; then
-                php artisan storage:link
-            fi
+            # Ensure blocklist exists (scheduler should refresh daily)
+            php artisan abuseip:update || echo "⚠️  abuseip:update failed (network?); continuing"
 
-            # Test database connection
-            echo "Testing database connection..."
-            if php artisan tinker --execute="DB::connection()->getPdo(); echo 'Database connection successful';" 2>/dev/null; then
-              echo "✅ Database connection test passed"
-            else
-              echo "⚠️  Database connection test failed"
-            fi
-
-            # Final verification
-            echo "Performing final application verification..."
-            php artisan about || echo "Application info command failed"
-
+            php artisan about || true
             echo "🎉 Deployment completed successfully!"
 
-      - name: Health Check
+      - name: Health check
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -223,29 +290,8 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             cd ${{ secrets.SSH_TARGET_DIR }}
-
-            # Check if application is accessible
-            echo "Performing final health checks..."
-
-            # Check if .env exists
-            if [ -f .env ]; then
-              echo "✅ Environment file exists"
-            else
-              echo "❌ Environment file missing"
-            fi
-
-            # Check storage permissions
-            if [ -w storage ]; then
-              echo "✅ Storage directory is writable"
-            else
-              echo "❌ Storage directory is not writable"
-            fi
-
-            # Check if vendor directory exists
-            if [ -d vendor ]; then
-              echo "✅ Vendor directory exists"
-            else
-              echo "❌ Vendor directory missing"
-            fi
-
+            test -f .env && echo "✅ .env exists" || (echo "❌ .env missing" && exit 1)
+            test -w storage && echo "✅ storage writable" || (echo "❌ storage not writable" && exit 1)
+            test -d vendor && echo "✅ vendor exists" || (echo "❌ vendor missing" && exit 1)
+            test -f public/build/manifest.json && echo "✅ Vite manifest present" || echo "⚠️  Vite manifest missing"
             echo "Health check completed!"
