@@ -7,6 +7,23 @@ SAWTEE CMS is a custom content management system built using [Laravel](https://l
 
 The app has two parts, a [backend](https://ankursingh.com.np/admin) necessary to manage content for the website and a [frontend](https://ankursingh.com.np)(website).
 
+## Documentation
+
+Editor and website guides live in a **separate VitePress site** under [`docs/`](./docs/). It is meant to be hosted on **GitHub Pages** (not on the Laravel/cPanel host):
+
+- Published URL (after enabling Pages): `https://SAWTEE.github.io/sawtee-website/`
+- Local preview: `npm install --prefix docs && npm run docs:dev`
+- Workflow: [`.github/workflows/deploy-docs.yml`](./.github/workflows/deploy-docs.yml)
+
+In the GitHub repo: **Settings → Pages → Source: GitHub Actions**.
+
+### Environment files
+
+| File | Purpose |
+| --- | --- |
+| `.env.example` | Fresh Laravel defaults for local installs (`cp .env.example .env`) |
+| `.env.staging.example` | Staging template (`cp .env.staging.example .env.staging`) — no secrets |
+| `.env` / `.env.staging` | Real credentials — **gitignored**, never commit |
 
 # Setup local development
 
@@ -94,7 +111,7 @@ Staging enables **`INERTIA_SSR_ENABLED=true`** and uploads the Vite SSR bundle (
 
 1. Create subdomain e.g. `staging.sawtee.org` → document root `…/staging.sawtee.org/public` (or symlink `public` as the docroot).
 2. Create a **separate MySQL database** for staging (never point staging at production DB).
-3. Add GitHub Actions secrets prefixed with `STAGING_` (see workflow): SSH host/user/key/port/target dir, APP_URL/KEY, DB_*, mail, and optional `STAGING_INERTIA_SSR_URL` (default `http://127.0.0.1:13714`).
+3. Add GitHub Actions secrets prefixed with `STAGING_` (see workflow): SSH host/user/key/port/target dir, APP_URL/KEY, DB_*, mail, and optional `STAGING_INERTIA_SSR_URL` (default `http://127.0.0.1:13714`). Use [`.env.staging.example`](./.env.staging.example) as the checklist of values (never commit a real `.env.staging`).
 4. Create a GitHub **Environment** named `staging` (optional protection rules).
 5. **Node for SSR (required):** classic shared PHP hosting cannot keep Inertia SSR alive. You need one of:
    - cPanel **Setup Node.js App** (Application root = Laravel root, startup via `php artisan inertia:start-ssr` or a wrapper), or

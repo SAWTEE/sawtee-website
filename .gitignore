@@ -3,6 +3,9 @@
 /bootstrap/cache/packages.php
 /bootstrap/cache/services.php
 /node_modules
+/docs/node_modules
+/docs/.vitepress/dist
+/docs/.vitepress/cache
 /public/hot
 /public/
 /publications
@@ -18,7 +21,12 @@
 .DS_Store
 .env
 .env.backup
-.env.*
+.env.local
+.env.staging
+.env.production
+.env.*.local
+!.env.example
+!.env.staging.example
 .phpunit.result.cache
 .php-cs-fixer.php
 .php-cs-fixer.cache
