@@ -249,7 +249,32 @@ jobs:
             fi
 
             echo "Installing Composer dependencies on server..."
-            composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+            # Non-interactive SSH on cPanel often lacks composer on PATH
+            COMPOSER_BIN="$(command -v composer 2>/dev/null || true)"
+            if [ -z "$COMPOSER_BIN" ]; then
+              for c in "$HOME/bin/composer" /usr/local/bin/composer /opt/cpanel/composer/bin/composer; do
+                if [ -x "$c" ]; then
+                  COMPOSER_BIN="$c"
+                  break
+                fi
+              done
+            fi
+            if [ -z "$COMPOSER_BIN" ] && [ -f composer.phar ]; then
+              COMPOSER_BIN="php composer.phar"
+            fi
+            if [ -z "$COMPOSER_BIN" ]; then
+              echo "Composer not on PATH; downloading composer.phar..."
+              php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+              php composer-setup.php --quiet --install-dir=. --filename=composer.phar
+              rm -f composer-setup.php
+              COMPOSER_BIN="php composer.phar"
+            fi
+            echo "Using Composer: $COMPOSER_BIN"
+            if [ "$COMPOSER_BIN" = "php composer.phar" ]; then
+              php composer.phar install --no-dev --optimize-autoloader --no-interaction --no-progress
+            else
+              "$COMPOSER_BIN" install --no-dev --optimize-autoloader --no-interaction --no-progress
+            fi
 
             echo "Clearing caches..."
             php artisan optimize:clear || true
