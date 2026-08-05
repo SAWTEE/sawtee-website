@@ -10,7 +10,10 @@ beforeEach(function () {
 });
 
 test('whitelisted ips bypass the abuse ip blocklist', function () {
-    config(['abuseip.whitelist' => ['127.0.0.1']]);
+    config([
+        'abuseip.enabled' => true,
+        'abuseip.whitelist' => ['127.0.0.1'],
+    ]);
     Cache::forever('abuse_ips', [ip2long('127.0.0.1')]);
 
     $request = Request::create('/__abuse-test', 'GET', server: ['REMOTE_ADDR' => '127.0.0.1']);
@@ -22,6 +25,7 @@ test('whitelisted ips bypass the abuse ip blocklist', function () {
 
 test('blocked ipv4 addresses receive a 403 response', function () {
     config([
+        'abuseip.enabled' => true,
         'abuseip.whitelist' => [],
         'abuseip.storage.compress' => true,
     ]);
@@ -38,6 +42,7 @@ test('blocked ipv4 addresses receive a 403 response', function () {
 
 test('corrupt abuse ip json does not cause a 500', function () {
     config([
+        'abuseip.enabled' => true,
         'abuseip.whitelist' => [],
         'abuseip.storage.compress' => true,
         'abuseip.storage.path' => storage_path('framework/cache/abuseip-test-corrupt.json'),
