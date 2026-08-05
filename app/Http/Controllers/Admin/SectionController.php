@@ -3,98 +3,89 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\Section;
+use App\Http\Requests\Admin\SectionRequest;
 use App\Models\Page;
+use App\Models\Section;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class SectionController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        $sections = Section::with('page', 'parent')->orderBy('id', 'DESC')->get();
+        $sections = Section::with(['page:id,name', 'parent:id,title'])
+            ->latest('id')
+            ->get();
+
         return Inertia::render('Backend/Section/Index', [
-            'sections' => $sections
-        ]);
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        $pages = Page::all();
-        return Inertia::render('Backend/Section/Create', ['sections' => Section::all(), 'pages' => $pages ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'type' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'parent_id' => 'nullable|numeric|exists:sections,id',
-            'page_id' => 'nullable|numeric|exists:pages,id',
-            'order' => 'nullable|numeric',
-            'image' => 'nullable|image|mimes:png,jpg,jpeg,webp|max:2048'
-        ]);
-        $section = Section::create($validatedData);
-        if ($request->image) {
-            $section->addMediaFromRequest('image')->toMediaCollection('section-media');
-        }
-        return redirect()->route('admin.sections.index');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Section $section)
-    {
-       //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Section $section)
-    {
-        $pages = Page::all();
-        $sections = Section::all();
-        return Inertia::render('Backend/Section/Edit', [
-            'section' => $section->load('media'),
             'sections' => $sections,
-            'pages' => $pages
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Section $section)
+    public function create(): Response
     {
+        return Inertia::render('Backend/Section/Create', [
+            'sections' => $this->sectionOptions(),
+            'pages' => $this->pageOptions(),
+        ]);
+    }
+
+    public function store(SectionRequest $request): RedirectResponse
+    {
+        $section = Section::create($request->validated());
+
         if ($request->hasFile('image')) {
             $section->addMediaFromRequest('image')->toMediaCollection('section-media');
         }
-        if (!$request->image) {
+
+        return to_route('admin.sections.index');
+    }
+
+    public function edit(Section $section): Response
+    {
+        return Inertia::render('Backend/Section/Edit', [
+            'section' => $section->load('media'),
+            'sections' => $this->sectionOptions(),
+            'pages' => $this->pageOptions(),
+        ]);
+    }
+
+    public function update(SectionRequest $request, Section $section): RedirectResponse
+    {
+        if ($request->hasFile('image')) {
+            $section->clearMediaCollection('section-media');
+            $section->addMediaFromRequest('image')->toMediaCollection('section-media');
+        } elseif ($request->mediaWasCleared()) {
             $section->clearMediaCollection('section-media');
         }
-        $section->update($request->all());
-        return redirect()->route('admin.sections.index');
+
+        $section->update($request->validated());
+
+        return to_route('admin.sections.index');
+    }
+
+    public function destroy(Section $section): RedirectResponse
+    {
+        $section->delete();
+
+        return to_route('admin.sections.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return Collection<int, Section>
      */
-    public function destroy(Section $section)
+    private function sectionOptions(): Collection
     {
-        $section->delete();
-        return redirect()->route('admin.sections.index');
+        return Section::select(['id', 'title', 'page_id'])->orderBy('title')->get();
+    }
+
+    /**
+     * @return Collection<int, Page>
+     */
+    private function pageOptions(): Collection
+    {
+        return Page::select(['id', 'name', 'slug'])->orderBy('name')->get();
     }
 }

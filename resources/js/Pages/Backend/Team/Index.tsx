@@ -3,8 +3,8 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
-import { useToast } from '@/components/ui/use-toast';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import { useToast } from '@/hooks/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 import React from 'react';
 

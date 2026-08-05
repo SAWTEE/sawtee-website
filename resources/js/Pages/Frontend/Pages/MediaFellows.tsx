@@ -7,7 +7,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { mediaFellowshipData } from '@/lib/data';
+import { mediaFellowshipData } from '@/lib/media-fellowship';
 
 export default function MediaFellows() {
   const sortByYear = mediaFellowshipData.sort(
@@ -91,7 +91,7 @@ export const Fellow = ({ mediaFellow }: any) => {
                       target="_blank"
                       className="underline hover:underline-offset-2"
                       href={link}
-                    >
+                     rel="noopener noreferrer">
                       {title}
                     </a>
                   </li>

@@ -20,7 +20,7 @@ const ResearchArchive = ({ posts = undefined }: any) => {
             </h2>
             <Glassbox className={'w-full rounded-xl p-4 text-left'}>
               {tagitem[1].map((researchItem: any, idx: any) => (
-                <ReasearchItem
+                <ResearchItem
                   key={researchItem.id}
                   skipTrail={idx !== tagitem[1].length - 1}
                   className={
@@ -35,11 +35,11 @@ const ResearchArchive = ({ posts = undefined }: any) => {
                           ? `/Research_Reports/${researchItem.file.name}`
                           : researchItem.link
                       }
-                    >
+                     rel="noopener noreferrer">
                       {researchItem.title}
                     </a>
                   </h3>
-                </ReasearchItem>
+                </ResearchItem>
               ))}
             </Glassbox>
           </div>
@@ -51,7 +51,7 @@ const ResearchArchive = ({ posts = undefined }: any) => {
 
 export default ResearchArchive;
 
-const ReasearchItem = ({ skipTrail = undefined, children = undefined, className = '' }: any) => {
+const ResearchItem = ({ skipTrail = undefined, children = undefined, className = '' }: any) => {
   return (
     <div className={cn('flex items-start', className)}>
       <div className="relative mr-4 flex flex-col items-center justify-center">
@@ -59,7 +59,7 @@ const ReasearchItem = ({ skipTrail = undefined, children = undefined, className 
           <FileText className="h-5 w-5 translate-x-1/2 translate-y-1/2 text-zinc-600 dark:text-zinc-400" />
         </div>
         {skipTrail ? (
-          <div className="h-12 w-[2px] bg-zinc-200 dark:bg-zinc-700" />
+          <div className="h-12 w-0.5 bg-zinc-200 dark:bg-zinc-700" />
         ) : null}
       </div>
       <div className="">{children}</div>

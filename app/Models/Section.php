@@ -19,6 +19,13 @@ class Section extends Model implements HasMedia
 
     protected $fillable = ['title', 'type', 'description', 'parent_id', 'page_id', 'link', 'order'];
 
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'order' => 'integer',
+    ];
+
     public function children(): HasMany
     {
         return $this->hasMany(Section::class, 'parent_id');

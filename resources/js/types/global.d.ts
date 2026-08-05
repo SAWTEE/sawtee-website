@@ -1,5 +1,4 @@
 import type { SharedProps } from './index';
-import type { CSSProperties, ReactNode } from 'react';
 
 export {};
 
@@ -21,30 +20,6 @@ declare global {
 
   interface Window {
     axios: typeof import('axios').default;
-  }
-
-  namespace JSX {
-    interface IntrinsicElements {
-      'swiper-container': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
-          init?: string | boolean;
-          navigation?: string | boolean;
-          pagination?: string | boolean;
-          scrollbar?: string | boolean;
-          class?: string;
-          style?: CSSProperties;
-        },
-        HTMLElement
-      >;
-      'swiper-slide': React.DetailedHTMLProps<
-        React.HTMLAttributes<HTMLElement> & {
-          class?: string;
-          style?: CSSProperties;
-          children?: ReactNode;
-        },
-        HTMLElement
-      >;
-    }
   }
 }
 

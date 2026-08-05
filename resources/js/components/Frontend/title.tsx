@@ -1,20 +1,32 @@
 import { FadeText } from '../shared/FadeText';
 import { cn } from '@/lib/utils';
 
-const Title = ({ title = undefined, underlineStyles = undefined }: any) => {
+type TitleProps = {
+  title?: string;
+  underlineStyles?: string;
+  as?: 'h1' | 'h2' | 'h3' | 'h4';
+};
+
+const Title = ({
+  title,
+  underlineStyles,
+  as: Tag = 'h2',
+}: TitleProps) => {
+  if (!title) {
+    return null;
+  }
+
   return (
     <div className="relative mb-8 md:mb-10">
-      <FadeText
-        text={title}
-        className="flex items-center text-xl font-bold tracking-tight text-primary md:text-2xl lg:text-3xl xl:text-4xl"
-      >
-        {title}
-      </FadeText>
+      <Tag className="flex items-center text-xl font-bold tracking-tight text-primary md:text-2xl lg:text-3xl xl:text-4xl">
+        <FadeText text={title} className="block" />
+      </Tag>
       <div
         className={cn(
-          'mt-2 h-1 w-14 bg-gradient-to-l from-theme-50 to-theme-300 dark:from-theme-300 dark:to-theme-500 md:h-1.5 md:w-16',
+          'mt-2 h-1 w-14 bg-linear-to-l from-theme-50 to-theme-300 dark:from-theme-300 dark:to-theme-500 md:h-1.5 md:w-16',
           underlineStyles
         )}
+        aria-hidden
       />
     </div>
   );

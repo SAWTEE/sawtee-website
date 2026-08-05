@@ -19,7 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function CreateSliderForm({ open = undefined, setOpen = undefined, pages = undefined }: any) {

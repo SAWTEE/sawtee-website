@@ -1,4 +1,4 @@
-import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import {
   Accordion,
   AccordionContent,
@@ -16,7 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { slugify } from '@/lib/helpers';
 import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';

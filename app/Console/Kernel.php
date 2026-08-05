@@ -12,6 +12,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        // Daily AbuseIP blocklist refresh (rahulalam31/Laravel-Abuse-IP).
         $schedule->command('abuseip:update')->daily();
     }
 

@@ -55,7 +55,7 @@ export function TypeFilter({ data = undefined, value = undefined, label = undefi
       }}
       value={value}
     >
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-45">
         <SelectValue placeholder={`Filter using ${label}`} />
       </SelectTrigger>
       <SelectContent>

@@ -3,138 +3,105 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\ArticleRequest;
 use App\Models\Article;
 use App\Models\Publication;
 use App\Models\Tag;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class ArticleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        $articles = Article::with(['tags'])->latest()->get();
-
         return Inertia::render('Backend/Articles/Index', [
-            'articles' => $articles,
+            'articles' => Article::with(['tags', 'media'])->latest()->get(),
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): Response
     {
-        $volumes = Publication::whereHas('category', function ($query) {
-            $query->where('slug', 'trade-insight');
-        })->orderByDesc('id')->get();
-
-        // dd($volumes);
-        return Inertia::render('Backend/Articles/Create', ['tags' => Tag::all(), 'volumes' => $volumes]);
+        return Inertia::render('Backend/Articles/Create', [
+            'tags' => $this->tagOptions(),
+            'volumes' => $this->tradeInsightVolumes(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(ArticleRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'string',
-            'publication_id' => 'required|numeric|exists:publications,id',
-            'subtitle' => 'string|nullable',
-            'excerpt' => 'string|nullable',
-            'meta_title' => 'string|nullable',
-            'meta_description' => 'string|nullable',
-            'author' => 'string|nullable',
-            'published_at' => 'nullable|date',
-            'content' => 'string|nullable',
-        ]);
-        $validated['title'] = Str::of($validated['title'])
-            ->squish();
+        $validated = $request->validated();
+        $validated['title'] = Str::of($validated['title'])->squish()->toString();
         $validated['meta_title'] = $validated['title'];
+
         $article = Article::create($validated);
 
-        if ($request->has('tags')) {
-            $article->tags()->attach($request->tags);
-        }
+        $article->tags()->sync($validated['tags'] ?? []);
+
         if ($request->hasFile('image')) {
             $article->addMediaFromRequest('image')->toMediaCollection('article-featured-image');
         }
 
-        $article->save();
-
-        return redirect()->route('admin.articles.index');
+        return to_route('admin.articles.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Article $article)
+    public function edit(Article $article): Response
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Article $article)
-    {
-        $volumes = Publication::whereHas('category', function ($query) {
-            $query->where('slug', 'trade-insight');
-        })->get();
-
         return Inertia::render('Backend/Articles/Edit', [
-            'article' => $article,
-            'tags' => Tag::all(),
-            'volumes' => $volumes,
+            'article' => $article->load(['tags', 'media']),
+            'tags' => $this->tagOptions(),
+            'volumes' => $this->tradeInsightVolumes(),
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Article $article)
+    public function update(ArticleRequest $request, Article $article): RedirectResponse
     {
-        $validated = $request->validate([
-            'title' => 'string',
-            'publication_id' => 'required|numeric|exists:publications,id',
-            'subtitle' => 'string|nullable',
-            'excerpt' => 'string|nullable',
-            'meta_title' => 'string|nullable',
-            'meta_description' => 'string|nullable',
-            'author' => 'string|nullable',
-            'published_at' => 'nullable|date',
-            'content' => 'string|nullable',
-        ]);
-        $validated['title'] = Str::of($validated['title'])
-            ->squish();
+        $validated = $request->validated();
+        $validated['title'] = Str::of($validated['title'])->squish()->toString();
         $validated['meta_title'] = $validated['title'];
 
         if ($request->has('tags')) {
-            $article->tags()->attach($request->tags);
+            $article->tags()->sync($validated['tags'] ?? []);
         }
+
         if ($request->hasFile('image')) {
             $article->addMediaFromRequest('image')->toMediaCollection('article-featured-image');
         }
 
         $article->update($validated);
-        $article->save();
 
         return to_route('admin.articles.index');
+    }
 
+    public function destroy(Article $article): RedirectResponse
+    {
+        $article->delete();
+
+        return to_route('admin.articles.index');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return Collection<int, Tag>
      */
-    public function destroy(Article $article)
+    private function tagOptions(): Collection
     {
-        //
-        $article->delete();
-        // return redirect()->route('admin.articles.index');
+        return Tag::select(['id', 'name'])->orderBy('name')->get();
+    }
+
+    /**
+     * Trade Insight issues are the only publications an article can belong to; the
+     * select only needs the volume label.
+     *
+     * @return Collection<int, Publication>
+     */
+    private function tradeInsightVolumes(): Collection
+    {
+        return Publication::without(['media', 'file'])
+            ->select(['id', 'volume'])
+            ->whereHas('category', fn ($query) => $query->where('slug', 'trade-insight'))
+            ->orderByDesc('id')
+            ->get();
     }
 }

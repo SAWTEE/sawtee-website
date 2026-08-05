@@ -1,6 +1,6 @@
-import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { TrendBadge } from '@/components/Backend/TrendBadge';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Head } from '@inertiajs/react';
 import React from 'react';
 import {
@@ -53,7 +53,7 @@ export default function Dashboard({
       <Head title="Dashboard" />
 
       <div className="flex flex-col gap-4">
-        <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-3 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:grid-cols-3 lg:px-6">
+        <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-3 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:grid-cols-3 lg:px-6">
           <StatsCard
             title="posts"
             stat={posts}
@@ -139,7 +139,7 @@ function StatsCard({
 function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-4 lg:px-6">
-      <Card className="@container/card *:data-[slot=card]:shadow-xs bg-gradient-to-t from-primary/5 to-card">
+      <Card className="@container/card *:data-[slot=card]:shadow-xs bg-linear-to-t from-primary/5 to-card">
         <CardHeader>
           <CardDescription className="uppercase">Views today</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums">
@@ -147,7 +147,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card">
+      <Card className="@container/card bg-linear-to-t from-primary/5 to-card">
         <CardHeader>
           <CardDescription className="uppercase">Views this week</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums">
@@ -155,7 +155,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card">
+      <Card className="@container/card bg-linear-to-t from-primary/5 to-card">
         <CardHeader>
           <CardDescription className="uppercase">
             Views this month
@@ -165,7 +165,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="@container/card bg-gradient-to-t from-primary/5 to-card lg:col-span-1">
+      <Card className="@container/card bg-linear-to-t from-primary/5 to-card lg:col-span-1">
         <CardHeader>
           <CardDescription className="uppercase">Top pages</CardDescription>
           <CardTitle className="text-base font-semibold">This month</CardTitle>

@@ -1,5 +1,5 @@
 import { Head, Link } from '@inertiajs/react';
-import MainLayout from '../../components/Layouts/MainLayout';
+import MainLayout from '@/layouts/MainLayout';
 
 const ErrorPage = ({ status = undefined }: any) => {
   // @ts-ignore allowlist-migration

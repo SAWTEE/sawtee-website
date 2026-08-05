@@ -1,4 +1,4 @@
-import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import { Head } from '@inertiajs/react';
 import CreatePageForm from './Partials/CreatePageForm';

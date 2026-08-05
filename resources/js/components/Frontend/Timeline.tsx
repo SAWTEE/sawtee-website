@@ -16,7 +16,7 @@ export default function VerticalTimeline({ items = undefined }: any) {
                 {formatDate(item.published_at, 'MMM dd')}
               </time>
               <ListItem className="mx-0 max-w-md">
-                <a target="_blank" href={file ? file.original_url : ''}>
+                <a target="_blank" href={file ? file.original_url : ''} rel="noopener noreferrer">
                   <h3 className="md:text-md font-sans text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg">
                     {item.title}
                   </h3>

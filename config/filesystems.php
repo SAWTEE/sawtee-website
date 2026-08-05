@@ -37,43 +37,44 @@ return [
         "public" => [
             "driver" => "local",
             "root" => storage_path("app/public"),
-            "url" => env("APP_URL") . "/storage",
+            // Root-relative so Google Fonts CSS stays same-origin across
+            // www / apex / staging hosts (absolute APP_URL caused CORS font failures).
+            "url" => "/storage",
             "visibility" => "public",
             "throw" => false,
         ],
         "media" => [
             "driver" => "local",
             "root" => public_path("media-library"),
-            "url" => env("APP_URL") . "/media-library",
+            "url" => rtrim((string) env("APP_URL", ""), "/") . "/media-library",
             "visibility" => "public",
             "throw" => false,
         ],
-
         "publications" => [
             "driver" => "local",
             "root" => public_path("publications"),
-            "url" => env("APP_URL") . "/publications",
+            "url" => rtrim((string) env("APP_URL", ""), "/") . "/publications",
             "visibility" => "public",
             "throw" => false,
         ],
         "research" => [
             "driver" => "local",
             "root" => public_path("Research_Report"),
-            "url" => env("APP_URL") . "/Research_Report",
+            "url" => rtrim((string) env("APP_URL", ""), "/") . "/Research_Report",
             "visibility" => "public",
             "throw" => false,
         ],
         "events" => [
             "driver" => "local",
             "root" => public_path("Featured_Events"),
-            "url" => env("APP_URL") . "/Featured_Events",
+            "url" => rtrim((string) env("APP_URL", ""), "/") . "/Featured_Events",
             "visibility" => "public",
             "throw" => false,
         ],
         "tmp" => [
             "driver" => "local",
             "root" => public_path("tmp"),
-            "url" => env("APP_URL") . "/tmp",
+            "url" => rtrim((string) env("APP_URL", ""), "/") . "/tmp",
             "visibility" => "public",
             "throw" => false,
         ],

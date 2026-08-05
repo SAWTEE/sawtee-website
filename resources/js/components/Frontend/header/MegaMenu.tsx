@@ -3,8 +3,10 @@ import { Separator } from '@/components/ui/separator';
 import { aboutMenuData } from '@/lib/data';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
-import Globeanime from '../globeanime';
+import { lazy, Suspense } from 'react';
 import type { MenuItem } from '@/types';
+
+const Globeanime = lazy(() => import('../globeanime'));
 
 const ListVariants = {
   open: {
@@ -75,7 +77,9 @@ const AboutMegaMenu = ({
       </div>
       <div className="place-center col-span-4 mx-auto md:col-span-3">
         <div className="relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-bgDarker bg-cover bg-right-bottom bg-no-repeat dark:bg-[rgba(0,0,0,0.4)]">
-          <Globeanime darkMode={theme === 'dark'} />
+          <Suspense fallback={null}>
+            <Globeanime darkMode={theme === 'dark'} />
+          </Suspense>
           <p className="flex h-full w-full items-center justify-center self-center p-6 text-justify text-xs leading-normal text-secondary-foreground xl:text-sm xl:leading-6">
             {introText}
           </p>

@@ -3,166 +3,176 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\PublicationRequest;
 use App\Models\Category;
 use App\Models\File;
 use App\Models\Publication;
 use App\Models\Tag;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PublicationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
-        $publications = null;
-        $category = Category::where('name', 'publications')->where('parent_id', null)->first();
-        $categoriesIDs = $category->getCategoriesIds($category);
-        $categories = [];
-        foreach ($categoriesIDs as $id) {
-            $categories[] = Category::find($id);
-        }
-        $subcategory = $request->category_id ? Category::where('type', 'publication')->find($request->category_id) : $category->children()->first();
-        $childrenIDs = $subcategory->children->pluck('id')->toArray();
-        $parent_and_subcategory_ids = array_merge([$subcategory->id], $childrenIDs);
+        $root = Category::with('children.children.children')
+            ->where('name', 'publications')
+            ->whereNull('parent_id')
+            ->firstOrFail();
 
-        $publications = Publication::with(['category', 'tags'])
-            ->whereIn('category_id', $parent_and_subcategory_ids)
-            ->orderByDesc('id')
+        $subcategory = $request->category_id
+            ? Category::ofType('publication')->with('children:id,parent_id')->findOrFail($request->category_id)
+            : $root->children->first();
+
+        $categoryIds = $subcategory
+            ? [$subcategory->id, ...$subcategory->children->pluck('id')]
+            : [];
+
+        // The listing table shows no cover or attachment, so the model's default
+        // media/file eager loads are skipped here.
+        $publications = Publication::without(['media', 'file'])
+            ->with(['category:id,name,slug', 'tags'])
+            ->whereIn('category_id', $categoryIds)
+            ->latest('id')
             ->get();
 
-        // dd($categories);
         return Inertia::render('Backend/Publication/Index', [
             'publications' => $publications,
-            'categories' => $categories,
-            'categoryID' => $subcategory->id,
+            'categories' => $this->flattenTree($root),
+            'categoryID' => $subcategory?->id,
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function create(): Response
     {
-        $categories = Category::where('type', 'publication')->get()->all();
-
-        return Inertia::render('Backend/Publication/Create', ['categories' => $categories, 'tags' => Tag::all()]);
+        return Inertia::render('Backend/Publication/Create', [
+            'categories' => $this->categoryOptions(),
+            'tags' => $this->tagOptions(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(PublicationRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'category_id' => 'required|numeric|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:pubications|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'volume' => 'nullable|string|max:255',
-            'volume_slug' => 'nullable|string|unique:pubications|max:255',
-            'description' => 'nullable|string|max:2000',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:2048',
-            'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx|max:10240',
-        ]);
-        $slug = $validated['title'].' '.$validated['subtitle'];
+        $validated = $request->validated();
 
-        $validated['slug'] = Str::slug($slug, '-');
-        $publication = Publication::create($validated);
-
-        if (! $request->image) {
-            $publication->clearMediaCollection('publication_featured_image');
-        }
+        $publication = new Publication($validated);
+        $publication->slug = $this->buildSlug($validated);
+        $publication->save();
 
         if ($request->hasFile('image')) {
             $publication->addMediaFromRequest('image')->toMediaCollection('publication_featured_image');
         }
+
+        $publication->tags()->sync($validated['tags'] ?? []);
+
+        $this->replaceFile($publication, $request->file('file'));
+
+        return to_route('admin.publications.index');
+    }
+
+    public function edit(Publication $publication): Response
+    {
+        return Inertia::render('Backend/Publication/Edit', [
+            'publication' => $publication->load(['media', 'file', 'tags']),
+            'categories' => $this->categoryOptions(),
+            'tags' => $this->tagOptions(),
+        ]);
+    }
+
+    public function update(PublicationRequest $request, Publication $publication): RedirectResponse
+    {
+        $validated = $request->validated();
+
         if ($request->has('tags')) {
-            $publication->tags()->attach($request->tags);
+            $publication->tags()->sync($validated['tags'] ?? []);
         }
 
-        if ($request->file('file')) {
-            $name = $request->file('file')->getClientOriginalName();
-            $path = $request->file('file')->move(public_path('publications'), $name);
-            $file = new File();
-            $file->path = $path;
-            $file->name = $name;
-            $publication->file()->save($file);
+        if ($request->hasFile('image')) {
+            $publication->addMediaFromRequest('image')->toMediaCollection('publication_featured_image');
+        } elseif ($request->mediaWasCleared()) {
+            $publication->clearMediaCollection('publication_featured_image');
         }
+
+        $this->replaceFile($publication, $request->file('file'));
+
+        $publication->fill($validated);
+        $publication->slug = $this->buildSlug($validated);
+        $publication->save();
+
+        return to_route('admin.publications.index');
+    }
+
+    public function destroy(Publication $publication): RedirectResponse
+    {
+        $publication->delete();
 
         return to_route('admin.publications.index');
     }
 
     /**
-     * Display the specified resource.
+     * @param  array<string, mixed>  $validated
      */
-    public function show(Publication $publication)
+    private function buildSlug(array $validated): string
     {
+        return Str::slug(trim($validated['title'].' '.($validated['subtitle'] ?? '')));
+    }
+
+    private function replaceFile(Publication $publication, ?UploadedFile $upload): void
+    {
+        if (! $upload) {
+            return;
+        }
+
+        $publication->file()->delete();
+
+        $name = $upload->getClientOriginalName();
+        $upload->move(public_path('publications'), $name);
+
+        $file = new File;
+        $file->name = $name;
+        $file->path = public_path('publications/'.$name);
+
+        $publication->file()->save($file);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * The category filter lists the "publications" root followed by its whole subtree,
+     * which is already loaded, so no extra query per node is needed.
+     *
+     * @return array<int, Category>
      */
-    public function edit(Publication $publication)
+    private function flattenTree(Category $category): array
     {
-        $categories = Category::where('type', 'publication')->get();
+        $flattened = [$category];
 
-        return Inertia::render('Backend/Publication/Edit', ['publication' => $publication->load('media', 'file', 'tags'), 'categories' => $categories, 'tags' => Tag::all()]);
+        foreach ($category->children as $child) {
+            $flattened = [...$flattened, ...$this->flattenTree($child)];
+        }
+
+        return $flattened;
     }
 
     /**
-     * Update the specified resource in storage.
+     * @return Collection<int, Category>
      */
-    public function update(Request $request, Publication $publication)
+    private function categoryOptions(): Collection
     {
-        $validated = $request->validate([
-            'category_id' => 'required|numeric|exists:categories,id',
-            'title' => 'required|string|max:255',
-            'slug' => 'nullable|string|unique:pubications|max:255',
-            'subtitle' => 'nullable|string|max:255',
-            'volume' => 'nullable|string|max:255',
-            'volume_slug' => 'nullable|string|unique:pubications|max:255',
-
-            'description' => 'nullable|string|max:2000',
-        ]);
-        $slug = $validated['title'].' '.$validated['subtitle'];
-        $publication->slug = $slug;
-        $validated['slug'] = Str::slug($slug, '-');
-
-        if ($request->has('tags')) {
-            $publication->tags()->sync($request->tags);
-        }
-        if (! $request->image) {
-            $publication->clearMediaCollection('publication_featured_image');
-        }
-
-        if ($request->hasFile('image')) {
-            $publication->addMediaFromRequest('image')->toMediaCollection('publication_featured_image');
-        }
-        if ($request->file('file')) {
-            $publication->file()->delete();
-            $name = $request->file('file')->getClientOriginalName();
-            $path = $request->file('file')->move(public_path('publications'), $name);
-            $file = new File();
-            $file->path = $path;
-            $file->name = $name;
-            $publication->file()->save($file);
-        }
-        $publication->update($request->all());
-
-        return redirect()->route('admin.publications.index');
+        return Category::ofType('publication')
+            ->select(['id', 'name', 'slug', 'parent_id'])
+            ->orderBy('name')
+            ->get();
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @return Collection<int, Tag>
      */
-    public function destroy(Publication $publication)
+    private function tagOptions(): Collection
     {
-        $publication->delete();
-
-        return redirect()->route('admin.publications.index');
+        return Tag::select(['id', 'name'])->orderBy('name')->get();
     }
 }

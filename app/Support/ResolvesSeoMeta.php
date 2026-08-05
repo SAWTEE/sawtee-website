@@ -37,12 +37,27 @@ class ResolvesSeoMeta
 
         return [
             'title' => $resolvedTitle,
-            'description' => $resolvedDescription,
-            'image' => $image ?? '/assets/logo-sawtee.webp',
+            'description' => $resolvedDescription !== ''
+                ? $resolvedDescription
+                : 'South Asia Watch on Trade, Economics and Environment (SAWTEE) — research, dialogue, and advocacy on trade and development.',
+            'image' => $this->absoluteUrl($image ?? '/assets/logo-sawtee.webp'),
             'url' => $url ?? url()->current(),
             'type' => $type,
             'jsonLd' => $jsonLd,
         ];
+    }
+
+    private function absoluteUrl(?string $path): ?string
+    {
+        if ($path === null || $path === '') {
+            return null;
+        }
+
+        if (str_starts_with($path, 'http://') || str_starts_with($path, 'https://')) {
+            return $path;
+        }
+
+        return url($path);
     }
 
     /**

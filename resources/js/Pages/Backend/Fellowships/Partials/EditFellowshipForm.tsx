@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function EditFellowshipForm({ open = undefined, setOpen = undefined, fellowship = undefined }: any) {

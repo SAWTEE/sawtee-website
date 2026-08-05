@@ -59,45 +59,46 @@ Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)->nam
 Route::get('/category/{categories:slug}/{subcategory?}/{post?}/{article?}', [FrontendController::class, 'category'])->name('category.show');
 Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
 
-Route::middleware(['auth', 'verified', 'abuseip'])->prefix('admin')->as('admin.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::resource('/categories', CategoryController::class);
-    Route::resource('/themes', ThemeController::class);
-    Route::resource('/tags', TagController::class);
-    Route::resource('/sections', SectionController::class);
-    Route::resource('/publications', PublicationController::class);
-    Route::resource('/research', ResearchController::class);
-    Route::resource('/sliders', SliderController::class);
-    Route::resource('/slides', SlideController::class);
-    Route::resource('/pages', PageController::class);
-    Route::resource('/home-page-sections', HomePageSectionController::class);
-    Route::resource('/teams', TeamController::class);
+    // Resources managed entirely from their index screen through dialogs.
+    Route::resource('/categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/themes', ThemeController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/tags', TagController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/fellowships', FellowshipController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/members', MemberController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/institutes', InstituteController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/slides', SlideController::class)->only(['store', 'update', 'destroy']);
+
+    Route::resource('/sections', SectionController::class)->except('show');
+    Route::resource('/publications', PublicationController::class)->except('show');
+    Route::resource('/research', ResearchController::class)->except('show');
+    Route::resource('/sliders', SliderController::class)->except('show');
+    Route::resource('/pages', PageController::class)->except('show');
+    Route::resource('/home-page-sections', HomePageSectionController::class)->except('show');
+    Route::resource('/teams', TeamController::class)->except('show');
+    Route::resource('/articles', ArticleController::class)->except('show');
+    Route::resource('/fellows', FellowController::class)->except('show');
+    Route::resource('/published-stories', PublishedStoryController::class)->except('show');
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::get('/posts/edit/{id}', [PostController::class, 'edit'])->name('posts.edit');
+    Route::get('/posts/edit/{post}', [PostController::class, 'edit'])->name('posts.edit');
     Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
-    Route::patch('/posts/update/{id}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('/posts/delete/{id}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::patch('/posts/update/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::delete('/posts/delete/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
 
     Route::post('/post/uploadmedia', [PostController::class, 'uploadmedia'])->name('post.upload');
     Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
     Route::get('/menus/manage-menus/{id?}', [MenuController::class, 'manage'])->name('manage.menus');
     Route::post('/menus/create', [MenuController::class, 'store'])->name('create.menu');
     Route::patch('/menus/update', [MenuController::class, 'update'])->name('update.menu');
-    Route::delete('/menus/delete/{id}', [MenuController::class, 'delete'])->name('delete.menu');
+    Route::delete('/menus/delete/{menu}', [MenuController::class, 'delete'])->name('delete.menu');
     Route::post('/menus/add-menu-items-to-menu', [MenuController::class, 'addMenuItemToMenu'])->name('addMenuItems.menu');
-    Route::patch('/menus/edit-menu-item/{id}', [MenuController::class, 'editMenuItem'])->name('editMenuItem.menu');
-    Route::delete('/menus/delete-menu-item/{id}', [MenuController::class, 'deleteMenuItem'])->name('deleteMenuItem.menu');
-    Route::post('/menus/add-custom-link', [MenuController::class, 'addCustomLink'])->name('addCustomLink.menu');
-    Route::resource('/articles', ArticleController::class);
-    Route::resource('/fellowships', FellowshipController::class);
-    Route::resource('/fellows', FellowController::class);
-    Route::resource('/published-stories', PublishedStoryController::class);
-    Route::resource('/members', MemberController::class);
-    Route::resource('/institutes', InstituteController::class);
+    Route::patch('/menus/edit-menu-item/{menuItem}', [MenuController::class, 'editMenuItem'])->name('editMenuItem.menu');
+    Route::delete('/menus/delete-menu-item/{menuItem}', [MenuController::class, 'deleteMenuItem'])->name('deleteMenuItem.menu');
 });

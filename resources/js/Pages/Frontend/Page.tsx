@@ -1,8 +1,8 @@
 import WebsiteHead from '@/components/Frontend/Head';
 import type { FrontendPageProps, Page as CmsPage, SeoMeta } from '@/types';
 import type { ComponentType, ReactNode } from 'react';
-import MainLayout from '../../components/Layouts/MainLayout';
-import PageLayout from '../../components/Layouts/PageLayout';
+import MainLayout from '@/layouts/MainLayout';
+import PageLayout from '@/layouts/PageLayout';
 import Contact from './Pages/Contact';
 import DefaultPage from './Pages/DefaultPage';
 import MediaFellows from './Pages/MediaFellows';

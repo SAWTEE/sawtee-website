@@ -10,10 +10,15 @@ export function FadeText({
     hidden: { opacity: 0 },
     show: { opacity: 1, transition: { type: 'spring' } },
   },
-  text = undefined}: any) {
+  text,
+}: {
+  direction?: 'up' | 'down' | 'left' | 'right';
+  className?: string;
+  text?: string;
+  framerProps?: any;
+}) {
   const directionOffset = useMemo(() => {
     const map = { up: 10, down: -10, left: -10, right: 10 };
-    // @ts-ignore allowlist-migration
     return map[direction];
   }, [direction]);
 
@@ -38,13 +43,14 @@ export function FadeText({
   }, [directionOffset, axis, framerProps]);
 
   return (
-    <motion.div
+    <motion.span
+      className={className}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true }}
       variants={FADE_ANIMATION_VARIANTS}
     >
-      <motion.span className={className}>{text}</motion.span>
-    </motion.div>
+      {text}
+    </motion.span>
   );
 }

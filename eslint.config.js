@@ -38,9 +38,25 @@ export default [
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      'no-console': 'warn',
+      // TypeScript already checks undefined identifiers.
+      'no-undef': 'off',
+      // Admin/debug logging is intentional in several forms.
+      'no-console': 'off',
       'no-unused-vars': 'off',
       '@typescript-eslint/no-unused-vars': 'off',
+      'react/no-unknown-property': [
+        'error',
+        {
+          ignore: [
+            // Inertia <Head> uniqueness keys
+            'head-key',
+            // cmdk / shadcn command input wrapper marker
+            'cmdk-input-wrapper',
+            // Swiper web components use `class` instead of className
+            'class',
+          ],
+        },
+      ],
       'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     },
   },

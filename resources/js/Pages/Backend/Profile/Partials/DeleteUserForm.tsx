@@ -1,6 +1,6 @@
 import DangerButton from '@/components/Backend/DangerButton';
 import InputError from '@/components/Backend/InputError';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 

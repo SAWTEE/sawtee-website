@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 
 export default function EditPublishedStory({ fellows, publishedStory }: any) {
@@ -137,7 +137,7 @@ export default function EditPublishedStory({ fellows, publishedStory }: any) {
             <div className="mt-1 flex flex-wrap gap-2">
               {data.images.map((image: any) => {
                 return (
-                  <div className="aspect-square w-[6rem]">
+                  <div className="aspect-square w-24">
                     <img src={image.original_url} alt={image.file_name} />
                   </div>
                 );

@@ -2,7 +2,7 @@ import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 import EditSlideForm from './EditSlideForm';
@@ -59,7 +59,7 @@ const Slides = ({ slides = undefined, slider = undefined }: any) => {
       header: 'Slide Image',
       cell: ({ row }: any) => {
         return (
-          <div className="w-[180px] rounded-md border-2 border-slate-700">
+          <div className="w-45 rounded-md border-2 border-slate-700">
             <AspectRatio ratio={5 / 2}>
               <img
                 src={row.original.media[0]?.preview_url}

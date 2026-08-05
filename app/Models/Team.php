@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Image\Enums\Fit;
@@ -15,6 +16,21 @@ class Team extends Model implements HasMedia
     use InteractsWithMedia;
 
     public $fillable = ['name', 'email', 'designation', 'bio', 'order'];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'order' => 'integer',
+    ];
+
+    /**
+     * @param  Builder<Team>  $query
+     */
+    public function scopeOrdered(Builder $query): void
+    {
+        $query->orderBy('order')->orderBy('name');
+    }
 
     public function registerMediaConversions(?Media $media = null): void
     {

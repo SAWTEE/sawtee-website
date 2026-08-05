@@ -27,7 +27,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 export default function CreateCategoryForm({ open = undefined, setOpen = undefined, categories = undefined }: any) {

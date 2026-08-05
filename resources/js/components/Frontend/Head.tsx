@@ -6,6 +6,38 @@ type WebsiteHeadProps = Partial<SeoMeta> & {
   children?: ReactNode;
 };
 
+const DEFAULT_DESCRIPTION =
+  'South Asia Watch on Trade, Economics and Environment (SAWTEE) — research, dialogue, and advocacy on trade and development.';
+
+const DEFAULT_IMAGE = '/assets/logo-sawtee.webp';
+
+function toAbsoluteUrl(path: string | null | undefined): string {
+  if (!path) {
+    return toAbsoluteUrl(DEFAULT_IMAGE);
+  }
+
+  if (/^https?:\/\//i.test(path)) {
+    return path;
+  }
+
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return new URL(path, window.location.origin).href;
+  }
+
+  return path;
+}
+
+function withBrandTitle(title: string): string {
+  const trimmed = title.trim();
+  if (!trimmed) {
+    return 'SAWTEE';
+  }
+  if (/^SAWTEE\b/i.test(trimmed)) {
+    return trimmed;
+  }
+  return `SAWTEE | ${trimmed}`;
+}
+
 const WebsiteHead = ({
   title,
   description,
@@ -15,21 +47,21 @@ const WebsiteHead = ({
   jsonLd,
   children,
 }: WebsiteHeadProps) => {
-  const resolvedTitle = title ?? 'SAWTEE';
-  const resolvedDescription = description ?? '';
-  const resolvedImage = image ?? '/assets/logo-sawtee.webp';
-  const resolvedUrl = url ?? '/';
+  const resolvedTitle = title?.trim() || 'SAWTEE';
+  const resolvedDescription =
+    description?.trim() || DEFAULT_DESCRIPTION;
+  const resolvedImage = toAbsoluteUrl(image ?? DEFAULT_IMAGE);
+  const resolvedUrl = toAbsoluteUrl(url ?? '/');
+  const brandedTitle = withBrandTitle(resolvedTitle);
 
   return (
     <Head>
       <title>{resolvedTitle}</title>
-      <meta httpEquiv="imagetoolbar" content="no" />
       <meta head-key="description" name="description" content={resolvedDescription} />
-      <meta head-key="imagetoolbar" httpEquiv="imagetoolbar" content="no" />
       <meta
         head-key="og:title"
         property="og:title"
-        content={`SAWTEE | ${resolvedTitle}`}
+        content={brandedTitle}
       />
       <meta head-key="og:type" property="og:type" content={type} />
       <meta
@@ -49,7 +81,21 @@ const WebsiteHead = ({
         name="twitter:card"
         content="summary_large_image"
       />
-      <meta property="fb:app_id" content="SAWTEENP" />
+      <meta
+        head-key="twitter:title"
+        name="twitter:title"
+        content={brandedTitle}
+      />
+      <meta
+        head-key="twitter:description"
+        name="twitter:description"
+        content={resolvedDescription}
+      />
+      <meta
+        head-key="twitter:image"
+        name="twitter:image"
+        content={resolvedImage}
+      />
       <meta name="twitter:site" content="@sawteebnp" />
       {jsonLd ? (
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>

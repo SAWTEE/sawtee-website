@@ -119,7 +119,7 @@ export default {
       },
       fontFamily: {
         sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-        serif: ['Inter', ...defaultTheme.fontFamily.serif],
+        serif: ['Figtree', ...defaultTheme.fontFamily.serif],
       },
       keyframes: {
         'accordion-down': {

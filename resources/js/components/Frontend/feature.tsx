@@ -38,7 +38,7 @@ export default function FeaturedSection({
                 {feature.title}
               </h3>
               <div
-                className="mt-3 h-1 w-14 bg-gradient-to-l from-theme-50 to-theme-300 dark:from-theme-300 dark:to-theme-500"
+                className="mt-3 h-1 w-14 bg-linear-to-l from-theme-50 to-theme-300 dark:from-theme-300 dark:to-theme-500"
                 aria-hidden
               />
               {feature.description ? (
@@ -54,8 +54,10 @@ export default function FeaturedSection({
                   className="mt-6 inline-flex max-w-max items-center gap-1.5 text-sm font-medium text-theme-700 underline underline-offset-4 transition-colors hover:text-theme-600 hover:underline-offset-[6px] dark:text-theme-300 dark:hover:text-theme-200"
                 >
                   Learn more
+                  <span className="sr-only">
+                    {` about ${feature.title} (opens in a new tab)`}
+                  </span>
                   <ArrowUpRight className="h-4 w-4" aria-hidden />
-                  <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               ) : null}
             </div>

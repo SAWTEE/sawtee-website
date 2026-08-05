@@ -82,7 +82,7 @@ const ArchivePost = ({ post = undefined, showFallbackImage = undefined }: any) =
                 ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
                 : `/category/${post.category.slug}/${post.slug}`
             }
-            text="Read more"
+            text={`Read more: ${post.title}`}
           />
         </div>
       </div>

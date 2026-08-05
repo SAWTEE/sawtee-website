@@ -20,7 +20,14 @@ class Research extends Model implements HasMedia
     use InteractsWithMedia;
     use Searchable;
 
-    protected $fillable = ['title', 'subtitle', 'description', 'year', 'link', 'meta_title', 'meta_description'];
+    protected $fillable = ['title', 'slug', 'subtitle', 'description', 'year', 'link', 'meta_title', 'meta_description'];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'year' => 'integer',
+    ];
 
     /**
      * Get the indexable data array for the model.
@@ -71,10 +78,5 @@ class Research extends Model implements HasMedia
     public function file(): MorphOne
     {
         return $this->morphOne(File::class, 'fileable');
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
     }
 }

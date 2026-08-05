@@ -10,14 +10,18 @@ class AbuseIp
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $ip = $request->ip();
-        $whitelistedIps = config('abuseip.whitelist', []);
-
-        if (in_array($ip, $whitelistedIps, true)) {
+        if (! config('abuseip.enabled', true)) {
             return $next($request);
         }
 
-        if (is_abused_ip($ip)) {
+        $ip = $request->ip();
+        $whitelistedIps = config('abuseip.whitelist', []);
+
+        if (is_string($ip) && in_array($ip, $whitelistedIps, true)) {
+            return $next($request);
+        }
+
+        if (is_string($ip) && is_abused_ip($ip)) {
             abort(403, 'Your IP address has been blocked');
         }
 

@@ -1,5 +1,5 @@
 import WebsiteHead from '@/components/Frontend/Head';
-import MainLayout from '@/components/Layouts/MainLayout';
+import MainLayout from '@/layouts/MainLayout';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostMeta from '@/components/Frontend/post/post-meta';
 import { formatDate } from '@/lib/helpers';
@@ -89,13 +89,15 @@ export default function Article({
               className={'rounded-xl'}
               src={featured_image}
               srcSet={srcSet}
+              alt={title}
+              priority
             />
           )}
         </div>
 
         <div className="w-full">
-          <div className="post-body mx-auto grid max-w-7xl gap-6 pt-10 leading-8 lg:grid-cols-12">
-            <div className="post-content max-w-[60ch] text-lg lg:col-span-8 lg:ml-14">
+          <div className="post-body mx-auto max-w-7xl pt-10 leading-8">
+            <div className="max-w-[60ch] text-lg lg:ml-14">
               <PostMeta
                 className="py-2"
                 author={article.author}
@@ -103,46 +105,50 @@ export default function Article({
                 readingTime={readingTime}
                 tags={article.tags}
               />
-              <div className="post-content prose-base text-lg text-secondary-foreground">
-                <div
-                  dangerouslySetInnerHTML={{
-                    __html: content,
-                  }}
-                />
-              </div>
-              <div className="sharethis-sticky-share-buttons"></div>
             </div>
-            <aside className="sticky top-32 h-full w-full lg:col-span-4">
-              <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none">
-                <SimpleList
-                  className={'border-none px-8'}
-                  heading={'Related Articles'}
-                >
-                  {relatedArticles?.map((post: any) => {
-                    return (
-                      <li className="group mb-4" key={post.id}>
-                        <Link
-                          className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
-                          href={`/trade-insight/${volume.volume}/${post.slug}`}
-                        >
-                          <p className="lg:text-md text-sm leading-5">
-                            {post.title}
+            <div className="grid gap-6 lg:grid-cols-12">
+              <div className="post-content max-w-[60ch] text-lg lg:col-span-8 lg:ml-14">
+                <div className="post-content prose-base text-lg text-secondary-foreground">
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: content,
+                    }}
+                  />
+                </div>
+                <div className="sharethis-sticky-share-buttons"></div>
+              </div>
+              <aside className="w-full self-start lg:sticky lg:top-32 lg:col-span-4">
+                <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none">
+                  <SimpleList
+                    className={'border-none px-8'}
+                    heading={'Related Articles'}
+                  >
+                    {relatedArticles?.map((post: any) => {
+                      return (
+                        <li className="group mb-4" key={post.id}>
+                          <Link
+                            className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                            href={`/trade-insight/${volume.volume}/${post.slug}`}
+                          >
+                            <p className="lg:text-md text-sm leading-5">
+                              {post.title}
+                            </p>
+                          </Link>
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            {formatDate(post.published_at)}
                           </p>
-                        </Link>
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          {formatDate(post.published_at)}
-                        </p>
-                      </li>
-                    );
-                  })}
-                  {/* <ExploreButton
+                        </li>
+                      );
+                    })}
+                    {/* <ExploreButton
           text={`More articles`}
           link={link ?? `${array[0].category.slug / array[0].slug}`}
           className="p-0"
         /> */}
-                </SimpleList>
-              </Glassbox>
-            </aside>
+                  </SimpleList>
+                </Glassbox>
+              </aside>
+            </div>
           </div>
         </div>
       </div>

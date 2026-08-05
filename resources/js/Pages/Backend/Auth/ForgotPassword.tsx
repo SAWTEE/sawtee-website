@@ -2,7 +2,7 @@ import type { FormEvent } from 'react';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
-import GuestLayout from '@/components/Layouts/GuestLayout';
+import GuestLayout from '@/layouts/GuestLayout';
 import { Head, useForm } from '@inertiajs/react';
 
 type ForgotPasswordProps = { status?: string };

@@ -1,7 +1,7 @@
 import WebsiteHead from '@/components/Frontend/Head';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostPreviewCard from '@/components/Frontend/PostPreviewCard';
-import MainLayout from '@/components/Layouts/MainLayout';
+import MainLayout from '@/layouts/MainLayout';
 import { Input } from '@/components/ui/input';
 import { router } from '@inertiajs/react';
 import type { FrontendSearchProps } from '@/types';

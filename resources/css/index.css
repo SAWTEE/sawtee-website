@@ -210,21 +210,6 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
     border-radius: 6px;
 }
 
-@keyframes scaleProgress {
-    0% {
-        transform: scaleX(0%);
-        height: 0;
-    }
-    1% {
-        transform: scaleX(1%);
-        height: 0.25rem;
-    }
-
-    100% {
-        transform: scaleX(100%);
-    }
-}
-
 .progress {
     height: 0.25rem;
     background-color: #006181;
@@ -233,11 +218,12 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
     left: 0;
     width: 100%;
     z-index: 50;
-    transform-origin: 0 50%;
+    transform: scaleX(0);
+    transform-origin: left center;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-    animation: scaleProgress auto linear;
-    animation-timeline: scroll(root);
+    pointer-events: none;
+    will-change: transform;
 }
 
 body {
@@ -287,7 +273,7 @@ main {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--fonts-sans);
+    font-family: Figtree, ui-sans-serif, system-ui, sans-serif;
 }
 
 .scroll-container::-webkit-scrollbar {
@@ -512,4 +498,16 @@ swiper-container {
   .animation-pause {
     animation-play-state: paused;
   }
+}
+
+/* Larger hit area for Swiper pagination bullets (Lighthouse target-size) */
+.featured-blog-swiper .swiper-pagination-bullet {
+  position: relative;
+  margin: 0 6px !important;
+}
+
+.featured-blog-swiper .swiper-pagination-bullet::before {
+  content: '';
+  position: absolute;
+  inset: -10px;
 }

@@ -2,10 +2,10 @@ import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelpe
 
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/components/Layouts/AuthenticatedLayout';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { Head, useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 import CreateMenu from './Partials/CreateMenu';

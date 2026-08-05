@@ -4,8 +4,8 @@ import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
-import GuestLayout from '@/components/Layouts/GuestLayout';
-import { useToast } from '@/components/ui/use-toast';
+import GuestLayout from '@/layouts/GuestLayout';
+import { useToast } from '@/hooks/use-toast';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 type LoginProps = { status?: string; canResetPassword?: boolean };

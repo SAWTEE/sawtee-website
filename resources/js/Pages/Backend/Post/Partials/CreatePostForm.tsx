@@ -28,7 +28,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import React from 'react';
@@ -252,7 +252,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                 return (
                   <div
                     key={item}
-                    className="flex w-[auto] items-center space-x-2"
+                    className="flex w-auto items-center space-x-2"
                   >
                     <RadioGroupItem value={item} id={item} />
                     <Label className="capitalize" htmlFor={item}>
@@ -286,7 +286,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                     <QuestionMarkCircledIcon className="h-3 w-3" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    Add author name, if multple authors use comma seperated
+                    Add author name, if multiple authors use comma separated
                     format. Eg: Paras Kharel, Dikshya Singh, Kshitiz Dahal
                   </TooltipContent>
                 </Tooltip>

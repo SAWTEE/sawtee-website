@@ -2,8 +2,8 @@ import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import { Fragment } from 'react';
 import '../../../../css/our-team.css';
-import MainLayout from '@/components/Layouts/MainLayout';
-import PageLayout from '@/components/Layouts/PageLayout';
+import MainLayout from '@/layouts/MainLayout';
+import PageLayout from '@/layouts/PageLayout';
 import TeamMember from '../TeamMember';
 
 const TeamsArchive = ({ category = undefined, teams = undefined, featured_image = undefined, srcSet = undefined }: any) => {

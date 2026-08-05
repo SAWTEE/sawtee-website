@@ -142,7 +142,7 @@ const Globeanime = ({ darkMode = false }: any) => {
     <div
       ref={ref}
       id="functions-hero"
-      className="absolute inset-0 -left-28 top-4 aspect-[978/678] w-[150%] sm:-left-32 sm:-top-2 md:-left-44 md:w-[150%] lg:-left-10 lg:-top-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
+      className="absolute inset-0 -left-28 top-4 aspect-978/678 w-[150%] sm:-left-32 sm:-top-2 md:-left-44 md:w-[150%] lg:-left-10 lg:-top-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
       {/* Animated svgs in globe */}
       {svgs.map((s: any) => (
@@ -195,7 +195,7 @@ const Globeanime = ({ darkMode = false }: any) => {
         </div>
       ))}
       <div className="absolute left-[51.15%] top-[10%] h-[20%] w-px overflow-hidden">
-        <span className="delay-1200 animate-slide-in absolute inset-0 h-full w-full bg-gradient-to-t from-current to-transparent" />
+        <span className="delay-1200 animate-slide-in absolute inset-0 h-full w-full bg-linear-to-t from-current to-transparent" />
       </div>
       {/* Globe background */}
       <img

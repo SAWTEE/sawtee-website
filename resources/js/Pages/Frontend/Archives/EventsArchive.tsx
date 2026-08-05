@@ -43,7 +43,7 @@ const EventsArchive = ({ posts = undefined, ...rest }: any) => {
                 <ExploreButton
                   className="px-0"
                   link={`/category/${category.slug}/${slug}`}
-                  text="Read more"
+                  text={`Read more: ${title}`}
                 />
               </div>
               <img

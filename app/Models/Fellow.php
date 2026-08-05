@@ -16,8 +16,6 @@ class Fellow extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $with = ['fellowship', 'media'];
-
     protected $fillable = [
         'name',
         'fellowship_id',
@@ -28,12 +26,12 @@ class Fellow extends Model implements HasMedia
 
     public function published_stories(): HasMany
     {
-        return $this->HasMany(PublishedStory::class);
+        return $this->hasMany(PublishedStory::class);
     }
 
     public function fellowship(): BelongsTo
     {
-        return $this->BelongsTo(Fellowship::class);
+        return $this->belongsTo(Fellowship::class);
     }
 
     public function registerMediaConversions(?Media $media = null): void

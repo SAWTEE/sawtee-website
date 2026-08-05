@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasSeoMeta;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,8 +26,6 @@ class Post extends Model implements HasMedia
     use InteractsWithMedia;
     use Searchable;
 
-    // protected $with = ['media', 'tags'];
-
     protected $fillable = [
         'title',
         'slug',
@@ -42,6 +41,21 @@ class Post extends Model implements HasMedia
         'meta_title',
         'meta_description',
     ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'published_at' => 'datetime:Y-m-d H:i:s',
+    ];
+
+    /**
+     * @param  Builder<Post>  $query
+     */
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('status', 'published');
+    }
 
     /**
      * Get the indexable data array for the model.

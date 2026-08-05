@@ -1,10 +1,8 @@
 import type { MediaItem, Post, Publication } from '@/types';
 import { Link } from '@inertiajs/react';
 import type { CSSProperties, ReactNode } from 'react';
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { register } from 'swiper/element/bundle';
-import 'swiper/css';
-import 'swiper/css/pagination';
 
 type FeaturedPublication = Publication & {
   subtitle?: string | null;
@@ -19,79 +17,7 @@ type FeaturedPublicationsProps = {
   blogPosts?: Post[];
 };
 
-export const FeaturedPublications = ({
-  publications,
-  blogPosts,
-}: FeaturedPublicationsProps) => {
-  return (
-    <div className="rounded-md border border-borderColor/80 bg-white px-4 py-5 shadow-sm dark:bg-bgDarker sm:px-5 sm:py-6">
-      <PublicationList
-        heading="Featured publications"
-        items={publications}
-        kind="publication"
-      />
-
-      {blogPosts && blogPosts.length > 0 ? (
-        <>
-          <div
-            className="my-5 border-t border-borderColor/70 dark:border-white/10"
-            aria-hidden
-          />
-          <BlogPostsSlider posts={blogPosts} />
-        </>
-      ) : null}
-    </div>
-  );
-};
-
 type ListKind = 'publication' | 'post';
-
-function PublicationList({
-  heading,
-  items,
-  kind,
-}: {
-  heading: string;
-  items: FeaturedPublication[] | undefined;
-  kind: ListKind;
-}) {
-  if (!items?.length) {
-    return null;
-  }
-
-  const sorted = [...items].sort((a, b) => {
-    const aTime =
-      typeof a.created_at === 'number'
-        ? a.created_at
-        : Date.parse(String(a.created_at ?? 0));
-    const bTime =
-      typeof b.created_at === 'number'
-        ? b.created_at
-        : Date.parse(String(b.created_at ?? 0));
-    return aTime - bTime;
-  });
-
-  return (
-    <div>
-      <SectionHeading>{heading}</SectionHeading>
-      <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
-        {sorted.map(item => {
-          const media = resolveMedia(item, kind);
-          const href = resolveHref(item, kind);
-
-          return (
-            <li key={item.id} className="group py-3 first:pt-0 last:pb-0">
-              <ItemLink kind={kind} href={href}>
-                <ListCopy title={item.title} subtitle={item.subtitle} />
-                {media ? <ListThumb src={media} alt={item.title} /> : null}
-              </ItemLink>
-            </li>
-          );
-        })}
-      </ul>
-    </div>
-  );
-}
 
 type SwiperElement = HTMLElement & {
   initialize?: () => void;
@@ -100,10 +26,60 @@ type SwiperElement = HTMLElement & {
   };
 };
 
-function BlogPostsSlider({ posts }: { posts: Post[] }) {
+export const FeaturedPublications = ({
+  publications,
+  blogPosts,
+}: FeaturedPublicationsProps) => {
+  const sortedPublications = useMemo(
+    () => sortByCreatedAt(publications ?? []),
+    [publications]
+  );
+
+  return (
+    <div className="rounded-md border border-borderColor/80 bg-white px-4 py-6 shadow-sm dark:bg-bgDarker sm:px-5 sm:py-7">
+      {sortedPublications.length > 0 ? (
+        <FeaturedItemsSlider
+          heading="Featured publications"
+          ariaLabel="Featured publications carousel"
+          kind="publication"
+          items={sortedPublications}
+        />
+      ) : null}
+
+      {blogPosts && blogPosts.length > 0 ? (
+        <>
+          {sortedPublications.length > 0 ? (
+            <div
+              className="my-6 border-t border-borderColor/70 dark:border-white/10"
+              aria-hidden
+            />
+          ) : null}
+          <FeaturedItemsSlider
+            heading="Blogs and articles"
+            ariaLabel="Blogs and articles carousel"
+            kind="post"
+            items={blogPosts}
+          />
+        </>
+      ) : null}
+    </div>
+  );
+};
+
+function FeaturedItemsSlider({
+  heading,
+  ariaLabel,
+  kind,
+  items,
+}: {
+  heading: string;
+  ariaLabel: string;
+  kind: ListKind;
+  items: Array<FeaturedPublication | Post>;
+}) {
   const swiperRef = useRef(null);
-  const canSlide = posts.length > 1;
-  const postIds = posts.map(post => post.id).join(',');
+  const canSlide = items.length > 1;
+  const itemIds = items.map(item => item.id).join(',');
 
   useEffect(() => {
     register();
@@ -137,8 +113,8 @@ function BlogPostsSlider({ posts }: { posts: Post[] }) {
       },
       a11y: {
         enabled: true,
-        containerMessage: 'Blogs and articles carousel',
-        paginationBulletMessage: 'Go to article {{index}}',
+        containerMessage: ariaLabel,
+        paginationBulletMessage: 'Go to slide {{index}}',
       },
     });
 
@@ -147,37 +123,43 @@ function BlogPostsSlider({ posts }: { posts: Post[] }) {
     return () => {
       el.swiper?.destroy(true, true);
     };
-  }, [canSlide, postIds]);
+  }, [ariaLabel, canSlide, itemIds]);
 
   return (
-    <section aria-roledescription="carousel" aria-label="Blogs and articles">
-      <SectionHeading>Blogs and articles</SectionHeading>
+    <section aria-roledescription="carousel" aria-label={ariaLabel}>
+      <SectionHeading>{heading}</SectionHeading>
       <swiper-container
         init="false"
         ref={swiperRef}
-        class="featured-blog-swiper w-full"
+        class={
+          kind === 'publication'
+            ? 'featured-publication-swiper w-full'
+            : 'featured-blog-swiper w-full'
+        }
         style={
           {
             '--swiper-pagination-color': 'hsl(var(--theme-color))',
             '--swiper-pagination-bullet-inactive-color':
               'hsl(var(--muted-foreground))',
             '--swiper-pagination-bullet-inactive-opacity': '0.4',
-            '--swiper-pagination-bullet-horizontal-gap': '3px',
-            '--swiper-pagination-bullet-size': '6px',
+            '--swiper-pagination-bullet-horizontal-gap': '8px',
+            '--swiper-pagination-bullet-size': '10px',
+            '--swiper-pagination-bullet-width': '10px',
+            '--swiper-pagination-bullet-height': '10px',
             '--swiper-pagination-bottom': '0px',
-            paddingBottom: canSlide ? '1.5rem' : undefined,
+            paddingBottom: canSlide ? '1.75rem' : undefined,
           } as CSSProperties
         }
       >
-        {posts.map(post => {
-          const media = resolveMedia(post, 'post');
-          const href = resolveHref(post, 'post');
+        {items.map(item => {
+          const media = resolveMedia(item, kind);
+          const href = resolveHref(item, kind);
 
           return (
-            <swiper-slide key={post.id} class="group !h-auto py-0.5">
-              <ItemLink kind="post" href={href}>
-                <ListCopy title={post.title} subtitle={post.subtitle} />
-                {media ? <ListThumb src={media} alt={post.title} /> : null}
+            <swiper-slide key={item.id} class="group h-auto! py-0.5">
+              <ItemLink kind={kind} href={href}>
+                <ListCopy title={item.title} subtitle={item.subtitle} />
+                {media ? <ListThumb src={media} alt={item.title} /> : null}
               </ItemLink>
             </swiper-slide>
           );
@@ -189,9 +171,9 @@ function BlogPostsSlider({ posts }: { posts: Post[] }) {
 
 function SectionHeading({ children }: { children: ReactNode }) {
   return (
-    <h3 className="mb-4 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
+    <h2 className="mb-5 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
       {children}
-    </h3>
+    </h2>
   );
 }
 
@@ -252,16 +234,33 @@ function ListThumb({ src, alt }: { src: string; alt: string }) {
     <div
       title={alt}
       aria-hidden
-      className="mx-auto h-[90px] w-1/3 max-w-16 shrink-0 overflow-hidden rounded-md border border-borderColor/70 bg-muted/30"
+      className="mx-auto h-28 w-1/3 max-w-20 shrink-0 overflow-hidden rounded-md border border-borderColor/70 bg-muted/30"
     >
       <img
         className="h-full w-full object-cover"
         src={src}
         alt=""
+        width={80}
+        height={112}
         loading="lazy"
+        decoding="async"
       />
     </div>
   );
+}
+
+function sortByCreatedAt(items: FeaturedPublication[]): FeaturedPublication[] {
+  return [...items].sort((a, b) => {
+    const aTime =
+      typeof a.created_at === 'number'
+        ? a.created_at
+        : Date.parse(String(a.created_at ?? 0));
+    const bTime =
+      typeof b.created_at === 'number'
+        ? b.created_at
+        : Date.parse(String(b.created_at ?? 0));
+    return aTime - bTime;
+  });
 }
 
 function resolveMedia(
@@ -279,7 +278,10 @@ function resolveMedia(
 
   return (
     item.media.find(media => media.collection_name === collection)
-      ?.original_url ?? `https://placehold.co/120x150/eee/000/webp?text=No+image`
+      ?.preview_url ??
+    item.media.find(media => media.collection_name === collection)
+      ?.original_url ??
+    `https://placehold.co/120x150/eee/000/webp?text=No+image`
   );
 }
 

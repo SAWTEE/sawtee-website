@@ -1,8 +1,8 @@
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import { TableOfContents } from '@/components/Frontend/TableOfContents';
-import MainLayout from '@/components/Layouts/MainLayout';
-import PageLayout from '@/components/Layouts/PageLayout';
+import MainLayout from '@/layouts/MainLayout';
+import PageLayout from '@/layouts/PageLayout';
 import { Button } from '@/components/ui/button';
 
 export default function SingleTradeInsight({ tradeInsightVolume = undefined, media = undefined }: any) {
@@ -37,16 +37,16 @@ export default function SingleTradeInsight({ tradeInsightVolume = undefined, med
                   }}
                 />
                 <div className="mt-4 flex gap-4">
-                  <a
-                    href={`/publications/${tradeInsightVolume.file?.name}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-block"
-                  >
-                    <Button variant="outline" size="lg">
-                      Read PDF
-                    </Button>
-                  </a>
+                  <Button variant="outline" size="lg" asChild>
+                    <a
+                      href={`/publications/${tradeInsightVolume.file?.name}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      {`Download PDF: ${tradeInsightVolume.volume}`}
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  </Button>
                 </div>
               </div>
             </div>

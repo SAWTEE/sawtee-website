@@ -13,7 +13,13 @@ type SocialMenuProps = {
   className?: string;
 };
 
-// warning for showSocialLinks and menu.length
+const networkLabels: Record<string, string> = {
+  twitter: 'Twitter',
+  youtube: 'YouTube',
+  linkedin: 'LinkedIn',
+  facebook: 'Facebook',
+};
+
 export const SocialMenu = ({
   menu,
   className = '',
@@ -43,37 +49,48 @@ export const SocialMenu = ({
         }
         return '';
       };
+      const label = networkLabels[item.name] ?? item.name;
       return (
-        <SocialMenuItem key={item.name} className={styles()} link={item.link}>
-          <SocialIcon className="h-5 w-5 text-white" />
-        </SocialMenuItem>
+        <SocialMenuListItem
+          key={item.name}
+          className={styles()}
+          link={item.link}
+          label={`SAWTEE on ${label}`}
+        >
+          <SocialIcon className="h-5 w-5 text-white" aria-hidden />
+        </SocialMenuListItem>
       );
     })}
   </ul>
 );
 
-const SocialMenuItem = ({
+function SocialMenuListItem({
   link,
   className = '',
   children,
+  label,
 }: {
   link?: string;
   className?: string;
   children?: ReactNode;
-}) => (
-  <li
-    className={cn('rounded-full bg-gray-700 hover:bg-gray-700/90', className)}
-  >
-    <a
-      href={link}
-      className="flex h-9 w-9 items-center justify-center"
-      target="_blank"
-      rel="noopener noreferrer"
+  label: string;
+}) {
+  return (
+    <li
+      className={cn('rounded-full bg-gray-700 hover:bg-gray-700/90', className)}
     >
-      {children}
-    </a>
-  </li>
-);
+      <a
+        href={link}
+        className="flex h-9 w-9 items-center justify-center"
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`${label} (opens in a new tab)`}
+      >
+        {children}
+      </a>
+    </li>
+  );
+}
 
 const icons = {
   twitter: TwitterIcon,

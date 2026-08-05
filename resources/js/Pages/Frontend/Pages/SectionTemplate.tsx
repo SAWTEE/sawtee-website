@@ -10,18 +10,6 @@ import { slugify } from '@/lib/helpers';
 import { cn, htmlToText } from '@/lib/utils';
 
 export default function SectionTemplate({ sections, pageData }: any) {
-  const logos = [];
-  pageData.forEach((country: any) =>
-    country.institutes.map(
-      (member: any) =>
-        member.logo &&
-        logos.push({
-          alt: member.member_name,
-          src: member.logo,
-          link: member.member_website_link,
-        })
-    )
-  );
   return (
     <div className="page-content mx-auto max-w-2xl px-[32px] py-[80px] text-lg leading-8 md:px-0">
       {sections?.map((section: any) => {
@@ -36,10 +24,6 @@ export default function SectionTemplate({ sections, pageData }: any) {
         }
       })}
       {pageData && <Members memberInstitutions={pageData} />}
-
-      {/* <div id="logo-carousel" className="offset-element pt-20">
-        <LogoCarousel logos={logos} />
-      </div> */}
     </div>
   );
 }
@@ -68,7 +52,7 @@ const Members = ({ memberInstitutions = undefined }: any) => {
                           title={member_name}
                           aria-label={member_name}
                           href={member_website_link}
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                         >
                           {member_name}
                         </a>

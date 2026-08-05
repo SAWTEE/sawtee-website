@@ -1,0 +1,260 @@
+name: CI and Deploy Staging
+
+on:
+  push:
+    branches:
+      - staging
+  pull_request:
+    branches:
+      - staging
+
+concurrency:
+  group: staging-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ci:
+    name: Staging CI (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['8.3', '8.4']
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP ${{ matrix.php }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+          tools: composer:v2
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-php${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+          restore-keys: |
+            composer-${{ runner.os }}-php${{ matrix.php }}-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Prepare Laravel for tests
+        run: |
+          cp .env.example .env
+          php artisan key:generate --force
+          php artisan config:clear
+
+      - name: Run PHP tests
+        run: php artisan test
+        env:
+          APP_ENV: testing
+          ABUSEIP_ENABLED: false
+          INERTIA_SSR_ENABLED: false
+
+      - name: Set up Node.js
+        if: matrix.php == '8.4'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install npm deps, typecheck, and build client + SSR bundles
+        if: matrix.php == '8.4'
+        run: |
+          npm ci
+          npm run typecheck
+          npm run build:ssr
+          test -d bootstrap/ssr && echo "✅ SSR bundle built" || (echo "❌ SSR bundle missing" && exit 1)
+
+  deploy-staging:
+    name: Deploy staging (cPanel + SSR)
+    needs: ci
+    if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
+    runs-on: ubuntu-latest
+    environment: staging
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv
+          coverage: none
+          tools: composer:v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+      - name: Generate staging .env from GitHub secrets
+        run: |
+          cat > .env <<EOF
+          APP_NAME='${{ secrets.STAGING_APP_NAME }}'
+          APP_ENV=staging
+          APP_KEY=${{ secrets.STAGING_APP_KEY }}
+          APP_DEBUG=${{ secrets.STAGING_APP_DEBUG }}
+          APP_URL=${{ secrets.STAGING_APP_URL }}
+          DEBUGBAR_ENABLED=false
+          ABUSEIP_ENABLED=true
+          ABUSEIP_STORAGE_COMPRESS=true
+
+          LOG_CHANNEL=${{ secrets.STAGING_LOG_CHANNEL }}
+          LOG_LEVEL=${{ secrets.STAGING_LOG_LEVEL }}
+
+          DB_CONNECTION=${{ secrets.STAGING_DB_CONNECTION }}
+          DB_HOST=${{ secrets.STAGING_DB_HOST }}
+          DB_PORT=${{ secrets.STAGING_DB_PORT }}
+          DB_DATABASE=${{ secrets.STAGING_DB_DATABASE }}
+          DB_USERNAME=${{ secrets.STAGING_DB_USERNAME }}
+          DB_PASSWORD='${{ secrets.STAGING_DB_PASSWORD }}'
+
+          BROADCAST_DRIVER=${{ secrets.STAGING_BROADCAST_DRIVER }}
+          CACHE_DRIVER=${{ secrets.STAGING_CACHE_DRIVER }}
+          FILESYSTEM_DISK=${{ secrets.STAGING_FILESYSTEM_DISK }}
+          QUEUE_CONNECTION=${{ secrets.STAGING_QUEUE_CONNECTION }}
+          SESSION_DRIVER=${{ secrets.STAGING_SESSION_DRIVER }}
+          SESSION_LIFETIME=${{ secrets.STAGING_SESSION_LIFETIME }}
+
+          MAIL_MAILER=${{ secrets.STAGING_MAIL_MAILER }}
+          MAIL_HOST=${{ secrets.STAGING_MAIL_HOST }}
+          MAIL_PORT=${{ secrets.STAGING_MAIL_PORT }}
+          MAIL_USERNAME=${{ secrets.STAGING_MAIL_USERNAME }}
+          MAIL_PASSWORD='${{ secrets.STAGING_MAIL_PASSWORD }}'
+          MAIL_ENCRYPTION=${{ secrets.STAGING_MAIL_ENCRYPTION }}
+          MAIL_FROM_ADDRESS='${{ secrets.STAGING_MAIL_FROM_ADDRESS }}'
+          MAIL_FROM_NAME='${{ secrets.STAGING_MAIL_FROM_NAME }}'
+
+          VITE_APP_NAME='${{ secrets.STAGING_APP_NAME }}'
+
+          # Inertia SSR — enabled on staging to validate before production
+          INERTIA_SSR_ENABLED=true
+          INERTIA_SSR_URL=${{ secrets.STAGING_INERTIA_SSR_URL }}
+          INERTIA_SSR_RUNTIME=node
+          INERTIA_SSR_ENSURE_BUNDLE_EXISTS=true
+          INERTIA_SSR_THROW_ON_ERROR=false
+          EOF
+          sed -i 's/^[[:space:]]*//' .env
+          # Default SSR URL when secret is empty
+          if ! grep -q '^INERTIA_SSR_URL=.\+' .env; then
+            sed -i 's|^INERTIA_SSR_URL=.*|INERTIA_SSR_URL=http://127.0.0.1:13714|' .env
+          fi
+
+      - name: Generate application key if not set
+        run: |
+          if [ -z "$APP_KEY" ] || [ "$APP_KEY" = "base64:base64:" ]; then
+            php artisan key:generate --force
+          fi
+        env:
+          APP_KEY: ${{ secrets.STAGING_APP_KEY }}
+
+      - name: Build client + SSR bundles
+        run: |
+          npm ci
+          npm run build:ssr
+          ls -la bootstrap/ssr || true
+
+      - name: Fetch and normalize self-hosted Google Fonts
+        run: |
+          php artisan google-fonts:fetch
+          php artisan google-fonts:normalize-urls
+
+      - name: Remove build-only files before upload
+        run: |
+          # Keep bootstrap/ssr — required for Inertia SSR on the server
+          rm -rf node_modules
+          rm -rf .git
+          rm -rf .github
+          rm -f lighthouse.json lighthouse.html .phpunit.result.cache
+
+      - name: Upload staging files via SSH
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.STAGING_SSH_HOST }}
+          username: ${{ secrets.STAGING_SSH_USERNAME }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_SSH_PORT }}
+          source: './*'
+          target: ${{ secrets.STAGING_SSH_TARGET_DIR }}
+          overwrite: true
+          rm: false
+
+      - name: Post-deploy migrate, optimize, start SSR
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.STAGING_SSH_HOST }}
+          username: ${{ secrets.STAGING_SSH_USERNAME }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_SSH_PORT }}
+          script: |
+            set -e
+            cd ${{ secrets.STAGING_SSH_TARGET_DIR }}
+
+            mkdir -p backups storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache bootstrap/ssr
+
+            echo "Installing Composer dependencies..."
+            composer install --no-dev --optimize-autoloader --no-interaction --no-progress
+
+            php artisan optimize:clear || true
+            php artisan migrate --force
+
+            php artisan google-fonts:fetch || true
+            if [ -d public/storage/fonts ] && [ ! -L public/storage ]; then
+              mkdir -p public/storage/fonts
+              cp -R storage/app/public/fonts/. public/storage/fonts/ || true
+            fi
+            php artisan google-fonts:normalize-urls || true
+
+            if [ ! -e public/storage ]; then
+              php artisan storage:link
+            fi
+
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan abuseip:update || true
+
+            echo "Restarting Inertia SSR (requires Node on the host)..."
+            bash scripts/ssr-restart.sh || echo "⚠️  SSR restart failed — see scripts/ssr-restart.sh / cPanel Node app notes"
+
+            php artisan about || true
+            echo "🎉 Staging deployment completed!"
+
+      - name: Health check
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.STAGING_SSH_HOST }}
+          username: ${{ secrets.STAGING_SSH_USERNAME }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          port: ${{ secrets.STAGING_SSH_PORT }}
+          script: |
+            cd ${{ secrets.STAGING_SSH_TARGET_DIR }}
+            test -f .env && echo "✅ .env exists" || (echo "❌ .env missing" && exit 1)
+            test -w storage && echo "✅ storage writable" || (echo "❌ storage not writable" && exit 1)
+            test -d vendor && echo "✅ vendor exists" || (echo "❌ vendor missing" && exit 1)
+            test -f public/build/manifest.json && echo "✅ Vite client manifest present" || echo "⚠️  client build missing"
+            test -d bootstrap/ssr && echo "✅ SSR bundle directory present" || echo "⚠️  SSR bundle missing"
+            # Optional: check SSR port is listening
+            if command -v curl >/dev/null 2>&1; then
+              SSR_URL=$(grep '^INERTIA_SSR_URL=' .env | cut -d= -f2- | tr -d '"' | tr -d "'")
+              SSR_URL=${SSR_URL:-http://127.0.0.1:13714}
+              if curl -sf --max-time 2 "$SSR_URL" >/dev/null 2>&1 || curl -sf --max-time 2 "${SSR_URL%/}/" >/dev/null 2>&1; then
+                echo "✅ SSR endpoint responded"
+              else
+                echo "⚠️  SSR endpoint not reachable yet (Node process may need cPanel Node.js App / manual start)"
+              fi
+            fi
+            echo "Staging health check completed!"

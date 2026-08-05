@@ -39,7 +39,9 @@ export default function Footer({
             >
               <img
                 src="/assets/logo-sawtee.svg"
-                alt="logo"
+                alt="SAWTEE"
+                width={128}
+                height={32}
                 className="h-full w-32 object-cover"
               />
             </Link>
@@ -56,9 +58,9 @@ export default function Footer({
                   key={key}
                   className="col-span-2 w-full justify-self-center text-left sm:col-span-1 sm:mx-auto"
                 >
-                  <h4 className="mb-7 text-xl font-medium text-secondary-foreground">
+                  <h2 className="mb-7 text-xl font-medium text-secondary-foreground">
                     {item.title}
-                  </h4>
+                  </h2>
                   <ul className="text-[0.9rem] transition-all duration-500">
                     {item.title.includes('Contact')
                       ? item.children?.map((child_item: any) => {
@@ -69,15 +71,14 @@ export default function Footer({
                                 <MapPinned className="h-6 w-6" />
                                 <TooltipProvider>
                                   <Tooltip>
-                                    <TooltipTrigger className="relative text-left">
-                                      <a
-                                        role="button"
+                                    <TooltipTrigger className="relative text-left" asChild>
+                                      <button
                                         type="button"
-                                        className="flex cursor-pointer break-all"
+                                        className="flex cursor-pointer break-all text-left"
                                         onClick={() => setMapModal(!mapModal)}
                                       >
                                         {title}
-                                      </a>
+                                      </button>
                                     </TooltipTrigger>
                                     <TooltipContent>
                                       Click to view map
@@ -140,7 +141,7 @@ export default function Footer({
                                   href={url}
                                   target="_blank"
                                   referrerPolicy="no-referrer"
-                                >
+                                 rel="noopener noreferrer">
                                   {title}
                                 </a>
                               ) : (

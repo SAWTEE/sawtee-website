@@ -54,6 +54,21 @@ test('corrupt abuse ip json does not cause a 500', function () {
     @unlink(config('abuseip.storage.path'));
 });
 
+test('blocking can be disabled via config', function () {
+    config([
+        'abuseip.enabled' => false,
+        'abuseip.whitelist' => [],
+        'abuseip.storage.compress' => true,
+    ]);
+
+    Cache::forever('abuse_ips', [ip2long('203.0.113.10')]);
+
+    $request = Request::create('/__abuse-test', 'GET', server: ['REMOTE_ADDR' => '203.0.113.10']);
+    $response = app(AbuseIp::class)->handle($request, fn () => response('ok'));
+
+    expect($response->getStatusCode())->toBe(200);
+});
+
 test('non ipv4 addresses are not treated as abused', function () {
     config([
         'abuseip.whitelist' => [],

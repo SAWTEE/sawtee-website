@@ -84,7 +84,7 @@ export default function OurWork({ themes = undefined, sections = undefined }: an
             <CardWithEffect key={id} className="cards max-w-lg p-0">
               <img
                 className="aspect-square h-full w-full object-cover"
-                alt="sector cover"
+                alt={title || 'Thematic sector'}
                 src={
                   media[0]
                     ? media[0].original_url

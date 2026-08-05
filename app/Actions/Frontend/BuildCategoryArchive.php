@@ -140,11 +140,12 @@ class BuildCategoryArchive
             $isArticleSlug = Article::where('slug', $article)->exists();
 
             if ($isArticleSlug) {
-                $articleModel = Article::where('slug', $article)->firstOrFail();
+                $articleModel = Article::with(['tags', 'media'])->where('slug', $article)->firstOrFail();
                 $media = $articleModel->getFirstMediaUrl('article-featured-image');
                 $srcSet = $articleModel->getFirstMedia('article-featured-image')?->getSrcSet('responsive');
-                $relatedArticles = Article::where('publication_id', $tradeInsightVolume->id)
-                    ->where('id', '!=', $articleModel->id)
+                $relatedArticles = Article::select(['id', 'title', 'slug', 'published_at'])
+                    ->where('publication_id', $tradeInsightVolume->id)
+                    ->whereKeyNot($articleModel->id)
                     ->latest()
                     ->take(5)
                     ->get();

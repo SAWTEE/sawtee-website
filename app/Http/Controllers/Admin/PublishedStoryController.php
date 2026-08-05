@@ -3,88 +3,90 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\PublishedStory;
+use App\Http\Requests\Admin\PublishedStoryRequest;
 use App\Models\Fellow;
-use Illuminate\Http\Request;
+use App\Models\PublishedStory;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\UploadedFile;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PublishedStoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        return Inertia::render("Backend/PublishedStories/Index", ["publishedStories" => PublishedStory::get()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        return Inertia::render("Backend/PublishedStories/Create", ["fellows" => Fellow::get()]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            "title" => "required|string|max:255",
-            "link" => "required|string|max:255|url",
-            "fellow_id" => "required|exists:fellows,id",
+        return Inertia::render('Backend/PublishedStories/Index', [
+            'publishedStories' => PublishedStory::with(['fellow:id,name', 'media'])->latest('id')->get(),
         ]);
-
-        $published_story = PublishedStory::create($validated);
-
-        if ($request->images) {
-            foreach ($request->file('images') as $image) {
-                $published_story->addMedia($image)->toMediaCollection('published-story-images');
-            };
-        }
-
-        return to_route("admin.published-stories.index");
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(PublishedStory $publishedStory)
+    public function create(): Response
     {
-        //
+        return Inertia::render('Backend/PublishedStories/Create', [
+            'fellows' => $this->fellowOptions(),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(PublishedStory $publishedStory)
+    public function store(PublishedStoryRequest $request): RedirectResponse
     {
-        return Inertia::render("Backend/PublishedStories/Edit", ["fellows" => Fellow::get(), "publishedStory" => $publishedStory]);
+        $publishedStory = PublishedStory::create($request->validated());
+
+        $this->syncImages($publishedStory, $request->file('images'));
+
+        return to_route('admin.published-stories.index');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, PublishedStory $publishedStory)
+    public function edit(PublishedStory $publishedStory): Response
     {
-        // dd($request);
-        if ($request->file('images')) {
-            $publishedStory->clearMediaCollection('published-story-images');
-            foreach ($request->file('images') as $image) {
-                $publishedStory->addMedia($image)->toMediaCollection('published-story-images');
-            }
-        }
-        $publishedStory->update($request->all());
-        return to_route("admin.published-stories.index");
+        return Inertia::render('Backend/PublishedStories/Edit', [
+            'fellows' => $this->fellowOptions(),
+            'publishedStory' => $publishedStory->load(['fellow:id,name', 'media']),
+        ]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PublishedStory $publishedStory)
+    public function update(PublishedStoryRequest $request, PublishedStory $publishedStory): RedirectResponse
+    {
+        $this->syncImages($publishedStory, $request->file('images'), replace: true);
+
+        $publishedStory->update($request->validated());
+
+        return to_route('admin.published-stories.index');
+    }
+
+    public function destroy(PublishedStory $publishedStory): RedirectResponse
     {
         $publishedStory->delete();
+
+        return to_route('admin.published-stories.index');
+    }
+
+    /**
+     * @param  array<int, UploadedFile>|null  $images
+     */
+    private function syncImages(PublishedStory $publishedStory, ?array $images, bool $replace = false): void
+    {
+        if (! $images) {
+            return;
+        }
+
+        if ($replace) {
+            $publishedStory->clearMediaCollection('published-story-images');
+        }
+
+        foreach ($images as $image) {
+            $publishedStory->addMedia($image)->toMediaCollection('published-story-images');
+        }
+    }
+
+    /**
+     * @return Collection<int, Fellow>
+     */
+    private function fellowOptions(): Collection
+    {
+        return Fellow::without(['fellowship', 'media'])
+            ->select(['id', 'name'])
+            ->orderBy('name')
+            ->get();
     }
 }

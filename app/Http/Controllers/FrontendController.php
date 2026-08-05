@@ -15,8 +15,12 @@ class FrontendController extends Controller
 {
     public function index(HomePageDataAssembler $homePageData, ResolvesSeoMeta $seo): Response
     {
+        $home = $homePageData->assemble();
+        $lcpImage = data_get($home, 'slides.0.media.0.original_url');
+        $lcpSrcSet = data_get($home, 'slidesResponsiveImages.0') ?: null;
+
         return Inertia::render('Frontend/Pages/Home', array_merge(
-            $homePageData->assemble(),
+            $home,
             [
                 'seo' => $seo->for(
                     title: 'Home',
@@ -24,7 +28,11 @@ class FrontendController extends Controller
                     image: '/assets/logo-sawtee.webp',
                 ),
             ],
-        ));
+        ))->withViewData([
+            // Discoverable in the initial HTML (Inertia Head preload only appears after JS).
+            'lcpImage' => is_string($lcpImage) ? $lcpImage : null,
+            'lcpSrcSet' => is_string($lcpSrcSet) && $lcpSrcSet !== '' ? $lcpSrcSet : null,
+        ]);
     }
 
     public function page(string $slug, ResolvePageBySlug $resolvePage): Response

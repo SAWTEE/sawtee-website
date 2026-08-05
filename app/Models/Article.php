@@ -21,8 +21,6 @@ class Article extends Model implements HasMedia
     use HasSlug;
     use InteractsWithMedia;
 
-    protected $with = ['media', 'tags'];
-
     protected $fillable = [
         'title',
         'slug',
@@ -34,6 +32,13 @@ class Article extends Model implements HasMedia
         'meta_title',
         'meta_description',
         'content',
+    ];
+
+    /**
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'published_at' => 'datetime:Y-m-d H:i:s',
     ];
 
     /**

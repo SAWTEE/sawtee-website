@@ -29,3 +29,6 @@ npm-debug.log
 /.idea
 /.vscode
 *.sql
+lighthouse.json
+lighthouse.html
+.lighthouseci/

@@ -4,7 +4,7 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import ContentEditor from '@/components/Backend/ContentEditor';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {

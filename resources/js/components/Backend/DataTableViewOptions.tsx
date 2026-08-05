@@ -25,7 +25,7 @@ export function DataTableViewOptions({ table = undefined, label = undefined }: a
           {label || 'View'}
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-[180px]">
+      <DropdownMenuContent align="end" className="w-45">
         <DropdownMenuLabel>Toggle columns</DropdownMenuLabel>
         <DropdownMenuSeparator />
         {table

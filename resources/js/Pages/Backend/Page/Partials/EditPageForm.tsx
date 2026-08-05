@@ -24,7 +24,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { slugify } from '@/lib/helpers';
 import { pageTemplates } from '@/lib/pageTemplates';
 import { useForm } from '@inertiajs/react';
@@ -269,7 +269,7 @@ const ShowPageData = ({ open = undefined, onOpenChange = undefined, data = undef
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Page Data from the JSON file</AlertDialogTitle>
-          <ScrollArea className="max-h-[500px] overflow-auto">
+          <ScrollArea className="max-h-125 overflow-auto">
             <AlertDialogContent>
               <pre>{JSON.stringify(data, null, 2)}</pre>
             </AlertDialogContent>

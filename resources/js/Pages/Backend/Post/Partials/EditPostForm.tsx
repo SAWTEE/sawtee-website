@@ -37,7 +37,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { useToast } from '@/components/ui/use-toast';
+import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useForm } from '@inertiajs/react';
 import { CalendarIcon, QuestionMarkCircledIcon } from '@radix-ui/react-icons';
@@ -124,7 +124,7 @@ export default function EditPostForm({
     post(
       route('admin.posts.update', {
         _method: 'patch',
-        id: postData.id,
+        post: postData.id,
       }),
       {
         preserveScroll: true,

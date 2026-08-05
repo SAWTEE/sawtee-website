@@ -75,14 +75,34 @@ Laravel 13 can run on shared hosting when the host provides:
 
 Recommended deploy flow:
 
-1. Build assets locally/CI: `npm ci && npm run build` (client-only; do **not** rely on Node SSR on shared hosting)
-2. Keep `INERTIA_SSR_ENABLED=false` (default in `config/inertia.php`)
+1. Build assets locally/CI: `npm ci && npm run build` (client-only; do **not** rely on Node SSR on production shared hosting until staging proves it)
+2. Keep `INERTIA_SSR_ENABLED=false` on production (default in `config/inertia.php`)
 3. Upload/deploy code + `vendor/` (or run `composer install --no-dev` via SSH) and the built `public/build` directory
 4. Set `.env` for production (`APP_ENV=production`, `APP_DEBUG=false`, correct `APP_URL` / DB credentials)
 5. Run `php artisan migrate --force`, `php artisan storage:link`, `php artisan config:cache`, `php artisan route:cache`, `php artisan view:cache`
 6. Schedule via host cron: `* * * * * php /path/to/artisan schedule:run`
 
 Do not set `ASSET_URL=public` — leave `ASSET_URL` empty unless you use a CDN with a full absolute URL.
+
+## Staging + Inertia SSR
+
+Branch: **`staging`**. Workflow: `.github/workflows/deploy-staging.yml` (CI on PR/push; deploy on push to `staging`).
+
+Staging enables **`INERTIA_SSR_ENABLED=true`** and uploads the Vite SSR bundle (`npm run build:ssr` → `bootstrap/ssr`). After deploy, `scripts/ssr-restart.sh` starts `php artisan inertia:start-ssr`.
+
+### cPanel shared hosting (staging subdomain)
+
+1. Create subdomain e.g. `staging.sawtee.org` → document root `…/staging.sawtee.org/public` (or symlink `public` as the docroot).
+2. Create a **separate MySQL database** for staging (never point staging at production DB).
+3. Add GitHub Actions secrets prefixed with `STAGING_` (see workflow): SSH host/user/key/port/target dir, APP_URL/KEY, DB_*, mail, and optional `STAGING_INERTIA_SSR_URL` (default `http://127.0.0.1:13714`).
+4. Create a GitHub **Environment** named `staging` (optional protection rules).
+5. **Node for SSR (required):** classic shared PHP hosting cannot keep Inertia SSR alive. You need one of:
+   - cPanel **Setup Node.js App** (Application root = Laravel root, startup via `php artisan inertia:start-ssr` or a wrapper), or
+   - SSH + Node binary + `bash scripts/ssr-restart.sh` after each deploy, or
+   - A small VPS / Cloudways / Forge staging box (recommended if Node App is unavailable).
+6. Push to `staging` to deploy. Confirm View Source shows server-rendered markup (not an empty `#app` only). If SSR fails, Inertia falls back to client render unless `INERTIA_SSR_THROW_ON_ERROR=true`.
+
+Production (`main`) stays client-rendered until staging SSR is verified.
 
 
 

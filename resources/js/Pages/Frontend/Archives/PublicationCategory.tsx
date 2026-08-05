@@ -4,8 +4,8 @@ import Pagination from '@/components/Frontend/Pagination';
 import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
-import MainLayout from '../../../components/Layouts/MainLayout';
-import PageLayout from '../../../components/Layouts/PageLayout';
+import MainLayout from '@/layouts/MainLayout';
+import PageLayout from '@/layouts/PageLayout';
 
 export default function Publications({
   category = undefined,
@@ -53,7 +53,7 @@ export default function Publications({
                             >
                               <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
                               <img
-                                className="aspect-[3/4] h-full w-full rounded-md object-cover"
+                                className="aspect-3/4 h-full w-full rounded-md object-cover"
                                 src={
                                   `${publication.media[0]?.original_url}` ||
                                   '/assets/SM-placeholder-150x150.png'
@@ -74,10 +74,10 @@ export default function Publications({
                               className="group relative"
                               target="_blank"
                               referrerPolicy="no-referrer"
-                            >
+                             rel="noopener noreferrer">
                               <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
                               <img
-                                className="aspect-[3/4] h-full w-full rounded-md object-cover"
+                                className="aspect-3/4 h-full w-full rounded-md object-cover"
                                 src={
                                   `${publication.media[0]?.original_url}` ||
                                   '/assets/SM-placeholder-150x150.png'
@@ -95,7 +95,7 @@ export default function Publications({
                             target="_blank"
                             referrerPolicy="no-referrer"
                             href={`/publications/${publication.file?.name}`}
-                          >
+                           rel="noopener noreferrer">
                             <p className="mt-4 text-center text-sm font-semibold">
                               {publication.title}
                             </p>

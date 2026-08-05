@@ -1,21 +1,30 @@
 import type { HomePageProps } from '@/types';
 import ExploreButton from '@/components/Frontend/ExploreButton';
-import { FeaturedPublications } from '@/components/Frontend/FeaturedPublications';
 import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
 import WebsiteHead from '@/components/Frontend/Head';
-import MultiPostsCarousel from '@/components/Frontend/MultiPostsSlider';
 import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
-import VideoCarousel from '@/components/Frontend/VideoCarousel';
 import FeaturedSection from '@/components/Frontend/feature';
 import Title from '@/components/Frontend/title';
-import ListItem from '@/components/shared/ListItem';
 import { formatDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
-import MainLayout from '../../../components/Layouts/MainLayout';
+import MainLayout from '@/layouts/MainLayout';
 import { features } from '@/lib/data';
+import { lazy, Suspense, type ReactNode } from 'react';
+
+const FeaturedPublications = lazy(() =>
+  import('@/components/Frontend/FeaturedPublications').then(m => ({
+    default: m.FeaturedPublications,
+  }))
+);
+const MultiPostsCarousel = lazy(
+  () => import('@/components/Frontend/MultiPostsSlider')
+);
+const VideoCarousel = lazy(
+  () => import('@/components/Frontend/VideoCarousel')
+);
 
 const Home = ({
   infocus,
@@ -33,14 +42,20 @@ const Home = ({
 }: HomePageProps) => {
   // const [open, setOpen] = useState(true);
 
-  const FeaturedPublicationSectionIsVisible = homePageSections?.find(
-    h => h.name === 'Featured Publication'
+  const FeaturedPublicationSectionIsVisible = Boolean(
+    homePageSections?.find(h => h.name === 'Featured Publication')?.show
   );
+
+  const lcpImage = slides?.[0]?.media?.[0]?.original_url;
+  const lcpSrcSet = slidesResponsiveImages?.[0] || undefined;
 
   return (
     <MainLayout>
       <WebsiteHead
-        title={seo?.title ?? 'Home'}
+        title={
+          seo?.title ??
+          'South Asia Watch on Trade, Economics and Environment'
+        }
         description={
           seo?.description ??
           "Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges."
@@ -49,7 +64,25 @@ const Home = ({
         url={seo?.url}
         type={seo?.type}
         jsonLd={seo?.jsonLd}
-      />
+      >
+        {lcpImage ? (
+          <link
+            rel="preload"
+            as="image"
+            href={lcpImage}
+            {...(lcpSrcSet
+              ? {
+                  imageSrcSet: lcpSrcSet,
+                  imageSizes: '(max-width: 1024px) 100vw, 66vw',
+                }
+              : {})}
+          />
+        ) : null}
+      </WebsiteHead>
+
+      <h1 className="sr-only">
+        South Asia Watch on Trade, Economics and Environment (SAWTEE)
+      </h1>
 
       {/* POPUP CODE */}
       {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -68,14 +101,14 @@ const Home = ({
         <div
           className={cn(
             'mx-auto grid grid-cols-1 items-center gap-6 lg:gap-8',
-            FeaturedPublicationSectionIsVisible?.show === 1 && 'lg:grid-cols-12'
+            FeaturedPublicationSectionIsVisible && 'lg:grid-cols-12'
           )}
           id="carousel-section"
         >
           <div
             className={cn(
               'min-w-0',
-              FeaturedPublicationSectionIsVisible?.show === 1
+              FeaturedPublicationSectionIsVisible
                 ? 'lg:col-span-8'
                 : 'lg:col-span-12'
             )}
@@ -88,13 +121,21 @@ const Home = ({
               />
             ) : null}
           </div>
-          {featuredPublications &&
-            FeaturedPublicationSectionIsVisible?.show === 1 && (
+          {featuredPublications && FeaturedPublicationSectionIsVisible && (
               <aside className="min-w-0 lg:col-span-4">
-                <FeaturedPublications
-                  publications={featuredPublications}
-                  blogPosts={featuredBlogPosts}
-                />
+                <Suspense
+                  fallback={
+                    <div
+                      className="min-h-112 rounded-md border border-borderColor/80 bg-white px-4 py-6 shadow-sm dark:bg-bgDarker sm:min-h-128 sm:px-5 sm:py-7"
+                      aria-hidden
+                    />
+                  }
+                >
+                  <FeaturedPublications
+                    publications={featuredPublications}
+                    blogPosts={featuredBlogPosts}
+                  />
+                </Suspense>
               </aside>
             )}
         </div>
@@ -138,9 +179,9 @@ const Home = ({
                   : 'Newsletters'
             }
           />
-          <div className="grid gap-10 lg:grid-cols-6">
+          <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
             {homePageSections?.find(h => h.name === 'Sawtee in Media')
-              ?.show && <MediaSesction sawteeInMedia={sawteeInMedia} />}
+              ?.show && <MediaSection sawteeInMedia={sawteeInMedia} />}
 
             {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
               <NewsletterSection newsletters={newsletters} />
@@ -182,7 +223,7 @@ const FeaturedEventsSection = ({ events = undefined }: any) => {
             className="relative h-60 max-h-60 overflow-hidden rounded-md text-center"
             title={events[0].title}
           >
-            <div className="ease absolute inset-0 top-0 z-10 hidden h-[5px] w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
+            <div className="ease absolute inset-0 top-0 z-10 hidden h-1.25 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
             <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
             <img
               src={
@@ -193,7 +234,10 @@ const FeaturedEventsSection = ({ events = undefined }: any) => {
                 `https://placehold.co/600x400/eee/000/webp?text=No+Image`
               }
               alt={events[0].title}
+              width={600}
+              height={400}
               loading="lazy"
+              decoding="async"
               className="aspect-video w-full object-cover transition-all duration-200 ease-linear"
             />
           </div>
@@ -202,7 +246,7 @@ const FeaturedEventsSection = ({ events = undefined }: any) => {
           <div className="">
             <Link
               href={`/category/featured-events/${events[0].slug}`}
-              className="text-xs font-medium uppercase text-sky-500 transition duration-200 ease-in-out hover:text-sky-600"
+              className="inline-flex min-h-6 items-center py-1 text-xs font-medium uppercase text-sky-700 transition duration-200 ease-in-out hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200"
             >
               {events[0].category.name}
             </Link>
@@ -242,7 +286,10 @@ const FeaturedEventsSection = ({ events = undefined }: any) => {
                     <img
                       src={featured_image}
                       alt={event.title}
+                      width={300}
+                      height={160}
                       loading="lazy"
+                      decoding="async"
                       className="h-full w-full object-cover transition-all duration-200 ease-linear"
                     />
                     <div className="ease absolute inset-0 top-0 z-10 hidden h-1 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
@@ -326,11 +373,13 @@ export const LatestPublicationSection = ({ publications = undefined }: any) => {
     <Section className="publications-section">
       <div className="mx-auto max-w-5xl">
         <Title title={'Latest in publications'} />
-        <MultiPostsCarousel
-          link={'/category/publications'}
-          text={'More in publications'}
-          data={publications}
-        />
+        <Suspense fallback={null}>
+          <MultiPostsCarousel
+            link={'/category/publications'}
+            text={'More in publications'}
+            data={publications}
+          />
+        </Suspense>
         <ExploreButton
           className="mt-8"
           text="More In Publications"
@@ -356,105 +405,172 @@ export const PolicyOutreachSection = ({ events = undefined }: any) => {
   );
 };
 
-export const MediaSesction = ({ sawteeInMedia = undefined }: any) => {
-  return (
-    <div className="w-full md:col-span-3">
-      <SimpleList heading={'SAWTEE in media'}>
-        {sawteeInMedia.map((item: any) => {
-          const hasContent = item.content !== null || '';
-          const file = item.media?.filter(
-            // @ts-ignore allowlist-migration
-            media => media.collection_name === 'post-files'
-          )[0];
+export const MediaSection = ({ sawteeInMedia = undefined }: any) => {
+  if (!sawteeInMedia?.length) {
+    return null;
+  }
 
-          return (
-            <li className="group mb-4" key={item.id}>
-              <div>
-                {file && !hasContent && (
+  return (
+    <div className="flex w-full flex-col">
+      <OutreachColumn
+        eyebrow="Coverage"
+        heading="SAWTEE in media"
+        description="Press mentions and commentary featuring SAWTEE’s work across South Asia."
+      >
+        <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
+          {sawteeInMedia.map((item: any) => {
+            const hasContent = Boolean(item.content);
+            const file = item.media?.find(
+              (media: any) => media.collection_name === 'post-files'
+            );
+            const titleClass =
+              'text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-[0.9375rem]';
+
+            return (
+              <li key={item.id} className="py-4 first:pt-0 last:pb-0">
+                {file && !hasContent ? (
                   <a
                     href={file?.original_url}
                     target="_blank"
-                    rel="noreferrer"
-                    className="md:text-md text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
+                    rel="noopener noreferrer"
+                    className={titleClass}
                   >
                     {item.title}
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
-                )}
-                {hasContent && (
+                ) : null}
+                {hasContent ? (
                   <Link
                     href={`/category/${item.category.slug}/${item.slug}`}
-                    className="md:text-md text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
+                    className={titleClass}
                   >
                     {item.title}
                   </Link>
-                )}
-                <p className="mt-2 text-xs text-muted-foreground">
-                  {formatDate(item.published_at)}
-                </p>
-              </div>
-            </li>
-          );
-        })}
-      </SimpleList>
+                ) : null}
+                {item.published_at ? (
+                  <p className="mt-1.5 text-xs tracking-wide text-muted-foreground">
+                    {formatDate(item.published_at)}
+                  </p>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+      </OutreachColumn>
       <ExploreButton
-        // @ts-ignore allowlist-migration
-        size={['xs', 'sm']}
-        text="More in SAWTEE in media "
-        link={'/category/sawtee-in-media'}
+        text="More in SAWTEE in media"
+        link="/category/sawtee-in-media"
+        className="mt-5"
       />
     </div>
   );
 };
+
+/** @deprecated Use MediaSection — kept for any external imports of the old typo name. */
+export const MediaSesction = MediaSection;
 
 export const NewsletterSection = ({ newsletters = undefined }: any) => {
+  if (!newsletters?.length) {
+    return null;
+  }
+
   return (
-    <div className="md:col-span-3">
-      <SimpleList
-        heading={'SAWTEE e-newsletters'}
-        className={'relative flex w-full flex-col'}
+    <div className="flex w-full flex-col">
+      <OutreachColumn
+        eyebrow="Updates"
+        heading="SAWTEE e-newsletters"
+        description="Monthly digests on trade, economics, and environment from the SAWTEE desk."
       >
-        {newsletters.map((item: any) => {
-          const file = item.media.filter(
-            // @ts-ignore allowlist-migration
-            m => m.collection_name === 'post-files'
-          )[0];
-          return (
-            <li key={item.id}>
-              <ListItem>
+        <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
+          {newsletters.map((item: any) => {
+            const file = item.media?.find(
+              (media: any) => media.collection_name === 'post-files'
+            );
+
+            return (
+              <li key={item.id} className="py-4 first:pt-0 last:pb-0">
                 <a
-                  className="md:text-md font-sans text-sm leading-5 text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 lg:text-lg"
-                  href={file?.original_url}
-                  target="_blank"
-                  rel="noreferrer"
+                  className="text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-[0.9375rem]"
+                  href={file?.original_url ?? `/category/newsletters/${item.slug}`}
+                  target={file?.original_url ? '_blank' : undefined}
+                  rel={file?.original_url ? 'noopener noreferrer' : undefined}
                 >
                   {item.title}
+                  {file?.original_url ? (
+                    <span className="sr-only"> (opens in a new tab)</span>
+                  ) : null}
                 </a>
-              </ListItem>
-            </li>
-          );
-        })}
-      </SimpleList>
-
+                {item.published_at ? (
+                  <p className="mt-1.5 text-xs tracking-wide text-muted-foreground">
+                    {formatDate(item.published_at)}
+                  </p>
+                ) : null}
+              </li>
+            );
+          })}
+        </ul>
+      </OutreachColumn>
       <ExploreButton
-        // @ts-ignore allowlist-migration
-        size="sm"
         text="More newsletters"
-        link={'/category/newsletters'}
+        link="/category/newsletters"
+        className="mt-5"
       />
     </div>
   );
 };
+
+function OutreachColumn({
+  eyebrow,
+  heading,
+  description,
+  children,
+}: {
+  eyebrow: string;
+  heading: string;
+  description: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="rounded-md border border-borderColor/80 bg-white px-5 py-6 shadow-sm dark:bg-bgDarker sm:px-6 sm:py-7">
+      <p className="mb-2 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
+        {eyebrow}
+      </p>
+      <h3 className="text-lg font-semibold tracking-tight text-secondary-foreground md:text-xl">
+        {heading}
+      </h3>
+      <p className="mt-2 max-w-prose text-sm leading-relaxed text-muted-foreground">
+        {description}
+      </p>
+      <div className="mt-5 border-t border-borderColor/70 pt-1 dark:border-white/10">
+        {children}
+      </div>
+    </div>
+  );
+}
 
 export const WebinarSection = ({ webinars = undefined }: any) => {
   return (
     <Section className="section videos-section">
       <div className="mx-auto max-w-5xl">
-        <Title title={'Recordings and resources'} />
-        <VideoCarousel posts={webinars} />
+        <Title title="Recordings and resources" />
+        <p className="mb-8 max-w-2xl text-sm leading-relaxed text-muted-foreground md:text-base">
+          Watch recent webinars and download related materials from SAWTEE’s
+          research and dialogue programmes.
+        </p>
+        <Suspense
+          fallback={
+            <div
+              className="aspect-video w-full rounded-md border border-borderColor/80 bg-muted/40"
+              aria-hidden
+            />
+          }
+        >
+          <VideoCarousel posts={webinars} />
+        </Suspense>
         <ExploreButton
           className="mt-8"
-          text="More In Recordings and resources"
-          link={'/category/webinar-series'}
+          text="More recordings and resources"
+          link="/category/webinar-series"
         />
       </div>
     </Section>

@@ -7,7 +7,7 @@ import {
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 import Autoplay from 'embla-carousel-autoplay';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 const FullWidthCarousel = ({
   slides = undefined,
@@ -18,6 +18,31 @@ const FullWidthCarousel = ({
   const [api, setApi] = useState<any>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
+  const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setPrefersReducedMotion(media.matches);
+    sync();
+    media.addEventListener('change', sync);
+    return () => media.removeEventListener('change', sync);
+  }, []);
+
+  const plugins = useMemo(() => {
+    if (prefersReducedMotion) {
+      return [];
+    }
+    return [
+      Autoplay({
+        delay: 5500,
+        stopOnInteraction: true,
+        stopOnMouseEnter: true,
+      }),
+    ];
+  }, [prefersReducedMotion]);
 
   useEffect(() => {
     if (!api) {
@@ -42,17 +67,14 @@ const FullWidthCarousel = ({
         'relative w-full overflow-hidden rounded-md bg-theme-900 ring-1 ring-black/10 dark:ring-white/10',
         className
       )}
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured homepage slides"
     >
       <Carousel
         setApi={setApi}
         opts={{ loop: true, align: 'start' }}
-        plugins={[
-          Autoplay({
-            delay: 5500,
-            stopOnInteraction: true,
-            stopOnMouseEnter: true,
-          }),
-        ]}
+        plugins={plugins}
         className="w-full"
         {...rest}
       >
@@ -66,16 +88,21 @@ const FullWidthCarousel = ({
               <CarouselItem
                 key={slide.id}
                 className="relative basis-full pl-0"
+                aria-hidden={index !== current}
               >
-                <div className="relative aspect-[16/9] w-full overflow-hidden bg-theme-900 sm:aspect-[2/1] lg:aspect-[2/1]">
+                <div className="relative aspect-video w-full overflow-hidden bg-theme-900 sm:aspect-2/1 lg:aspect-2/1">
                   {imageSrc ? (
                     <img
                       src={imageSrc}
                       srcSet={srcSet}
                       sizes="(max-width: 1024px) 100vw, 66vw"
                       alt={slide.title || 'Homepage slide'}
+                      width={1280}
+                      height={720}
                       className="h-full w-full object-cover"
                       loading={index === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
+                      decoding={index === 0 ? 'sync' : 'async'}
                     />
                   ) : (
                     <div
@@ -89,15 +116,15 @@ const FullWidthCarousel = ({
                   {hasCopy && (
                     <>
                       <div
-                        className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10"
+                        className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/35 to-black/10"
                         aria-hidden
                       />
                       <div className="absolute inset-x-0 bottom-0 z-10 px-5 pb-10 pt-16 sm:px-8 sm:pb-12 md:px-10 md:pb-14">
                         <div className="max-w-2xl">
                           {slide.title ? (
-                            <h2 className="text-balance text-xl font-semibold tracking-tight text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                            <p className="text-balance text-xl font-semibold tracking-tight text-white sm:text-2xl md:text-3xl lg:text-4xl">
                               {slide.title}
-                            </h2>
+                            </p>
                           ) : null}
                           {slide.subtitle ? (
                             <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/85 sm:text-base md:mt-3 md:text-lg">
@@ -126,25 +153,29 @@ const FullWidthCarousel = ({
             />
 
             <div
-              className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 sm:bottom-4 sm:right-4"
-              role="tablist"
+              className="absolute bottom-2 right-2 z-20 flex items-center sm:bottom-3 sm:right-3"
+              role="group"
               aria-label="Slide indicators"
             >
               {Array.from({ length: count }).map((_, index) => (
                 <button
                   key={index}
                   type="button"
-                  role="tab"
-                  aria-label={`Go to slide ${index + 1}`}
-                  aria-selected={index === current}
-                  className={cn(
-                    'h-1.5 rounded-full transition-all duration-300',
-                    index === current
-                      ? 'w-6 bg-white'
-                      : 'w-1.5 bg-white/45 hover:bg-white/70'
-                  )}
+                  aria-label={`Go to slide ${index + 1} of ${count}`}
+                  aria-current={index === current ? 'true' : undefined}
+                  className="flex h-8 w-8 items-center justify-center"
                   onClick={() => api?.scrollTo(index)}
-                />
+                >
+                  <span
+                    aria-hidden
+                    className={cn(
+                      'rounded-full transition-all duration-300',
+                      index === current
+                        ? 'h-1.5 w-6 bg-white'
+                        : 'h-1.5 w-1.5 bg-white/45 hover:bg-white/70'
+                    )}
+                  />
+                </button>
               ))}
             </div>
           </>

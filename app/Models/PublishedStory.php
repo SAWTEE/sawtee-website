@@ -15,8 +15,6 @@ class PublishedStory extends Model implements HasMedia
     use HasFactory;
     use InteractsWithMedia;
 
-    protected $with = ['fellow', 'media'];
-
     protected $fillable = [
         'title',
         'link',
@@ -42,6 +40,6 @@ class PublishedStory extends Model implements HasMedia
 
     public function fellow(): BelongsTo
     {
-        return $this->BelongsTo(Fellow::class);
+        return $this->belongsTo(Fellow::class);
     }
 }

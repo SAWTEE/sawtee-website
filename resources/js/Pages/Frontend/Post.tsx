@@ -1,6 +1,7 @@
 import WebsiteHead from '@/components/Frontend/Head';
-import MainLayout from '@/components/Layouts/MainLayout';
-import PostLayout from '@/components/Layouts/PostLayout';
+import ReadingProgress from '@/components/Frontend/ReadingProgress';
+import MainLayout from '@/layouts/MainLayout';
+import PostLayout from '@/layouts/PostLayout';
 import type { FrontendPostProps } from '@/types';
 import WebinarPost from './Pages/WebinarPost';
 
@@ -32,7 +33,7 @@ export default function Post({
         type={seo?.type ?? 'article'}
         jsonLd={seo?.jsonLd}
       />
-      <div id="progress" className="progress" />
+      <ReadingProgress />
 
       <PostLayout
         post={post}
@@ -49,8 +50,13 @@ export default function Post({
               }}
             />
             {file && (
-              <a target="_blank" href={file} rel="noreferrer">
-                PDF
+              <a
+                target="_blank"
+                href={file}
+                rel="noopener noreferrer"
+              >
+                {`Download PDF: ${post.title}`}
+                <span className="sr-only"> (opens in a new tab)</span>
               </a>
             )}
           </>

@@ -1,6 +1,6 @@
 import type { FormEvent } from 'react';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import GuestLayout from '@/components/Layouts/GuestLayout';
+import GuestLayout from '@/layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
 
 type VerifyEmailProps = { status?: string };

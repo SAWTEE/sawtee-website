@@ -8,6 +8,7 @@ type ReformMonitorProps = HTMLAttributes<HTMLElement> & {
 const ReformMonitor = ({ content, ...rest }: ReformMonitorProps) => {
   return (
     <section className="w-full px-10 pb-20 pt-5 lg:px-20" {...rest}>
+      <h1 className="sr-only">Reform Monitoring Platform</h1>
       {content && <div dangerouslySetInnerHTML={{ __html: content }} />}
 
       <SimpleAlerts

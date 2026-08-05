@@ -44,7 +44,9 @@ const Logo = ({ text = 'SAWTEE', src }: { text?: string; src?: string }) => {
     return (
       <img
         src={src}
-        alt="Logo"
+        alt="SAWTEE"
+        width={128}
+        height={32}
         className="h-auto w-24 max-w-full object-contain sm:w-32"
       />
     );
@@ -65,7 +67,7 @@ export const SiteLogo = ({
 }) => {
   return (
     <div className="block shrink-0 text-center">
-      <Link href="/" aria-label="logo">
+      <Link href="/" aria-label="SAWTEE home">
         <Logo src={src} />
       </Link>
       {established ? (

@@ -102,7 +102,7 @@ const PostPreviewCard = ({
         <ExploreButton
           href={`/category/${categorySlug}/${slug}`}
           className="w-full"
-          text="Read more"
+          text={`Read more: ${title}`}
         />
       </CardFooter>
     </Card>

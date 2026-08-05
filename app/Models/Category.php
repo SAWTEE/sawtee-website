@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Concerns\HasSeoMeta;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,7 +23,24 @@ class Category extends Model implements HasMedia
     use InteractsWithMedia;
 
     protected $fillable = ['name', 'slug', 'type', 'parent_id', 'meta_title', 'meta_description'];
-    // protected $with = ['children'];
+
+    /**
+     * @param  Builder<Category>  $query
+     */
+    public function scopeOfType(Builder $query, string $type): void
+    {
+        $query->where('type', $type);
+    }
+
+    /**
+     * Top level categories, i.e. the ones without a parent.
+     *
+     * @param  Builder<Category>  $query
+     */
+    public function scopeRoots(Builder $query): void
+    {
+        $query->whereNull('parent_id');
+    }
 
     /**
      * Get the options for generating the slug.
@@ -56,11 +74,6 @@ class Category extends Model implements HasMedia
         return $this->hasMany(Publication::class);
     }
 
-    public function research(): HasMany
-    {
-        return $this->hasMany(Publication::class);
-    }
-
     public function registerMediaConversions(?Media $media = null): void
     {
         // @phpstan-ignore-next-line
@@ -79,8 +92,6 @@ class Category extends Model implements HasMedia
             ->withResponsiveImages()
             ->nonQueued();
     }
-
-    // protected $with = ['media'];
 
     public function registerMediaCollections(): void
     {

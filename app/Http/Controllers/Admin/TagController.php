@@ -1,59 +1,41 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\TagRequest;
 use App\Models\Tag;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class TagController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(): Response
     {
-        $tags = Tag::withCount(['posts'])->latest()->get();
         return Inertia::render('Backend/Tag/Index', [
-            'tags' => $tags,
+            'tags' => Tag::withCount('posts')->latest()->get(),
         ]);
     }
 
-
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(TagRequest $request): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:60'
-        ]);
+        Tag::create($request->validated());
 
-        Tag::create($validated);
         return to_route('admin.tags.index');
     }
 
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Tag $tag)
+    public function update(TagRequest $request, Tag $tag): RedirectResponse
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:60'
-        ]);
-        $tag->update($validated);
+        $tag->update($request->validated());
+
         return to_route('admin.tags.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Tag $tag)
+    public function destroy(Tag $tag): RedirectResponse
     {
         $tag->delete();
+
         return to_route('admin.tags.index');
     }
 }
