@@ -14,9 +14,13 @@ export type MenuItem = {
   url: string;
   parent_id?: number | null;
   order?: number;
+  /** Nested menu tree (arbitrary depth) from shared Inertia menus. */
   children?: MenuItem[] | null;
   menu_id?: number;
 };
+
+/** Alias for multilevel nav consumers (desktop MultiLevelMenu, mobile accordion). */
+export type MultiLevelMenuItem = MenuItem;
 
 export type SocialMenuItem = {
   name: 'twitter' | 'linkedin' | 'facebook' | 'youtube' | string;

@@ -91,6 +91,10 @@ type MobileMenuProps = {
   socialLinks?: SocialMenuItem[] | null;
 };
 
+/**
+ * Mobile accordion nav. Uses the same Inertia menu tree as desktop
+ * `MultiLevelMenu`, but Collapsible (not DropdownMenu) for touch UX.
+ */
 const MobileMenu = ({
   menu = [],
   showSocialLinks = false,
@@ -98,7 +102,7 @@ const MobileMenu = ({
 }: MobileMenuProps) => {
   return (
     <ScrollArea className="h-full px-4">
-      {(menu ?? []).map((menuItem: any, index: any) => (
+      {(menu ?? []).map((menuItem: MenuItem, index: number) => (
         <React.Fragment key={menuItem.title}>
           <DropDownMenu menuItem={menuItem} index={index} />
         </React.Fragment>

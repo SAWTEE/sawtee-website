@@ -103,63 +103,44 @@ describe('DesktopNavigation', () => {
     expect(() => render(<DesktopNavigation />)).not.toThrow();
   });
 
-  it('renders a hoverable dropdown submenu for parents with children', () => {
-    const { container } = render(
-      <DesktopNavigation menu={publicationsMenu} />
-    );
+  it('uses MultiLevelMenu for parents with children', () => {
+    render(<DesktopNavigation menu={publicationsMenu} />);
 
-    expect(screen.getByText('Publications')).toBeInTheDocument();
-    expect(screen.getByText('Trade Insight')).toBeInTheDocument();
-    expect(screen.getByText('Policy Brief')).toBeInTheDocument();
-
-    const dropdownRoot = container.querySelector('.dropdown');
-    expect(dropdownRoot).toBeTruthy();
-
-    const submenu =
-      container.querySelector('.dropdown > .dropdown-menu') ??
-      container.querySelector('.dropdown-menu');
-    expect(submenu).toBeTruthy();
-    // Hover bridge: padding (not margin) so the pointer can travel into the panel
-    expect(submenu?.className).toMatch(/\bpt-/);
-    expect(submenu?.className).not.toMatch(/\bmt-/);
+    expect(
+      screen.getByRole('button', { name: /publications/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /publications/i })
+    ).toHaveAttribute('aria-haspopup', 'menu');
   });
 
-  it('scopes nested submenus so ancestor hover does not open grandchildren', () => {
-    const { container } = render(
-      <DesktopNavigation menu={nestedPublicationsMenu} />
+  it('supports nested multilevel trees via MultiLevelMenu', () => {
+    render(<DesktopNavigation menu={nestedPublicationsMenu} />);
+
+    const trigger = screen.getByRole('button', { name: /publications/i });
+    expect(trigger).toBeInTheDocument();
+    expect(trigger).toHaveAttribute('aria-haspopup', 'menu');
+    expect(trigger).toHaveAttribute('aria-expanded');
+  });
+
+  it('renders plain links for items without children', () => {
+    render(
+      <DesktopNavigation
+        menu={[
+          {
+            id: 10,
+            title: 'Events',
+            name: 'Events',
+            url: '/category/events',
+            children: [],
+          },
+        ]}
+      />
     );
 
-    const rootDropdown = container.querySelector('.dropdown');
-    expect(rootDropdown).toBeTruthy();
-
-    // Direct child submenu of the top-level Publications item
-    const topMenu = rootDropdown?.querySelector(':scope > .dropdown-menu');
-    expect(topMenu).toBeTruthy();
-    expect(topMenu?.classList.contains('hidden')).toBe(true);
-    // Must NOT use cascading named-group hover (opens every nested level)
-    expect(topMenu?.className).not.toMatch(/group-hover\/dropdown/);
-    expect(topMenu?.className).not.toMatch(/group-focus-within\/dropdown/);
-
-    // Nested parent (Publications in Nepali) is itself a .dropdown
-    const nestedParents = Array.from(
-      topMenu?.querySelectorAll(':scope .dropdown') ?? []
+    expect(screen.getByRole('link', { name: 'Events' })).toHaveAttribute(
+      'href',
+      '/category/events'
     );
-    expect(nestedParents.length).toBeGreaterThanOrEqual(1);
-
-    const nestedParent = nestedParents.find(el =>
-      el.textContent?.includes('Publications in Nepali')
-    );
-    expect(nestedParent).toBeTruthy();
-
-    // Nested submenu must be a *direct* child of its own .dropdown trigger
-    const nestedMenu = nestedParent?.querySelector(':scope > .dropdown-menu');
-    expect(nestedMenu).toBeTruthy();
-    expect(nestedMenu?.classList.contains('hidden')).toBe(true);
-    expect(nestedMenu?.className).not.toMatch(/group-hover\/dropdown/);
-    expect(nestedMenu?.textContent).toContain('Nepali Briefing Paper');
-
-    // Top-level open must not imply nested open: both stay `hidden` in markup;
-    // CSS `.dropdown:hover > .dropdown-menu` reveals only the direct child.
-    expect(topMenu).not.toBe(nestedMenu);
   });
 });
