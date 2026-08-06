@@ -87,7 +87,7 @@ export default function EditPostForm({
     value: tag.id,
     label: tag.name,
   }));
-  const [, setSelectedCategory] = React.useState(
+  const [selectedCategory, setSelectedCategory] = React.useState(
     categories
       ? categories.filter((cat: any) => cat.id === data.category_id)[0].name
       : null
@@ -351,72 +351,83 @@ export default function EditPostForm({
             />
           </div>
 
-          <div className="mx-2">
-            <TooltipProvider>
-              <Label htmlFor="author">
-                {'Author/s '}
-                <Tooltip>
-                  <TooltipTrigger>
-                    <QuestionMarkCircledIcon className="h-3 w-3" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    Add author name, if multple authors use comma seperated
-                    format. Eg: Paras Kharel, Dikshya Singh, Kshitiz Dahal
-                  </TooltipContent>
-                </Tooltip>
-              </Label>
-            </TooltipProvider>
-            <Input
-              type="text"
-              id="author"
-              name="author"
-              value={data.author ?? ''}
-              className="mt-1 block"
-              placeholder="Add author full name"
-              autoComplete="author"
-              onChange={e => setData('author', e.target.value)}
-            />
+          {['Covid', 'Opinion in Lead', 'Blog'].includes(selectedCategory) && (
+            <div className="mx-2">
+              <TooltipProvider>
+                <Label htmlFor="author">
+                  {'Author/s '}
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <QuestionMarkCircledIcon className="h-3 w-3" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      Add author name, if multple authors use comma seperated
+                      format. Eg: Paras Kharel, Dikshya Singh, Kshitiz Dahal
+                    </TooltipContent>
+                  </Tooltip>
+                </Label>
+              </TooltipProvider>
+              <Input
+                type="text"
+                id="author"
+                name="author"
+                value={data.author ?? ''}
+                className="mt-1 block"
+                placeholder="Add author full name"
+                autoComplete="author"
+                onChange={e => setData('author', e.target.value)}
+              />
 
-            {errors.author && (
-              <InputError className={'mt-2'}>{errors.author}</InputError>
-            )}
-          </div>
+              {errors.author && (
+                <InputError className={'mt-2'}>{errors.author}</InputError>
+              )}
+            </div>
+          )}
 
-          <div className="mx-2">
-            <Label htmlFor="genre">Genre</Label>
+          {selectedCategory === 'Covid' && (
+            <div className="mx-2">
+              <Label htmlFor="genre">Genre</Label>
 
-            <Input
-              type="text"
-              id="genre"
-              name="genre"
-              value={data.genre ?? ''}
-              className="mt-1 block"
-              autoComplete="genre"
-              onChange={e => setData('genre', e.target.value)}
-            />
+              <Input
+                type="text"
+                id="genre"
+                name="genre"
+                value={data.genre ?? ''}
+                className="mt-1 block"
+                autoComplete="genre"
+                onChange={e => setData('genre', e.target.value)}
+              />
 
-            {errors.genre && (
-              <InputError className={'mt-2'}>{errors.genre}</InputError>
-            )}
-          </div>
+              {errors.genre && (
+                <InputError className={'mt-2'}>{errors.genre}</InputError>
+              )}
+            </div>
+          )}
 
-          <div className="mx-2">
-            <Label htmlFor="link">External Link</Label>
+          {[
+            'Covid',
+            'Opinion in Lead',
+            'Webinar Series',
+            'LDC Graduations',
+          ].includes(selectedCategory) && (
+            <div className="mx-2">
+              <Label htmlFor="link">External Link</Label>
 
-            <Input
-              type="text"
-              id="link"
-              name="link"
-              value={data.link ?? ''}
-              className="mt-1 block"
-              autoComplete="link"
-              onChange={e => setData('link', e.target.value)}
-            />
+              <Input
+                type="text"
+                id="link"
+                name="link"
+                value={data.link ?? ''}
+                className="mt-1 block"
+                autoComplete="link"
+                onChange={e => setData('link', e.target.value)}
+              />
 
-            {errors.author && (
-              <InputError className={'mt-2'}>{errors.author}</InputError>
-            )}
-          </div>
+              {errors.author && (
+                <InputError className={'mt-2'}>{errors.author}</InputError>
+              )}
+            </div>
+          )}
 
           <Accordion type="single" collapsible>
             <AccordionItem value="item-1">

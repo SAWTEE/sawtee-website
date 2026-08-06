@@ -27,7 +27,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <input
         {...props}
         type={type}
-        className={`rounded-md border-gray-300 shadow-sm focus:border-sky-500 focus:ring-sky-500 dark:bg-muted dark:text-muted-foreground ${className}`}
+        className={`rounded-md border border-input bg-background text-foreground shadow-sm placeholder:text-muted-foreground focus:border-sky-500 focus:ring-sky-500 ${className}`}
         ref={input}
       />
     );

@@ -114,8 +114,8 @@
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
+    --border: 240 3.7% 26%;
+    --input: 240 3.7% 34%;
     --ring: 240 4.9% 83.9%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
@@ -170,6 +170,12 @@
   input::placeholder,
   textarea::placeholder {
     color: var(--color-gray-400);
+  }
+
+  .dark input:not([type='checkbox']):not([type='radio']):not([type='range']),
+  .dark textarea,
+  .dark select {
+    color-scheme: dark;
   }
 
 
