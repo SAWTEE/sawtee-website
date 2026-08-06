@@ -1,3 +1,4 @@
+import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import {
   Collapsible,
@@ -18,12 +19,18 @@ type MenuLinkProps = {
   className?: string;
 };
 
-const MenuLink = ({ title, url = '#', index, className, ...rest }: MenuLinkProps) => {
+const MenuLink = ({
+  title,
+  url = '#',
+  index,
+  className,
+  ...rest
+}: MenuLinkProps) => {
   return (
     <Link
       href={url}
       className={cn(
-        'flex p-4 text-primary-foreground no-underline hover:underline',
+        'text-foreground flex p-4 no-underline hover:underline',
         className
       )}
       {...rest}
@@ -45,13 +52,17 @@ type DropDownMenuProps = {
   className?: string;
 };
 
-const DropDownMenu = ({ menuItem, index, className = '' }: DropDownMenuProps) => {
+const DropDownMenu = ({
+  menuItem,
+  index,
+  className = '',
+}: DropDownMenuProps) => {
   const openable = hasMenuChildren(menuItem);
 
   return (
     <ul className="w-full list-none space-y-4">
       <Collapsible>
-        <li className="group flex w-full items-center justify-between gap-4 border-b-2 border-b-gray-500 text-lg">
+        <li className="text-foreground group flex w-full items-center justify-between gap-4 border-b-2 border-border text-lg dark:border-white/20">
           <MenuLink
             className={cn(
               'flex w-full p-4 no-underline hover:underline',
@@ -62,7 +73,10 @@ const DropDownMenu = ({ menuItem, index, className = '' }: DropDownMenuProps) =>
             index={`0${index + 1}`}
           />
           {openable ? (
-            <CollapsibleTrigger aria-label={`Toggle ${menuItem.title} submenu`}>
+            <CollapsibleTrigger
+              aria-label={`Toggle ${menuItem.title} submenu`}
+              className="text-foreground shrink-0 p-2"
+            >
               <ChevronDownIcon className="h-6 w-6 transition-all duration-200 ease-in-out" />
             </CollapsibleTrigger>
           ) : null}
@@ -101,18 +115,19 @@ const MobileMenu = ({
   socialLinks = null,
 }: MobileMenuProps) => {
   return (
-    <ScrollArea className="h-full px-4">
+    <ScrollArea className="text-foreground h-full px-4">
       {(menu ?? []).map((menuItem: MenuItem, index: number) => (
         <React.Fragment key={menuItem.title}>
           <DropDownMenu menuItem={menuItem} index={index} />
         </React.Fragment>
       ))}
 
-      {showSocialLinks ? (
-        <div className="mx-auto my-5 p-5">
+      <div className="mx-auto my-5 flex flex-col items-center gap-4 p-5">
+        <ModeToggle />
+        {showSocialLinks ? (
           <SocialMenu className="mt-0" menu={socialLinks} />
-        </div>
-      ) : null}
+        ) : null}
+      </div>
     </ScrollArea>
   );
 };
