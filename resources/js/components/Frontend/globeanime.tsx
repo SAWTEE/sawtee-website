@@ -1,6 +1,6 @@
 'use client';
 import anime from 'animejs';
-import { useEffect, useId, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 
 const dots = [
   {
@@ -39,8 +39,15 @@ const svgs = [
     x1: '100%',
     x2: '100%',
     y1: '-20%',
+    y1config: {
+      initial: '-20%',
+      frames: ['-20%', '100%'],
+    },
     y2: '0',
-    y2Frames: ['0', '130%'] as const,
+    y2config: {
+      initial: '0',
+      frames: ['0', '130%'],
+    },
     duration: 350,
     delay: 1350,
     offset: 0,
@@ -58,8 +65,15 @@ const svgs = [
     x1: '100%',
     x2: '100%',
     y1: '-20%',
+    y1config: {
+      initial: '-20%',
+      frames: ['-20%', '100%'],
+    },
     y2: '0',
-    y2Frames: ['0', '130%'] as const,
+    y2config: {
+      initial: '0',
+      frames: ['0', '130%'],
+    },
     duration: 300,
     delay: 1350,
     offset: 0,
@@ -77,8 +91,15 @@ const svgs = [
     x1: '100%',
     x2: '100%',
     y1: '-20%',
+    y1config: {
+      initial: '-20%',
+      frames: ['-20%', '100%'],
+    },
     y2: '0',
-    y2Frames: ['0', '130%'] as const,
+    y2config: {
+      initial: '0',
+      frames: ['0', '130%'],
+    },
     duration: 200,
     delay: 1350,
     offset: 0,
@@ -92,36 +113,23 @@ type GlobeanimeProps = {
 
 /**
  * Stroke/gradient sweep on the mega-menu globe.
- * Uses anime.js timeline (same timings as pre-removal) — rAF could not match
- * SVG gradient attribute animation reliably across browsers.
+ * anime.js timeline targeting `#functions-hero #${id} linearGradient`.
  */
 const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
-  const rootRef = useRef<HTMLDivElement>(null);
-  // Unique prefix so lazy-mounted instances do not collide on gradient ids.
-  const uid = useId().replace(/:/g, '');
+  const ref = useRef<HTMLDivElement>(null);
   const stopColor = darkMode ? '#FFFFFF' : '#000000';
 
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) {
-      return;
-    }
-
     const tl = anime.timeline({
       loop: true,
       autoplay: true,
     });
 
     for (const s of svgs) {
-      const gradient = root.querySelector(`#lg-${uid}-${s.id}`);
-      if (!gradient) {
-        continue;
-      }
-
       tl.add(
         {
-          targets: gradient,
-          y2: [...s.y2Frames],
+          targets: `#functions-hero #${s.id} linearGradient`,
+          y2: s.y2config.frames,
           easing: s.easing,
           duration: s.duration,
           delay: s.delay,
@@ -132,13 +140,13 @@ const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
 
     return () => {
       tl.pause();
-      anime.remove(root.querySelectorAll('linearGradient'));
+      anime.remove('#functions-hero linearGradient');
     };
-  }, [uid]);
+  }, []);
 
   return (
     <div
-      ref={rootRef}
+      ref={ref}
       id="functions-hero"
       className="absolute inset-0 top-4 -left-28 aspect-978/678 w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
@@ -160,18 +168,14 @@ const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
           }}
         >
           <title>Animated globe</title>
-          <path
-            stroke={`url(#lg-${uid}-${s.id})`}
-            strokeWidth="1.396"
-            d={s.path}
-          />
+          <path stroke={`url(#lg-${s.id})`} strokeWidth="1.396" d={s.path} />
           <defs>
-            {/* y2 is driven by anime.js — do not bind it as a React prop */}
             <linearGradient
-              id={`lg-${uid}-${s.id}`}
+              id={`lg-${s.id}`}
               x1={s.x1}
               x2={s.x2}
               y1={s.y1}
+              y2={s.y2}
               gradientUnits="userSpaceOnUse"
             >
               <stop offset="0" stopColor={stopColor} stopOpacity="0" />
