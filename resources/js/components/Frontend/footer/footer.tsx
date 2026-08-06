@@ -29,10 +29,10 @@ export default function Footer({
   const [mapModal, setMapModal] = useState(false);
 
   return (
-    <footer className="w-full bg-bgDarker text-slate-500">
-      <div className="mx-auto max-w-7xl px-8">
-        <div className="grid max-w-sm grid-cols-2 gap-3 gap-y-8 py-10 sm:mx-auto sm:max-w-full sm:grid-cols-3 md:gap-8 lg:grid-cols-5">
-          <div className="col-span-full mb-10 flex w-full flex-col gap-5 lg:col-span-2 lg:mb-0">
+    <footer className="bg-bgDarker w-full overflow-x-clip text-slate-500">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 py-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-8">
+          <div className="col-span-full flex w-full min-w-0 flex-col gap-5 sm:col-span-2 md:col-span-3 lg:col-span-2 lg:mb-0">
             <Link
               href="/"
               className="mx-auto flex w-full justify-center lg:mx-0 lg:justify-start"
@@ -42,128 +42,145 @@ export default function Footer({
                 alt="SAWTEE"
                 width={128}
                 height={32}
-                className="h-full w-32 object-cover"
+                className="h-8 w-32 object-contain"
               />
             </Link>
 
-            <div className="flex w-full flex-col items-center justify-center gap-3 lg:items-start">
-              <SubscribeForm
-              // buttonStyles={'bg-primary dark:text-slate-700 text-white'}
-              />
+            <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-3 lg:mx-0 lg:max-w-none lg:items-start">
+              <SubscribeForm />
             </div>
           </div>
           {Object.entries(menu ?? []).map(([key, item]) => {
-              return (
-                <div
-                  key={key}
-                  className="col-span-2 w-full justify-self-center text-left sm:col-span-1 sm:mx-auto"
-                >
-                  <h2 className="mb-7 text-xl font-medium text-secondary-foreground">
-                    {item.title}
-                  </h2>
-                  <ul className="text-[0.9rem] transition-all duration-500">
-                    {item.title.includes('Contact')
-                      ? item.children?.map((child_item: any) => {
-                          const { url, title } = child_item;
-                          if (title.includes('Address')) {
-                            return (
-                              <MenuItem key={title}>
-                                <MapPinned className="h-6 w-6" />
-                                <TooltipProvider>
-                                  <Tooltip>
-                                    <TooltipTrigger className="relative text-left" asChild>
-                                      <button
-                                        type="button"
-                                        className="flex cursor-pointer break-all text-left"
-                                        onClick={() => setMapModal(!mapModal)}
-                                      >
-                                        {title}
-                                      </button>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      Click to view map
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                                <MapModel
-                                  isOpen={mapModal}
-                                  onOpenChange={setMapModal}
-                                />
-                              </MenuItem>
-                            );
-                          }
-                          if (title.includes('Email')) {
-                            return (
-                              <MenuItem key={title}>
-                                <MailOpen className="h-4 w-4" />
-                                <a className="" href={`mailto:${url}`}>
-                                  {title}
-                                </a>
-                              </MenuItem>
-                            );
-                          }
-                          if (title.includes('Phone')) {
-                            return (
-                              <MenuItem key={title}>
-                                <PhoneIncoming className="h-4 w-4" />
-                                <a className="" href={`tel:${url}`}>
-                                  {title}
-                                </a>
-                              </MenuItem>
-                            );
-                          }
-                          if (title.includes('Fax')) {
-                            return (
-                              <MenuItem key={title}>
-                                <PhoneOff className="h-4 w-4" />
-                                <a className="" href={`tel:${url}`}>
-                                  {title}
-                                </a>
-                              </MenuItem>
-                            );
-                          }
-                          if (title.includes('Box')) {
-                            return (
-                              <MenuItem key={title}>
-                                <Mailbox className="h-4 w-4" />
-                                {title}
-                              </MenuItem>
-                            );
-                          }
-                        })
-                      : item.children?.map((child_item: any) => {
-                          const { url, title } = child_item;
+            return (
+              <div key={key} className="min-w-0 w-full text-left">
+                <h2 className="text-secondary-foreground mb-4 text-lg font-medium sm:mb-5 sm:text-xl">
+                  {item.title}
+                </h2>
+                <ul className="text-[0.9rem] transition-all duration-500">
+                  {item.title.includes('Contact')
+                    ? item.children?.map((child_item: any) => {
+                        const { url, title } = child_item;
+                        if (title.includes('Address')) {
                           return (
-                            <MenuItem key={title}>
-                              <ChevronsRight className="h-4 w-4" />
-                              {title.includes('SAES') ? (
-                                <a
-                                  href={url}
-                                  target="_blank"
-                                  referrerPolicy="no-referrer"
-                                 rel="noopener noreferrer">
-                                  {title}
-                                </a>
-                              ) : (
-                                <Link href={url}>{title}</Link>
-                              )}
+                            <MenuItem key={title} className="items-start">
+                              <MapPinned className="mt-0.5 h-5 w-5 shrink-0" />
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger
+                                    className="relative min-w-0 text-left"
+                                    asChild
+                                  >
+                                    <button
+                                      type="button"
+                                      className="min-w-0 cursor-pointer text-left break-words hyphens-auto"
+                                      onClick={() => setMapModal(!mapModal)}
+                                    >
+                                      {title}
+                                    </button>
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    Click to view map
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                              <MapModel
+                                isOpen={mapModal}
+                                onOpenChange={setMapModal}
+                              />
                             </MenuItem>
                           );
-                        })}
-                  </ul>
-                </div>
-              );
-            })}
+                        }
+                        if (title.includes('Email')) {
+                          return (
+                            <MenuItem key={title}>
+                              <MailOpen className="h-4 w-4 shrink-0" />
+                              <a
+                                className="min-w-0 break-words"
+                                href={`mailto:${url}`}
+                              >
+                                {title}
+                              </a>
+                            </MenuItem>
+                          );
+                        }
+                        if (title.includes('Phone')) {
+                          return (
+                            <MenuItem key={title}>
+                              <PhoneIncoming className="h-4 w-4 shrink-0" />
+                              <a
+                                className="min-w-0 break-words"
+                                href={`tel:${url}`}
+                              >
+                                {title}
+                              </a>
+                            </MenuItem>
+                          );
+                        }
+                        if (title.includes('Fax')) {
+                          return (
+                            <MenuItem key={title}>
+                              <PhoneOff className="h-4 w-4 shrink-0" />
+                              <a
+                                className="min-w-0 break-words"
+                                href={`tel:${url}`}
+                              >
+                                {title}
+                              </a>
+                            </MenuItem>
+                          );
+                        }
+                        if (title.includes('Box')) {
+                          return (
+                            <MenuItem key={title}>
+                              <Mailbox className="h-4 w-4 shrink-0" />
+                              <span className="min-w-0 break-words">
+                                {title}
+                              </span>
+                            </MenuItem>
+                          );
+                        }
+                      })
+                    : item.children?.map((child_item: any) => {
+                        const { url, title } = child_item;
+                        return (
+                          <MenuItem key={title}>
+                            <ChevronsRight className="h-4 w-4 shrink-0" />
+                            {title.includes('SAES') ? (
+                              <a
+                                href={url}
+                                target="_blank"
+                                referrerPolicy="no-referrer"
+                                rel="noopener noreferrer"
+                                className="min-w-0 break-words"
+                              >
+                                {title}
+                              </a>
+                            ) : (
+                              <Link
+                                href={url}
+                                className="min-w-0 break-words"
+                              >
+                                {title}
+                              </Link>
+                            )}
+                          </MenuItem>
+                        );
+                      })}
+                </ul>
+              </div>
+            );
+          })}
         </div>
-        <div className="border-t border-gray-200 py-7">
-          <div className="flex flex-col items-center justify-center lg:flex-row lg:justify-between">
-            <span className="text-sm text-secondary-foreground">
+        <div className="border-t border-gray-200/80 py-6 sm:py-7">
+          <div className="flex flex-col items-center justify-center gap-4 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
+            <span className="text-secondary-foreground text-sm leading-relaxed">
               ©<Link href="/">{' SAWTEE'}</Link>{' '}
               {new Date().getFullYear() + ' All rights reserved. '}
             </span>
-            <div className="mt-4 flex space-x-4 sm:justify-center lg:mt-0">
-              <SocialMenu menu={socialMenu} />
-            </div>
+            <SocialMenu
+              menu={socialMenu}
+              className="mt-0 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 space-x-0"
+            />
           </div>
         </div>
       </div>
@@ -175,7 +192,7 @@ const MenuItem = ({ children = undefined, className = '' }: any) => {
   return (
     <li
       className={cn(
-        'mb-4 flex w-full items-center justify-start gap-2 text-secondary-foreground/90 hover:text-slate-900 dark:text-secondary-foreground/80 dark:hover:text-secondary-foreground',
+        'text-secondary-foreground/90 dark:text-secondary-foreground/80 dark:hover:text-secondary-foreground mb-3 flex w-full min-w-0 items-center justify-start gap-2 last:mb-0 hover:text-slate-900 sm:mb-4',
         className
       )}
     >
