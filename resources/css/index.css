@@ -28,53 +28,59 @@
   --blur-sm: 4px;
   --blur: 8px;
   --default-ring-width: 3px;
-  --default-ring-color: var(--color-blue-500);
+  /* Brand teal #006181 — keep focus rings on-brand (not Tailwind blue). */
+  --default-ring-color: #006181;
 }
 
 @layer base {
+  /*
+    Brand accent: #006181 → hsl(195 100% 25%).
+    Neutrals lean cool teal-gray so light/dark, admin inputs, and frontend
+    chrome stay coherent without glass/purple/turquoise accents.
+  */
   :root {
     --background: 0 0% 100%;
-    --body-background: 45 29% 97%;
-    --background-darker: 0 0% 96%;
+    --body-background: 195 25% 97%;
+    --background-darker: 195 14% 95%;
     --theme-color: 195 100% 25%;
-    --color-border: #ebebeb;
-    --mega_menu_bg: 194 85% 32%;
-    --foreground: 222.2 84% 4.9%;
+    --color-border: #e2e8eb;
+    --mega_menu_bg: 195 85% 28%;
+    --foreground: 200 25% 12%;
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 15%;
+    --card-foreground: 200 20% 14%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 15%;
-    --primary: 240 5.9% 10%;
+    --popover-foreground: 200 20% 14%;
+    --primary: 200 22% 12%;
     --primary-foreground: 0 0% 98%;
-    --secondary: 240 4.8% 95.9%;
-    --secondary-foreground: 240 5.9% 10%;
-    --muted: 240 4.8% 95.9%;
-    --muted-foreground: 240 3.8% 46.1%;
-    --accent: 240 4.8% 95.9%;
-    --accent-foreground: 240 5.9% 10%;
+    --secondary: 195 16% 95%;
+    --secondary-foreground: 200 22% 14%;
+    --muted: 195 14% 95%;
+    --muted-foreground: 200 10% 40%;
+    --accent: 195 22% 94%;
+    --accent-foreground: 195 80% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --success: 120 50% 40%; /* Green color for success */
-    --success-foreground: 0 0% 100%; /* White text color for success */
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 152 45% 36%;
+    --success-foreground: 0 0% 100%;
+    --border: 195 14% 88%;
+    --input: 195 14% 86%;
+    --ring: 195 100% 25%;
     --radius: 0.5rem;
-    --chart-1: 12 76% 61%;
-    --chart-2: 173 58% 39%;
-    --chart-3: 197 37% 24%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 240 5.3% 26.1%;
-    --sidebar-primary: 240 5.9% 10%;
+    --chart-1: 195 100% 25%;
+    --chart-2: 195 45% 42%;
+    --chart-3: 200 30% 30%;
+    --chart-4: 173 40% 40%;
+    --chart-5: 210 25% 50%;
+    --sidebar-background: 195 20% 98%;
+    --sidebar-foreground: 200 18% 22%;
+    --sidebar-primary: 195 100% 25%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 4.8% 95.9%;
-    --sidebar-accent-foreground: 240 5.9% 10%;
-    --sidebar-border: 220 13% 91%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-    --scrollbarBG: #cfd8dc;
-    --thumbBG: #90a4ae;
+    --sidebar-accent: 195 18% 94%;
+    --sidebar-accent-foreground: 195 80% 18%;
+    --sidebar-border: 195 12% 90%;
+    --sidebar-ring: 195 100% 25%;
+    --scrollbarBG: #d5e0e4;
+    --thumbBG: #7a9aa6;
     --color-black: #000;
     --color-bg: 0 0 100%;
     --color-bg-reverse: var(--color-dark);
@@ -95,45 +101,46 @@
   }
 
   .dark {
-    --background: 0 0% 15%;
-    --background-darker: 0 0% 12%;
-    --theme-color: 195 100% 25%;
-    --color-border: #333;
-    --foreground: 0 0% 98%;
-    --card: 0 0% 15%;
-    --card-foreground: 0 0% 98%;
-    --popover: 0 0% 15%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
+    --background: 200 12% 11%;
+    --background-darker: 200 14% 8%;
+    --theme-color: 195 55% 52%;
+    --color-border: #2a3338;
+    --foreground: 195 12% 96%;
+    --card: 200 12% 13%;
+    --card-foreground: 195 12% 96%;
+    --popover: 200 12% 13%;
+    --popover-foreground: 195 12% 96%;
+    --primary: 195 12% 96%;
+    --primary-foreground: 200 22% 12%;
+    --secondary: 200 10% 18%;
+    --secondary-foreground: 195 12% 96%;
+    --muted: 200 10% 18%;
+    --muted-foreground: 195 10% 68%;
+    --accent: 195 18% 18%;
+    --accent-foreground: 195 40% 88%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 26%;
-    --input: 240 3.7% 34%;
-    --ring: 240 4.9% 83.9%;
-    --chart-1: 220 70% 50%;
-    --chart-2: 160 60% 45%;
-    --chart-3: 30 80% 55%;
-    --chart-4: 280 65% 60%;
-    --chart-5: 340 75% 55%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    --border: 195 10% 24%;
+    /* Slightly lighter than surface so admin/frontend inputs stay readable */
+    --input: 195 10% 30%;
+    --ring: 195 55% 52%;
+    --chart-1: 195 55% 52%;
+    --chart-2: 195 40% 45%;
+    --chart-3: 200 30% 55%;
+    --chart-4: 173 35% 45%;
+    --chart-5: 210 25% 55%;
+    --sidebar-background: 200 14% 9%;
+    --sidebar-foreground: 195 12% 94%;
+    --sidebar-primary: 195 55% 52%;
+    --sidebar-primary-foreground: 200 22% 10%;
+    --sidebar-accent: 195 14% 16%;
+    --sidebar-accent-foreground: 195 12% 94%;
+    --sidebar-border: 195 10% 18%;
+    --sidebar-ring: 195 55% 52%;
     --color-bg: var(--color-darker);
     --color-body-bg: var(--color-dark);
     --color-text: var(--color-light);
-    --color-border: #333;
+    --color-border: #2a3338;
     --color-bg-reverse: #fff;
     --color-text-reverse: var(--color-dark);
   }
@@ -342,7 +349,7 @@ pre {
 .blockquote::before {
     font-family: Arial, Helvetica, sans-serif;
     content: "\201C";
-    color: var(--chakra-colors-primary-500);
+    color: #006181;
     font-size: 4em;
     position: absolute;
     left: 10px;
@@ -352,11 +359,9 @@ pre {
 .blockquote {
     width: 80%;
     padding: 1.2em 1.8rem 1.2em 3rem;
-    border-left: 8px solid var(--chakra-colors-primary-500);
+    border-left: 8px solid #006181;
     line-height: 1.5;
     position: relative;
-    /* background: var(--chakra-colors-blackAlpha-100); */
-    backdrop-filter: blur(3px);
 }
 
 .blockquote::after {

@@ -6,6 +6,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import type { Publication } from '@/types';
+
 import { Badge } from '../ui/badge';
 
 type MultiPostsCarouselProps = {
@@ -65,19 +66,19 @@ const MultiPostsCarousel = ({ data = [] }: MultiPostsCarouselProps) => {
                     className="absolute inset-0 z-10 bg-linear-to-br from-transparent to-black/50"
                   />
                 )}
-                <div className="absolute left-4 top-3 z-20 flex items-center justify-between">
-                  <Badge className="border-transparent bg-sky-800 px-2 font-sans text-[0.65rem] font-semibold text-white transition-all duration-200 ease-in-out group-hover:bg-sky-100 group-hover:text-sky-900">
+                <div className="absolute top-3 left-4 z-20 flex items-center justify-between">
+                  <Badge className="bg-theme-700 group-hover:bg-theme-100 group-hover:text-theme-800 border-transparent px-2 font-sans text-[0.65rem] font-semibold text-white transition-all duration-200 ease-in-out">
                     {publication.category?.name ?? 'Publication'}
                   </Badge>
                 </div>
-                <div className="z-20 w-full rounded-b-md p-2 text-sm font-medium leading-4 text-white backdrop-blur-[2px] transition-all duration-200 ease-in-out group-hover:bg-black/20">
+                <div className="z-20 w-full rounded-b-md p-2 text-sm leading-4 font-medium text-white backdrop-blur-[2px] transition-all duration-200 ease-in-out group-hover:bg-black/20">
                   {href ? (
                     <a
                       target="_blank"
                       rel="noopener noreferrer"
                       title={publication.title}
                       href={href}
-                      className="line-clamp-1 hover:underline group-hover:underline"
+                      className="line-clamp-1 group-hover:underline hover:underline"
                     >
                       {publication.title}
                     </a>

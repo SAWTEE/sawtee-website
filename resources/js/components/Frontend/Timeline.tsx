@@ -1,5 +1,6 @@
 import { formatShortMonthDay } from '@/lib/helpers';
 import type { Post } from '@/types';
+
 import ListItem from '../shared/ListItem';
 
 type VerticalTimelineProps = {
@@ -21,8 +22,8 @@ export default function VerticalTimeline({
         )[0];
         return (
           <div key={item.id} className="group relative py-6 pl-8 sm:pl-32">
-            <div className="mb-1 flex flex-col items-center before:absolute before:left-2 before:h-full before:-translate-x-1/2 before:translate-y-3 before:self-start before:bg-slate-300 before:px-px group-last:before:hidden after:absolute after:left-2 after:box-content after:h-3 after:w-3 after:-translate-x-1/2 after:translate-y-1.5 after:rounded-full after:border-4 after:border-slate-50 after:bg-sky-600 sm:flex-row sm:before:left-0 sm:before:ml-[6.5rem] sm:after:left-0 sm:after:ml-[6.5rem]">
-              <time className="left-0 mb-3 inline-flex h-6 w-20 translate-y-0.5 items-center justify-center rounded-full bg-sky-100 px-2 text-xs font-semibold text-sky-600 uppercase sm:absolute sm:mb-0">
+            <div className="before:bg-theme-200 after:border-theme-50 after:bg-theme-600 dark:before:bg-theme-700 dark:after:border-theme-900 dark:after:bg-theme-400 mb-1 flex flex-col items-center before:absolute before:left-2 before:h-full before:-translate-x-1/2 before:translate-y-3 before:self-start before:px-px group-last:before:hidden after:absolute after:left-2 after:box-content after:h-3 after:w-3 after:-translate-x-1/2 after:translate-y-1.5 after:rounded-full after:border-4 sm:flex-row sm:before:left-0 sm:before:ml-[6.5rem] sm:after:left-0 sm:after:ml-[6.5rem]">
+              <time className="bg-theme-100 text-theme-700 dark:bg-theme-800 dark:text-theme-200 left-0 mb-3 inline-flex h-6 w-20 translate-y-0.5 items-center justify-center rounded-full px-2 text-xs font-semibold uppercase sm:absolute sm:mb-0">
                 {formatShortMonthDay(
                   item.published_at ? new Date(item.published_at) : new Date()
                 )}

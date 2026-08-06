@@ -1,9 +1,4 @@
-import {
-  forwardRef,
-  useEffect,
-  useRef,
-  type InputHTMLAttributes,
-} from 'react';
+import { forwardRef, type InputHTMLAttributes, useEffect, useRef } from 'react';
 
 type TextInputProps = InputHTMLAttributes<HTMLInputElement> & {
   isFocused?: boolean;
@@ -27,7 +22,7 @@ const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
       <input
         {...props}
         type={type}
-        className={`rounded-md border border-input bg-background text-foreground shadow-sm placeholder:text-muted-foreground focus:border-sky-500 focus:ring-sky-500 ${className}`}
+        className={`border-input bg-background text-foreground placeholder:text-muted-foreground focus:border-theme-600 focus:ring-theme-600 rounded-md border shadow-sm ${className}`}
         ref={input}
       />
     );

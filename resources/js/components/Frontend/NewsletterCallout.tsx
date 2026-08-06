@@ -2,13 +2,13 @@ import { useTheme } from '@/components/shared/theme-provider';
 
 export default function NewsletterCallout() {
   return (
-    <div className="rounded-lg bg-sky-100 px-6 py-6 md:px-12 md:py-12 lg:px-16 lg:py-16 xl:flex xl:items-center dark:bg-sky-950">
+    <div className="bg-theme-50 dark:bg-theme-900 rounded-lg px-6 py-6 md:px-12 md:py-12 lg:px-16 lg:py-16 xl:flex xl:items-center">
       <div className="xl:w-0 xl:flex-1">
-        <h2 className="text-2xl leading-8 font-extrabold tracking-tight text-sky-900 sm:text-3xl sm:leading-9 dark:text-sky-100">
+        <h2 className="text-theme-800 dark:text-theme-100 text-2xl leading-8 font-extrabold tracking-tight sm:text-3xl sm:leading-9">
           Receive the latest publication releases, events and monthly
           newsletter.
         </h2>
-        <p className="mt-3 max-w-3xl text-lg leading-6 text-sky-900 dark:text-sky-200">
+        <p className="text-theme-800 dark:text-theme-200 mt-3 max-w-3xl text-lg leading-6">
           Do you want to get notified? Sign up for our newsletter and
           you&apos;ll be among the first to find out about new publication
           releases, events and monthly newsletter.
@@ -34,8 +34,8 @@ export const SubscribeForm = () => {
     <div
       className={
         isDark
-          ? 'overflow-hidden rounded border border-sky-800 bg-sky-950'
-          : 'overflow-hidden rounded border border-sky-200 bg-white'
+          ? 'border-theme-700 bg-theme-900 overflow-hidden rounded border'
+          : 'border-theme-200 overflow-hidden rounded border bg-white'
       }
     >
       <iframe
