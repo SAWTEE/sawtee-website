@@ -72,11 +72,7 @@ const PostLayout = ({
   return (
     <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
       <header className="mx-auto w-full max-w-3xl">
-        <PostHeader
-          categories={post.category}
-          heading={post.title}
-          className="text-left"
-        />
+        <PostHeader categories={post.category} heading={post.title} />
         <PostMeta
           className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
           author={post.author}

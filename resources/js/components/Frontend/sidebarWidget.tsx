@@ -22,10 +22,7 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
       className="sidebar_widget relative max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20"
       {...rest}
     >
-      <SimpleList
-        className="border-l-[3px] border-l-[#006181] px-5 md:px-6"
-        heading={title}
-      >
+      <SimpleList className="border-none px-5 md:px-6" heading={title}>
         {array.map(post => {
           return (
             <li className="group mb-5 last:mb-3" key={post.id}>

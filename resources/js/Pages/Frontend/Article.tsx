@@ -81,8 +81,8 @@ export default function Article({
       />
 
       <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
-        <header className="mx-auto w-full max-w-3xl">
-          <div className="post-categories mb-3 flex flex-wrap gap-2">
+        <header className="mx-auto w-full max-w-3xl text-left md:text-center">
+          <div className="post-categories mb-3 flex flex-wrap justify-center gap-2">
             <Link href={`/trade-insight/${volumePath}`}>
               <Button
                 variant="outline"
@@ -150,7 +150,7 @@ export default function Article({
               <aside className="w-full self-start lg:sticky lg:top-28 lg:col-span-4 lg:pt-1">
                 <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20">
                   <SimpleList
-                    className="border-l-[3px] border-l-[#006181] px-5 md:px-6"
+                    className="border-none px-5 md:px-6"
                     heading="Related Articles"
                   >
                     {relatedArticles.map(post => {

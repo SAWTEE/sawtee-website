@@ -1,6 +1,5 @@
 import Glassbox from '@/components/Frontend/Glassbox';
 import { useTheme } from '@/components/shared/theme-provider';
-import { Separator } from '@/components/ui/separator';
 import { aboutMenuData } from '@/lib/data';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
@@ -87,88 +86,46 @@ const AboutMegaMenu = ({ item, introText, ...rest }: MegaSectionProps) => {
 
 const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
   const children = item.children ?? [];
-  const first = children[0];
 
   return (
-    <ul className="grid w-[60vw] grid-cols-1 gap-4 p-4 px-8 py-10" {...rest}>
-      <div className="mx-auto flex w-full flex-col items-center justify-center gap-10">
-        {first ? (
-          <>
-            <Link
-              className="text-secondary-foreground font-serif text-2xl"
-              href={first.url}
-            >
-              {first.title}
-            </Link>
+    <ul
+      className="mx-auto grid w-[min(90vw,56rem)] grid-cols-1 gap-8 px-6 py-10 sm:grid-cols-2 md:grid-cols-3 md:gap-6 md:px-8"
+      {...rest}
+    >
+      {children.map(section => (
+        <li key={section.title} className="min-w-0 space-y-4 text-left">
+          <Link
+            href={section.url}
+            className="text-secondary-foreground font-serif text-xl no-underline md:text-2xl"
+          >
+            {section.title}
+          </Link>
+
+          {(section.children ?? []).length > 0 ? (
             <motion.ul
+              className="flex flex-col gap-1"
               variants={ListContainerVariants}
               initial={'closed'}
               whileInView={'open'}
-              className="grid w-full grid-cols-2 gap-4"
             >
-              {(first.children ?? []).map((grandChild: any) => {
-                return (
-                  <motion.li
-                    key={grandChild.title}
-                    variants={ListVariants}
-                    className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
+              {(section.children ?? []).map(child => (
+                <motion.li
+                  key={child.title}
+                  variants={ListVariants}
+                  className="md:text-md relative cursor-pointer py-1.5 text-sm"
+                >
+                  <Link
+                    href={child.url}
+                    className="text-secondary-foreground no-underline"
                   >
-                    <Link
-                      href={grandChild.url}
-                      className="text-secondary-foreground no-underline"
-                    >
-                      {grandChild.title}{' '}
-                    </Link>
-                  </motion.li>
-                );
-              })}
+                    {child.title}
+                  </Link>
+                </motion.li>
+              ))}
             </motion.ul>
-          </>
-        ) : null}
-
-        <Separator className="my-4 w-full border-b-2" />
-        <div className="grid grid-cols-2 gap-6">
-          {children.map((grandChildren: any, idx: any) => {
-            if (idx === 0) {
-              return null;
-            }
-            return (
-              <div className="col-span-1 space-y-6" key={grandChildren.title}>
-                <Link
-                  href={grandChildren.url}
-                  className="text-secondary-foreground font-serif text-2xl no-underline"
-                >
-                  {grandChildren.title}
-                </Link>
-
-                <motion.ul
-                  className="grid grid-cols-2 gap-6"
-                  variants={ListContainerVariants}
-                  initial={'closed'}
-                  whileInView={'open'}
-                >
-                  {(grandChildren.children ?? []).map((child: any) => {
-                    return (
-                      <motion.li
-                        key={child.title}
-                        variants={ListVariants}
-                        className="md:text-md relative col-span-1 cursor-pointer pb-3 text-sm"
-                      >
-                        <Link
-                          href={child.url}
-                          className="text-secondary-foreground no-underline"
-                        >
-                          {child.title}
-                        </Link>
-                      </motion.li>
-                    );
-                  })}
-                </motion.ul>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+          ) : null}
+        </li>
+      ))}
     </ul>
   );
 };

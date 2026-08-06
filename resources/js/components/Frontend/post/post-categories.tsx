@@ -30,7 +30,7 @@ export const PostCategories = ({
   return (
     <div
       className={cn(
-        'post-categories mb-3 flex flex-wrap justify-start gap-2 md:justify-start',
+        'post-categories mb-3 flex flex-wrap justify-center gap-2',
         className
       )}
       {...props}
