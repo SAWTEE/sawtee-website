@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 import { lazy, Suspense } from 'react';
 import type { MenuItem } from '@/types';
 
-const Globeanime = lazy(() => import('../globeanime'));
+const SawteeGlobe = lazy(() => import('../globe'));
 
 const ListVariants = {
   open: {
@@ -74,7 +74,7 @@ const AboutMegaMenu = ({ item, introText, ...rest }: MegaSectionProps) => {
       <div className="place-center col-span-4 mx-auto md:col-span-3">
         <div className="bg-bgDarker relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-cover bg-right-bottom bg-no-repeat dark:bg-[rgba(0,0,0,0.4)]">
           <Suspense fallback={null}>
-            <Globeanime darkMode={theme === 'dark'} />
+            <SawteeGlobe darkMode={theme === 'dark'} />
           </Suspense>
           <p className="text-secondary-foreground flex h-full w-full items-center justify-center self-center p-6 text-justify text-xs leading-normal xl:text-sm xl:leading-6">
             {introText}
