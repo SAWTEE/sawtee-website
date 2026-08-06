@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Restart Inertia SSR for staging (and optionally production later).
-# Requires Node.js on the host (cPanel "Setup Node.js App" or SSH node binary).
+# Required whenever INERTIA_SSR_ENABLED=true on a deployed host.
+# Local Vite dev does NOT use this — `@inertiajs/vite` handles SSR via `npm run dev`.
+# Requires Node.js 22+ on the host (cPanel "Setup Node.js App" or SSH node binary).
 set -euo pipefail
 
 ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

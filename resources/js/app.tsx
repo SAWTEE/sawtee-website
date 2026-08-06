@@ -1,7 +1,6 @@
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
 import '../css/index.css';
-import './bootstrap';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
@@ -18,15 +17,17 @@ createInertiaApp({
     return importPage();
   },
   setup({ el, App, props }) {
-    const root = createRoot(el);
-    root.render(<App {...props} />);
+    if (el.hasChildNodes()) {
+      hydrateRoot(el, <App {...props} />);
+      return;
+    }
+
+    createRoot(el).render(<App {...props} />);
   },
   progress: {
     delay: 250,
     color: '#006181',
     includeCSS: true,
-
-    // Whether the NProgress spinner will be shown...
     showSpinner: false,
   },
 });

@@ -17,10 +17,6 @@ declare global {
     _absolute?: boolean,
     _config?: unknown
   ): string;
-
-  interface Window {
-    axios: typeof import('axios').default;
-  }
 }
 
 declare module '@inertiajs/react' {

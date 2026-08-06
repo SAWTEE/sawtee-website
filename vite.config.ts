@@ -1,3 +1,4 @@
+import inertia from '@inertiajs/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
@@ -12,6 +13,13 @@ export default defineConfig({
       refresh: true,
     }),
     react(),
+    // Dev SSR via Vite `/__inertia_ssr` (no separate Node process).
+    // Production/staging still need `npm run build:ssr` + `php artisan inertia:start-ssr`.
+    inertia({
+      ssr: {
+        entry: 'resources/js/ssr.tsx',
+      },
+    }),
     tailwindcss(),
   ],
   resolve: {

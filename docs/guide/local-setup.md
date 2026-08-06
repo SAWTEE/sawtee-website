@@ -38,8 +38,9 @@ On the staging **server**, install secrets as `.env` (GitHub Actions does this f
 
 | Command | Purpose |
 | --- | --- |
-| `npm run dev` | Vite HMR while developing |
-| `npm run build` | Production client assets |
-| `npm run build:ssr` | Client + Inertia SSR bundle (staging) |
+| `npm run dev` | Vite HMR; Inertia SSR in dev via `@inertiajs/vite` (no `inertia:start-ssr`) |
+| `npm run build` | Production **client-only** assets |
+| `npm run build:ssr` | Client + Inertia SSR bundle (staging/production when SSR is on) |
+| `php artisan inertia:start-ssr` | **Staging/production only** — Node SSR background process (not needed for local `npm run dev`) |
 | `php artisan test` | PHP test suite |
 | `npm run docs:dev` | Run this documentation site locally (`cd docs && npm i && npm run docs:dev`) |
