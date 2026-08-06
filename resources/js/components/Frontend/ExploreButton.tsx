@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, ChevronRightIcon } from 'lucide-react';
-import { useState } from 'react';
+import { useState, type ComponentProps } from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -9,7 +9,9 @@ type ExploreButtonProps = {
   link?: string | null;
   href?: string | null;
   className?: string;
-};
+  /** Native HTML title/tooltip (e.g. full label when truncated). */
+  title?: string;
+} & Omit<ComponentProps<typeof Link>, 'href' | 'className' | 'children'>;
 
 const ExploreButton = ({
   text = 'Explore All',

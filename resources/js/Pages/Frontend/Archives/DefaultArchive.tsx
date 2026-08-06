@@ -4,6 +4,7 @@ import type { HTMLAttributes } from 'react';
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
 import { formatDate } from '@/lib/helpers';
+import { htmlToText } from '@/lib/utils';
 import type { Post } from '@/types';
 
 type DefaultArchiveProps = HTMLAttributes<HTMLDivElement> & {
@@ -38,11 +39,18 @@ type ArchivePostProps = {
   showFallbackImage?: boolean;
 };
 
+const hasMeaningfulExcerpt = (excerpt: string | null | undefined) => {
+  const text = htmlToText(excerpt)?.replace(/\s+/g, ' ').trim() ?? '';
+  // Avoid rendering punctuation-only leftovers (e.g. a lone ".") as an excerpt.
+  return text.length > 0 && !/^[.\u2026]+$/.test(text);
+};
+
 const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
   const featured_image = (post.media ?? []).filter(
     media => media.collection_name === 'post-featured-image'
   )[0];
   const categorySlug = post.category?.slug ?? '';
+  const showExcerpt = hasMeaningfulExcerpt(post.excerpt);
 
   return (
     <Glassbox className="flex flex-col justify-start overflow-hidden rounded shadow-md">
@@ -79,10 +87,12 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
             {post.title}
           </h3>
         </a>
-        <p
-          className="text-secondary-foreground/70 line-clamp-3 text-sm"
-          dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
-        />
+        {showExcerpt ? (
+          <p
+            className="text-secondary-foreground/70 line-clamp-3 text-sm"
+            dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
+          />
+        ) : null}
         <div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <time className="text-secondary-foreground/80 shrink-0 py-1 text-xs whitespace-nowrap">
             {formatDate(post.published_at)}
