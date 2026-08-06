@@ -38,40 +38,41 @@ type MenuLinkProps = {
   item: MultiLevelMenuItem;
 } & Omit<ComponentPropsWithoutRef<'a'>, 'href' | 'children'>;
 
-const MenuLink = forwardRef<HTMLAnchorElement, MenuLinkProps>(
-  function MenuLink({ item, className, ...slotProps }, ref) {
-    const linkClass = cn(
-      'cursor-pointer font-medium leading-none no-underline',
-      className
-    );
+const MenuLink = forwardRef<HTMLAnchorElement, MenuLinkProps>(function MenuLink(
+  { item, className, ...slotProps },
+  ref
+) {
+  const linkClass = cn(
+    'cursor-pointer font-medium leading-none no-underline',
+    className
+  );
 
-    if (isExternalUrl(item.url)) {
-      return (
-        <a
-          ref={ref}
-          href={item.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={linkClass}
-          {...slotProps}
-        >
-          {item.title}
-        </a>
-      );
-    }
-
+  if (isExternalUrl(item.url)) {
     return (
-      <Link
+      <a
         ref={ref}
         href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
         className={linkClass}
-        {...(slotProps as ComponentPropsWithoutRef<typeof Link>)}
+        {...slotProps}
       >
         {item.title}
-      </Link>
+      </a>
     );
   }
-);
+
+  return (
+    <Link
+      ref={ref}
+      href={item.url}
+      className={linkClass}
+      {...(slotProps as ComponentPropsWithoutRef<typeof Link>)}
+    >
+      {item.title}
+    </Link>
+  );
+});
 MenuLink.displayName = 'MenuLink';
 
 function itemKey(item: MultiLevelMenuItem, index: number): string {
@@ -107,11 +108,11 @@ export function MultiLevelMenuItems({
         if (hasChildren(item)) {
           return (
             <DropdownMenuSub key={key}>
-              <DropdownMenuSubTrigger className="font-medium focus:bg-bgDarker data-[state=open]:bg-bgDarker dark:focus:bg-neutral-800 dark:data-[state=open]:bg-neutral-800">
+              <DropdownMenuSubTrigger className="focus:bg-bgDarker data-[state=open]:bg-bgDarker font-medium dark:focus:bg-neutral-800 dark:data-[state=open]:bg-neutral-800">
                 {item.title}
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
-                <DropdownMenuSubContent className="min-w-56 border bg-popover p-1 shadow-lg">
+                <DropdownMenuSubContent className="bg-popover min-w-56 border p-1 shadow-lg">
                   {includeBranchLinks && item.url ? (
                     <>
                       <DropdownMenuItem
@@ -163,7 +164,7 @@ export type MultiLevelMenuProps = {
   /** Controlled open state. */
   open?: boolean;
   /** Controlled open-change handler. */
-  onOpenChange?: (open: boolean) => void;
+  onOpenChange?: (_open: boolean) => void;
   /** Optional overlay inside the trigger (e.g. nav focus highlight). */
   triggerAddon?: ReactNode;
   /** Include a top-level link to the parent URL inside the panel. */
@@ -264,7 +265,7 @@ export default function MultiLevelMenu({
         align={align}
         sideOffset={6}
         className={cn(
-          'z-50 min-w-56 border bg-popover p-1 text-popover-foreground shadow-md',
+          'bg-popover text-popover-foreground z-50 min-w-56 border p-1 shadow-md',
           contentClassName
         )}
         onPointerEnter={openOnHover ? handleOpen : undefined}

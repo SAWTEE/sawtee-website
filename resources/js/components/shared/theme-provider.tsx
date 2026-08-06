@@ -10,7 +10,7 @@ type Theme = 'dark' | 'light' | 'system';
 
 type ThemeProviderState = {
   theme: Theme;
-  setTheme: (theme: Theme) => void;
+  setTheme: (_theme: Theme) => void;
   resolvedTheme?: 'dark' | 'light';
   systemTheme?: 'dark' | 'light';
 };

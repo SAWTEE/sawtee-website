@@ -33,7 +33,11 @@ import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
-export default function CreatePostForm({ categories = undefined, themes = undefined, tags = undefined }: any) {
+export default function CreatePostForm({
+  categories = undefined,
+  themes = undefined,
+  tags = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: 1,
     theme_id: '',
@@ -54,8 +58,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
     meta_description: '',
   });
   const { toast } = useToast();
-  const [selectedCategory, setSelectedCategory] =
-    React.useState('Featured Events');
+  const [, setSelectedCategory] = React.useState('Featured Events');
   const [tagOptions, setTagOptions] = React.useState([]);
   const [image, setImage] = React.useState(null);
   const [postTags, setPostTags] = React.useState([]);
@@ -121,7 +124,9 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
+      setTagOptions(
+        tags.map((tag: any) => ({ value: tag.id, label: tag.name }))
+      );
   }, [tags]);
 
   return (
@@ -141,8 +146,7 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
               <InputError className="mt-2" message={errors.title} />
             )}
           </div>
-          {/* @ts-ignore allowlist-migration */}
-          <div mt={4}>
+          <div className="mt-4">
             <Label htmlFor="content">Content</Label>
 
             <ContentEditor
@@ -190,7 +194,8 @@ export default function CreatePostForm({ categories = undefined, themes = undefi
                 setData('category_id', Number(value));
 
                 setSelectedCategory(
-                  categories.filter((cat: any) => cat.id === Number(value))[0]?.name
+                  categories.filter((cat: any) => cat.id === Number(value))[0]
+                    ?.name
                 );
               }}
             >

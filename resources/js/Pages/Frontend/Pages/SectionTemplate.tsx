@@ -32,7 +32,7 @@ export default function SectionTemplate({
       {sections?.map(section => {
         if (section.parent_id === null) {
           return (
-            <PageSection
+            <PageSectionView
               key={section.title}
               section={section}
               sections={sections}
@@ -40,9 +40,7 @@ export default function SectionTemplate({
           );
         }
       })}
-      {isMemberCountries(pageData) && (
-        <Members memberInstitutions={pageData} />
-      )}
+      {isMemberCountries(pageData) && <Members memberInstitutions={pageData} />}
     </div>
   );
 }
@@ -61,7 +59,7 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
           <Accordion key={id} type="single" collapsible className="w-full">
             <AccordionItem value={country}>
               <AccordionTrigger>
-                <p className="font-sans text-xl font-bold text-primary md:text-2xl">
+                <p className="text-primary font-sans text-xl font-bold md:text-2xl">
                   {country}
                 </p>
               </AccordionTrigger>
@@ -97,7 +95,7 @@ type PageSectionViewProps = {
   sections: PageSection[];
 };
 
-const PageSection = ({ section, sections }: PageSectionViewProps) => {
+const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
   const { title, description } = section;
 
   const isTabs = section.type === 'tabs';
@@ -114,7 +112,7 @@ const PageSection = ({ section, sections }: PageSectionViewProps) => {
       {isTabs && childSections.length > 0 && (
         <div className="px-6 py-4">
           <Tabs defaultValue={childSections[0].title} orientation="vertical">
-            <TabsList className="grid h-auto w-full grid-cols-3 bg-bgDarker/60 p-2">
+            <TabsList className="bg-bgDarker/60 grid h-auto w-full grid-cols-3 p-2">
               {childSections.map(({ title: childTitle }) => (
                 <TabsTrigger key={childTitle} value={childTitle}>
                   <p className="font-sans text-lg font-bold md:text-xl">
@@ -123,45 +121,54 @@ const PageSection = ({ section, sections }: PageSectionViewProps) => {
                 </TabsTrigger>
               ))}
             </TabsList>
-            {childSections.map(({ description: childDescription, title: childTitle }) => (
-              <TabsContent
-                key={childTitle}
-                value={childTitle}
-                className="space-y-2 rounded-xl bg-bgDarker/60 p-6 leading-8 text-zinc-700 dark:text-zinc-300"
-              >
-                {childDescription && (
-                  <p className="list-decimal px-4">
-                    {htmlToText(childDescription)}
-                  </p>
-                )}
-              </TabsContent>
-            ))}
+            {childSections.map(
+              ({ description: childDescription, title: childTitle }) => (
+                <TabsContent
+                  key={childTitle}
+                  value={childTitle}
+                  className="bg-bgDarker/60 space-y-2 rounded-xl p-6 leading-8 text-zinc-700 dark:text-zinc-300"
+                >
+                  {childDescription && (
+                    <p className="list-decimal px-4">
+                      {htmlToText(childDescription)}
+                    </p>
+                  )}
+                </TabsContent>
+              )
+            )}
           </Tabs>
         </div>
       )}
 
       {isAccordian &&
-        childSections.map(({ title: childTitle, description: childDescription }) => {
-          return (
-            <Accordion key={childTitle} type="single" collapsible className="w-full">
-              <AccordionItem value={childTitle}>
-                <AccordionTrigger>
-                  <p className="font-sans text-lg font-bold text-primary md:text-xl">
-                    {childTitle}
-                  </p>
-                </AccordionTrigger>
-                <AccordionContent className="rounded-md bg-bgDarker/60">
-                  <div
-                    className="p-6 text-lg leading-8 text-zinc-700 dark:text-zinc-300"
-                    dangerouslySetInnerHTML={{
-                      __html: childDescription ?? '',
-                    }}
-                  />
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          );
-        })}
+        childSections.map(
+          ({ title: childTitle, description: childDescription }) => {
+            return (
+              <Accordion
+                key={childTitle}
+                type="single"
+                collapsible
+                className="w-full"
+              >
+                <AccordionItem value={childTitle}>
+                  <AccordionTrigger>
+                    <p className="text-primary font-sans text-lg font-bold md:text-xl">
+                      {childTitle}
+                    </p>
+                  </AccordionTrigger>
+                  <AccordionContent className="bg-bgDarker/60 rounded-md">
+                    <div
+                      className="p-6 text-lg leading-8 text-zinc-700 dark:text-zinc-300"
+                      dangerouslySetInnerHTML={{
+                        __html: childDescription ?? '',
+                      }}
+                    />
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            );
+          }
+        )}
 
       {isDefault && (
         <div
@@ -188,7 +195,7 @@ const PageSectionTitle = ({
   return (
     <h2
       className={cn(
-        'mb-4 py-4 font-sans text-2xl font-bold text-primary md:text-3xl lg:text-4xl',
+        'text-primary mb-4 py-4 font-sans text-2xl font-bold md:text-3xl lg:text-4xl',
         className
       )}
     >

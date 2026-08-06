@@ -7,9 +7,7 @@ describe('cn', () => {
   });
 
   it('ignores falsy values', () => {
-    expect(cn('btn', false && 'hidden', undefined, 'active')).toBe(
-      'btn active'
-    );
+    expect(cn('btn', false, undefined, 'active')).toBe('btn active');
   });
 });
 

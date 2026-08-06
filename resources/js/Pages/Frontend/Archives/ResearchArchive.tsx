@@ -10,15 +10,13 @@ type ResearchArchiveProps = {
 
 const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
   if (!posts) {
-    return <p className="text-2xl">"No posts found"</p>;
+    return <p className="text-2xl">No posts found</p>;
   }
 
-  const byYear: ResearchByYear = Array.isArray(posts)
-    ? {}
-    : posts;
+  const byYear: ResearchByYear = Array.isArray(posts) ? {} : posts;
 
   if (Object.keys(byYear).length <= 0) {
-    return <p className="text-2xl">"No posts found"</p>;
+    return <p className="text-2xl">No posts found</p>;
   }
 
   const sortedPosts = Object.entries(byYear).sort(
@@ -42,7 +40,7 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                     idx !== items.length - 1 ? 'min-h-12' : 'min-h-auto'
                   }
                 >
-                  <h3 className="text-md tracking-wide text-secondary-foreground/90 hover:text-primary/80 hover:underline hover:underline-offset-4 dark:hover:text-secondary-foreground/80 md:text-lg">
+                  <h3 className="text-md text-secondary-foreground/90 hover:text-primary/80 dark:hover:text-secondary-foreground/80 tracking-wide hover:underline hover:underline-offset-4 md:text-lg">
                     <a
                       target="_blank"
                       href={

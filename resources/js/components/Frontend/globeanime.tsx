@@ -143,7 +143,7 @@ const Globeanime = ({ darkMode = false }: any) => {
     <div
       ref={ref}
       id="functions-hero"
-      className="absolute inset-0 -left-28 top-4 aspect-978/678 w-[150%] sm:-left-32 sm:-top-2 md:-left-44 md:w-[150%] lg:-left-10 lg:-top-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
+      className="absolute inset-0 top-4 -left-28 aspect-978/678 w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
       {/* Animated svgs in globe */}
       {svgs.map((s: any) => (
@@ -195,8 +195,8 @@ const Globeanime = ({ darkMode = false }: any) => {
           <span className="absolute h-4/5 w-4/5 rounded-full bg-black/90 dark:bg-white" />
         </div>
       ))}
-      <div className="absolute left-[51.15%] top-[10%] h-[20%] w-px overflow-hidden">
-        <span className="delay-1200 animate-slide-in absolute inset-0 h-full w-full bg-linear-to-t from-current to-transparent" />
+      <div className="absolute top-[10%] left-[51.15%] h-[20%] w-px overflow-hidden">
+        <span className="animate-slide-in absolute inset-0 h-full w-full bg-linear-to-t from-current to-transparent delay-1200" />
       </div>
       {/* Globe background */}
       <img
@@ -205,9 +205,6 @@ const Globeanime = ({ darkMode = false }: any) => {
         width={400}
         height={400}
         className={`h-full w-full ${darkMode ? 'hidden' : 'block'}`} // Hide/show based on dark mode
-        // @ts-ignore allowlist-migration
-        quality={100}
-        priority="true"
       />
       <img
         src="/assets/globe-light.svg"
@@ -215,9 +212,6 @@ const Globeanime = ({ darkMode = false }: any) => {
         width={400}
         height={400}
         className={`h-full w-full ${darkMode ? 'block' : 'hidden'}`} // Hide/show based on dark mode
-        // @ts-ignore allowlist-migration
-        quality={100}
-        priority="true"
       />
     </div>
   );

@@ -13,7 +13,7 @@ type SiteHeaderProps = ComponentPropsWithoutRef<'header'> & {
 const SiteHeader = ({ className = '', children, ...rest }: SiteHeaderProps) => (
   <header
     className={cn(
-      'sticky top-0 z-40 flex items-center justify-between overflow-visible bg-white py-2 shadow-md backdrop-blur-xl transition-transform duration-200 ease-out dark:bg-bgDarker',
+      'dark:bg-bgDarker sticky top-0 z-40 flex items-center justify-between overflow-visible bg-white py-2 shadow-md backdrop-blur-xl transition-transform duration-200 ease-out',
       className
     )}
     {...rest}
@@ -52,7 +52,7 @@ const Logo = ({ text = 'SAWTEE', src }: { text?: string; src?: string }) => {
     );
   }
   return (
-    <p className="text-center font-sans font-bold uppercase text-theme-500 md:text-left">
+    <p className="text-theme-500 text-center font-sans font-bold uppercase md:text-left">
       {text}
     </p>
   );
@@ -83,7 +83,7 @@ type HeaderProps = {
   socialLinks?: unknown;
   showSocialLinks?: boolean;
   showMobileMenu?: boolean;
-  setShowMobileMenu?: (open: boolean) => void;
+  setShowMobileMenu?: (_open: boolean) => void;
   children?: ReactNode;
   className?: string;
 };

@@ -7,14 +7,17 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 
-export const MapModel = ({ isOpen = undefined, onOpenChange = undefined }: any) => {
+export const MapModel = ({
+  isOpen = undefined,
+  onOpenChange = undefined,
+}: any) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle>Location Map</DialogTitle>
           <DialogDescription>
-            View SAWTEE's location in google maps.
+            View SAWTEE&apos;s location in google maps.
           </DialogDescription>
         </DialogHeader>
         <DialogClose />

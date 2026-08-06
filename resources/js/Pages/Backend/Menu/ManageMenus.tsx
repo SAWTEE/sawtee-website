@@ -33,7 +33,8 @@ export default function ManageMenu({
   menus = undefined,
   pages = undefined,
   desiredMenu = undefined,
-  menuItems = undefined}: any) {
+  menuItems = undefined,
+}: any) {
   const [firstLevelMenuItems, setFirstLevelMenuItems] = useState(null);
   const { get } = useForm();
   const [editMenu, setEditMenu] = useState(false);
@@ -96,7 +97,7 @@ export default function ManageMenu({
 
       <div className="md:gird-cols-2 grid-rows-auto grid gap-8 lg:grid-cols-[400px_auto]">
         <div className="col-span-1">
-          <div className="rounded-md bg-secondary px-6 py-2 text-secondary-foreground">
+          <div className="bg-secondary text-secondary-foreground rounded-md px-6 py-2">
             Add Menu Items
           </div>
           {menu && (
@@ -128,7 +129,7 @@ export default function ManageMenu({
           )}
         </div>
         <div className="col-span-1">
-          <div className="rounded-md bg-secondary px-6 py-2 text-secondary-foreground">
+          <div className="bg-secondary text-secondary-foreground rounded-md px-6 py-2">
             Menu Structure
           </div>
           <MenuStructure
@@ -141,9 +142,14 @@ export default function ManageMenu({
   );
 }
 
-const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, menuItems = undefined }: any) => {
+const AddToMenu = ({
+  options = undefined,
+  name = undefined,
+  menu = undefined,
+  menuItems = undefined,
+}: any) => {
   const [selectedData, setSelectedData] = useState(null);
-  const [parent, setParent] = useState(null);
+  const [, setParent] = useState(null);
 
   const { data, setData, post, processing, errors, reset } = useForm({
     menu_id: menu.id,
@@ -179,7 +185,8 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
       ...data,
       title: selected.name || selected.title,
       name: selected.name || selected.title,
-      order: menuItems.filter((menuItem: any) => !menuItem.parent_id).length + 1,
+      order:
+        menuItems.filter((menuItem: any) => !menuItem.parent_id).length + 1,
       url: url,
     });
   }
@@ -351,7 +358,10 @@ const AddToMenu = ({ options = undefined, name = undefined, menu = undefined, me
   );
 };
 
-const MenuStructure = ({ firstLevelMenuItems = undefined, menuItems = undefined }: any) => {
+const MenuStructure = ({
+  firstLevelMenuItems = undefined,
+  menuItems = undefined,
+}: any) => {
   return (
     <div className="mt-6 rounded-lg p-6 shadow-md">
       {firstLevelMenuItems && firstLevelMenuItems.length > 0 && (

@@ -12,10 +12,10 @@ declare global {
   }
 
   function route(
-    name?: string,
-    params?: Record<string, unknown> | unknown,
-    absolute?: boolean,
-    config?: unknown
+    _name?: string,
+    _params?: Record<string, unknown> | unknown,
+    _absolute?: boolean,
+    _config?: unknown
   ): string;
 
   interface Window {

@@ -27,7 +27,8 @@ export default function EditMenuItem({
   onClose = undefined,
   item = undefined,
   setMenuItem = undefined,
-  menuItems = undefined}: any) {
+  menuItems = undefined,
+}: any) {
   const { data, setData, patch, processing, reset } = useForm({
     title: item.title,
     name: item.name,
@@ -62,7 +63,8 @@ export default function EditMenuItem({
         <DialogHeader>
           <DialogTitle>Edit Menu item</DialogTitle>
           <DialogDescription>
-            Make changes to the menu item here. Click save when you're done.
+            Make changes to the menu item here. Click save when you&apos;re
+            done.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={submit}>

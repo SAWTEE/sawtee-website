@@ -22,8 +22,12 @@ import {
 import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 
-export default function CreateSliderForm({ open = undefined, setOpen = undefined, pages = undefined }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+export default function CreateSliderForm({
+  open = undefined,
+  setOpen = undefined,
+  pages = undefined,
+}: any) {
+  const { setData, post, processing, errors, reset } = useForm({
     name: '',
     page_id: null,
   });

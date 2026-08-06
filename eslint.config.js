@@ -7,7 +7,7 @@ import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 
 export default [
-  { ignores: ['node_modules/**', 'public/**', 'vendor/**', 'bootstrap/ssr/**'] },
+  { ignores: ['node_modules/**', 'public/**', 'vendor/**', 'bootstrap/ssr/**', 'docs/**', 'storage/**'] },
   js.configs.recommended,
   {
     files: ['resources/js/**/*.{js,jsx,ts,tsx}', 'vite.config.ts'],
@@ -42,8 +42,18 @@ export default [
       'no-undef': 'off',
       // Admin/debug logging is intentional in several forms.
       'no-console': 'off',
+      // Prefer the TS-aware rule; allow intentional _prefixed unused bindings.
       'no-unused-vars': 'off',
-      '@typescript-eslint/no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
       'react/no-unknown-property': [
         'error',
         {

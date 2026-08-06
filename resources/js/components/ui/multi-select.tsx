@@ -66,9 +66,10 @@ export type MultiSelectOption = {
 
 export type MultiSelectProps = {
   options: MultiSelectOption[];
-  onValueChange?: (value: string[]) => void;
-  setValues?: (value: string[]) => void;
-  variant?: 'default' | 'secondary' | 'destructive' | 'inverted' | string | null;
+  onValueChange?: (_value: string[]) => void;
+  setValues?: (_value: string[]) => void;
+  variant?:
+    'default' | 'secondary' | 'destructive' | 'inverted' | string | null;
   defaultValue?: string[];
   placeholder?: string;
   animation?: number;
@@ -94,7 +95,10 @@ export type MultiSelectProps = {
   id?: string;
 } & Omit<React.ButtonHTMLAttributes<HTMLButtonElement>, 'defaultValue'>;
 
-export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>(
+export const MultiSelect = React.forwardRef<
+  HTMLButtonElement,
+  MultiSelectProps
+>(
   (
     {
       options,
@@ -106,7 +110,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
       animationConfig,
       maxCount = 3,
       modalPopover = false,
-      asChild = false,
+      asChild: _asChild = false,
       className,
       hideSelectAll = false,
       searchable = true,
@@ -529,7 +533,9 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
 
     const toggleAll = () => {
       if (disabled) return;
-      const allOptions = getAllOptions().filter((option: any) => !option.disabled);
+      const allOptions = getAllOptions().filter(
+        (option: any) => !option.disabled
+      );
       const selectedValueKeys = getSelectedValueKeys();
 
       if (selectedValueKeys.length === allOptions.length) {
@@ -582,14 +588,18 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
     React.useEffect(() => {
       const selectedCount = selectedValues.length;
       const allOptions = getAllOptions();
-      const totalOptions = allOptions.filter((opt: any) => !opt.disabled).length;
+      const totalOptions = allOptions.filter(
+        (opt: any) => !opt.disabled
+      ).length;
       if (selectedCount !== prevSelectedCount.current) {
         const diff = selectedCount - prevSelectedCount.current;
         if (diff > 0) {
           const selectedValueKeys = getSelectedValueKeys();
           const addedItems = selectedValueKeys.slice(-diff);
           const addedLabels = addedItems
-            .map((value: any) => allOptions.find(opt => opt.value === value)?.label)
+            .map(
+              (value: any) => allOptions.find(opt => opt.value === value)?.label
+            )
             .filter(Boolean);
 
           if (addedLabels.length === 1) {
@@ -806,7 +816,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                                 }
                               }}
                               aria-label={`Remove ${option.label} from selection`}
-                              className="-m-0.5 ml-2 h-4 w-4 cursor-pointer rounded-sm p-0.5 hover:bg-white/20 focus:outline-none focus:ring-1 focus:ring-white/50"
+                              className="-m-0.5 ml-2 h-4 w-4 cursor-pointer rounded-sm p-0.5 hover:bg-white/20 focus:ring-1 focus:ring-white/50 focus:outline-none"
                             >
                               <XCircle
                                 className={cn(
@@ -823,7 +833,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                     {selectedValues.length > responsiveSettings.maxCount && (
                       <Badge
                         className={cn(
-                          'border-foreground/1 bg-transparent text-foreground hover:bg-transparent',
+                          'border-foreground/1 text-foreground bg-transparent hover:bg-transparent',
                           getBadgeAnimationClass(),
                           // @ts-ignore allowlist-migration
                           multiSelectVariants({ variant }),
@@ -871,7 +881,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                         }
                       }}
                       aria-label={`Clear all ${selectedValues.length} selected options`}
-                      className="mx-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm text-muted-foreground hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-1"
+                      className="text-muted-foreground hover:text-foreground focus:ring-ring mx-2 flex h-4 w-4 cursor-pointer items-center justify-center rounded-sm focus:ring-2 focus:ring-offset-1 focus:outline-none"
                     >
                       <XIcon className="h-4 w-4" />
                     </div>
@@ -880,17 +890,17 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                       className="flex h-full min-h-6"
                     />
                     <ChevronDown
-                      className="mx-2 h-4 cursor-pointer text-muted-foreground"
+                      className="text-muted-foreground mx-2 h-4 cursor-pointer"
                       aria-hidden="true"
                     />
                   </div>
                 </div>
               ) : (
                 <div className="mx-auto flex w-full items-center justify-between">
-                  <span className="mx-3 text-sm text-muted-foreground">
+                  <span className="text-muted-foreground mx-3 text-sm">
                     {placeholder}
                   </span>
-                  <ChevronDown className="mx-2 h-4 cursor-pointer text-muted-foreground" />
+                  <ChevronDown className="text-muted-foreground mx-2 h-4 cursor-pointer" />
                 </div>
               )}
             </Button>
@@ -952,7 +962,8 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                       role="option"
                       aria-selected={
                         getSelectedValueKeys().length ===
-                        getAllOptions().filter((opt: any) => !opt.disabled).length
+                        getAllOptions().filter((opt: any) => !opt.disabled)
+                          .length
                       }
                       aria-label={`Select all ${
                         getAllOptions().length
@@ -961,9 +972,10 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                     >
                       <div
                         className={cn(
-                          'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                          'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
                           getSelectedValueKeys().length ===
-                            getAllOptions().filter((opt: any) => !opt.disabled).length
+                            getAllOptions().filter((opt: any) => !opt.disabled)
+                              .length
                             ? 'bg-primary text-primary-foreground'
                             : 'opacity-50 [&_svg]:invisible'
                         )}
@@ -1004,7 +1016,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                           >
                             <div
                               className={cn(
-                                'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                                'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
                                 isSelected
                                   ? 'bg-primary text-primary-foreground'
                                   : 'opacity-50 [&_svg]:invisible'
@@ -1015,7 +1027,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                             </div>
                             {option.icon && (
                               <option.icon
-                                className="mr-2 h-4 w-4 text-muted-foreground"
+                                className="text-muted-foreground mr-2 h-4 w-4"
                                 aria-hidden="true"
                               />
                             )}
@@ -1044,7 +1056,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                         >
                           <div
                             className={cn(
-                              'mr-2 flex h-4 w-4 items-center justify-center rounded-sm border border-primary',
+                              'border-primary mr-2 flex h-4 w-4 items-center justify-center rounded-sm border',
                               isSelected
                                 ? 'bg-primary text-primary-foreground'
                                 : 'opacity-50 [&_svg]:invisible'
@@ -1055,7 +1067,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
                           </div>
                           {option.icon && (
                             <option.icon
-                              className="mr-2 h-4 w-4 text-muted-foreground"
+                              className="text-muted-foreground mr-2 h-4 w-4"
                               aria-hidden="true"
                             />
                           )}
@@ -1096,7 +1108,7 @@ export const MultiSelect = React.forwardRef<HTMLButtonElement, MultiSelectProps>
           {animation > 0 && selectedValues.length > 0 && (
             <WandSparkles
               className={cn(
-                'my-2 h-3 w-3 cursor-pointer bg-background text-foreground',
+                'bg-background text-foreground my-2 h-3 w-3 cursor-pointer',
                 isAnimating ? '' : 'text-muted-foreground'
               )}
               onClick={() => setIsAnimating(!isAnimating)}

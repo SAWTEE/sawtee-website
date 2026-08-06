@@ -137,7 +137,10 @@ export default function EditPublishedStory({ fellows, publishedStory }: any) {
             <div className="mt-1 flex flex-wrap gap-2">
               {data.images.map((image: any) => {
                 return (
-                  <div className="aspect-square w-24">
+                  <div
+                    key={image.id ?? image.original_url}
+                    className="aspect-square w-24"
+                  >
                     <img src={image.original_url} alt={image.file_name} />
                   </div>
                 );

@@ -22,7 +22,10 @@ export default function TeamsArchive({
   return (
     <MainLayout>
       <WebsiteHead
-        title={seo?.title ?? (category.meta_title ? category.meta_title : category.name)}
+        title={
+          seo?.title ??
+          (category.meta_title ? category.meta_title : category.name)
+        }
         description={seo?.description ?? category.meta_description ?? undefined}
         image={seo?.image ?? image}
         url={seo?.url}
@@ -47,7 +50,7 @@ export default function TeamsArchive({
 
             {!teams.data || teams.data.length <= 0 ? (
               <div className="text-center">
-                <p className="font-2xl md:text4xl">"No posts found"</p>
+                <p className="font-2xl md:text4xl">No posts found</p>
               </div>
             ) : (
               <div className="flex flex-col gap-10">

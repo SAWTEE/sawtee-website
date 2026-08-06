@@ -47,7 +47,7 @@ export default function EditPageForm({ page = undefined }: any) {
   const [image, setImage] = React.useState(
     page.media[0] ? page.media[0].original_url : null
   );
-  const [filename, setFilename] = React.useState(null);
+  const [, setFilename] = React.useState(null);
 
   React.useEffect(() => {
     if (['About', 'Contact', 'MediaFellows'].includes(data.page_template)) {
@@ -262,7 +262,11 @@ export default function EditPageForm({ page = undefined }: any) {
   );
 }
 
-const ShowPageData = ({ open = undefined, onOpenChange = undefined, data = undefined }: any) => {
+const ShowPageData = ({
+  open = undefined,
+  onOpenChange = undefined,
+  data = undefined,
+}: any) => {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent>

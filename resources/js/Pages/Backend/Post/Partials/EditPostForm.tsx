@@ -47,7 +47,8 @@ export default function EditPostForm({
   post: postData = undefined,
   categories = undefined,
   tags = undefined,
-  themes = undefined}: any) {
+  themes = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: postData.title,
     slug: postData.slug,
@@ -62,7 +63,9 @@ export default function EditPostForm({
       m => m.collection_name === 'post-featured-image'
     )[0],
     tags: [],
-    file: postData.media?.filter((m: any) => m.collection_name === 'post-files')[0],
+    file: postData.media?.filter(
+      (m: any) => m.collection_name === 'post-files'
+    )[0],
     files: [],
     link: postData.link,
     genre: postData.genre,
@@ -81,7 +84,7 @@ export default function EditPostForm({
   const [files, setFiles] = React.useState(postData.post_content_files);
   const [postTags, setPostTags] = React.useState([]);
   const [tagOptions, setTagOptions] = React.useState([]);
-  const [selectedCategory, setSelectedCategory] = React.useState(
+  const [, setSelectedCategory] = React.useState(
     categories
       ? categories.filter((cat: any) => cat.id === data.category_id)[0].name
       : null
@@ -149,7 +152,9 @@ export default function EditPostForm({
 
   React.useEffect(() => {
     tags.length !== tagOptions.length &&
-      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
+      setTagOptions(
+        tags.map((tag: any) => ({ value: tag.id, label: tag.name }))
+      );
   }, [tags]);
 
   React.useEffect(() => {
@@ -234,7 +239,8 @@ export default function EditPostForm({
                 setData('category_id', Number(value));
 
                 setSelectedCategory(
-                  categories.filter((cat: any) => cat.id === Number(value))[0]?.name
+                  categories.filter((cat: any) => cat.id === Number(value))[0]
+                    ?.name
                 );
               }}
             >

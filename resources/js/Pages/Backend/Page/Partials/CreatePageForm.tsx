@@ -34,7 +34,7 @@ export default function CreatePageForm() {
   const { toast } = useToast();
   const [slug, setSlug] = React.useState('');
   const [image, setImage] = React.useState(null);
-  const [filename, setFilename] = React.useState(null);
+  const [, setFilename] = React.useState(null);
 
   React.useEffect(() => {
     if (['About', 'Contact', 'MediaFellows'].includes(data.page_template)) {

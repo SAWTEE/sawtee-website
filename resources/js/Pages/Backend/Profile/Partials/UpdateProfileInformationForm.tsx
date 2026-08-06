@@ -8,7 +8,8 @@ import { Link, useForm, usePage } from '@inertiajs/react';
 export default function UpdateProfileInformation({
   mustVerifyEmail = undefined,
   status = undefined,
-  className = ''}: any) {
+  className = '',
+}: any) {
   // @ts-ignore allowlist-migration
   const user = usePage().props.auth.user;
   const { toast } = useToast();
@@ -41,12 +42,12 @@ export default function UpdateProfileInformation({
   return (
     <section className={className}>
       <header>
-        <h2 className="text-lg font-medium text-secondary-foreground">
+        <h2 className="text-secondary-foreground text-lg font-medium">
           Profile Information
         </h2>
 
-        <p className="mt-1 text-sm text-muted-foreground">
-          Update your account's profile information and email address.
+        <p className="text-muted-foreground mt-1 text-sm">
+          Update your account&apos;s profile information and email address.
         </p>
       </header>
 
@@ -93,7 +94,7 @@ export default function UpdateProfileInformation({
                 href={route('verification.send')}
                 method="post"
                 as="button"
-                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
               >
                 Click here to re-send the verification email.
               </Link>

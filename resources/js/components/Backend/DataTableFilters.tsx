@@ -28,7 +28,10 @@ export function CustomFilter({ table = undefined, column = undefined }: any) {
   );
 }
 
-export function GlobalFilter({ globalFilter = undefined, setGlobalFilter = undefined }: any) {
+export function GlobalFilter({
+  globalFilter = undefined,
+  setGlobalFilter = undefined,
+}: any) {
   return (
     <Input
       placeholder="Filter using any column field..."
@@ -39,8 +42,13 @@ export function GlobalFilter({ globalFilter = undefined, setGlobalFilter = undef
   );
 }
 
-export function TypeFilter({ data = undefined, value = undefined, label = undefined, route = undefined }: any) {
-  const [selectedType, setSelectedType] = useState(value);
+export function TypeFilter({
+  data = undefined,
+  value = undefined,
+  label = undefined,
+  route = undefined,
+}: any) {
+  const [, setSelectedType] = useState(value);
   function handleTypeFilter(id: any) {
     setSelectedType(id);
     router.visit(route, {

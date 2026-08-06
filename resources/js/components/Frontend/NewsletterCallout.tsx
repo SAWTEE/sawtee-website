@@ -1,19 +1,19 @@
 export default function NewsletterCallout() {
   return (
-    <div className="rounded-lg bg-sky-100 px-6 py-6 dark:bg-sky-950 md:px-12 md:py-12 lg:px-16 lg:py-16 xl:flex xl:items-center">
+    <div className="rounded-lg bg-sky-100 px-6 py-6 md:px-12 md:py-12 lg:px-16 lg:py-16 xl:flex xl:items-center dark:bg-sky-950">
       <div className="xl:w-0 xl:flex-1">
-        <h2 className="text-2xl font-extrabold leading-8 tracking-tight text-sky-900 dark:text-sky-100 sm:text-3xl sm:leading-9">
+        <h2 className="text-2xl leading-8 font-extrabold tracking-tight text-sky-900 sm:text-3xl sm:leading-9 dark:text-sky-100">
           Receive the latest publication releases, events and monthly
           newsletter.
         </h2>
         <p className="mt-3 max-w-3xl text-lg leading-6 text-sky-900 dark:text-sky-200">
-          Do you want to get notified? Sign up for our newsletter and you'll be
-          among the first to find out about new publication releases, events and
-          monthly newsletter.
+          Do you want to get notified? Sign up for our newsletter and
+          you&apos;ll be among the first to find out about new publication
+          releases, events and monthly newsletter.
         </p>
       </div>
-      <div className="mt-8 sm:w-full sm:max-w-md xl:ml-8 xl:mt-0">
-        <div className="mt-3 sm:ml-3 sm:mt-0 sm:shrink-0">
+      <div className="mt-8 sm:w-full sm:max-w-md xl:mt-0 xl:ml-8">
+        <div className="mt-3 sm:mt-0 sm:ml-3 sm:shrink-0">
           <SubscribeForm />
         </div>
       </div>
