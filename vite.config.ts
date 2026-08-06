@@ -11,6 +11,8 @@ export default defineConfig({
       input: ['resources/js/app.tsx'],
       ssr: 'resources/js/ssr.tsx',
       refresh: true,
+      // Use Herd TLS certs so the Vite origin matches https://sawtee.test:5173
+      detectTls: 'sawtee.test',
     }),
     react(),
     // Dev SSR via Vite `/__inertia_ssr` (no separate Node process).
@@ -28,15 +30,28 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', '@inertiajs/react'],
+    // Prebundle cobe (and framer-motion) so lazy MegaMenu → globe chunks
+    // do not hit a missing / broken /node_modules/.vite/deps/cobe.js URL.
+    include: [
+      'react',
+      'react-dom',
+      '@inertiajs/react',
+      'cobe',
+      'framer-motion',
+    ],
   },
   ssr: {
     noExternal: ['laravel-vite-plugin', '@inertiajs/server'],
   },
   server: {
+    // Allow the Herd site host when the browser requests the Vite origin.
+    allowedHosts: ['sawtee.test', '.test'],
     cors: {
       origin:
         /^https?:\/\/(?:(?:[^:]+\.)?localhost|sawtee\.test|127\.0\.0\.1|\[::1])(?::\d+)?$/,
+    },
+    hmr: {
+      host: 'sawtee.test',
     },
   },
 });
