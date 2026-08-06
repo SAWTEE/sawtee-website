@@ -11,10 +11,10 @@ const NewsletterArchive = ({ posts = null }: NewsletterArchiveProps) => {
   return (
     <section className="container max-w-7xl">
       <div className="mb-12 text-center">
-        <h2 className="mb-2 font-sans text-xl font-bold text-primary md:text-2xl lg:text-3xl xl:text-4xl">
+        <h2 className="text-primary mb-2 font-serif text-xl font-bold md:text-2xl lg:text-3xl xl:text-4xl">
           Trade, Climate Change and Development Monitor
         </h2>
-        <span className="text-sm text-secondary-foreground">
+        <span className="text-secondary-foreground text-sm">
           Monthly E-Newsletter of South Asia Watch on Trade, Economics and
           Environment
         </span>

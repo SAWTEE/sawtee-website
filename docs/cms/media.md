@@ -4,6 +4,8 @@
 
 Uploaded through each content form (posts, publications, slides, team, etc.). Spatie Media Library stores files under `media-library` and generates **preview** / **responsive** WebP conversions for performance.
 
+Image manipulations for conversions use Laravel’s first-party `Illuminate\Support\Facades\Image` API (backed by `intervention/image` v4 as the GD/Imagick engine). Spatie Media Library still owns collections/conversions; do not call Intervention APIs directly in app code.
+
 Prefer:
 
 - Reasonable source dimensions (avoid multi‑MB originals when possible)  

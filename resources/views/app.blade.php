@@ -7,9 +7,6 @@
     <title data-inertia>{{ config('app.name', 'SAWTEE') }}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
 
-    <!-- Self-hosted / inlined Figtree (display=swap via google-fonts package) -->
-    @googlefonts
-
     @isset($lcpImage)
         <link rel="preload" as="image" href="{{ $lcpImage }}" fetchpriority="high"
             @if (!empty($lcpSrcSet))

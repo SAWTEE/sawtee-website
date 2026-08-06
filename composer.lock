@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a09c06eda6d2719e9bea9633d37a0fcc",
+    "content-hash": "45f04cab7fee2b4c50ccf8bf2111b15c",
     "packages": [
         {
             "name": "brick/math",
@@ -4019,88 +4019,6 @@
                 "source": "https://github.com/spatie/image-optimizer/tree/1.10.0"
             },
             "time": "2026-06-29T08:28:30+00:00"
-        },
-        {
-            "name": "spatie/laravel-google-fonts",
-            "version": "1.6.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/spatie/laravel-google-fonts.git",
-                "reference": "aaac1cedd48c4c8436b4eb51d9b5e30bd4bd914a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-google-fonts/zipball/aaac1cedd48c4c8436b4eb51d9b5e30bd4bd914a",
-                "reference": "aaac1cedd48c4c8436b4eb51d9b5e30bd4bd914a",
-                "shasum": ""
-            },
-            "require": {
-                "guzzlehttp/guzzle": "^7.3|^7.2",
-                "illuminate/contracts": "^8.37|^9.0|^10.0|^11.0|^12.0|^13.0",
-                "php": "^8.0",
-                "spatie/laravel-package-tools": "^1.7.0"
-            },
-            "require-dev": {
-                "brianium/paratest": "^6.3|^7.4",
-                "nunomaduro/collision": "^5.4|^6.0|^8.0",
-                "orchestra/testbench": "^6.17|^7.0|^8.0|^9.0|^10.0|^11.0",
-                "pestphp/pest": "^1.22|^2.34|^3.7|^4.4",
-                "spatie/laravel-ray": "^1.17",
-                "spatie/pest-plugin-snapshots": "^1.1|^2.1",
-                "spatie/phpunit-snapshot-assertions": "^4.2|^5.1"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "aliases": {
-                        "GoogleFonts": "Spatie\\GoogleFonts\\GoogleFontsFacade"
-                    },
-                    "providers": [
-                        "Spatie\\GoogleFonts\\GoogleFontsServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Spatie\\GoogleFonts\\": "src",
-                    "Spatie\\GoogleFonts\\Database\\Factories\\": "database/factories"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Sebastian De Deyne",
-                    "email": "sebastian@spatie.be",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Freek Van der herten",
-                    "email": "freek@spatie.be",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Manage self-hosted Google Fonts in Laravel apps",
-            "homepage": "https://github.com/spatie/laravel-google-fonts",
-            "keywords": [
-                "google fonts",
-                "laravel",
-                "laravel-google-fonts",
-                "spatie"
-            ],
-            "support": {
-                "issues": "https://github.com/spatie/laravel-google-fonts/issues",
-                "source": "https://github.com/spatie/laravel-google-fonts/tree/1.6.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/spatie",
-                    "type": "github"
-                }
-            ],
-            "time": "2026-04-27T16:38:35+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",

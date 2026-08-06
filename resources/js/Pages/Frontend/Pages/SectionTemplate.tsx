@@ -59,7 +59,7 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
           <Accordion key={id} type="single" collapsible className="w-full">
             <AccordionItem value={country}>
               <AccordionTrigger>
-                <p className="text-primary font-sans text-xl font-bold md:text-2xl">
+                <p className="text-primary font-serif text-xl font-bold md:text-2xl">
                   {country}
                 </p>
               </AccordionTrigger>
@@ -115,7 +115,7 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
             <TabsList className="bg-bgDarker/60 grid h-auto w-full grid-cols-3 p-2">
               {childSections.map(({ title: childTitle }) => (
                 <TabsTrigger key={childTitle} value={childTitle}>
-                  <p className="font-sans text-lg font-bold md:text-xl">
+                  <p className="font-serif text-lg font-bold md:text-xl">
                     {childTitle}
                   </p>
                 </TabsTrigger>
@@ -152,7 +152,7 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
               >
                 <AccordionItem value={childTitle}>
                   <AccordionTrigger>
-                    <p className="text-primary font-sans text-lg font-bold md:text-xl">
+                    <p className="text-primary font-serif text-lg font-bold md:text-xl">
                       {childTitle}
                     </p>
                   </AccordionTrigger>
@@ -195,7 +195,7 @@ const PageSectionTitle = ({
   return (
     <h2
       className={cn(
-        'text-primary mb-4 py-4 font-sans text-2xl font-bold md:text-3xl lg:text-4xl',
+        'text-primary mb-4 py-4 font-serif text-2xl font-bold md:text-3xl lg:text-4xl',
         className
       )}
     >

@@ -95,7 +95,7 @@ const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
         {first ? (
           <>
             <Link
-              className="text-secondary-foreground font-sans text-2xl"
+              className="text-secondary-foreground font-serif text-2xl"
               href={first.url}
             >
               {first.title}
@@ -136,7 +136,7 @@ const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
               <div className="col-span-1 space-y-6" key={grandChildren.title}>
                 <Link
                   href={grandChildren.url}
-                  className="text-secondary-foreground text-2xl no-underline"
+                  className="text-secondary-foreground font-serif text-2xl no-underline"
                 >
                   {grandChildren.title}
                 </Link>

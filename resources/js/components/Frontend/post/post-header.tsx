@@ -30,7 +30,7 @@ const PostHeader = ({
     {heading && (
       <h1
         className={cn(
-          'captialize my-3 text-2xl font-bold text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl',
+          'captialize my-3 font-serif text-2xl font-bold text-slate-800 md:text-3xl lg:my-5 xl:text-5xl dark:text-slate-300',
           textStyle
         )}
       >

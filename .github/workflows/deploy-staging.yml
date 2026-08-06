@@ -171,11 +171,6 @@ jobs:
           npm run build:ssr
           ls -la bootstrap/ssr || true
 
-      - name: Fetch and normalize self-hosted Google Fonts
-        run: |
-          php artisan google-fonts:fetch
-          php artisan google-fonts:normalize-urls
-
       - name: Remove build-only files before upload
         run: |
           # Keep bootstrap/ssr — required for Inertia SSR on the server
@@ -256,13 +251,6 @@ jobs:
 
             php artisan optimize:clear || true
             php artisan migrate --force
-
-            php artisan google-fonts:fetch || true
-            if [ -d public/storage/fonts ] && [ ! -L public/storage ]; then
-              mkdir -p public/storage/fonts
-              cp -R storage/app/public/fonts/. public/storage/fonts/ || true
-            fi
-            php artisan google-fonts:normalize-urls || true
 
             if [ ! -e public/storage ]; then
               php artisan storage:link

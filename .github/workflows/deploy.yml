@@ -191,11 +191,6 @@ jobs:
           npm ci
           npm run build
 
-      - name: Fetch and normalize self-hosted Google Fonts
-        run: |
-          php artisan google-fonts:fetch
-          php artisan google-fonts:normalize-urls
-
       - name: Remove build-only files before upload
         run: |
           rm -rf node_modules
@@ -299,21 +294,12 @@ jobs:
             echo "Running migrations..."
             php artisan migrate --force
 
-            echo "Fetching fonts with root-relative URLs..."
-            php artisan google-fonts:fetch
-            # Keep public/storage/fonts in sync when it is a real directory (not a symlink)
-            if [ -d public/storage/fonts ] && [ ! -L public/storage ]; then
-              mkdir -p public/storage/fonts
-              cp -R storage/app/public/fonts/. public/storage/fonts/
-            fi
-            php artisan google-fonts:normalize-urls
-
             if [ ! -e public/storage ]; then
               php artisan storage:link
             elif [ -L public/storage ]; then
               echo "✅ public/storage symlink OK"
             else
-              echo "⚠️  public/storage is a real directory (not a symlink); fonts synced + normalized"
+              echo "⚠️  public/storage is a real directory (not a symlink)"
             fi
 
             echo "Caching config/routes/views..."

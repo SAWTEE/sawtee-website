@@ -12,12 +12,14 @@
   (shadow-sm / blur-sm / ring defaults). Custom shadcn radii stay in JS config.
 */
 @theme {
-  /* Single primary UI stack — Figtree (loaded via @googlefonts in app.blade.php) */
+  /* Body / UI / nav — system sans (no CDN / Google Fonts) */
   --font-sans:
-    Figtree, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
-    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  /* Keep serif utility on the same family so accidental font-serif stays on-brand */
-  --font-serif: var(--font-sans);
+    system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* Titles / display — editorial serif stack */
+  --font-serif:
+    Charter, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
+    'Times New Roman', Times, serif;
 
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -280,7 +282,7 @@ main {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-sans);
+    font-family: var(--font-serif);
 }
 
 .scroll-container::-webkit-scrollbar {

@@ -33,7 +33,7 @@ export default function VerticalTimeline({
                   href={file ? file.original_url : ''}
                   rel="noopener noreferrer"
                 >
-                  <h3 className="md:text-md text-secondary-foreground group-hover:text-primary/80 dark:group-hover:text-secondary-foreground/80 font-sans text-sm leading-5 underline underline-offset-2 group-hover:underline-offset-4 lg:text-lg">
+                  <h3 className="md:text-md text-secondary-foreground group-hover:text-primary/80 dark:group-hover:text-secondary-foreground/80 font-serif text-sm leading-5 underline underline-offset-2 group-hover:underline-offset-4 lg:text-lg">
                     {item.title}
                   </h3>
                 </a>

@@ -55,15 +55,8 @@ type FellowProps = {
 };
 
 export const Fellow = ({ mediaFellow }: FellowProps) => {
-  const {
-    id,
-    name,
-    avatar,
-    designation,
-    bio,
-    published_stories,
-    experience,
-  } = mediaFellow;
+  const { id, name, avatar, designation, bio, published_stories, experience } =
+    mediaFellow;
 
   const nameParts = name.split(' ');
 
@@ -78,7 +71,7 @@ export const Fellow = ({ mediaFellow }: FellowProps) => {
           </AvatarFallback>
         </Avatar>
         <div className="ml-6 flex items-center gap-4">
-          <h2 className="font-sans text-lg lg:text-xl">{name}</h2>
+          <h2 className="font-serif text-lg lg:text-xl">{name}</h2>
           <p className="text-sm">{designation}</p>
         </div>
       </div>

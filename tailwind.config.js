@@ -116,11 +116,13 @@ export default {
         sm: 'calc(var(--radius) - 4px)',
       },
       fontFamily: {
-        // Prefer CSS --font-sans from index.css @theme; keep JS fallback in sync.
+        // Prefer CSS --font-sans / --font-serif from index.css @theme; keep JS fallback in sync.
         sans: [
-          'Figtree',
-          'ui-sans-serif',
           'system-ui',
+          'Segoe UI',
+          'Roboto',
+          'Helvetica',
+          'Arial',
           'sans-serif',
           'Apple Color Emoji',
           'Segoe UI Emoji',
@@ -128,14 +130,14 @@ export default {
           'Noto Color Emoji',
         ],
         serif: [
-          'Figtree',
-          'ui-sans-serif',
-          'system-ui',
-          'sans-serif',
-          'Apple Color Emoji',
-          'Segoe UI Emoji',
-          'Segoe UI Symbol',
-          'Noto Color Emoji',
+          'Charter',
+          'Iowan Old Style',
+          'Palatino Linotype',
+          'Palatino',
+          'Georgia',
+          'Times New Roman',
+          'Times',
+          'serif',
         ],
       },
       keyframes: {
