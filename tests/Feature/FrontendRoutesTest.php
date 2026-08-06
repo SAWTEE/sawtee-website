@@ -112,6 +112,7 @@ test('search returns inertia search page', function () {
         'status' => 'published',
         'title' => 'Trade policy update',
         'excerpt' => 'Regional trade news',
+        'published_at' => '2024-06-15 00:00:00',
     ]);
 
     $this->get('/search?query=Trade')
@@ -120,5 +121,60 @@ test('search returns inertia search page', function () {
             ->component('Frontend/SearchPage')
             ->where('query', 'Trade')
             ->has('posts')
+            ->has('filters')
+            ->has('filterOptions.categories')
+            ->has('filterOptions.years')
+            ->has('filterOptions.themes')
+        );
+});
+
+test('search category filter narrows results and preserves query params', function () {
+    $blog = Category::query()->create([
+        'name' => 'Blog',
+        'slug' => 'blog',
+        'type' => 'post',
+    ]);
+    $news = Category::query()->create([
+        'name' => 'News',
+        'slug' => 'news',
+        'type' => 'post',
+    ]);
+
+    Post::factory()->create([
+        'category_id' => $blog->id,
+        'theme_id' => null,
+        'status' => 'published',
+        'title' => 'Trade policy update',
+        'excerpt' => 'Regional trade news',
+        'published_at' => '2024-06-15 00:00:00',
+    ]);
+    Post::factory()->create([
+        'category_id' => $news->id,
+        'theme_id' => null,
+        'status' => 'published',
+        'title' => 'Trade summit coverage',
+        'excerpt' => 'Summit notes',
+        'published_at' => '2023-03-01 00:00:00',
+    ]);
+
+    $this->get('/search?query=Trade&category=blog')
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Frontend/SearchPage')
+            ->where('query', 'Trade')
+            ->where('filters.category', 'blog')
+            ->where('filters.year', null)
+            ->where('posts.total', 1)
+            ->where('posts.data.0.title', 'Trade policy update')
+            ->has('filterOptions.categories', 2)
+        );
+
+    $this->get('/search?query=Trade&category=blog&year=2023')
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Frontend/SearchPage')
+            ->where('filters.category', 'blog')
+            ->where('filters.year', 2023)
+            ->where('posts.total', 0)
         );
 });

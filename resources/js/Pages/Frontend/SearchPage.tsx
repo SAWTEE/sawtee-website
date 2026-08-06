@@ -1,6 +1,13 @@
 import { Link, router } from '@inertiajs/react';
-import { SearchIcon } from 'lucide-react';
-import { FormEvent, useEffect, useId, useState } from 'react';
+import { SearchIcon, XIcon } from 'lucide-react';
+import {
+  FormEvent,
+  type ReactNode,
+  useEffect,
+  useId,
+  useMemo,
+  useState,
+} from 'react';
 
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -8,7 +15,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import MainLayout from '@/layouts/MainLayout';
 import { cn, htmlToText } from '@/lib/utils';
-import type { FrontendSearchProps, SearchResultPost } from '@/types';
+import type {
+  FrontendSearchProps,
+  SearchFilterOptions,
+  SearchFilters,
+  SearchResultPost,
+} from '@/types';
+
+const EMPTY_FILTERS: SearchFilters = {
+  category: null,
+  year: null,
+  theme: null,
+};
+
+const EMPTY_OPTIONS: SearchFilterOptions = {
+  categories: [],
+  years: [],
+  themes: [],
+};
 
 function categoryLabel(post: SearchResultPost): string | null {
   if (typeof post.category === 'string') {
@@ -38,6 +62,10 @@ function resultHref(post: SearchResultPost): string {
     return `/category/${slug}/${post.slug}`;
   }
   return `#`;
+}
+
+function hasActiveFilters(filters: SearchFilters): boolean {
+  return Boolean(filters.category || filters.year || filters.theme);
 }
 
 function SearchResultRow({ post }: { post: SearchResultPost }) {
@@ -97,26 +125,150 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
   );
 }
 
-export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
+type FilterSelectProps = {
+  id: string;
+  label: string;
+  value: string;
+  onChange: (value: string) => void;
+  disabled?: boolean;
+  children: ReactNode;
+};
+
+function FilterSelect({
+  id,
+  label,
+  value,
+  onChange,
+  disabled,
+  children,
+}: FilterSelectProps) {
+  return (
+    <div className="min-w-0 flex-1">
+      <label
+        htmlFor={id}
+        className="text-muted-foreground mb-1.5 block text-xs font-medium tracking-wide uppercase"
+      >
+        {label}
+      </label>
+      <select
+        id={id}
+        value={value}
+        disabled={disabled}
+        onChange={e => onChange(e.target.value)}
+        className={cn(
+          'border-borderColor/70 bg-background/80 h-10 w-full appearance-none rounded-md border px-3 pr-9 text-sm shadow-none backdrop-blur-sm',
+          'focus-visible:border-[#006181]/45 focus-visible:ring-2 focus-visible:ring-[#006181]/25 focus-visible:outline-none',
+          'disabled:cursor-not-allowed disabled:opacity-60',
+          'dark:border-[#006181]/35 dark:bg-black/40 dark:focus-visible:border-[#006181]/55',
+          'bg-[length:12px_12px] bg-[right_0.75rem_center] bg-no-repeat',
+          "bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23006181%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')]"
+        )}
+      >
+        {children}
+      </select>
+    </div>
+  );
+}
+
+export default function SearchPage({
+  posts,
+  query,
+  filters: filtersProp,
+  filterOptions: optionsProp,
+  seo,
+}: FrontendSearchProps) {
+  const filters = filtersProp ?? EMPTY_FILTERS;
+  const filterOptions = optionsProp ?? EMPTY_OPTIONS;
   const [searchQuery, setSearchQuery] = useState(query ?? '');
   const [isSearching, setIsSearching] = useState(false);
   const inputId = useId();
+  const categoryFilterId = useId();
+  const yearFilterId = useId();
+  const themeFilterId = useId();
   const results = posts?.data ?? null;
   const hasQuery = Boolean((query ?? '').trim());
+  const filtersActive = hasActiveFilters(filters);
   const total = posts?.total ?? 0;
   const hasResults = Boolean(results && results.length > 0);
+  const showFilters =
+    hasQuery ||
+    filtersActive ||
+    filterOptions.categories.length > 0 ||
+    filterOptions.years.length > 0 ||
+    filterOptions.themes.length > 0;
 
   useEffect(() => {
     setSearchQuery(query ?? '');
     setIsSearching(false);
-  }, [query, posts]);
+  }, [query, posts, filters]);
+
+  const activeFilterSummary = useMemo(() => {
+    const parts: string[] = [];
+    if (filters.category) {
+      const match = filterOptions.categories.find(
+        c => c.slug === filters.category
+      );
+      parts.push(match?.name ?? filters.category);
+    }
+    if (filters.year) {
+      parts.push(String(filters.year));
+    }
+    if (filters.theme) {
+      const match = filterOptions.themes.find(t => t.id === filters.theme);
+      if (match) {
+        parts.push(match.title);
+      }
+    }
+    return parts;
+  }, [filters, filterOptions]);
+
+  function visitSearch(next: {
+    query?: string;
+    category?: string | null;
+    year?: number | null;
+    theme?: number | null;
+  }) {
+    setIsSearching(true);
+    const data: Record<string, string | number> = { page: 1 };
+    const nextQuery = (next.query ?? searchQuery).trim();
+    if (nextQuery) {
+      data.query = nextQuery;
+    }
+
+    const category =
+      next.category !== undefined ? next.category : filters.category;
+    const year = next.year !== undefined ? next.year : filters.year;
+    const theme = next.theme !== undefined ? next.theme : filters.theme;
+
+    if (category) {
+      data.category = category;
+    }
+    if (year) {
+      data.year = year;
+    }
+    if (theme) {
+      data.theme = theme;
+    }
+
+    router.visit('/search', {
+      data,
+      preserveState: true,
+      preserveScroll: true,
+      onFinish: () => setIsSearching(false),
+    });
+  }
 
   function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setIsSearching(true);
-    router.visit(`/search`, {
-      data: { query: searchQuery, page: 1 },
-      onFinish: () => setIsSearching(false),
+    visitSearch({ query: searchQuery });
+  }
+
+  function clearFilters() {
+    visitSearch({
+      query: searchQuery,
+      category: null,
+      year: null,
+      theme: null,
     });
   }
 
@@ -124,13 +276,27 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
     ? total > 0
       ? `${total} ${total === 1 ? 'result' : 'results'}`
       : 'No results'
-    : 'Search';
+    : filtersActive
+      ? total > 0
+        ? `${total} ${total === 1 ? 'result' : 'results'}`
+        : 'No results'
+      : 'Search';
 
   const subheading = hasQuery
     ? total > 0
-      ? `Showing matches for “${query}”`
-      : `Nothing matched “${query}”. Try a broader term or different spelling.`
-    : 'Search SAWTEE research, publications, news, and resources.';
+      ? `Showing matches for “${query}”${
+          activeFilterSummary.length
+            ? ` · filtered by ${activeFilterSummary.join(', ')}`
+            : ''
+        }`
+      : filtersActive
+        ? `Nothing matched “${query}” with the selected filters. Clear filters or try a broader term.`
+        : `Nothing matched “${query}”. Try a broader term or different spelling.`
+    : filtersActive
+      ? total > 0
+        ? `Showing results filtered by ${activeFilterSummary.join(', ')}`
+        : 'No results for the selected filters. Try clearing them or searching with a keyword.'
+      : 'Search SAWTEE research, publications, news, and resources.';
 
   return (
     <>
@@ -204,6 +370,89 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
                   {isSearching ? 'Searching…' : 'Search'}
                 </Button>
               </form>
+
+              {showFilters && (
+                <div className="mt-6 border-t border-[#006181]/12 pt-6 dark:border-[#006181]/25">
+                  <div className="mb-3 flex items-center justify-between gap-3">
+                    <p className="text-muted-foreground text-xs font-medium tracking-[0.14em] uppercase">
+                      Refine results
+                    </p>
+                    {filtersActive ? (
+                      <button
+                        type="button"
+                        onClick={clearFilters}
+                        disabled={isSearching}
+                        className="inline-flex items-center gap-1 text-xs font-medium text-[#006181] transition-colors hover:text-[#004d66] disabled:opacity-60 dark:text-[#4da3c0] dark:hover:text-[#7ec4d8]"
+                      >
+                        <XIcon className="h-3.5 w-3.5" aria-hidden />
+                        Clear filters
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                    {filterOptions.categories.length > 0 && (
+                      <FilterSelect
+                        id={categoryFilterId}
+                        label="Category"
+                        value={filters.category ?? ''}
+                        disabled={isSearching}
+                        onChange={value =>
+                          visitSearch({ category: value || null })
+                        }
+                      >
+                        <option value="">All categories</option>
+                        {filterOptions.categories.map(category => (
+                          <option key={category.slug} value={category.slug}>
+                            {category.name}
+                          </option>
+                        ))}
+                      </FilterSelect>
+                    )}
+
+                    {filterOptions.years.length > 0 && (
+                      <FilterSelect
+                        id={yearFilterId}
+                        label="Year"
+                        value={filters.year ? String(filters.year) : ''}
+                        disabled={isSearching}
+                        onChange={value =>
+                          visitSearch({
+                            year: value ? Number(value) : null,
+                          })
+                        }
+                      >
+                        <option value="">All years</option>
+                        {filterOptions.years.map(year => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </FilterSelect>
+                    )}
+
+                    {filterOptions.themes.length > 0 && (
+                      <FilterSelect
+                        id={themeFilterId}
+                        label="Theme"
+                        value={filters.theme ? String(filters.theme) : ''}
+                        disabled={isSearching}
+                        onChange={value =>
+                          visitSearch({
+                            theme: value ? Number(value) : null,
+                          })
+                        }
+                      >
+                        <option value="">All themes</option>
+                        {filterOptions.themes.map(theme => (
+                          <option key={theme.id} value={theme.id}>
+                            {theme.title}
+                          </option>
+                        ))}
+                      </FilterSelect>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </header>
 
@@ -226,7 +475,7 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
               </div>
             )}
 
-            {!isSearching && !hasQuery && (
+            {!isSearching && !hasQuery && !filtersActive && (
               <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
                 <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
                   Start with a keyword
@@ -238,15 +487,25 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
               </div>
             )}
 
-            {!isSearching && hasQuery && !hasResults && (
+            {!isSearching && (hasQuery || filtersActive) && !hasResults && (
               <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
                 <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
                   No matches found
                 </p>
                 <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
-                  Try fewer words, a related theme, or check the spelling — then
-                  search again.
+                  {filtersActive
+                    ? 'Try clearing filters, using fewer words, or a related theme — then search again.'
+                    : 'Try fewer words, a related theme, or check the spelling — then search again.'}
                 </p>
+                {filtersActive ? (
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="mt-5 text-sm font-medium text-[#006181] underline-offset-4 hover:underline dark:text-[#4da3c0]"
+                  >
+                    Clear filters
+                  </button>
+                ) : null}
               </div>
             )}
 

@@ -437,9 +437,33 @@ export type SearchResultPost = Post & {
   category_slug?: string;
 };
 
+export type SearchFilterOptionCategory = {
+  name: string;
+  slug: string;
+};
+
+export type SearchFilterOptionTheme = {
+  id: number;
+  title: string;
+};
+
+export type SearchFilters = {
+  category?: string | null;
+  year?: number | null;
+  theme?: number | null;
+};
+
+export type SearchFilterOptions = {
+  categories: SearchFilterOptionCategory[];
+  years: number[];
+  themes: SearchFilterOptionTheme[];
+};
+
 export type FrontendSearchProps = PageProps<{
   posts?: Paginated<SearchResultPost>;
   query?: string;
+  filters?: SearchFilters;
+  filterOptions?: SearchFilterOptions;
   seo?: SeoMeta;
 }>;
 

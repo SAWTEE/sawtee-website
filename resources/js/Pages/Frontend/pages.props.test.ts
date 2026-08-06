@@ -103,6 +103,16 @@ describe('Frontend page prop contracts', () => {
     const searchProps: FrontendSearchProps = {
       ...emptySharedProps(),
       query: 'trade',
+      filters: {
+        category: 'in-focus',
+        year: 2024,
+        theme: null,
+      },
+      filterOptions: {
+        categories: [{ name: 'In Focus', slug: 'in-focus' }],
+        years: [2024, 2023],
+        themes: [{ id: 1, title: 'Trade' }],
+      },
       posts: {
         data: [],
         current_page: 1,
