@@ -1,6 +1,7 @@
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef, useState } from 'react';
 
+import '@/lib/tinymce-bundle';
 import { useTheme } from '../shared/theme-provider';
 
 const FONT_STACK =
@@ -77,8 +78,6 @@ export default function ContentEditor({
         onChange?.(evt, editor);
       }}
       init={editorConfig as any}
-      tinymceScriptSrc="/assets/tinymce/tinymce.min.js"
-      scriptLoading={{ async: true, defer: true }}
       {...rest}
     />
   );
