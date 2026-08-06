@@ -149,7 +149,7 @@ export function MultiLevelMenuItems({
 }
 
 const triggerBaseClassName =
-  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 data-[state=open]:bg-accent/50 data-[state=open]:text-accent-foreground dark:text-white';
+  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:text-white';
 
 export type MultiLevelMenuProps = {
   /** Parent item: label drives the trigger; `children` form the dropdown tree. */
@@ -224,16 +224,22 @@ export default function MultiLevelMenu({
   }, [clearCloseTimer, setOpen]);
 
   // Clear sticky focus/open styles when a parent forces the menu closed
-  // (e.g. another top-level nav item becomes active).
+  // (e.g. another top-level nav item becomes active). Radix may restore
+  // focus to the trigger on close — blur after that microtask.
   useEffect(() => {
     if (open) {
       return;
     }
     clearCloseTimer();
     const trigger = triggerRef.current;
-    if (trigger && document.activeElement === trigger) {
-      trigger.blur();
-    }
+    const blurTrigger = () => {
+      if (trigger && document.activeElement === trigger) {
+        trigger.blur();
+      }
+    };
+    blurTrigger();
+    const raf = requestAnimationFrame(blurTrigger);
+    return () => cancelAnimationFrame(raf);
   }, [open, clearCloseTimer]);
 
   useEffect(() => () => clearCloseTimer(), [clearCloseTimer]);
@@ -250,12 +256,22 @@ export default function MultiLevelMenu({
         <button
           ref={triggerRef}
           type="button"
-          className={cn(triggerBaseClassName, triggerClassName)}
+          className={cn(
+            triggerBaseClassName,
+            triggerClassName,
+            // Drive open styles from React `open` (single source of truth with
+            // DesktopNavigation activeKey), not sticky Radix data-state/focus.
+            // Must come after triggerClassName so it wins over bg-transparent.
+            open && 'bg-accent/50 text-accent-foreground'
+          )}
           aria-haspopup="menu"
         >
           {item.title}
           <ChevronDown
-            className="relative top-[1px] ml-1 size-3 transition duration-300 group-data-[state=open]:rotate-180"
+            className={cn(
+              'relative top-[1px] ml-1 size-3 transition duration-300',
+              open && 'rotate-180'
+            )}
             aria-hidden="true"
           />
           {triggerAddon}
@@ -268,6 +284,10 @@ export default function MultiLevelMenu({
           'bg-popover text-popover-foreground z-50 min-w-56 border p-1 shadow-md',
           contentClassName
         )}
+        onCloseAutoFocus={event => {
+          // Prevent focus returning to Publications (etc.) after sibling hover-close.
+          event.preventDefault();
+        }}
         onPointerEnter={openOnHover ? handleOpen : undefined}
         onPointerLeave={openOnHover ? handleClose : undefined}
       >

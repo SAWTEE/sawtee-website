@@ -199,4 +199,31 @@ describe('DesktopNavigation', () => {
     fireEvent.pointerEnter(screen.getByRole('link', { name: /our work/i }));
     expect(publications).toHaveAttribute('aria-expanded', 'false');
   });
+
+  it('clears Publications open styles when pointer moves to a sibling', () => {
+    render(
+      <DesktopNavigation
+        menu={[
+          ...publicationsMenu,
+          {
+            id: 10,
+            title: 'About',
+            name: 'About',
+            url: '/about',
+            children: [],
+          },
+        ]}
+      />
+    );
+
+    const publications = screen.getByRole('button', { name: /publications/i });
+    fireEvent.pointerEnter(publications);
+    expect(publications).toHaveAttribute('aria-expanded', 'true');
+    expect(publications.className).toMatch(/bg-accent\/50/);
+
+    fireEvent.pointerEnter(screen.getByRole('link', { name: 'About' }));
+    expect(publications).toHaveAttribute('aria-expanded', 'false');
+    expect(publications.className).not.toMatch(/bg-accent\/50/);
+    expect(document.activeElement).not.toBe(publications);
+  });
 });

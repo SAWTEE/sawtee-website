@@ -1,6 +1,18 @@
+import Particles from '@/components/Frontend/Particles';
 import { cn } from '@/lib/utils';
 
-export default function SvgBackground({ className = '', svgStyles = undefined }: any) {
+type SvgBackgroundProps = {
+  className?: string;
+  svgStyles?: string;
+  /** When false, only the concentric SVG rings render (no canvas particles). */
+  showParticles?: boolean;
+};
+
+export default function SvgBackground({
+  className = '',
+  svgStyles,
+  showParticles = true,
+}: SvgBackgroundProps) {
   return (
     <div
       className={cn(
@@ -10,7 +22,7 @@ export default function SvgBackground({ className = '', svgStyles = undefined }:
     >
       <svg
         viewBox="0 0 88 88"
-        className={cn('w-full max-w-screen-xl text-theme-100', svgStyles)}
+        className={cn('text-theme-100 w-full max-w-screen-xl', svgStyles)}
       >
         <circle fill="currentColor" cx="44" cy="44" r="15.5" />
         <circle fillOpacity="0.2" fill="currentColor" cx="44" cy="44" r="44" />
@@ -36,6 +48,9 @@ export default function SvgBackground({ className = '', svgStyles = undefined }:
           r="22.5"
         />
       </svg>
+      {showParticles ? (
+        <Particles className="pointer-events-none absolute inset-0" />
+      ) : null}
     </div>
   );
 }

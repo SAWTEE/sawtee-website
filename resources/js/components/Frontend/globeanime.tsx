@@ -87,20 +87,20 @@ type GlobeanimeProps = {
 };
 
 const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
-  const rootRef = useRef<HTMLDivElement>(null);
+  const gradientRefs = useRef<Array<SVGLinearGradientElement | null>>([]);
   const stopColor = darkMode ? '#FFFFFF' : '#000000';
 
   useEffect(() => {
-    const root = rootRef.current;
-    if (!root) {
-      return;
-    }
-
     let cancelled = false;
     let rafId = 0;
     const start = performance.now();
     // Match previous anime.js timeline: longest stroke + delay, then loop.
     const loopMs = Math.max(...svgs.map(s => s.delay + s.duration)) + 200;
+
+    // Seed initial y2 without React controlling the attribute (avoids re-render resets).
+    for (let i = 0; i < svgs.length; i++) {
+      gradientRefs.current[i]?.setAttribute('y2', `${svgs[i].y2From}%`);
+    }
 
     const tick = (now: number) => {
       if (cancelled) {
@@ -109,10 +109,9 @@ const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
 
       const elapsed = (now - start) % loopMs;
 
-      for (const s of svgs) {
-        const gradient = root.querySelector<SVGLinearGradientElement>(
-          `#lg-${s.id}`
-        );
+      for (let i = 0; i < svgs.length; i++) {
+        const s = svgs[i];
+        const gradient = gradientRefs.current[i];
         if (!gradient) {
           continue;
         }
@@ -142,11 +141,10 @@ const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
 
   return (
     <div
-      ref={rootRef}
       id="functions-hero"
       className="absolute inset-0 top-4 -left-28 aspect-978/678 w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
-      {svgs.map(s => (
+      {svgs.map((s, index) => (
         <svg
           key={s.id}
           id={s.id}
@@ -166,12 +164,15 @@ const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
           <title>Animated globe</title>
           <path stroke={`url(#lg-${s.id})`} strokeWidth="1.396" d={s.path} />
           <defs>
+            {/* y2 is driven by rAF via setAttribute — do not bind it as a React prop */}
             <linearGradient
+              ref={el => {
+                gradientRefs.current[index] = el;
+              }}
               id={`lg-${s.id}`}
               x1={s.x1}
               x2={s.x2}
               y1={s.y1}
-              y2={s.y2}
               gradientUnits="userSpaceOnUse"
             >
               <stop offset="0" stopColor={stopColor} stopOpacity="0" />

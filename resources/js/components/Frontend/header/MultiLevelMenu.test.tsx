@@ -71,11 +71,7 @@ describe('MultiLevelMenu', () => {
 
   it('opens nested items for arbitrary menu trees', () => {
     render(
-      <MultiLevelMenu
-        item={publicationsItem}
-        openOnHover={false}
-        defaultOpen
-      />
+      <MultiLevelMenu item={publicationsItem} openOnHover={false} defaultOpen />
     );
 
     const menu = screen.getByRole('menu');
@@ -98,11 +94,7 @@ describe('MultiLevelMenu', () => {
 
   it('exposes nested submenu triggers for branch nodes', () => {
     render(
-      <MultiLevelMenu
-        item={publicationsItem}
-        openOnHover={false}
-        defaultOpen
-      />
+      <MultiLevelMenu item={publicationsItem} openOnHover={false} defaultOpen />
     );
 
     expect(
@@ -157,5 +149,34 @@ describe('MultiLevelMenu', () => {
       />
     );
     expect(trigger).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  it('clears open styles and blurs trigger when forced closed', () => {
+    const { rerender } = render(
+      <MultiLevelMenu
+        item={publicationsItem}
+        open
+        onOpenChange={() => {}}
+        openOnHover={false}
+      />
+    );
+
+    const trigger = screen.getByRole('button', { name: /publications/i });
+    trigger.focus();
+    expect(trigger).toHaveAttribute('aria-expanded', 'true');
+    expect(trigger.className).toMatch(/bg-accent\/50/);
+
+    rerender(
+      <MultiLevelMenu
+        item={publicationsItem}
+        open={false}
+        onOpenChange={() => {}}
+        openOnHover={false}
+      />
+    );
+
+    expect(trigger).toHaveAttribute('aria-expanded', 'false');
+    expect(trigger.className).not.toMatch(/bg-accent\/50/);
+    expect(document.activeElement).not.toBe(trigger);
   });
 });
