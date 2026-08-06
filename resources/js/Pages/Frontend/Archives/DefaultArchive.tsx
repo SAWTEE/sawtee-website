@@ -83,18 +83,20 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
           className="text-secondary-foreground/70 line-clamp-3 text-sm"
           dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
         />
-        <div className="flex flex-row items-center justify-between">
-          <span className="font-regular text-secondary-foreground/80 mr-1 flex flex-row items-center py-1 text-xs">
+        <div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+          <time className="text-secondary-foreground/80 shrink-0 py-1 text-xs whitespace-nowrap">
             {formatDate(post.published_at)}
-          </span>
+          </time>
 
           <ExploreButton
+            className="min-w-0 sm:max-w-[min(100%,18rem)] sm:justify-end"
             link={
               post.category?.parent
                 ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
                 : `/category/${categorySlug}/${post.slug}`
             }
             text={`Read more: ${post.title}`}
+            title={`Read more: ${post.title}`}
           />
         </div>
       </div>

@@ -25,18 +25,18 @@ const ExploreButton = ({
     <Link
       href={target}
       className={cn(
-        'flex max-w-max items-center gap-1 rounded-md py-2 text-sm font-medium text-[#006181] underline underline-offset-2 hover:text-[#006181]/80 hover:underline-offset-4 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80',
+        'inline-flex max-w-full min-w-0 items-center gap-1 rounded-md py-2 text-sm font-medium text-[#006181] underline underline-offset-2 hover:text-[#006181]/80 hover:underline-offset-4 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80',
         className
       )}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       {...rest}
     >
-      {text}
+      <span className="truncate">{text}</span>
       {hovered ? (
-        <ArrowRightIcon className="h-4 w-4" aria-hidden />
+        <ArrowRightIcon className="h-4 w-4 shrink-0" aria-hidden />
       ) : (
-        <ChevronRightIcon className="h-4 w-4" aria-hidden />
+        <ChevronRightIcon className="h-4 w-4 shrink-0" aria-hidden />
       )}
     </Link>
   );
