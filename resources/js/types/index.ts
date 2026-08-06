@@ -107,8 +107,12 @@ export type Publication = {
   id: number;
   title: string;
   slug?: string;
+  subtitle?: string | null;
+  volume_slug?: string | null;
+  created_at?: string | number;
   category?: Category | null;
-  file?: { id: number; url?: string; path?: string } | null;
+  media?: MediaItem[];
+  file?: { id?: number; name?: string; url?: string; path?: string } | null;
 };
 
 export type Slide = {

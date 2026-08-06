@@ -7,39 +7,32 @@
 }
 
 .video-carousel .video-slide {
-  width: 100% !important;
-  height: auto !important;
-}
-
-.thumbs-swiper {
   width: 100%;
-  height: 100%;
+  height: auto;
+}
+
+.thumbs-list {
+  width: 100%;
   max-height: 22rem;
+  overflow-y: auto;
   padding-right: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.thumbs-swiper .thumb-slide {
-  width: 100% !important;
-  height: auto !important;
-}
-
-/* Active thumb: clear selection without dimming title text */
-.thumbs-swiper .swiper-slide-thumb-active .thumb-button {
-  border-color: color-mix(in oklab, var(--color-theme-500, #0ea5e9) 55%, transparent);
-  background-color: color-mix(in oklab, var(--color-theme-500, #0ea5e9) 8%, transparent);
-}
-
-.thumbs-swiper .swiper-slide-thumb-active .thumb-button img {
-  opacity: 1;
-}
-
-.thumbs-swiper .thumb-slide:not(.swiper-slide-thumb-active) img {
-  opacity: 0.88;
+.thumbs-list .thumb-item {
+  width: 100%;
+  height: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .video-carousel img,
-  .thumbs-swiper .thumb-button {
+  .thumbs-list .thumb-button {
     transition: none !important;
+  }
+
+  .thumbs-list .thumb-item {
+    scroll-behavior: auto;
   }
 }

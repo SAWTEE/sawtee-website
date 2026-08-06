@@ -1,8 +1,15 @@
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  type CarouselApi,
+} from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
 import type { MediaItem, Post, Publication } from '@/types';
 import { Link } from '@inertiajs/react';
-import type { CSSProperties, ReactNode } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
-import { register } from 'swiper/element/bundle';
+import Autoplay from 'embla-carousel-autoplay';
+import type { ReactNode } from 'react';
+import { useEffect, useState } from 'react';
 
 type FeaturedPublication = Publication & {
   subtitle?: string | null;
@@ -19,21 +26,11 @@ type FeaturedPublicationsProps = {
 
 type ListKind = 'publication' | 'post';
 
-type SwiperElement = HTMLElement & {
-  initialize?: () => void;
-  swiper?: {
-    destroy: (deleteInstance?: boolean, cleanStyles?: boolean) => void;
-  };
-};
-
 export const FeaturedPublications = ({
   publications,
   blogPosts,
 }: FeaturedPublicationsProps) => {
-  const sortedPublications = useMemo(
-    () => sortByCreatedAt(publications ?? []),
-    [publications]
-  );
+  const sortedPublications = sortByCreatedAt(publications ?? []);
 
   return (
     <div className="rounded-md border border-borderColor/80 bg-white px-4 py-6 shadow-sm dark:bg-bgDarker sm:px-5 sm:py-7">
@@ -77,94 +74,96 @@ function FeaturedItemsSlider({
   kind: ListKind;
   items: Array<FeaturedPublication | Post>;
 }) {
-  const swiperRef = useRef(null);
+  const [api, setApi] = useState<CarouselApi>();
+  const [current, setCurrent] = useState(0);
   const canSlide = items.length > 1;
-  const itemIds = items.map(item => item.id).join(',');
 
   useEffect(() => {
-    register();
-
-    const el = swiperRef.current as SwiperElement | null;
-    if (!el) {
+    if (!api) {
       return;
     }
 
-    Object.assign(el, {
-      slidesPerView: 1,
-      spaceBetween: 8,
-      speed: 450,
-      loop: canSlide,
-      watchOverflow: true,
-      autoplay: canSlide
-        ? {
-            delay: 5500,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }
-        : false,
-      pagination: canSlide
-        ? {
-            clickable: true,
-          }
-        : false,
-      keyboard: {
-        enabled: true,
-        onlyInViewport: true,
-      },
-      a11y: {
-        enabled: true,
-        containerMessage: ariaLabel,
-        paginationBulletMessage: 'Go to slide {{index}}',
-      },
-    });
+    const onSelect = () => {
+      setCurrent(api.selectedScrollSnap());
+    };
 
-    el.initialize?.();
+    onSelect();
+    api.on('select', onSelect);
 
     return () => {
-      el.swiper?.destroy(true, true);
+      api.off('select', onSelect);
     };
-  }, [ariaLabel, canSlide, itemIds]);
+  }, [api]);
 
   return (
     <section aria-roledescription="carousel" aria-label={ariaLabel}>
       <SectionHeading>{heading}</SectionHeading>
-      <swiper-container
-        init="false"
-        ref={swiperRef}
-        class={
+      <Carousel
+        setApi={setApi}
+        opts={{ loop: canSlide, align: 'start' }}
+        plugins={
+          canSlide
+            ? [
+                Autoplay({
+                  delay: 5500,
+                  stopOnInteraction: false,
+                  stopOnMouseEnter: true,
+                }),
+              ]
+            : []
+        }
+        className={cn(
+          'w-full',
           kind === 'publication'
-            ? 'featured-publication-swiper w-full'
-            : 'featured-blog-swiper w-full'
-        }
-        style={
-          {
-            '--swiper-pagination-color': 'hsl(var(--theme-color))',
-            '--swiper-pagination-bullet-inactive-color':
-              'hsl(var(--muted-foreground))',
-            '--swiper-pagination-bullet-inactive-opacity': '0.4',
-            '--swiper-pagination-bullet-horizontal-gap': '8px',
-            '--swiper-pagination-bullet-size': '10px',
-            '--swiper-pagination-bullet-width': '10px',
-            '--swiper-pagination-bullet-height': '10px',
-            '--swiper-pagination-bottom': '0px',
-            paddingBottom: canSlide ? '1.75rem' : undefined,
-          } as CSSProperties
-        }
+            ? 'featured-publication-carousel'
+            : 'featured-blog-carousel'
+        )}
       >
-        {items.map(item => {
-          const media = resolveMedia(item, kind);
-          const href = resolveHref(item, kind);
+        <CarouselContent className="ml-0">
+          {items.map(item => {
+            const media = resolveMedia(item, kind);
+            const href = resolveHref(item, kind);
 
-          return (
-            <swiper-slide key={item.id} class="group h-auto! py-0.5">
-              <ItemLink kind={kind} href={href}>
-                <ListCopy title={item.title} subtitle={item.subtitle} />
-                {media ? <ListThumb src={media} alt={item.title} /> : null}
-              </ItemLink>
-            </swiper-slide>
-          );
-        })}
-      </swiper-container>
+            return (
+              <CarouselItem key={item.id} className="basis-full pl-0 py-0.5">
+                <ItemLink kind={kind} href={href}>
+                  <ListCopy title={item.title} subtitle={item.subtitle} />
+                  {media ? <ListThumb src={media} alt={item.title} /> : null}
+                </ItemLink>
+              </CarouselItem>
+            );
+          })}
+        </CarouselContent>
+
+        {canSlide ? (
+          <div
+            className="mt-4 flex items-center justify-center gap-2"
+            role="group"
+            aria-label="Slide indicators"
+          >
+            {items.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={`Go to slide ${index + 1}`}
+                aria-current={index === current ? 'true' : undefined}
+                className="flex h-8 w-8 items-center justify-center"
+                onClick={() => api?.scrollTo(index)}
+              >
+                <span
+                  aria-hidden
+                  className={cn(
+                    'rounded-full transition-all duration-300',
+                    index === current
+                      ? 'h-2.5 w-2.5 bg-[hsl(var(--theme-color))]'
+                      : 'h-2.5 w-2.5 bg-muted-foreground/40 hover:bg-muted-foreground/70'
+                  )}
+                />
+              </button>
+            ))}
+          </div>
+        ) : null}
+      </Carousel>
     </section>
   );
 }
@@ -186,7 +185,7 @@ function ItemLink({
   href: string;
   children: ReactNode;
 }) {
-  const className = 'flex items-start justify-between gap-3';
+  const className = 'group flex items-start justify-between gap-3';
 
   if (kind === 'post') {
     return (

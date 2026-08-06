@@ -4,18 +4,25 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
+  type CarouselApi,
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
+import type { Slide } from '@/types';
 import Autoplay from 'embla-carousel-autoplay';
 import { useEffect, useMemo, useState } from 'react';
 
+type FullWidthCarouselProps = {
+  slides?: Slide[];
+  responsiveImages?: string[];
+  className?: string;
+};
+
 const FullWidthCarousel = ({
-  slides = undefined,
-  responsiveImages = undefined,
+  slides,
+  responsiveImages,
   className = '',
-  ...rest
-}: any) => {
-  const [api, setApi] = useState<any>();
+}: FullWidthCarouselProps) => {
+  const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
   const [count, setCount] = useState(0);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
@@ -81,10 +88,9 @@ const FullWidthCarousel = ({
         opts={{ loop: true, align: 'start' }}
         plugins={plugins}
         className="w-full"
-        {...rest}
       >
         <CarouselContent className="ml-0">
-          {slides.map((slide: any, index: number) => {
+          {slides.map((slide, index) => {
             const imageSrc = slide.media?.[0]?.original_url;
             const srcSet = responsiveImages?.[index] || undefined;
             const hasCopy = Boolean(slide.title || slide.subtitle);

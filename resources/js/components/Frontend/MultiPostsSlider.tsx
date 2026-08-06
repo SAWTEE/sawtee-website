@@ -5,9 +5,18 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import type { Publication } from '@/types';
 import { Badge } from '../ui/badge';
 
-const MultiPostsCarousel = ({ data = undefined }: any) => {
+type MultiPostsCarouselProps = {
+  data?: Publication[];
+};
+
+const MultiPostsCarousel = ({ data = [] }: MultiPostsCarouselProps) => {
+  if (!data.length) {
+    return null;
+  }
+
   return (
     <Carousel
       opts={{
@@ -16,15 +25,14 @@ const MultiPostsCarousel = ({ data = undefined }: any) => {
       className="w-full"
     >
       <CarouselContent>
-        {data.map((publication: any) => {
-          const media = publication.media.length
-            ? publication.media.filter(
-                // @ts-ignore allowlist-migration
-                media => media.collection_name === 'publication_featured_image'
-              )[0].original_url
-            : '/assets/SM-placeholder-150x150.png';
-          const href = publication.file
-            ? `/publications/${publication?.file?.name}`
+        {data.map(publication => {
+          const featured = publication.media?.find(
+            media => media.collection_name === 'publication_featured_image'
+          );
+          const media =
+            featured?.original_url ?? '/assets/SM-placeholder-150x150.png';
+          const href = publication.file?.name
+            ? `/publications/${publication.file.name}`
             : null;
           const label = `Open publication: ${publication.title}`;
 
@@ -59,7 +67,7 @@ const MultiPostsCarousel = ({ data = undefined }: any) => {
                 )}
                 <div className="absolute left-4 top-3 z-20 flex items-center justify-between">
                   <Badge className="border-transparent bg-sky-800 px-2 font-sans text-[0.65rem] font-semibold text-white transition-all duration-200 ease-in-out group-hover:bg-sky-100 group-hover:text-sky-900">
-                    {publication.category.name}
+                    {publication.category?.name ?? 'Publication'}
                   </Badge>
                 </div>
                 <div className="z-20 w-full rounded-b-md p-2 text-sm font-medium leading-4 text-white backdrop-blur-[2px] transition-all duration-200 ease-in-out group-hover:bg-black/20">

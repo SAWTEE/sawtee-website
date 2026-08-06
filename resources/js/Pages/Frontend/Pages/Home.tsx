@@ -1,4 +1,4 @@
-import type { HomePageProps } from '@/types';
+import type { HomePageProps, MediaItem, Post, Publication, Slide } from '@/types';
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
 import WebsiteHead from '@/components/Frontend/Head';
@@ -13,6 +13,20 @@ import { Link } from '@inertiajs/react';
 import MainLayout from '@/layouts/MainLayout';
 import { features } from '@/lib/data';
 import { lazy, Suspense, type ReactNode } from 'react';
+
+function featuredImageUrl(
+  media: MediaItem[] | undefined,
+  fallback: string
+): string {
+  return (
+    media?.find(item => item.collection_name === 'post-featured-image')
+      ?.original_url ?? fallback
+  );
+}
+
+function postFileMedia(media: MediaItem[] | undefined): MediaItem | undefined {
+  return media?.find(item => item.collection_name === 'post-files');
+}
 
 const FeaturedPublications = lazy(() =>
   import('@/components/Frontend/FeaturedPublications').then(m => ({
@@ -199,7 +213,17 @@ const Home = ({
   );
 };
 
-const Section = ({ children = undefined, title = null, className = '', dark = undefined }: any) => {
+const Section = ({
+  children,
+  title,
+  className = '',
+  dark = false,
+}: {
+  children?: ReactNode;
+  title?: string | null;
+  className?: string;
+  dark?: boolean;
+}) => {
   return (
     <section
       className={cn(
@@ -208,32 +232,34 @@ const Section = ({ children = undefined, title = null, className = '', dark = un
         className
       )}
     >
-      {title && <Title title={title} />}
+      {title ? <Title title={title} /> : null}
       {children}
     </section>
   );
 };
 
-const FeaturedEventsSection = ({ events = undefined }: any) => {
+const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
+  const lead = events[0];
+  if (!lead) {
+    return null;
+  }
+
   return (
     <div className="mb-4 grid grid-cols-1 place-items-start gap-5 md:grid-cols-12">
       <div className="group md:col-span-5">
-        <Link href={`/category/featured-events/${events[0].slug}`}>
+        <Link href={`/category/featured-events/${lead.slug}`}>
           <div
             className="relative h-60 max-h-60 overflow-hidden rounded-md text-center"
-            title={events[0].title}
+            title={lead.title}
           >
             <div className="ease absolute inset-0 top-0 z-10 hidden h-1.25 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
             <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
             <img
-              src={
-                events[0].media.filter(
-                  // @ts-ignore allowlist-migration
-                  item => item.collection_name === 'post-featured-image'
-                )[0]?.original_url ??
-                `https://placehold.co/600x400/eee/000/webp?text=No+Image`
-              }
-              alt={events[0].title}
+              src={featuredImageUrl(
+                lead.media,
+                'https://placehold.co/600x400/eee/000/webp?text=No+Image'
+              )}
+              alt={lead.title}
               width={600}
               height={400}
               loading="lazy"
@@ -245,65 +271,65 @@ const FeaturedEventsSection = ({ events = undefined }: any) => {
         <div className="mt-3 flex flex-col justify-between rounded-b leading-normal lg:rounded-b-none lg:rounded-r">
           <div className="">
             <Link
-              href={`/category/featured-events/${events[0].slug}`}
+              href={`/category/featured-events/${lead.slug}`}
               className="inline-flex min-h-6 items-center py-1 text-xs font-medium uppercase text-sky-700 transition duration-200 ease-in-out hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200"
             >
-              {events[0].category.name}
+              {lead.category?.name}
             </Link>
             <Link
-              href={`/category/featured-events/${events[0].slug}`}
+              href={`/category/featured-events/${lead.slug}`}
               className="mb-2 block text-2xl font-bold leading-6 tracking-wide text-secondary-foreground transition duration-200 ease-in-out group-hover:text-sky-500/80 lg:text-3xl"
             >
-              {events[0].title}
+              {lead.title}
             </Link>
-            <p
-              className="mt-2 text-base text-muted-foreground dark:text-slate-400"
-              dangerouslySetInnerHTML={{ __html: events[0]?.excerpt }}
-            />
+            {lead.excerpt ? (
+              <p
+                className="mt-2 text-base text-muted-foreground dark:text-slate-400"
+                dangerouslySetInnerHTML={{ __html: lead.excerpt }}
+              />
+            ) : null}
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-5 md:col-span-7">
-        {events.map((event: any, index: any) => {
-          const featured_image =
-            event.media.length > 0
-              ? (event.media.filter(
-                  // @ts-ignore allowlist-migration
-                  item => item.collection_name === 'post-featured-image'
-                )[0]?.original_url ??
-                `https://placehold.co/300x160/eee/000/webp?text=No+Image`)
-              : `https://placehold.co/300x160/eee/000/webp?text=No+Image`;
+        {events.map((event, index) => {
+          if (index === 0) {
+            return null;
+          }
+
+          const featured_image = featuredImageUrl(
+            event.media,
+            'https://placehold.co/300x160/eee/000/webp?text=No+Image'
+          );
 
           return (
-            index !== 0 && (
-              <div className="group" key={event.id}>
-                <Link href={`/category/featured-events/${event.slug}`}>
-                  <div
-                    className="relative h-40 max-h-40 overflow-hidden rounded-md text-center"
-                    title={event.title}
-                  >
-                    <img
-                      src={featured_image}
-                      alt={event.title}
-                      width={300}
-                      height={160}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-full w-full object-cover transition-all duration-200 ease-linear"
-                    />
-                    <div className="ease absolute inset-0 top-0 z-10 hidden h-1 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
-                    <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
-                  </div>
-                </Link>
-                <Link
-                  href={`/category/featured-events/${event.slug}`}
-                  className="text-md my-2 inline-block font-semibold leading-5 tracking-wide text-secondary-foreground transition duration-200 ease-in-out group-hover:text-sky-500/80"
+            <div className="group" key={event.id}>
+              <Link href={`/category/featured-events/${event.slug}`}>
+                <div
+                  className="relative h-40 max-h-40 overflow-hidden rounded-md text-center"
+                  title={event.title}
                 >
-                  {event.title}
-                </Link>
-              </div>
-            )
+                  <img
+                    src={featured_image}
+                    alt={event.title}
+                    width={300}
+                    height={160}
+                    loading="lazy"
+                    decoding="async"
+                    className="h-full w-full object-cover transition-all duration-200 ease-linear"
+                  />
+                  <div className="ease absolute inset-0 top-0 z-10 hidden h-1 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
+                  <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
+                </div>
+              </Link>
+              <Link
+                href={`/category/featured-events/${event.slug}`}
+                className="text-md my-2 inline-block font-semibold leading-5 tracking-wide text-secondary-foreground transition duration-200 ease-in-out group-hover:text-sky-500/80"
+              >
+                {event.title}
+              </Link>
+            </div>
           );
         })}
       </div>
@@ -313,7 +339,13 @@ const FeaturedEventsSection = ({ events = undefined }: any) => {
 
 export default Home;
 
-export const CarouselSection = ({ slides = undefined, slidesResponsiveImages = undefined }: any) => {
+export const CarouselSection = ({
+  slides,
+  slidesResponsiveImages,
+}: {
+  slides?: Slide[];
+  slidesResponsiveImages?: string[];
+}) => {
   return (
     <FullWidthCarousel
       slides={slides}
@@ -321,19 +353,16 @@ export const CarouselSection = ({ slides = undefined, slidesResponsiveImages = u
     />
   );
 };
-{
-  /*infocus code chnages for external link from home pages  */
-}
-export const InfocusSection = ({ infocus = undefined }: any) => {
+
+export const InfocusSection = ({ infocus = [] }: { infocus?: Post[] }) => {
   return (
     <Section className="infocus-section">
       <div className="mx-auto max-w-5xl">
         <Title title={'In focus'} />
         <SimpleList heading={null}>
-          {infocus.map((item: any) => {
+          {infocus.map(item => {
             return (
               <li className="mb-6 flex w-full flex-col gap-3" key={item.id}>
-                {/* मुख्य परिवर्तन यहाँ छ: 'item.link' छ कि छैन भनेर चेक गर्ने */}
                 {item.link ? (
                   <a
                     className="underline underline-offset-2 hover:underline-offset-4"
@@ -354,10 +383,12 @@ export const InfocusSection = ({ infocus = undefined }: any) => {
                   </Link>
                 )}
 
-                <p
-                  className="text-sm text-muted-foreground"
-                  dangerouslySetInnerHTML={{ __html: item.excerpt }}
-                />
+                {item.excerpt ? (
+                  <p
+                    className="text-sm text-muted-foreground"
+                    dangerouslySetInnerHTML={{ __html: item.excerpt }}
+                  />
+                ) : null}
               </li>
             );
           })}
@@ -368,17 +399,17 @@ export const InfocusSection = ({ infocus = undefined }: any) => {
   );
 };
 
-export const LatestPublicationSection = ({ publications = undefined }: any) => {
+export const LatestPublicationSection = ({
+  publications = [],
+}: {
+  publications?: Publication[];
+}) => {
   return (
     <Section className="publications-section">
       <div className="mx-auto max-w-5xl">
         <Title title={'Latest in publications'} />
         <Suspense fallback={null}>
-          <MultiPostsCarousel
-            link={'/category/publications'}
-            text={'More in publications'}
-            data={publications}
-          />
+          <MultiPostsCarousel data={publications} />
         </Suspense>
         <ExploreButton
           className="mt-8"
@@ -390,7 +421,11 @@ export const LatestPublicationSection = ({ publications = undefined }: any) => {
   );
 };
 
-export const PolicyOutreachSection = ({ events = undefined }: any) => {
+export const PolicyOutreachSection = ({
+  events = [],
+}: {
+  events?: Post[];
+}) => {
   return (
     <Section>
       <div className="mx-auto max-w-5xl">
@@ -405,7 +440,11 @@ export const PolicyOutreachSection = ({ events = undefined }: any) => {
   );
 };
 
-export const MediaSection = ({ sawteeInMedia = undefined }: any) => {
+export const MediaSection = ({
+  sawteeInMedia,
+}: {
+  sawteeInMedia?: Post[];
+}) => {
   if (!sawteeInMedia?.length) {
     return null;
   }
@@ -418,11 +457,9 @@ export const MediaSection = ({ sawteeInMedia = undefined }: any) => {
         description="Press mentions and commentary featuring SAWTEE’s work across South Asia."
       >
         <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
-          {sawteeInMedia.map((item: any) => {
+          {sawteeInMedia.map(item => {
             const hasContent = Boolean(item.content);
-            const file = item.media?.find(
-              (media: any) => media.collection_name === 'post-files'
-            );
+            const file = postFileMedia(item.media);
             const titleClass =
               'text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-[0.9375rem]';
 
@@ -430,7 +467,7 @@ export const MediaSection = ({ sawteeInMedia = undefined }: any) => {
               <li key={item.id} className="py-4 first:pt-0 last:pb-0">
                 {file && !hasContent ? (
                   <a
-                    href={file?.original_url}
+                    href={file.original_url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className={titleClass}
@@ -441,7 +478,7 @@ export const MediaSection = ({ sawteeInMedia = undefined }: any) => {
                 ) : null}
                 {hasContent ? (
                   <Link
-                    href={`/category/${item.category.slug}/${item.slug}`}
+                    href={`/category/${item.category?.slug}/${item.slug}`}
                     className={titleClass}
                   >
                     {item.title}
@@ -469,7 +506,11 @@ export const MediaSection = ({ sawteeInMedia = undefined }: any) => {
 /** @deprecated Use MediaSection — kept for any external imports of the old typo name. */
 export const MediaSesction = MediaSection;
 
-export const NewsletterSection = ({ newsletters = undefined }: any) => {
+export const NewsletterSection = ({
+  newsletters,
+}: {
+  newsletters?: Post[];
+}) => {
   if (!newsletters?.length) {
     return null;
   }
@@ -482,16 +523,16 @@ export const NewsletterSection = ({ newsletters = undefined }: any) => {
         description="Monthly digests on trade, economics, and environment from the SAWTEE desk."
       >
         <ul className="divide-y divide-borderColor/60 dark:divide-white/10">
-          {newsletters.map((item: any) => {
-            const file = item.media?.find(
-              (media: any) => media.collection_name === 'post-files'
-            );
+          {newsletters.map(item => {
+            const file = postFileMedia(item.media);
 
             return (
               <li key={item.id} className="py-4 first:pt-0 last:pb-0">
                 <a
                   className="text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-[0.9375rem]"
-                  href={file?.original_url ?? `/category/newsletters/${item.slug}`}
+                  href={
+                    file?.original_url ?? `/category/newsletters/${item.slug}`
+                  }
                   target={file?.original_url ? '_blank' : undefined}
                   rel={file?.original_url ? 'noopener noreferrer' : undefined}
                 >
@@ -548,7 +589,11 @@ function OutreachColumn({
   );
 }
 
-export const WebinarSection = ({ webinars = undefined }: any) => {
+export const WebinarSection = ({
+  webinars = [],
+}: {
+  webinars?: Post[];
+}) => {
   return (
     <Section className="section videos-section">
       <div className="mx-auto max-w-5xl">
@@ -579,11 +624,7 @@ export const WebinarSection = ({ webinars = undefined }: any) => {
 
 export const NewsletterCalloutSection = () => {
   return (
-    <Section
-      py={{ base: '6', md: '12', lg: '16' }}
-      px={{ base: '10', md: '16', lg: '20' }}
-      className="subscribe-section"
-    >
+    <Section className="subscribe-section">
       <NewsletterCallout />
     </Section>
   );

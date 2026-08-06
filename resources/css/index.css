@@ -324,38 +324,6 @@ pre {
     top: 8rem;
 }
 
-swiper-container {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-.video-carousel .video-slide {
-    width: 100% !important;
-    height: 100% !important;
-    text-align: center;
-  }
-
-  .video-carousel {
-      max-height: 400px !important;
-      width: 100% !important;
-      max-width: 100% !important;
-      margin-left: auto;
-      margin-right: auto;
-      border-radius: var(--chakra-radii-lg);
-      overflow: hidden;
-  }
-
-  .thumbs-swiper .thumb-slide {
-     width: 100% !important;
-     height: auto !important;
-     opacity: 0.4;
-  }
-
-  .thumbs-swiper .swiper-slide-thumb-active {
-     opacity: 1;
-  }
-
-
 .blockquote::before {
     font-family: Arial, Helvetica, sans-serif;
     content: "\201C";
@@ -498,16 +466,4 @@ swiper-container {
   .animation-pause {
     animation-play-state: paused;
   }
-}
-
-/* Larger hit area for Swiper pagination bullets (Lighthouse target-size) */
-.featured-blog-swiper .swiper-pagination-bullet {
-  position: relative;
-  margin: 0 6px !important;
-}
-
-.featured-blog-swiper .swiper-pagination-bullet::before {
-  content: '';
-  position: absolute;
-  inset: -10px;
 }

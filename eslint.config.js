@@ -52,8 +52,6 @@ export default [
             'head-key',
             // cmdk / shadcn command input wrapper marker
             'cmdk-input-wrapper',
-            // Swiper web components use `class` instead of className
-            'class',
           ],
         },
       ],
