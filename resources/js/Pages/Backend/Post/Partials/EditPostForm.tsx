@@ -20,7 +20,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { format } from 'date-fns';
+import { formatDateTimeForInput } from '@/lib/helpers';
 import {
   Select,
   SelectContent,
@@ -291,10 +291,8 @@ export default function EditPostForm({
                   selected={data.published_at}
                   // @ts-ignore allowlist-migration
                   onSelect={value => {
-                    // 2025-06-17 00:00:00
-                    const formatedDate = format(
-                      new Date(value),
-                      'yyyy-MM-dd H:i:s'
+                    const formatedDate = formatDateTimeForInput(
+                      new Date(value)
                     );
                     setData('published_at', formatedDate);
                   }}

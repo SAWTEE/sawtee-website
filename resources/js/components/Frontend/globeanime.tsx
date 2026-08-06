@@ -1,6 +1,4 @@
 'use client';
-// @ts-ignore allowlist-migration
-import anime from 'animejs';
 import { useEffect, useRef } from 'react';
 
 const dots = [
@@ -40,19 +38,11 @@ const svgs = [
     x1: '100%',
     x2: '100%',
     y1: '-20%',
-    y1config: {
-      initial: '-20%',
-      frames: ['-20%', '100%'],
-    },
     y2: '0',
-    y2config: {
-      initial: '0',
-      frames: ['0', '130%'],
-    },
+    y2From: 0,
+    y2To: 130,
     duration: 350,
     delay: 1350,
-    offset: 0,
-    easing: 'linear',
   },
   {
     id: 'svg2',
@@ -66,19 +56,11 @@ const svgs = [
     x1: '100%',
     x2: '100%',
     y1: '-20%',
-    y1config: {
-      initial: '-20%',
-      frames: ['-20%', '100%'],
-    },
     y2: '0',
-    y2config: {
-      initial: '0',
-      frames: ['0', '130%'],
-    },
+    y2From: 0,
+    y2To: 130,
     duration: 300,
     delay: 1350,
-    offset: 0,
-    easing: 'linear',
   },
   {
     id: 'svg3',
@@ -92,61 +74,79 @@ const svgs = [
     x1: '100%',
     x2: '100%',
     y1: '-20%',
-    y1config: {
-      initial: '-20%',
-      frames: ['-20%', '100%'],
-    },
     y2: '0',
-    y2config: {
-      initial: '0',
-      frames: ['0', '130%'],
-    },
+    y2From: 0,
+    y2To: 130,
     duration: 200,
     delay: 1350,
-    offset: 0,
-    easing: 'linear',
   },
 ];
 
-const Globeanime = ({ darkMode = false }: any) => {
-  const ref = useRef(null);
+type GlobeanimeProps = {
+  darkMode?: boolean;
+};
 
+const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
+  const rootRef = useRef<HTMLDivElement>(null);
   const stopColor = darkMode ? '#FFFFFF' : '#000000';
 
   useEffect(() => {
-    const tl = anime.timeline({
-      loop: true,
-      autoplay: true,
-    });
+    const root = rootRef.current;
+    if (!root) {
+      return;
+    }
 
-    // biome-ignore lint/complexity/noForEach: <explanation>
-    svgs.forEach((s: any) => {
-      tl.add(
-        {
-          targets: `#functions-hero #${s.id} linearGradient`,
-          y2: s.y2config.frames,
-          easing: s.easing,
-          duration: s.duration,
-          delay: s.delay,
-        },
-        s.offset
-      );
-    });
+    let cancelled = false;
+    let rafId = 0;
+    const start = performance.now();
+    // Match previous anime.js timeline: longest stroke + delay, then loop.
+    const loopMs = Math.max(...svgs.map(s => s.delay + s.duration)) + 200;
+
+    const tick = (now: number) => {
+      if (cancelled) {
+        return;
+      }
+
+      const elapsed = (now - start) % loopMs;
+
+      for (const s of svgs) {
+        const gradient = root.querySelector<SVGLinearGradientElement>(
+          `#lg-${s.id}`
+        );
+        if (!gradient) {
+          continue;
+        }
+
+        const local = elapsed - s.delay;
+        let y2 = s.y2From;
+        if (local >= 0 && local <= s.duration) {
+          const t = local / s.duration;
+          y2 = s.y2From + (s.y2To - s.y2From) * t;
+        } else if (local > s.duration) {
+          y2 = s.y2To;
+        }
+
+        gradient.setAttribute('y2', `${y2}%`);
+      }
+
+      rafId = requestAnimationFrame(tick);
+    };
+
+    rafId = requestAnimationFrame(tick);
 
     return () => {
-      tl.pause();
-      anime.remove('#functions-hero linearGradient');
+      cancelled = true;
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
   return (
     <div
-      ref={ref}
+      ref={rootRef}
       id="functions-hero"
       className="absolute inset-0 top-4 -left-28 aspect-978/678 w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
-      {/* Animated svgs in globe */}
-      {svgs.map((s: any) => (
+      {svgs.map(s => (
         <svg
           key={s.id}
           id={s.id}
@@ -174,7 +174,6 @@ const Globeanime = ({ darkMode = false }: any) => {
               y2={s.y2}
               gradientUnits="userSpaceOnUse"
             >
-              {/* Define colors for both light and dark modes */}
               <stop offset="0" stopColor={stopColor} stopOpacity="0" />
               <stop offset="0.5" stopColor={stopColor} stopOpacity="0.6" />
               <stop offset="1" stopColor={stopColor} stopOpacity="0" />
@@ -183,8 +182,7 @@ const Globeanime = ({ darkMode = false }: any) => {
         </svg>
       ))}
 
-      {/* Dots on globe */}
-      {dots.map((dot: any) => (
+      {dots.map(dot => (
         <div
           key={dot.id}
           id={dot.id}
@@ -198,20 +196,19 @@ const Globeanime = ({ darkMode = false }: any) => {
       <div className="absolute top-[10%] left-[51.15%] h-[20%] w-px overflow-hidden">
         <span className="animate-slide-in absolute inset-0 h-full w-full bg-linear-to-t from-current to-transparent delay-1200" />
       </div>
-      {/* Globe background */}
       <img
         src="/assets/globe.svg"
         alt="globe wireframe"
         width={400}
         height={400}
-        className={`h-full w-full ${darkMode ? 'hidden' : 'block'}`} // Hide/show based on dark mode
+        className={`h-full w-full ${darkMode ? 'hidden' : 'block'}`}
       />
       <img
         src="/assets/globe-light.svg"
         alt="globe wireframe"
         width={400}
         height={400}
-        className={`h-full w-full ${darkMode ? 'block' : 'hidden'}`} // Hide/show based on dark mode
+        className={`h-full w-full ${darkMode ? 'block' : 'hidden'}`}
       />
     </div>
   );

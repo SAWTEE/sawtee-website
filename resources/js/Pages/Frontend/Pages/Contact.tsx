@@ -1,13 +1,13 @@
-import Zoom from 'react-medium-image-zoom';
-import 'react-medium-image-zoom/dist/styles.css';
-
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
+import ZoomableImage from '@/components/Frontend/ZoomableImage';
 import { Button } from '@/components/ui/button';
 import type { ContactPageData, PageData } from '@/types';
 import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment, type ReactNode } from 'react';
 
-function isContactPageData(data: PageData | undefined): data is ContactPageData {
+function isContactPageData(
+  data: PageData | undefined
+): data is ContactPageData {
   return !!data && !Array.isArray(data) && typeof data === 'object';
 }
 
@@ -20,7 +20,7 @@ const Contact = ({ pageData }: ContactProps) => {
   if (!isContactPageData(pageData)) {
     return (
       <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
-        <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
+        <div className="bg-bgDarker rounded-xl p-6 shadow-lg md:p-12">
           <p className="mb-4 text-center text-2xl font-bold md:text-4xl">
             South Asia Watch on Trade, Economics and Environment (SAWTEE)
           </p>
@@ -36,7 +36,7 @@ const Contact = ({ pageData }: ContactProps) => {
 
   return (
     <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
-      <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
+      <div className="bg-bgDarker rounded-xl p-6 shadow-lg md:p-12">
         <p className="mb-4 text-center text-2xl font-bold md:text-4xl">
           South Asia Watch on Trade, Economics and Environment (SAWTEE)
         </p>
@@ -93,14 +93,11 @@ const Contact = ({ pageData }: ContactProps) => {
 
           {pageData.location_image ? (
             <div className="max-h-96 p-8">
-              <Zoom>
-                <img
-                  className="aspect-square w-full object-cover"
-                  src={pageData.location_image}
-                  alt="SAWTEE office location"
-                  loading="lazy"
-                />
-              </Zoom>
+              <ZoomableImage
+                className="aspect-square w-full object-cover"
+                src={pageData.location_image}
+                alt="SAWTEE office location"
+              />
             </div>
           ) : null}
         </div>

@@ -143,6 +143,32 @@ export function formatDate(date: any) {
   return `${day} ${monthNames[month]}, ${year}`;
 }
 
+/** Short month + day, e.g. "Jan 05" (Intl). */
+export function formatShortMonthDay(date: Date | string | number = new Date()) {
+  const jsDate = date instanceof Date ? date : new Date(date);
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: '2-digit',
+  }).format(jsDate);
+}
+
+/**
+ * Laravel-style datetime for form fields: `yyyy-MM-dd HH:mm:ss`.
+ * (Replaces the incorrect date-fns token string `yyyy-MM-dd H:i:s`.)
+ */
+export function formatDateTimeForInput(date: Date | string | number) {
+  const jsDate = date instanceof Date ? date : new Date(date);
+  if (Number.isNaN(jsDate.getTime())) {
+    return '';
+  }
+
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return (
+    `${jsDate.getFullYear()}-${pad(jsDate.getMonth() + 1)}-${pad(jsDate.getDate())}` +
+    ` ${pad(jsDate.getHours())}:${pad(jsDate.getMinutes())}:${pad(jsDate.getSeconds())}`
+  );
+}
+
 export function DateFormat(date: any) {
   const jsDate = new Date(date);
 

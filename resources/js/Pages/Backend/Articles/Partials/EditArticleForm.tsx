@@ -13,8 +13,8 @@ import {
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { formatDateTimeForInput } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { format } from 'date-fns';
 import ContentEditor from '@/components/Backend/ContentEditor';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {
@@ -195,9 +195,8 @@ export default function EditArticleForm({
                   selected={data.published_at}
                   // @ts-ignore allowlist-migration
                   onSelect={value => {
-                    const formatedDate = format(
-                      new Date(value),
-                      'yyyy-MM-dd H:i:s'
+                    const formatedDate = formatDateTimeForInput(
+                      new Date(value)
                     );
                     setData('published_at', formatedDate);
                   }}
