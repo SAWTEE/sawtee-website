@@ -116,15 +116,26 @@ export function ThemeProvider({
   });
 
   const [mounted, setMounted] = useState(false);
+  const [resolvedTheme, setResolvedTheme] = useState<'dark' | 'light'>(() =>
+    getResolvedTheme(
+      (safeLocalStorage.getItem(storageKey) as Theme) || defaultTheme
+    )
+  );
+  const [systemTheme, setSystemTheme] = useState<'dark' | 'light'>(
+    getSystemTheme
+  );
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (mounted) {
-      applyTheme(theme, attribute, disableTransitionOnChange);
-    }
+    if (!mounted) return;
+
+    const nextResolved = getResolvedTheme(theme);
+    applyTheme(theme, attribute, disableTransitionOnChange);
+    setResolvedTheme(nextResolved);
+    setSystemTheme(getSystemTheme());
   }, [theme, mounted, attribute, disableTransitionOnChange]);
 
   useEffect(() => {
@@ -133,8 +144,11 @@ export function ThemeProvider({
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     const handleChange = () => {
+      const nextSystem = getSystemTheme();
+      setSystemTheme(nextSystem);
       if (theme === 'system') {
         applyTheme('system', attribute, disableTransitionOnChange);
+        setResolvedTheme(nextSystem);
       }
     };
 
@@ -148,8 +162,8 @@ export function ThemeProvider({
       safeLocalStorage.setItem(storageKey, newTheme);
       setTheme(newTheme);
     },
-    resolvedTheme: mounted ? getResolvedTheme(theme) : undefined,
-    systemTheme: mounted ? getSystemTheme() : undefined,
+    resolvedTheme: mounted ? resolvedTheme : undefined,
+    systemTheme: mounted ? systemTheme : undefined,
   };
 
   return (

@@ -1,10 +1,25 @@
 import { Editor } from '@tinymce/tinymce-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { useTheme } from '../shared/theme-provider';
 
-export default function ContentEditor({ initialValue = undefined, ...rest }: any) {
+const FONT_STACK =
+  "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif";
+
+export default function ContentEditor({
+  initialValue = undefined,
+  onChange,
+  onEditorChange,
+  ...rest
+}: any) {
   const editorRef = useRef<any>(null);
-  const { theme } = useTheme();
+  const { resolvedTheme, theme } = useTheme();
+  const isDark =
+    resolvedTheme === 'dark' || (resolvedTheme == null && theme === 'dark');
+  const skinKey = isDark ? 'dark' : 'light';
+
+  // Preserve edits across theme-driven remounts (skin/content_css are init-only).
+  const [content, setContent] = useState(() => initialValue ?? '');
+
   const editorConfig = {
     plugins:
       'preview importcss searchreplace autolink autosave save directionality code visualblocks visualchars fullscreen image link media codesample table charmap pagebreak nonbreaking anchor insertdatetime advlist lists wordcount help charmap quickbars emoticons accordion',
@@ -36,19 +51,29 @@ export default function ContentEditor({ initialValue = undefined, ...rest }: any
     noneditable_class: 'mceNonEditable',
     toolbar_mode: 'sliding',
     contextmenu: 'link image table',
-    skin: theme === 'dark' ? 'oxide-dark' : 'oxide',
-    content_css: theme === 'dark' ? 'dark' : 'default',
-    content_style:
-      "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size:16px }",
+    skin: isDark ? 'oxide-dark' : 'oxide',
+    content_css: isDark ? 'dark' : 'default',
+    content_style: isDark
+      ? `body { font-family: ${FONT_STACK}; font-size:16px; background-color:#1e1e1e; color:#e4e4e7; }`
+      : `body { font-family: ${FONT_STACK}; font-size:16px; background-color:#ffffff; color:#18181b; }`,
   };
 
   return (
     <Editor
+      key={skinKey}
       ref={editorRef}
       licenseKey="gpl"
-      initialValue={initialValue}
+      initialValue={content}
       onInit={(evt: any, editor: any) => {
         editorRef.current = editor;
+      }}
+      onEditorChange={(newContent: string, editor: any) => {
+        setContent(newContent);
+        onEditorChange?.(newContent, editor);
+      }}
+      onChange={(evt: any, editor: any) => {
+        setContent(editor.getContent());
+        onChange?.(evt, editor);
       }}
       init={editorConfig as any}
       tinymceScriptSrc="/assets/tinymce/tinymce.min.js"
