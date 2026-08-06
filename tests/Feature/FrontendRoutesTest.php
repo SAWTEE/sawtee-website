@@ -3,6 +3,7 @@
 use App\Models\Category;
 use App\Models\Page;
 use App\Models\Post;
+use App\Models\Publication;
 use Inertia\Testing\AssertableInertia as Assert;
 
 test('page by slug returns inertia payload', function () {
@@ -47,6 +48,54 @@ test('category archive returns inertia payload', function () {
             ->where('category.slug', 'in-focus')
             ->has('posts')
             ->has('seo')
+        );
+});
+
+test('publications archive includes nested category children and grandchildren', function () {
+    $root = Category::query()->create([
+        'name' => 'Publications',
+        'slug' => 'publications',
+        'type' => 'publication',
+        'parent_id' => null,
+    ]);
+    $child = Category::query()->create([
+        'name' => 'English',
+        'slug' => 'english',
+        'type' => 'publication',
+        'parent_id' => $root->id,
+    ]);
+    $grandChild = Category::query()->create([
+        'name' => 'Trade Insight',
+        'slug' => 'trade-insight',
+        'type' => 'publication',
+        'parent_id' => $child->id,
+    ]);
+    $greatGrandChild = Category::query()->create([
+        'name' => 'Special Series',
+        'slug' => 'special-series',
+        'type' => 'publication',
+        'parent_id' => $grandChild->id,
+    ]);
+
+    Publication::query()->create([
+        'title' => 'Nested archive fixture',
+        'category_id' => $greatGrandChild->id,
+    ]);
+
+    $this->get(route('category.show', 'publications'))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Frontend/Archives/PublicationsArchive')
+            ->where('category.slug', 'publications')
+            ->has('category.children', 1)
+            ->where('category.children.0.slug', 'english')
+            ->has('category.children.0.children', 1)
+            ->where('category.children.0.children.0.slug', 'trade-insight')
+            ->has('category.children.0.children.0.children', 1)
+            ->where('category.children.0.children.0.children.0.slug', 'special-series')
+            ->has('publications.special-series')
+            ->has('publications.trade-insight')
+            ->has('publications.english')
         );
 });
 

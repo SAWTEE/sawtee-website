@@ -20,17 +20,17 @@ class PublicationController extends Controller
 {
     public function index(Request $request): Response
     {
-        $root = Category::with('children.children.children')
+        $root = Category::with('children')
             ->where('name', 'publications')
             ->whereNull('parent_id')
             ->firstOrFail();
 
         $subcategory = $request->category_id
-            ? Category::ofType('publication')->with('children:id,parent_id')->findOrFail($request->category_id)
+            ? Category::ofType('publication')->with('children')->findOrFail($request->category_id)
             : $root->children->first();
 
         $categoryIds = $subcategory
-            ? [$subcategory->id, ...$subcategory->children->pluck('id')]
+            ? ($subcategory->getCategoriesIds($subcategory) ?? [])
             : [];
 
         // The listing table shows no cover or attachment, so the model's default

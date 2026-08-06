@@ -30,7 +30,9 @@ class BuildCategoryArchive
         $sawteeInMedia = $slug === 'sawtee-in-media' ? null : $this->postsByCategorySlug('sawtee-in-media', 5);
         $events = $slug === 'featured-events' ? null : $this->postsByCategorySlug('featured-events', 5);
 
-        $category = Category::with('parent')->where('slug', $slug)->firstOrFail();
+        $category = Category::with(
+            $slug === 'publications' ? ['parent', 'children'] : ['parent']
+        )->where('slug', $slug)->firstOrFail();
         $featuredImage = $category->getFirstMediaUrl('category_media');
         $categoryResponsiveImages = $category->getFirstMedia('category_media')?->getSrcset('responsive');
 
@@ -181,7 +183,9 @@ class BuildCategoryArchive
         }
 
         if ($subcategory) {
-            $category = Category::with('parent')->where('slug', end($segments))->firstOrFail();
+            $category = Category::with(['parent', 'children'])
+                ->where('slug', end($segments))
+                ->firstOrFail();
 
             if (count($category->children) > 0) {
                 $publications = $category->getAllPublicationsPost($category);

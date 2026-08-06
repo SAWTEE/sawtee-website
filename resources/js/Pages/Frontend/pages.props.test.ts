@@ -220,9 +220,26 @@ describe('Frontend page prop contracts', () => {
         id: 4,
         name: 'Publications',
         slug: 'publications',
-        children: [{ id: 5, name: 'Trade Insight', slug: 'trade-insight' }],
+        children: [
+          {
+            id: 5,
+            name: 'English',
+            slug: 'english',
+            children: [
+              {
+                id: 6,
+                name: 'Trade Insight',
+                slug: 'trade-insight',
+                children: [
+                  { id: 7, name: 'Special Series', slug: 'special-series' },
+                ],
+              },
+            ],
+          },
+        ],
       },
       publications: {
+        english: [],
         'trade-insight': [
           {
             id: 1,
@@ -232,6 +249,7 @@ describe('Frontend page prop contracts', () => {
             file: { id: 1, name: 'ti.pdf' },
           },
         ],
+        'special-series': [],
       },
       seo,
     };

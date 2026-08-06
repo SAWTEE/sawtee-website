@@ -11,21 +11,24 @@ export const TableOfContents = ({
   volumeSlug = null,
 }: TableOfContentsProps) => {
   return (
-    <section className="mb-10 border-t border-border/40">
+    <section className="mt-2">
       {articles && articles.length > 0 ? (
-        <ul className="flex flex-col gap-1 pt-10">
+        <ul className="flex flex-col gap-1">
           {articles.map(article => {
             return (
-              <li className="group mb-4" key={article.id}>
+              <li
+                className="group border-b border-[#006181]/10 py-4 last:border-b-0 dark:border-[#006181]/20"
+                key={article.id}
+              >
                 <div className="flex w-full flex-1 flex-col gap-1.5">
                   <Link
-                    className="text-xl text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 md:text-2xl"
+                    className="text-secondary-foreground group-hover:text-[#006181] dark:group-hover:text-[#4da3c0] font-serif text-lg leading-snug font-medium tracking-tight no-underline md:text-xl"
                     href={`/category/publications/trade-insight/${volumeSlug}/${article.slug}`}
                   >
                     {article.title}
                   </Link>
 
-                  <span className="text-xs font-medium italic text-theme-500 dark:text-theme-300">
+                  <span className="text-muted-foreground text-xs font-medium">
                     {article.author ? article.author : 'Author not specified'}
                   </span>
                 </div>
@@ -34,7 +37,7 @@ export const TableOfContents = ({
           })}
         </ul>
       ) : (
-        <div className="flex flex-col items-center justify-center py-8 text-center text-muted-foreground">
+        <div className="text-muted-foreground flex flex-col items-center justify-center py-8 text-center">
           <p>No articles in this volume yet.</p>
         </div>
       )}

@@ -59,15 +59,17 @@ test('publications index lists the whole category subtree', function () {
     $root = Category::query()->create(['name' => 'publications', 'type' => 'publication']);
     $child = Category::query()->create(['name' => 'Briefings', 'type' => 'publication', 'parent_id' => $root->id]);
     $grandChild = Category::query()->create(['name' => 'Series', 'type' => 'publication', 'parent_id' => $child->id]);
+    $greatGrandChild = Category::query()->create(['name' => 'Deep Series', 'type' => 'publication', 'parent_id' => $grandChild->id]);
 
     Publication::query()->create(['title' => 'Child publication', 'category_id' => $child->id]);
     Publication::query()->create(['title' => 'Grandchild publication', 'category_id' => $grandChild->id]);
+    Publication::query()->create(['title' => 'Great-grandchild publication', 'category_id' => $greatGrandChild->id]);
 
     $this->get(route('admin.publications.index'))
         ->assertInertia(fn (AssertableInertia $page) => $page
             ->component('Backend/Publication/Index')
-            ->has('publications', 2)
-            ->has('categories', 3)
+            ->has('publications', 3)
+            ->has('categories', 4)
             ->where('categoryID', $child->id)
         );
 });

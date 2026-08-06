@@ -3,6 +3,7 @@ import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
+import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
@@ -13,8 +14,6 @@ import type {
   PublicationsBySlug,
 } from '@/types';
 import { Link } from '@inertiajs/react';
-import { Separator } from '@radix-ui/react-dropdown-menu';
-import React from 'react';
 
 export default function PublicationsArchive({
   category,
@@ -34,7 +33,10 @@ export default function PublicationsArchive({
   return (
     <MainLayout>
       <WebsiteHead
-        title={seo?.title ?? (category.meta_title ? category.meta_title : category.name)}
+        title={
+          seo?.title ??
+          (category.meta_title ? category.meta_title : category.name)
+        }
         description={seo?.description ?? category.meta_description ?? undefined}
         image={seo?.image ?? image}
         url={seo?.url}
@@ -94,6 +96,18 @@ type ItemComponentProps = {
   className?: string;
 };
 
+const publicationHref = (
+  publication: Publication,
+  item: Category,
+  isTradeInsightCategory: boolean
+) => {
+  if (isTradeInsightCategory && publication.volume_slug) {
+    return `/category/publications/${item.slug}/${publication.volume_slug}`;
+  }
+
+  return publication.file ? `/publications/${publication.file.name}` : '#';
+};
+
 const ItemComponent = ({
   item,
   publications = null,
@@ -101,9 +115,10 @@ const ItemComponent = ({
   className = '',
 }: ItemComponentProps) => {
   const pubs = publications?.[item.slug] ?? [];
+  const nestedChildren = item.children ?? [];
 
   return (
-    <div className={cn('w-full', className)} key={item.name}>
+    <div className={cn('w-full', className)}>
       <h3 className="pb-8 text-2xl lg:text-3xl" id={item.name}>
         <Link
           className="underline"
@@ -115,111 +130,61 @@ const ItemComponent = ({
       </h3>
       {pubs.length > 0 && (
         <div className="grid grid-cols-4 gap-6">
-          {pubs.map((publication: Publication) => {
-            return isTradeInsightCategory ? (
-              <div key={publication.id}>
-                <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
-                  <a
-                    href={
-                      publication.volume_slug
-                        ? `/category/publications/${item.slug}/${publication.volume_slug}`
-                        : `/publications/${publication.file?.name}`
-                    }
-                    className="group relative"
-                    target="_blank"
-                    referrerPolicy="no-referrer"
-                    rel="noopener noreferrer"
-                  >
-                    <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+          {pubs.map((publication: Publication) => (
+            <div key={publication.id}>
+              <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
+                <a
+                  href={publicationHref(
+                    publication,
+                    item,
+                    isTradeInsightCategory
+                  )}
+                  className="group relative"
+                  target="_blank"
+                  referrerPolicy="no-referrer"
+                  rel="noopener noreferrer"
+                >
+                  <div className="absolute top-0 left-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
-                    <img
-                      className="aspect-3/4 h-full w-full rounded-md object-cover"
-                      src={
-                        `${publication.media?.[0]?.original_url ?? ''}` ||
-                        '/assets/SM-placeholder-150x150.png'
-                      }
-                      alt={publication.title}
-                      title={publication.title}
-                      loading="lazy"
-                    />
-                  </a>
-                </article>
-                {publication.title && (
-                  <a
-                    className="underline"
-                    target="_blank"
-                    href={`/publications/${publication.file?.name}`}
-                    rel="noopener noreferrer"
-                  >
-                    <p className="mt-4 text-center text-sm font-semibold">
-                      {publication.title}
-                    </p>
-                    {publication.subtitle && (
-                      <p className="mt-1 text-center text-xs">
-                        {publication.subtitle}
-                      </p>
-                    )}
-                  </a>
-                )}
-              </div>
-            ) : (
-              <div key={publication.id}>
-                <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
-                  <a
-                    href={
-                      publication.file
-                        ? `/publications/${publication.file?.name}`
-                        : '#'
+                  <img
+                    className="aspect-3/4 h-full w-full rounded-md object-cover"
+                    src={
+                      `${publication.media?.[0]?.original_url ?? ''}` ||
+                      '/assets/SM-placeholder-150x150.png'
                     }
-                    className="group relative"
-                    target="_blank"
-                    referrerPolicy="no-referrer"
-                    rel="noopener noreferrer"
-                  >
-                    <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
-
-                    <img
-                      className="aspect-3/4 h-full w-full rounded-md object-cover"
-                      src={
-                        `${publication.media?.[0]?.original_url ?? ''}` ||
-                        '/assets/SM-placeholder-150x150.png'
-                      }
-                      alt={publication.title}
-                      title={publication.title}
-                      loading="lazy"
-                    />
-                  </a>
-                </article>
-                {publication.title && (
-                  <a
-                    className="underline"
-                    target="_blank"
-                    href={`/publications/${publication.file?.name}`}
-                    rel="noopener noreferrer"
-                  >
-                    <p className="mt-4 text-center text-sm font-semibold">
-                      {publication.title}
+                    alt={publication.title}
+                    title={publication.title}
+                    loading="lazy"
+                  />
+                </a>
+              </article>
+              {publication.title && (
+                <a
+                  className="underline"
+                  target="_blank"
+                  href={`/publications/${publication.file?.name}`}
+                  rel="noopener noreferrer"
+                >
+                  <p className="mt-4 text-center text-sm font-semibold">
+                    {publication.title}
+                  </p>
+                  {publication.subtitle && (
+                    <p className="mt-1 text-center text-xs">
+                      {publication.subtitle}
                     </p>
-                    {publication.subtitle && (
-                      <p className="mt-1 text-center text-xs">
-                        {publication.subtitle}
-                      </p>
-                    )}
-                  </a>
-                )}
-              </div>
-            );
-          })}
+                  )}
+                </a>
+              )}
+            </div>
+          ))}
         </div>
       )}
-      {item.children && item.children.length > 0 && (
-        <React.Fragment key={item.id}>
-          <ItemsList
-            items={item.children}
-            publications={publications}
-            className="ml-4 pt-0"
-          />
-        </React.Fragment>
+      {nestedChildren.length > 0 && (
+        <ItemsList
+          items={nestedChildren}
+          publications={publications}
+          className="ml-4 pt-0"
+        />
       )}
     </div>
   );
@@ -231,6 +196,7 @@ type ItemsListProps = {
   className?: string;
 };
 
+/** Depth-first render of a category subtree (children and grandchildren). */
 const ItemsList = ({
   items,
   publications = null,
@@ -241,7 +207,7 @@ const ItemsList = ({
       {items.map((item, i) => {
         const isTradeInsightCategory = item.slug === 'trade-insight';
         return (
-          <React.Fragment key={item.id}>
+          <div key={item.id}>
             <ItemComponent
               className={className}
               item={item}
@@ -249,9 +215,9 @@ const ItemsList = ({
               isTradeInsightCategory={isTradeInsightCategory}
             />
             {i < items.length - 1 && (
-              <Separator className="my-12 border-t-4 border-bgDarker" />
+              <Separator className="border-bgDarker my-12 h-0 border-t-4 bg-transparent" />
             )}
-          </React.Fragment>
+          </div>
         );
       })}
     </div>

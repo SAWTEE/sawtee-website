@@ -56,7 +56,9 @@ class Category extends Model implements HasMedia
 
     public function children(): HasMany
     {
-        return $this->hasMany(Category::class, 'parent_id', 'id');
+        // Eager-load the full subtree so Inertia (and archive UIs) receive
+        // grandchildren, not only top-level children.
+        return $this->hasMany(Category::class, 'parent_id', 'id')->with('children');
     }
 
     public function parent(): BelongsTo
@@ -153,14 +155,11 @@ class Category extends Model implements HasMedia
     {
         $array = [];
         foreach ($children as $subcategory) {
+            $posts = $subcategory->publications()->orderByDesc('id')->take(4)->get();
+            $array[$subcategory->slug] = $posts->toArray();
 
             if (count($subcategory->children) > 0) {
-                $posts = $subcategory->publications()->orderByDesc('id')->take(4)->get();
-                $array[$subcategory->slug] = $posts->toArray();
                 $array = array_merge($array, $this->getAllChildrenPosts($subcategory->children));
-            } else {
-                $posts = $subcategory->publications()->orderByDesc('id')->take(4)->get();
-                $array[$subcategory->slug] = $posts->toArray();
             }
         }
 
