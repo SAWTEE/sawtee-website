@@ -1,3 +1,4 @@
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import type { HTMLAttributes, ReactNode } from 'react';
 
@@ -8,15 +9,15 @@ type GlassboxProps = HTMLAttributes<HTMLDivElement> & {
 
 const Glassbox = ({ children, className = '', ...rest }: GlassboxProps) => {
   return (
-    <div
+    <Card
       className={cn(
-        'border-1 w-full rounded-md border-borderColor bg-bgDarker py-4 shadow-md dark:text-muted-foreground',
+        'text-secondary-foreground w-full gap-0 rounded-lg border border-white/40 bg-white/70 py-4 shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/55 dark:text-zinc-200',
         className
       )}
       {...rest}
     >
       {children}
-    </div>
+    </Card>
   );
 };
 

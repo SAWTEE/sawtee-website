@@ -1,3 +1,4 @@
+import Glassbox from '@/components/Frontend/Glassbox';
 import { useTheme } from '@/components/shared/theme-provider';
 import { Separator } from '@/components/ui/separator';
 import { aboutMenuData } from '@/lib/data';
@@ -72,15 +73,13 @@ const AboutMegaMenu = ({ item, introText, ...rest }: MegaSectionProps) => {
         </motion.ul>
       </div>
       <div className="place-center col-span-4 mx-auto md:col-span-3">
-        <div className="relative flex min-h-[220px] w-full items-center justify-center overflow-hidden rounded-xl md:min-h-[260px]">
+        <div className="relative flex min-h-55 w-full items-center justify-center overflow-hidden rounded-xl md:min-h-65">
           <Suspense fallback={null}>
             <SawteeGlobe darkMode={theme === 'dark'} />
           </Suspense>
-          <p
-            className="text-secondary-foreground relative z-10 mx-3 my-4 max-w-prose rounded-lg border border-white/40 bg-white/70 p-5 text-justify text-xs leading-normal shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/55 dark:text-zinc-200 xl:text-sm xl:leading-6"
-          >
+          <Glassbox className="relative z-10 mx-3 my-4 max-w-prose p-5 text-justify text-xs leading-normal xl:text-sm xl:leading-6">
             {introText}
-          </p>
+          </Glassbox>
         </div>
       </div>
     </ul>
