@@ -25,16 +25,16 @@ vi.mock('./searchModal', () => ({
 describe('Header responsiveness', () => {
   it('exposes a mobile menu toggle that is hidden on large screens via lg:hidden', () => {
     render(
-      <Header
-        menu={[]}
-        showMobileMenu={false}
-        setShowMobileMenu={vi.fn()}
-      />
+      <Header menu={[]} showMobileMenu={false} setShowMobileMenu={vi.fn()} />
     );
 
     const toggle = screen.getByRole('button', { name: /open menu/i });
     expect(toggle).toBeInTheDocument();
     expect(toggle.parentElement?.className).toMatch(/lg:hidden/);
+    const mobileThemeToggle = screen
+      .getAllByTestId('mode-toggle')
+      .find((el) => el.parentElement === toggle.parentElement);
+    expect(mobileThemeToggle).toBeTruthy();
   });
 
   it('keeps the header overflow visible so desktop dropdowns are not clipped', () => {

@@ -104,7 +104,8 @@ const Header = ({
             <ModeToggle />
             <SearchModal />
           </div>
-          <div className="shrink-0 lg:hidden">
+          <div className="flex shrink-0 items-center gap-2 lg:hidden">
+            <ModeToggle />
             <button
               type="button"
               onClick={() => setShowMobileMenu?.(!showMobileMenu)}

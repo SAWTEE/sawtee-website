@@ -1,4 +1,3 @@
-import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import {
   Collapsible,
@@ -122,12 +121,11 @@ const MobileMenu = ({
         </React.Fragment>
       ))}
 
-      <div className="mx-auto my-5 flex flex-col items-center gap-4 p-5">
-        <ModeToggle />
-        {showSocialLinks ? (
+      {showSocialLinks ? (
+        <div className="mx-auto my-5 flex flex-col items-center gap-4 p-5">
           <SocialMenu className="mt-0" menu={socialLinks} />
-        ) : null}
-      </div>
+        </div>
+      ) : null}
     </ScrollArea>
   );
 };
