@@ -40,11 +40,7 @@ type MegaSectionProps = {
   introImage?: string;
 };
 
-const AboutMegaMenu = ({
-  item,
-  introText,
-  ...rest
-}: MegaSectionProps) => {
+const AboutMegaMenu = ({ item, introText, ...rest }: MegaSectionProps) => {
   const { theme } = useTheme();
   return (
     <ul
@@ -65,7 +61,7 @@ const AboutMegaMenu = ({
                 className="lg:text-md relative cursor-pointer pb-4 text-left text-sm font-medium"
               >
                 <Link
-                  className="font-serif text-secondary-foreground"
+                  className="text-secondary-foreground font-sans"
                   href={child.url}
                 >
                   {child.title}
@@ -76,11 +72,11 @@ const AboutMegaMenu = ({
         </motion.ul>
       </div>
       <div className="place-center col-span-4 mx-auto md:col-span-3">
-        <div className="relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-bgDarker bg-cover bg-right-bottom bg-no-repeat dark:bg-[rgba(0,0,0,0.4)]">
+        <div className="bg-bgDarker relative flex w-full items-center justify-center overflow-hidden rounded-xl bg-cover bg-right-bottom bg-no-repeat dark:bg-[rgba(0,0,0,0.4)]">
           <Suspense fallback={null}>
             <Globeanime darkMode={theme === 'dark'} />
           </Suspense>
-          <p className="flex h-full w-full items-center justify-center self-center p-6 text-justify text-xs leading-normal text-secondary-foreground xl:text-sm xl:leading-6">
+          <p className="text-secondary-foreground flex h-full w-full items-center justify-center self-center p-6 text-justify text-xs leading-normal xl:text-sm xl:leading-6">
             {introText}
           </p>
         </div>
@@ -99,7 +95,7 @@ const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
         {first ? (
           <>
             <Link
-              className="font-serif text-2xl text-secondary-foreground"
+              className="text-secondary-foreground font-sans text-2xl"
               href={first.url}
             >
               {first.title}
@@ -140,7 +136,7 @@ const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
               <div className="col-span-1 space-y-6" key={grandChildren.title}>
                 <Link
                   href={grandChildren.url}
-                  className="text-2xl text-secondary-foreground no-underline"
+                  className="text-secondary-foreground text-2xl no-underline"
                 >
                   {grandChildren.title}
                 </Link>

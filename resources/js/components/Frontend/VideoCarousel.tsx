@@ -77,7 +77,21 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
     const active = thumbs.querySelector<HTMLElement>(
       `[data-thumb-index="${current}"]`
     );
-    active?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    if (!active) {
+      return;
+    }
+
+    // Scroll only inside the thumbs list — never the document.
+    // scrollIntoView was pulling the homepage down to "Recordings and resources"
+    // when this lazy section mounted and selected the first thumb.
+    const prefersReduced =
+      typeof window !== 'undefined' &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    thumbs.scrollTo({
+      top: active.offsetTop - thumbs.clientHeight / 2 + active.clientHeight / 2,
+      behavior: prefersReduced ? 'auto' : 'smooth',
+    });
   }, [current]);
 
   if (!posts?.length) {
@@ -111,7 +125,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                   className="video-slide basis-full pl-0"
                 >
                   <a
-                    className="group relative block aspect-video overflow-hidden rounded-md border border-borderColor/80 bg-theme-900 shadow-sm outline-none ring-offset-2 focus-visible:ring-2 focus-visible:ring-theme-500"
+                    className="group border-borderColor/80 bg-theme-900 focus-visible:ring-theme-500 relative block aspect-video overflow-hidden rounded-md border shadow-sm ring-offset-2 outline-none focus-visible:ring-2"
                     target="_blank"
                     rel="noopener noreferrer"
                     href={article.link || '#'}
@@ -131,13 +145,13 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                       aria-hidden
                     />
                     <span
-                      className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-red-600 text-white shadow-lg ring-4 ring-white/25 transition duration-200 group-hover:scale-105 group-hover:bg-red-500"
+                      className="absolute top-1/2 left-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-red-600 text-white shadow-lg ring-4 ring-white/25 transition duration-200 group-hover:scale-105 group-hover:bg-red-500"
                       aria-hidden
                     >
                       <Play className="ml-0.5 h-6 w-6 fill-current" />
                     </span>
                     <span className="absolute inset-x-0 bottom-0 p-4 text-left">
-                      <span className="line-clamp-2 text-sm font-semibold leading-snug text-white drop-shadow md:text-base">
+                      <span className="line-clamp-2 text-sm leading-snug font-semibold text-white drop-shadow md:text-base">
                         {article.title}
                       </span>
                     </span>
@@ -151,7 +165,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
             <>
               <Button
                 type="button"
-                className="absolute left-3 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border border-white/20 bg-black/55 text-white shadow-sm backdrop-blur-sm hover:bg-black/75 hover:text-white"
+                className="absolute top-1/2 left-3 z-20 h-10 w-10 -translate-y-1/2 rounded-full border border-white/20 bg-black/55 text-white shadow-sm backdrop-blur-sm hover:bg-black/75 hover:text-white"
                 aria-label="Previous video"
                 size="icon"
                 variant="ghost"
@@ -161,7 +175,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
               </Button>
               <Button
                 type="button"
-                className="absolute right-3 top-1/2 z-20 h-10 w-10 -translate-y-1/2 rounded-full border border-white/20 bg-black/55 text-white shadow-sm backdrop-blur-sm hover:bg-black/75 hover:text-white"
+                className="absolute top-1/2 right-3 z-20 h-10 w-10 -translate-y-1/2 rounded-full border border-white/20 bg-black/55 text-white shadow-sm backdrop-blur-sm hover:bg-black/75 hover:text-white"
                 aria-label="Next video"
                 size="icon"
                 variant="ghost"
@@ -195,16 +209,16 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                 <button
                   type="button"
                   className={cn(
-                    'thumb-button group flex w-full items-center gap-3 rounded-md border p-2 text-left transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theme-500',
+                    'thumb-button group focus-visible:ring-theme-500 flex w-full items-center gap-3 rounded-md border p-2 text-left transition-colors focus-visible:ring-2 focus-visible:outline-none',
                     isActive
                       ? 'border-theme-500/55 bg-theme-500/8'
-                      : 'border-transparent hover:border-borderColor/80 hover:bg-muted/40'
+                      : 'hover:border-borderColor/80 hover:bg-muted/40 border-transparent'
                   )}
                   aria-label={`Show video: ${article.title}`}
                   aria-current={isActive ? 'true' : undefined}
                   onClick={() => api?.scrollTo(index)}
                 >
-                  <div className="relative h-14 w-24 shrink-0 overflow-hidden rounded-md border border-borderColor/70 bg-muted">
+                  <div className="border-borderColor/70 bg-muted relative h-14 w-24 shrink-0 overflow-hidden rounded-md border">
                     <img
                       className={cn(
                         'h-full w-full object-cover',
@@ -227,7 +241,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                     </span>
                   </div>
 
-                  <p className="line-clamp-2 text-sm font-medium leading-snug text-foreground md:text-[0.9375rem]">
+                  <p className="text-foreground line-clamp-2 text-sm leading-snug font-medium md:text-[0.9375rem]">
                     {article.title}
                   </p>
                 </button>

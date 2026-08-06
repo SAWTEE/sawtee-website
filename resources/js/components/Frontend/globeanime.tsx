@@ -1,5 +1,6 @@
 'use client';
-import { useEffect, useRef } from 'react';
+import anime from 'animejs';
+import { useEffect, useId, useRef } from 'react';
 
 const dots = [
   {
@@ -39,10 +40,11 @@ const svgs = [
     x2: '100%',
     y1: '-20%',
     y2: '0',
-    y2From: 0,
-    y2To: 130,
+    y2Frames: ['0', '130%'] as const,
     duration: 350,
     delay: 1350,
+    offset: 0,
+    easing: 'linear' as const,
   },
   {
     id: 'svg2',
@@ -57,10 +59,11 @@ const svgs = [
     x2: '100%',
     y1: '-20%',
     y2: '0',
-    y2From: 0,
-    y2To: 130,
+    y2Frames: ['0', '130%'] as const,
     duration: 300,
     delay: 1350,
+    offset: 0,
+    easing: 'linear' as const,
   },
   {
     id: 'svg3',
@@ -75,10 +78,11 @@ const svgs = [
     x2: '100%',
     y1: '-20%',
     y2: '0',
-    y2From: 0,
-    y2To: 130,
+    y2Frames: ['0', '130%'] as const,
     duration: 200,
     delay: 1350,
+    offset: 0,
+    easing: 'linear' as const,
   },
 ];
 
@@ -86,65 +90,59 @@ type GlobeanimeProps = {
   darkMode?: boolean;
 };
 
+/**
+ * Stroke/gradient sweep on the mega-menu globe.
+ * Uses anime.js timeline (same timings as pre-removal) — rAF could not match
+ * SVG gradient attribute animation reliably across browsers.
+ */
 const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
-  const gradientRefs = useRef<Array<SVGLinearGradientElement | null>>([]);
+  const rootRef = useRef<HTMLDivElement>(null);
+  // Unique prefix so lazy-mounted instances do not collide on gradient ids.
+  const uid = useId().replace(/:/g, '');
   const stopColor = darkMode ? '#FFFFFF' : '#000000';
 
   useEffect(() => {
-    let cancelled = false;
-    let rafId = 0;
-    const start = performance.now();
-    // Match previous anime.js timeline: longest stroke + delay, then loop.
-    const loopMs = Math.max(...svgs.map(s => s.delay + s.duration)) + 200;
-
-    // Seed initial y2 without React controlling the attribute (avoids re-render resets).
-    for (let i = 0; i < svgs.length; i++) {
-      gradientRefs.current[i]?.setAttribute('y2', `${svgs[i].y2From}%`);
+    const root = rootRef.current;
+    if (!root) {
+      return;
     }
 
-    const tick = (now: number) => {
-      if (cancelled) {
-        return;
+    const tl = anime.timeline({
+      loop: true,
+      autoplay: true,
+    });
+
+    for (const s of svgs) {
+      const gradient = root.querySelector(`#lg-${uid}-${s.id}`);
+      if (!gradient) {
+        continue;
       }
 
-      const elapsed = (now - start) % loopMs;
-
-      for (let i = 0; i < svgs.length; i++) {
-        const s = svgs[i];
-        const gradient = gradientRefs.current[i];
-        if (!gradient) {
-          continue;
-        }
-
-        const local = elapsed - s.delay;
-        let y2 = s.y2From;
-        if (local >= 0 && local <= s.duration) {
-          const t = local / s.duration;
-          y2 = s.y2From + (s.y2To - s.y2From) * t;
-        } else if (local > s.duration) {
-          y2 = s.y2To;
-        }
-
-        gradient.setAttribute('y2', `${y2}%`);
-      }
-
-      rafId = requestAnimationFrame(tick);
-    };
-
-    rafId = requestAnimationFrame(tick);
+      tl.add(
+        {
+          targets: gradient,
+          y2: [...s.y2Frames],
+          easing: s.easing,
+          duration: s.duration,
+          delay: s.delay,
+        },
+        s.offset
+      );
+    }
 
     return () => {
-      cancelled = true;
-      cancelAnimationFrame(rafId);
+      tl.pause();
+      anime.remove(root.querySelectorAll('linearGradient'));
     };
-  }, []);
+  }, [uid]);
 
   return (
     <div
+      ref={rootRef}
       id="functions-hero"
       className="absolute inset-0 top-4 -left-28 aspect-978/678 w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]"
     >
-      {svgs.map((s, index) => (
+      {svgs.map(s => (
         <svg
           key={s.id}
           id={s.id}
@@ -162,14 +160,15 @@ const Globeanime = ({ darkMode = false }: GlobeanimeProps) => {
           }}
         >
           <title>Animated globe</title>
-          <path stroke={`url(#lg-${s.id})`} strokeWidth="1.396" d={s.path} />
+          <path
+            stroke={`url(#lg-${uid}-${s.id})`}
+            strokeWidth="1.396"
+            d={s.path}
+          />
           <defs>
-            {/* y2 is driven by rAF via setAttribute — do not bind it as a React prop */}
+            {/* y2 is driven by anime.js — do not bind it as a React prop */}
             <linearGradient
-              ref={el => {
-                gradientRefs.current[index] = el;
-              }}
-              id={`lg-${s.id}`}
+              id={`lg-${uid}-${s.id}`}
               x1={s.x1}
               x2={s.x2}
               y1={s.y1}

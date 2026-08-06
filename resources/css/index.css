@@ -12,6 +12,13 @@
   (shadow-sm / blur-sm / ring defaults). Custom shadcn radii stay in JS config.
 */
 @theme {
+  /* Single primary UI stack — Figtree (loaded via @googlefonts in app.blade.php) */
+  --font-sans:
+    Figtree, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  /* Keep serif utility on the same family so accidental font-serif stays on-brand */
+  --font-serif: var(--font-sans);
+
   --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
   --drop-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.1), 0 1px 1px rgb(0 0 0 / 0.06);
@@ -192,7 +199,9 @@
 
 html {
     scroll-behavior: smooth;
-    font: 100%;
+    /* Use font-size only — `font: 100%` shorthand resets font-family to initial */
+    font-size: 100%;
+    font-family: var(--font-sans);
 }
 
 html::-webkit-scrollbar {
@@ -229,9 +238,7 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
 body {
     position: relative;
     background-color: var(--color-body-bg);
-    /* color: var(--chakra-colors-gray-600); */
-    font: inherit;
-    /* font-family: 'Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", -apple-system, BlinkMacSystemFont, "Segoe UI Emoji",Segoe UI Symbol, "Noto Color Emoji"'; */
+    font-family: var(--font-sans);
     word-break: break-word;
     font-kerning: normal;
     text-rendering: optimizeLegibility;
@@ -273,7 +280,7 @@ main {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: Figtree, ui-sans-serif, system-ui, sans-serif;
+    font-family: var(--font-sans);
 }
 
 .scroll-container::-webkit-scrollbar {

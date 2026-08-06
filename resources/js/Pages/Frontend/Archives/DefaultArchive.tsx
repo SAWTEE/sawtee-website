@@ -54,11 +54,11 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
               src={featured_image?.original_url}
               alt={post.title}
             />
-            <div className="absolute bottom-0 left-0 right-0 top-0 bg-gray-900 opacity-25 transition duration-300 hover:bg-transparent" />
+            <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-25 transition duration-300 hover:bg-transparent" />
           </Link>
         )}
         <Link href={`/category/${categorySlug}/${post.slug}`}>
-          <div className="absolute right-0 top-0 mr-3 mt-3 cursor-pointer rounded-md bg-theme-600/80 px-2 py-1 font-serif text-xs font-medium text-white transition duration-500 ease-in-out hover:bg-theme-100/80 hover:text-theme-700">
+          <div className="bg-theme-600/80 hover:bg-theme-100/80 hover:text-theme-700 absolute top-0 right-0 mt-3 mr-3 cursor-pointer rounded-md px-2 py-1 font-sans text-xs font-medium text-white transition duration-500 ease-in-out">
             {post.category?.name}
           </div>
         </Link>
@@ -74,16 +74,16 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
           }
           className="primary-link"
         >
-          <h3 className="inline-block text-lg font-medium leading-5 tracking-wide text-secondary-foreground/90 transition duration-500 ease-in-out hover:text-secondary-foreground/80 hover:underline hover:underline-offset-2">
+          <h3 className="text-secondary-foreground/90 hover:text-secondary-foreground/80 inline-block text-lg leading-5 font-medium tracking-wide transition duration-500 ease-in-out hover:underline hover:underline-offset-2">
             {post.title}
           </h3>
         </a>
         <p
-          className="line-clamp-3 text-sm text-secondary-foreground/70"
+          className="text-secondary-foreground/70 line-clamp-3 text-sm"
           dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
         />
         <div className="flex flex-row items-center justify-between">
-          <span className="font-regular mr-1 flex flex-row items-center py-1 text-xs text-secondary-foreground/80">
+          <span className="font-regular text-secondary-foreground/80 mr-1 flex flex-row items-center py-1 text-xs">
             {formatDate(post.published_at)}
           </span>
 
