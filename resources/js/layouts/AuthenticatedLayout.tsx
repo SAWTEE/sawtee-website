@@ -1,10 +1,9 @@
-import type { ReactNode } from 'react';
-import { ThemeProvider } from '@/components/shared/theme-provider';
-import { Toaster } from '@/components/ui/toaster';
-import { DashBoardMenuItems } from '@/lib/dashboard-menu';
-import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
 import { usePage } from '@inertiajs/react';
+import type { ReactNode } from 'react';
+
 import { AppSidebar } from '@/components/Backend/app-sidebar';
+import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
+import { ThemeProvider } from '@/components/shared/theme-provider';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,6 +18,8 @@ import {
   SidebarProvider,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
+import { Toaster } from '@/components/ui/toaster';
+import { DashBoardMenuItems } from '@/lib/dashboard-menu';
 import type { User } from '@/types';
 
 type AuthenticatedLayoutProps = {

@@ -1,15 +1,15 @@
-import ApplicationLogo from '@/components/shared/ApplicationLogo';
 import { Link } from '@inertiajs/react';
-import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
-
 import type { ReactNode } from 'react';
+
+import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
+import ApplicationLogo from '@/components/shared/ApplicationLogo';
 
 type GuestLayoutProps = { children?: ReactNode };
 
 export default function Guest({ children }: GuestLayoutProps) {
   return (
-    <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 dark:bg-gray-900 sm:justify-center sm:pt-0">
-      <div className="absolute bottom-10 right-10">
+    <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0 dark:bg-gray-900">
+      <div className="absolute right-10 bottom-10">
         <ModeToggle />
       </div>
       <div>
@@ -18,7 +18,7 @@ export default function Guest({ children }: GuestLayoutProps) {
         </Link>
       </div>
 
-      <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md dark:bg-gray-800 sm:max-w-md sm:rounded-lg">
+      <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-gray-800">
         {children}
       </div>
     </div>

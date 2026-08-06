@@ -2,6 +2,7 @@ import { render } from '@testing-library/react';
 import type { ReactElement, ReactNode } from 'react';
 import { isValidElement } from 'react';
 import { describe, expect, it, vi } from 'vitest';
+
 import WebsiteHead from './Head';
 
 let latestHeadChildren: ReactNode = null;
@@ -26,7 +27,12 @@ function collectText(node: ReactNode, into: string[] = []): string[] {
     return into;
   }
   if (isValidElement(node)) {
-    const element = node as ReactElement<{ children?: ReactNode; content?: string; property?: string; name?: string }>;
+    const element = node as ReactElement<{
+      children?: ReactNode;
+      content?: string;
+      property?: string;
+      name?: string;
+    }>;
     if (element.props.content) {
       into.push(String(element.props.content));
     }

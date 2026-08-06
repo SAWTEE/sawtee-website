@@ -1,15 +1,20 @@
+import { Head, Link, useForm } from '@inertiajs/react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-import { Checkbox } from '@/components/ui/checkbox';
-import { useToast } from '@/hooks/use-toast';
-import { Head, Link, useForm } from '@inertiajs/react';
-
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
+import { Checkbox } from '@/components/ui/checkbox';
+import { useToast } from '@/hooks/use-toast';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-export default function Index({ auth = undefined, posts = undefined, categories = undefined, categoryID = undefined }: any) {
+export default function Index({
+  auth = undefined,
+  posts = undefined,
+  categories = undefined,
+  categoryID = undefined,
+}: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
 
@@ -31,19 +36,19 @@ export default function Index({ auth = undefined, posts = undefined, categories 
     switch (status) {
       case 'unpublished':
         return (
-          <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-500/10">
+          <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-red-500/10 ring-inset">
             {status}
           </span>
         );
       case 'draft':
         return (
-          <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-500/10">
+          <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-blue-500/10 ring-inset">
             {status}
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-500/10">
+          <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-green-500/10 ring-inset">
             {status}
           </span>
         );

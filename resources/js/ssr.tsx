@@ -1,6 +1,7 @@
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
 import ReactDOMServer from 'react-dom/server';
+
 import { route as ziggyRoute } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
@@ -21,7 +22,8 @@ createServer(page =>
       return importPage();
     },
     setup: ({ App, props }) => {
-      const ziggy = (page.props as { ziggy?: Record<string, unknown> }).ziggy ?? {};
+      const ziggy =
+        (page.props as { ziggy?: Record<string, unknown> }).ziggy ?? {};
 
       // Ziggy SSR helper for page components.
       (globalThis as any).route = (name: any, params: any, absolute: any) =>

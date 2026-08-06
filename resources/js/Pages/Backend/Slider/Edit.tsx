@@ -1,8 +1,14 @@
+import { Head } from '@inertiajs/react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-import { Head } from '@inertiajs/react';
 import EditSliderForm from './Partials/EditSliderForm';
-export default function Edit({ auth = undefined, slider = undefined, slides = undefined, pages = undefined }: any) {
+export default function Edit({
+  auth = undefined,
+  slider = undefined,
+  slides = undefined,
+  pages = undefined,
+}: any) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Add New Slider" />

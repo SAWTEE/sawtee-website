@@ -3,6 +3,7 @@ import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import prettier from 'eslint-plugin-prettier';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
 
@@ -31,6 +32,7 @@ export default [
       react,
       'react-hooks': reactHooks,
       prettier,
+      'simple-import-sort': simpleImportSort,
       '@typescript-eslint': tseslint,
     },
     rules: {
@@ -54,6 +56,8 @@ export default [
           ignoreRestSiblings: true,
         },
       ],
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
       'react/no-unknown-property': [
         'error',
         {

@@ -1,9 +1,10 @@
+import { Head, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
+
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import GuestLayout from '@/layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
 
 type ForgotPasswordProps = { status?: string };
 
@@ -22,7 +23,7 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
     <GuestLayout>
       <Head title="Forgot Password" />
 
-      <div className="mb-4 text-sm text-gray-600 dark:text-muted-foreground">
+      <div className="dark:text-muted-foreground mb-4 text-sm text-gray-600">
         Forgot your password? No problem. Just let us know your email address
         and we will email you a password reset link that will allow you to
         choose a new one.
@@ -40,7 +41,7 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
           value={data.email}
           className="mt-1 block w-full"
           isFocused={true}
-          onChange={(e) => setData('email', e.target.value)}
+          onChange={e => setData('email', e.target.value)}
         />
 
         <InputError message={errors.email} className="mt-2" />

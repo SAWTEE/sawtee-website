@@ -1,5 +1,6 @@
+import { type MouseEvent, type ReactNode, useState } from 'react';
+
 import { cn } from '@/lib/utils';
-import { useState, type MouseEvent, type ReactNode } from 'react';
 
 type CardWithEffectProps = {
   children?: ReactNode;

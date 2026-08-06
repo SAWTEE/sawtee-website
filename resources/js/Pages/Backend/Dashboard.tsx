@@ -1,8 +1,7 @@
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-import { TrendBadge } from '@/components/Backend/TrendBadge';
-import { useToast } from '@/hooks/use-toast';
 import { Head } from '@inertiajs/react';
 import React from 'react';
+
+import { TrendBadge } from '@/components/Backend/TrendBadge';
 import {
   Card,
   CardAction,
@@ -11,11 +10,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import type {
-  AnalyticsSummary,
-  DashboardProps,
-  TrendDirection,
-} from '@/types';
+import { useToast } from '@/hooks/use-toast';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import type { AnalyticsSummary, DashboardProps, TrendDirection } from '@/types';
 
 export default function Dashboard({
   auth,
@@ -53,7 +50,7 @@ export default function Dashboard({
       <Head title="Dashboard" />
 
       <div className="flex flex-col gap-4">
-        <div className="*:data-[slot=card]:shadow-xs @xl/main:grid-cols-2 @5xl/main:grid-cols-3 grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card lg:grid-cols-3 lg:px-6">
+        <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs lg:grid-cols-3 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
           <StatsCard
             title="posts"
             stat={posts}
@@ -117,7 +114,7 @@ function StatsCard({
     <Card className="@container/card">
       <CardHeader>
         <CardDescription className="uppercase">{title}</CardDescription>
-        <CardTitle className="@[250px]/card:text-3xl flex w-full justify-between gap-2 text-2xl font-semibold tabular-nums">
+        <CardTitle className="flex w-full justify-between gap-2 text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
           {title.charAt(0).toUpperCase() + title.slice(1) + ' : ' + stat}
         </CardTitle>
         <CardAction>
@@ -139,7 +136,7 @@ function StatsCard({
 function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-4 lg:px-6">
-      <Card className="@container/card *:data-[slot=card]:shadow-xs bg-linear-to-t from-primary/5 to-card">
+      <Card className="from-primary/5 to-card @container/card bg-linear-to-t *:data-[slot=card]:shadow-xs">
         <CardHeader>
           <CardDescription className="uppercase">Views today</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums">
@@ -147,15 +144,17 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="@container/card bg-linear-to-t from-primary/5 to-card">
+      <Card className="from-primary/5 to-card @container/card bg-linear-to-t">
         <CardHeader>
-          <CardDescription className="uppercase">Views this week</CardDescription>
+          <CardDescription className="uppercase">
+            Views this week
+          </CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums">
             {analytics.views_this_week}
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="@container/card bg-linear-to-t from-primary/5 to-card">
+      <Card className="from-primary/5 to-card @container/card bg-linear-to-t">
         <CardHeader>
           <CardDescription className="uppercase">
             Views this month
@@ -165,7 +164,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="@container/card bg-linear-to-t from-primary/5 to-card lg:col-span-1">
+      <Card className="from-primary/5 to-card @container/card bg-linear-to-t lg:col-span-1">
         <CardHeader>
           <CardDescription className="uppercase">Top pages</CardDescription>
           <CardTitle className="text-base font-semibold">This month</CardTitle>
@@ -175,7 +174,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
             <div className="text-muted-foreground">No page views yet</div>
           ) : (
             <ul className="w-full space-y-1">
-              {analytics.top_pages.map((page) => (
+              {analytics.top_pages.map(page => (
                 <li
                   key={page.path}
                   className="flex w-full items-center justify-between gap-2"

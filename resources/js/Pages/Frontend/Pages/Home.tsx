@@ -1,3 +1,18 @@
+import { Link } from '@inertiajs/react';
+import { lazy, type ReactNode, Suspense } from 'react';
+
+import ExploreButton from '@/components/Frontend/ExploreButton';
+import FeaturedSection from '@/components/Frontend/feature';
+import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
+import WebsiteHead from '@/components/Frontend/Head';
+import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
+import SimpleList from '@/components/Frontend/SimpleList';
+import SvgBackground from '@/components/Frontend/SvgBackground';
+import Title from '@/components/Frontend/title';
+import MainLayout from '@/layouts/MainLayout';
+import { features } from '@/lib/data';
+import { formatDate } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
 import type {
   HomePageProps,
   MediaItem,
@@ -5,20 +20,6 @@ import type {
   Publication,
   Slide,
 } from '@/types';
-import ExploreButton from '@/components/Frontend/ExploreButton';
-import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
-import WebsiteHead from '@/components/Frontend/Head';
-import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
-import SimpleList from '@/components/Frontend/SimpleList';
-import SvgBackground from '@/components/Frontend/SvgBackground';
-import FeaturedSection from '@/components/Frontend/feature';
-import Title from '@/components/Frontend/title';
-import { formatDate } from '@/lib/helpers';
-import { cn } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
-import MainLayout from '@/layouts/MainLayout';
-import { features } from '@/lib/data';
-import { lazy, Suspense, type ReactNode } from 'react';
 
 function featuredImageUrl(
   media: MediaItem[] | undefined,

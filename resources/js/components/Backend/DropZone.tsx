@@ -1,5 +1,7 @@
-import { cn } from '@/lib/utils';
 import { XIcon } from 'lucide-react';
+
+import { cn } from '@/lib/utils';
+
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
@@ -39,7 +41,7 @@ export default function DropZone({
         className="flex aspect-video h-auto w-full cursor-pointer flex-col items-center justify-center overflow-hidden rounded-xl border-2 border-dashed border-slate-700 bg-gray-50 hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:hover:border-gray-500 dark:hover:bg-gray-800"
       >
         {!defaultValue && (
-          <div className="flex flex-col items-center justify-center pb-6 pt-5">
+          <div className="flex flex-col items-center justify-center pt-5 pb-6">
             <svg
               className="mb-4 h-8 w-8 text-gray-500 dark:text-gray-400"
               aria-hidden="true"
@@ -81,7 +83,7 @@ export default function DropZone({
               className="h-full w-full rounded-md object-cover"
             />
             <Button
-              className="absolute right-2 top-2 rounded-full opacity-60 hover:opacity-100"
+              className="absolute top-2 right-2 rounded-full opacity-60 hover:opacity-100"
               onClick={handleRemoveFile}
               variant="destructive"
               size="icon"

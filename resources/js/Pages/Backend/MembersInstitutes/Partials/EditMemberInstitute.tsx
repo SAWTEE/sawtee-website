@@ -1,11 +1,6 @@
+import { useForm } from '@inertiajs/react';
+
 import InputError from '@/components/Backend/InputError';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -17,14 +12,21 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
 export default function EditMemberInstitute({
   open = undefined,
   setOpen = undefined,
   institute = undefined,
-  members = undefined}: any) {
+  members = undefined,
+}: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: institute.name,
     link: institute.link,

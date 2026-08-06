@@ -1,6 +1,7 @@
+import { Head } from '@inertiajs/react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-import { Head } from '@inertiajs/react';
 import CreatePublishedStory from './Partials/CreatePublishedStory';
 
 export default function Create({ auth = undefined, fellows = undefined }: any) {

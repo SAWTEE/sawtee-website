@@ -1,6 +1,7 @@
+import { Download, ExternalLink } from 'lucide-react';
+
 import { cn, htmlToText } from '@/lib/utils';
 import type { Research, ResearchByYear } from '@/types';
-import { Download, ExternalLink } from 'lucide-react';
 
 type ResearchArchiveProps = {
   posts?: ResearchByYear | Research[] | null;
@@ -55,7 +56,10 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
   }
 
   return (
-    <section className="mx-auto w-full max-w-3xl px-1 md:px-2" aria-label="Research by year">
+    <section
+      className="mx-auto w-full max-w-3xl px-1 md:px-2"
+      aria-label="Research by year"
+    >
       <ol className="relative m-0 list-none space-y-12 p-0 md:space-y-16">
         {sortedYears.map(([year, items]) => (
           <li key={year} className="relative">
@@ -82,7 +86,10 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                 const isExternal = Boolean(item.link && !item.file);
 
                 return (
-                  <li key={item.id} className="relative pb-8 last:pb-0 md:pb-10">
+                  <li
+                    key={item.id}
+                    className="relative pb-8 last:pb-0 md:pb-10"
+                  >
                     <span
                       className="absolute top-1.5 left-0 h-2.5 w-2.5 -translate-x-[calc(1.5rem+1px+50%)] rounded-full border-2 border-[#006181] bg-white md:-translate-x-[calc(2rem+1px+50%)] dark:border-[#4da3c0] dark:bg-zinc-950"
                       aria-hidden
@@ -145,7 +152,10 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                             className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium tracking-wide text-[#006181] uppercase transition-opacity hover:opacity-80 dark:text-[#4da3c0]"
                           >
                             {isExternal ? (
-                              <ExternalLink className="h-3.5 w-3.5" aria-hidden />
+                              <ExternalLink
+                                className="h-3.5 w-3.5"
+                                aria-hidden
+                              />
                             ) : (
                               <Download className="h-3.5 w-3.5" aria-hidden />
                             )}

@@ -1,3 +1,6 @@
+import { useForm } from '@inertiajs/react';
+import React from 'react';
+
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
@@ -27,8 +30,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import { slugify } from '@/lib/helpers';
 import { pageTemplates } from '@/lib/pageTemplates';
-import { useForm } from '@inertiajs/react';
-import React from 'react';
 export default function EditPageForm({ page = undefined }: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: page.name,

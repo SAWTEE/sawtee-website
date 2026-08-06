@@ -1,6 +1,7 @@
+import type { ReactNode } from 'react';
+
 import { cn } from '@/lib/utils';
 import type { PageSection } from '@/types';
-import type { ReactNode } from 'react';
 
 type DefaultPageProps = {
   sections?: PageSection[] | null;

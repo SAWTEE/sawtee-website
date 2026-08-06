@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+
 import MainLayout from './MainLayout';
 
 vi.mock('@inertiajs/react', () => ({
@@ -23,13 +24,17 @@ vi.mock('@/components/shared/theme-provider', () => ({
 
 vi.mock('@/components/Frontend/header/header', () => ({
   default: ({ menu }: any) => (
-    <header data-testid="header">menu:{Array.isArray(menu) ? menu.length : 'missing'}</header>
+    <header data-testid="header">
+      menu:{Array.isArray(menu) ? menu.length : 'missing'}
+    </header>
   ),
 }));
 
 vi.mock('@/components/Frontend/footer/footer', () => ({
   default: ({ menu }: any) => (
-    <footer data-testid="footer">menu:{Array.isArray(menu) ? menu.length : 'missing'}</footer>
+    <footer data-testid="footer">
+      menu:{Array.isArray(menu) ? menu.length : 'missing'}
+    </footer>
   ),
 }));
 

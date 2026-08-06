@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -13,9 +15,11 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
-export default function CreateMenu({ open = undefined, setOpen = undefined }: any) {
+export default function CreateMenu({
+  open = undefined,
+  setOpen = undefined,
+}: any) {
   const { setData, post, processing, errors, reset } = useForm({
     title: '',
     location: '',

@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
@@ -5,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
 export default function CreateHomePageSectionForm() {
   const { data, setData, post, processing, errors, reset } = useForm({

@@ -1,16 +1,21 @@
+import { Head, useForm } from '@inertiajs/react';
+import { useState } from 'react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Head, useForm } from '@inertiajs/react';
-import { useState } from 'react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+
 import CreateTheme from './Partials/CreateTheme';
 import EditTheme from './Partials/EditTheme';
 
-export default function Index({ auth = undefined, themes: data = undefined }: any) {
+export default function Index({
+  auth = undefined,
+  themes: data = undefined,
+}: any) {
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);
   const [theme, setTheme] = useState(null);

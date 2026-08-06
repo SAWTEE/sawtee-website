@@ -1,14 +1,15 @@
-import Glassbox from '@/components/Frontend/Glassbox';
-import WebsiteHead from '@/components/Frontend/Head';
-import SimpleList from '@/components/Frontend/SimpleList';
-import FeaturedMedia from '@/components/Frontend/post/featured-media';
-import PostMeta from '@/components/Frontend/post/post-meta';
-import { Button } from '@/components/ui/button';
-import { formatDate } from '@/lib/helpers';
-import MainLayout from '@/layouts/MainLayout';
-import type { FrontendArticleProps } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useMemo } from 'react';
+
+import Glassbox from '@/components/Frontend/Glassbox';
+import WebsiteHead from '@/components/Frontend/Head';
+import FeaturedMedia from '@/components/Frontend/post/featured-media';
+import PostMeta from '@/components/Frontend/post/post-meta';
+import SimpleList from '@/components/Frontend/SimpleList';
+import { Button } from '@/components/ui/button';
+import MainLayout from '@/layouts/MainLayout';
+import { formatDate } from '@/lib/helpers';
+import type { FrontendArticleProps } from '@/types';
 
 type ReadingTimeOptions = {
   wordsPerMinute?: number;
@@ -86,7 +87,7 @@ export default function Article({
             <Link href={`/trade-insight/${volumePath}`}>
               <Button
                 variant="outline"
-                className="category border-[#006181]/25 text-[#006181] hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15 h-auto rounded-md px-3 py-1 text-xs font-medium tracking-wide uppercase"
+                className="category h-auto rounded-md border-[#006181]/25 px-3 py-1 text-xs font-medium tracking-wide text-[#006181] uppercase hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15"
               >
                 {volumeLabel}
               </Button>
@@ -157,7 +158,7 @@ export default function Article({
                       return (
                         <li className="group mb-5 last:mb-3" key={post.id}>
                           <Link
-                            className="text-secondary-foreground group-hover:text-[#006181] dark:group-hover:text-[#4da3c0] no-underline"
+                            className="text-secondary-foreground no-underline group-hover:text-[#006181] dark:group-hover:text-[#4da3c0]"
                             href={`/trade-insight/${volume.volume}/${post.slug}`}
                           >
                             <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">

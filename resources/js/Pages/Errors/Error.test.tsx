@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import ErrorPage from './Error';
 
 vi.mock('@inertiajs/react', () => ({
@@ -50,18 +51,21 @@ describe('ErrorPage', () => {
     render(<ErrorPage status={404} />);
 
     expect(screen.getByTestId('main-layout')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /page not found/i })).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /go to homepage/i })).toHaveAttribute(
-      'href',
-      '/'
-    );
+    expect(
+      screen.getByRole('heading', { name: /page not found/i })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /go to homepage/i })
+    ).toHaveAttribute('href', '/');
   });
 
   it('renders admin shell for admin errors', () => {
     render(<ErrorPage status={403} admin />);
 
     expect(screen.getByTestId('guest-layout')).toBeInTheDocument();
-    expect(screen.getByRole('heading', { name: /access denied/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /access denied/i })
+    ).toBeInTheDocument();
   });
 
   it('offers reload for expired sessions', () => {

@@ -1,4 +1,14 @@
 import {
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import * as React from 'react';
+
+import {
   CustomFilter,
   GlobalFilter,
   TypeFilter,
@@ -14,15 +24,6 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
-import * as React from 'react';
 export function DataTable({
   data = undefined,
   defaultColumns = undefined,
@@ -32,7 +33,8 @@ export function DataTable({
   customFilterColumn = undefined,
   pagination = true,
   showGlobalFilter = false,
-  showCustomFilter = true}: any) {
+  showCustomFilter = true,
+}: any) {
   const [sorting, setSorting] = React.useState([]);
   const [columns, setColumns] = React.useState([]);
   const [columnVisibility, setColumnVisibility] = React.useState({});

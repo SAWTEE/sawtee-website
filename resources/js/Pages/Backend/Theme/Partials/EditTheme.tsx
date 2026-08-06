@@ -1,9 +1,7 @@
-import PrimaryButton from '@/components/Backend/PrimaryButton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import { useForm } from '@inertiajs/react';
 
 import InputError from '@/components/Backend/InputError';
+import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,10 +11,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { useForm } from '@inertiajs/react';
+import { useToast } from '@/hooks/use-toast';
 
-export default function EditTheme({ theme = undefined, open = undefined, setOpen = undefined }: any) {
+export default function EditTheme({
+  theme = undefined,
+  open = undefined,
+  setOpen = undefined,
+}: any) {
   const { data, setData, post, errors, reset } = useForm({
     title: theme.title,
     description: theme.description,

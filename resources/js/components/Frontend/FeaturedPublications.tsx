@@ -1,15 +1,16 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from '@/components/ui/carousel';
-import { cn } from '@/lib/utils';
-import type { MediaItem, Post, Publication } from '@/types';
 import { Link } from '@inertiajs/react';
 import Autoplay from 'embla-carousel-autoplay';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
+
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
+import type { MediaItem, Post, Publication } from '@/types';
 
 type FeaturedPublication = Publication;
 
@@ -27,7 +28,7 @@ export const FeaturedPublications = ({
   const sortedPublications = sortByCreatedAt(publications ?? []);
 
   return (
-    <div className="rounded-md border border-borderColor/80 bg-white px-4 py-6 shadow-sm dark:bg-bgDarker sm:px-5 sm:py-7">
+    <div className="border-borderColor/80 dark:bg-bgDarker rounded-md border bg-white px-4 py-6 shadow-sm sm:px-5 sm:py-7">
       {sortedPublications.length > 0 ? (
         <FeaturedItemsSlider
           heading="Featured publications"
@@ -41,7 +42,7 @@ export const FeaturedPublications = ({
         <>
           {sortedPublications.length > 0 ? (
             <div
-              className="my-6 border-t border-borderColor/70 dark:border-white/10"
+              className="border-borderColor/70 my-6 border-t dark:border-white/10"
               aria-hidden
             />
           ) : null}
@@ -119,7 +120,7 @@ function FeaturedItemsSlider({
             const href = resolveHref(item, kind);
 
             return (
-              <CarouselItem key={item.id} className="basis-full pl-0 py-0.5">
+              <CarouselItem key={item.id} className="basis-full py-0.5 pl-0">
                 <ItemLink kind={kind} href={href}>
                   <ListCopy title={item.title} subtitle={item.subtitle} />
                   {media ? <ListThumb src={media} alt={item.title} /> : null}
@@ -150,7 +151,7 @@ function FeaturedItemsSlider({
                     'rounded-full transition-all duration-300',
                     index === current
                       ? 'h-2.5 w-2.5 bg-[hsl(var(--theme-color))]'
-                      : 'h-2.5 w-2.5 bg-muted-foreground/40 hover:bg-muted-foreground/70'
+                      : 'bg-muted-foreground/40 hover:bg-muted-foreground/70 h-2.5 w-2.5'
                   )}
                 />
               </button>
@@ -164,7 +165,7 @@ function FeaturedItemsSlider({
 
 function SectionHeading({ children }: { children: ReactNode }) {
   return (
-    <h2 className="mb-5 font-sans text-[11px] font-semibold uppercase tracking-[0.14em] text-theme-700 dark:text-theme-300 md:text-xs">
+    <h2 className="text-theme-700 dark:text-theme-300 mb-5 font-sans text-[11px] font-semibold tracking-[0.14em] uppercase md:text-xs">
       {children}
     </h2>
   );
@@ -210,11 +211,11 @@ function ListCopy({
 }) {
   return (
     <div className="min-w-0 flex-1">
-      <p className="font-sans text-sm font-semibold leading-snug text-secondary-foreground transition-colors group-hover:text-theme-700 group-hover:underline group-hover:underline-offset-2 dark:group-hover:text-theme-300 md:text-[0.9375rem]">
+      <p className="text-secondary-foreground group-hover:text-theme-700 dark:group-hover:text-theme-300 font-sans text-sm leading-snug font-semibold transition-colors group-hover:underline group-hover:underline-offset-2 md:text-[0.9375rem]">
         {title}
       </p>
       {subtitle ? (
-        <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-xs leading-relaxed">
           {subtitle}
         </p>
       ) : null}
@@ -227,7 +228,7 @@ function ListThumb({ src, alt }: { src: string; alt: string }) {
     <div
       title={alt}
       aria-hidden
-      className="mx-auto h-28 w-1/3 max-w-20 shrink-0 overflow-hidden rounded-md border border-borderColor/70 bg-muted/30"
+      className="border-borderColor/70 bg-muted/30 mx-auto h-28 w-1/3 max-w-20 shrink-0 overflow-hidden rounded-md border"
     >
       <img
         className="h-full w-full object-cover"
@@ -278,10 +279,7 @@ function resolveMedia(
   );
 }
 
-function resolveHref(
-  item: FeaturedPublication | Post,
-  kind: ListKind
-): string {
+function resolveHref(item: FeaturedPublication | Post, kind: ListKind): string {
   if (kind === 'publication') {
     const publication = item as FeaturedPublication;
     return publication.volume_slug

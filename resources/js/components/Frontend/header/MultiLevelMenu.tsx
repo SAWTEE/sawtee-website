@@ -1,3 +1,15 @@
+import { Link } from '@inertiajs/react';
+import { ChevronDown } from 'lucide-react';
+import {
+  type ComponentPropsWithoutRef,
+  forwardRef,
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,17 +22,6 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
-import { ChevronDown } from 'lucide-react';
-import {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  type ComponentPropsWithoutRef,
-  type ReactNode,
-} from 'react';
 import type { MenuItem } from '@/types';
 
 /** Shared Inertia menu tree shape (label, url, nested children). */

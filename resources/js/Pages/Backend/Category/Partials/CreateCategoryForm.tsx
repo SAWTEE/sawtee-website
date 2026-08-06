@@ -1,3 +1,6 @@
+import { useForm } from '@inertiajs/react';
+import React, { useEffect, useState } from 'react';
+
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import {
@@ -28,9 +31,11 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react';
-export default function CreateCategoryForm({ open = undefined, setOpen = undefined, categories = undefined }: any) {
+export default function CreateCategoryForm({
+  open = undefined,
+  setOpen = undefined,
+  categories = undefined,
+}: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: '',
     slug: '',

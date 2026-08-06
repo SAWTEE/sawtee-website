@@ -1,13 +1,14 @@
-import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
+import { Head, useForm } from '@inertiajs/react';
+import React, { useState } from 'react';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
+import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Head, useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+
 import CreateMenu from './Partials/CreateMenu';
 export default function Index({ auth = undefined, menus = undefined }: any) {
   const { get, delete: destroy } = useForm();

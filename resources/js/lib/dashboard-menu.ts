@@ -1,4 +1,3 @@
-import { HomeIcon } from '@/components/shared/icons';
 import {
   BookDashed,
   FilePenIcon,
@@ -9,13 +8,15 @@ import {
   LayoutDashboard,
   LayoutTemplate,
   MenuIcon,
+  ReceiptText,
   SlidersHorizontalIcon,
   TagsIcon,
+  UserPen,
   UsersIcon,
   Wand,
-  UserPen,
-  ReceiptText,
 } from 'lucide-react';
+
+import { HomeIcon } from '@/components/shared/icons';
 
 export const DashBoardMenuItems = [
   {

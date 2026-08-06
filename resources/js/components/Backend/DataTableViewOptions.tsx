@@ -12,7 +12,10 @@ import {
   DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 
-export function DataTableViewOptions({ table = undefined, label = undefined }: any) {
+export function DataTableViewOptions({
+  table = undefined,
+  label = undefined,
+}: any) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

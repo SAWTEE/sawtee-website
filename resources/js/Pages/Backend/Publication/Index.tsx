@@ -1,17 +1,19 @@
+import { Head, Link, useForm } from '@inertiajs/react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Head, Link, useForm } from '@inertiajs/react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({
   auth = undefined,
   publications: data = undefined,
   categories = undefined,
-  categoryID = undefined}: any) {
+  categoryID = undefined,
+}: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
   const handleEdit = (e: any, id: any) => {
@@ -100,7 +102,7 @@ export default function Index({
         return row.original.tags?.map((tag: any) => (
           <span
             key={tag.id}
-            className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-inset ring-blue-500/10"
+            className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-blue-500/10 ring-inset"
           >
             {tag.name}
           </span>

@@ -1,5 +1,7 @@
-import useMousePosition from '@/lib/mouse-position';
 import { useEffect, useRef } from 'react';
+
+import useMousePosition from '@/lib/mouse-position';
+
 import { useTheme } from '../shared/theme-provider';
 
 type Circle = {

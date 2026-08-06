@@ -1,9 +1,7 @@
-import PrimaryButton from '@/components/Backend/PrimaryButton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import { useForm } from '@inertiajs/react';
 
 import InputError from '@/components/Backend/InputError';
+import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -12,10 +10,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
-import { useForm } from '@inertiajs/react';
-
-export default function CreateTag({ open = undefined, setOpen = undefined }: any) {
+export default function CreateTag({
+  open = undefined,
+  setOpen = undefined,
+}: any) {
   const { setData, post, processing, errors, reset } = useForm({
     name: '',
   });

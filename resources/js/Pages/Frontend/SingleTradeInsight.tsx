@@ -45,7 +45,7 @@ export default function SingleTradeInsight({
               )}
 
               <div className="flex min-w-0 flex-1 flex-col gap-4 md:pt-1">
-                <p className="text-[#006181] text-xs font-medium tracking-wide uppercase dark:text-[#4da3c0]">
+                <p className="text-xs font-medium tracking-wide text-[#006181] uppercase dark:text-[#4da3c0]">
                   Trade Insight
                 </p>
                 <h2 className="text-primary font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl xl:text-4xl dark:text-zinc-100">

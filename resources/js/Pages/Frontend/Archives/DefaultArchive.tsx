@@ -1,9 +1,10 @@
+import { Link } from '@inertiajs/react';
+import type { HTMLAttributes } from 'react';
+
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
 import { formatDate } from '@/lib/helpers';
 import type { Post } from '@/types';
-import { Link } from '@inertiajs/react';
-import type { HTMLAttributes } from 'react';
 
 type DefaultArchiveProps = HTMLAttributes<HTMLDivElement> & {
   posts?: Post[] | null;

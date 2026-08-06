@@ -1,3 +1,7 @@
+import { useForm } from '@inertiajs/react';
+import { AlertCircleIcon, PlusIcon } from 'lucide-react';
+import { useState } from 'react';
+
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
@@ -14,13 +18,15 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
-import { AlertCircleIcon, PlusIcon } from 'lucide-react';
+
 import CreateSlideForm from '../../Slide/CreateSlideForm';
 import Slides from '../../Slide/Slides';
-import { useState } from 'react';
 
-export default function EditSliderForm({ slider = undefined, slides = undefined, pages = undefined }: any) {
+export default function EditSliderForm({
+  slider = undefined,
+  slides = undefined,
+  pages = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: slider.name,
     page_id: slider.page_id,

@@ -1,6 +1,8 @@
+import { Link } from '@inertiajs/react';
+
 import { formatDate } from '@/lib/helpers';
 import type { Post } from '@/types';
-import { Link } from '@inertiajs/react';
+
 import ExploreButton from './ExploreButton';
 import Glassbox from './Glassbox';
 import SimpleList from './SimpleList';
@@ -27,7 +29,7 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
           return (
             <li className="group mb-5 last:mb-3" key={post.id}>
               <Link
-                className="text-secondary-foreground group-hover:text-[#006181] dark:group-hover:text-[#4da3c0] no-underline"
+                className="text-secondary-foreground no-underline group-hover:text-[#006181] dark:group-hover:text-[#4da3c0]"
                 href={`/category/${post.category?.slug}/${post.slug}`}
               >
                 <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">
@@ -45,10 +47,7 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
         <ExploreButton
           text={title ? `More ${title}` : 'Explore more'}
           link={
-            link ??
-            (array[0]
-              ? `/category/${array[0].category?.slug}`
-              : '#')
+            link ?? (array[0] ? `/category/${array[0].category?.slug}` : '#')
           }
           className="mt-2 p-0"
         />

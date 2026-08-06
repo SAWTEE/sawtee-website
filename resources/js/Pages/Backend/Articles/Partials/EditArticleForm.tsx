@@ -1,22 +1,21 @@
+import { useForm } from '@inertiajs/react';
+import { CalendarIcon } from '@radix-ui/react-icons';
+import React from 'react';
+
+import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
+import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { CalendarIcon } from '@radix-ui/react-icons';
+import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import { formatDateTimeForInput } from '@/lib/helpers';
-import { cn } from '@/lib/utils';
-import ContentEditor from '@/components/Backend/ContentEditor';
-import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Select,
   SelectContent,
@@ -26,9 +25,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { useForm } from '@inertiajs/react';
-import React from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { formatDateTimeForInput } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
 
 export default function EditArticleForm({
   article = undefined,

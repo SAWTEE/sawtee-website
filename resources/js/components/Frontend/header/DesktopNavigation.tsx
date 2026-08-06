@@ -1,3 +1,7 @@
+import { Link, usePage } from '@inertiajs/react';
+import { AnimatePresence, motion } from 'framer-motion';
+import React from 'react';
+
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -7,10 +11,8 @@ import {
   NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
 import { cn } from '@/lib/utils';
-import { Link, usePage } from '@inertiajs/react';
-import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
 import type { MenuItem, SharedProps } from '@/types';
+
 import MegaMenu from './MegaMenu';
 import MultiLevelMenu, { topLevelNavItemClassName } from './MultiLevelMenu';
 
@@ -152,7 +154,10 @@ export default function DesktopNavigation({
                 onPointerEnter={() => activate(key)}
                 onFocus={() => activate(key)}
               >
-                <Link href={menuItem.url} className={cn(topLevelNavItemClassName)}>
+                <Link
+                  href={menuItem.url}
+                  className={cn(topLevelNavItemClassName)}
+                >
                   {menuItem.title}
                   <FocusHighlight active={highlighted} />
                 </Link>

@@ -1,10 +1,13 @@
+import '../../../../css/our-team.css';
+
+import { Fragment } from 'react';
+
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
 import type { FrontendTeamsArchiveProps, Team } from '@/types';
-import { Fragment } from 'react';
-import '../../../../css/our-team.css';
+
 import TeamMember from '../TeamMember';
 
 export default function TeamsArchive({

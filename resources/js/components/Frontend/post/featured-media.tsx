@@ -20,7 +20,7 @@ const FeaturedMedia = ({
     <picture>
       <img
         className={cn(
-          'relative aspect-video h-full w-full bg-bgDarker object-cover',
+          'bg-bgDarker relative aspect-video h-full w-full object-cover',
           className
         )}
         src={src ?? undefined}

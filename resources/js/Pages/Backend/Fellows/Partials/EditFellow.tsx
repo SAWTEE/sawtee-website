@@ -1,10 +1,12 @@
+import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
+
+import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
-import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import ContentEditor from '@/components/Backend/ContentEditor';
 import {
   Select,
   SelectContent,
@@ -14,9 +16,11 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
-export default function EditFellow({ fellow = undefined, fellowships = undefined }: any) {
+export default function EditFellow({
+  fellow = undefined,
+  fellowships = undefined,
+}: any) {
   const { data, setData, post, errors, reset } = useForm({
     name: fellow.name,
     fellowship_id: fellow.fellowship_id,

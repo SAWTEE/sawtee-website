@@ -1,3 +1,6 @@
+import { useForm } from '@inertiajs/react';
+import React, { useEffect, useState } from 'react';
+
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
@@ -29,14 +32,13 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
-import React, { useEffect, useState } from 'react';
 
 export default function EditCategoryForm({
   open = undefined,
   setOpen = undefined,
   category = undefined,
-  categories = undefined}: any) {
+  categories = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: category.name,
     type: category.type,
@@ -215,11 +217,13 @@ export default function EditCategoryForm({
                         <SelectLabel>Category Types</SelectLabel>
                       </SelectGroup>
 
-                      {['post', 'publication', 'research', 'team'].map((type: any) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
+                      {['post', 'publication', 'research', 'team'].map(
+                        (type: any) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
+                          </SelectItem>
+                        )
+                      )}
                     </SelectContent>
                   </Select>
                 </div>

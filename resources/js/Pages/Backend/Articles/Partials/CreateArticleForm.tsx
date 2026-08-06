@@ -1,11 +1,12 @@
+import { useForm } from '@inertiajs/react';
+import React from 'react';
+
+import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
-import ContentEditor from '@/components/Backend/ContentEditor';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Select,
@@ -16,9 +17,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-import { useForm } from '@inertiajs/react';
-import React from 'react';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
 
 export default function CreateArticleForm({
   tags = undefined,

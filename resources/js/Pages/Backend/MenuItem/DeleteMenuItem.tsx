@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -9,9 +11,13 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
-export default function DeleteMenuItem({ isOpen = undefined, onClose = undefined, item = undefined, setMenuItem = undefined }: any) {
+export default function DeleteMenuItem({
+  isOpen = undefined,
+  onClose = undefined,
+  item = undefined,
+  setMenuItem = undefined,
+}: any) {
   const { delete: destroy, processing } = useForm();
   const { toast } = useToast();
   // @ts-ignore allowlist-migration
@@ -40,11 +46,11 @@ export default function DeleteMenuItem({ isOpen = undefined, onClose = undefined
         <form onSubmit={submit}>
           <div
             // @ts-ignore allowlist-migration
-            class="mb-4 border-l-4 border-orange-500 bg-orange-100 p-4 text-orange-700"
+            className="mb-4 border-l-4 border-orange-500 bg-orange-100 p-4 text-orange-700"
             role="alert"
           >
             {/* @ts-ignore allowlist-migration */}
-            <p class="font-bold">Be Warned</p>
+            <p className="font-bold">Be Warned</p>
             <p>
               {item.children.length > 0
                 ? 'This menu item has sub items. All sub items will also be deleted. Are you sure you want to delete'

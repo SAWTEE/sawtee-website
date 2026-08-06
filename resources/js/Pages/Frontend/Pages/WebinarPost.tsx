@@ -13,11 +13,7 @@ const WebinarPost = ({ post }: WebinarPostProps) => {
       <div className="mb-6">{htmlToText(post.content)}</div>
       {file?.original_url ? (
         <Button asChild>
-          <a
-            target="_blank"
-            href={file.original_url}
-            rel="noopener noreferrer"
-          >
+          <a target="_blank" href={file.original_url} rel="noopener noreferrer">
             Summary of Proceedings
             <span className="sr-only"> (opens in a new tab)</span>
           </a>

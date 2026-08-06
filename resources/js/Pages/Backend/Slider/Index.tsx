@@ -1,16 +1,22 @@
-import DataTableActions from '@/components/Backend/DataTableActions';
+import { Head, useForm } from '@inertiajs/react';
 import { AlertCircleIcon } from 'lucide-react';
+import React from 'react';
+
+import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import { Head, useForm } from '@inertiajs/react';
-import React from 'react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+
 import CreateSliderForm from './Partials/CreateSliderForm';
 
-export default function Index({ auth = undefined, sliders = undefined, pages = undefined }: any) {
+export default function Index({
+  auth = undefined,
+  sliders = undefined,
+  pages = undefined,
+}: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
   const [sliderModal, setSliderModal] = React.useState(false);

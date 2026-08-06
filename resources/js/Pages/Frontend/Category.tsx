@@ -1,3 +1,5 @@
+import type { ReactNode } from 'react';
+
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
@@ -5,19 +7,19 @@ import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
-import CovidArchive from './Archives/CovidArchive';
-import DefaultArchive from './Archives/DefaultArchive';
-import LDCArchive from './Archives/LDCArchive';
-import EventsArchive from './Archives/EventsArchive';
-import NewsletterArchive from './Archives/NewsletterArchive';
-import ResearchArchive from './Archives/ResearchArchive';
 import type {
   FrontendCategoryProps,
   Paginated,
   Post,
   ResearchByYear,
 } from '@/types';
-import type { ReactNode } from 'react';
+
+import CovidArchive from './Archives/CovidArchive';
+import DefaultArchive from './Archives/DefaultArchive';
+import EventsArchive from './Archives/EventsArchive';
+import LDCArchive from './Archives/LDCArchive';
+import NewsletterArchive from './Archives/NewsletterArchive';
+import ResearchArchive from './Archives/ResearchArchive';
 
 type Props = FrontendCategoryProps & { showSubscriptionBox?: boolean };
 
@@ -69,9 +71,7 @@ export default function Category({
         return <LDCArchive posts={paginated?.data} />;
       case category.slug.includes('research'):
         return (
-          <ResearchArchive
-            posts={isResearchByYear(posts) ? posts : null}
-          />
+          <ResearchArchive posts={isResearchByYear(posts) ? posts : null} />
         );
       case category.slug.includes('newsletters'):
         return <NewsletterArchive posts={paginated?.data} />;
@@ -88,18 +88,17 @@ export default function Category({
   return (
     <MainLayout>
       <WebsiteHead
-        title={seo?.title ?? (category.meta_title ? category.meta_title : category.name)}
+        title={
+          seo?.title ??
+          (category.meta_title ? category.meta_title : category.name)
+        }
         description={seo?.description ?? category.meta_description ?? ''}
         image={seo?.image ?? (image ? image : '/assets/logo-sawtee.webp')}
         url={seo?.url}
         type={seo?.type}
         jsonLd={seo?.jsonLd}
       />
-      <PageLayout
-        featured_image={image}
-        srcSet={srcSet}
-        title={category.name}
-      >
+      <PageLayout featured_image={image} srcSet={srcSet} title={category.name}>
         <div className="grid grid-cols-1 gap-12 px-0 py-8 md:grid-cols-2 md:px-4 md:py-20 lg:grid-cols-6">
           <section className="archive-list col-span-1 lg:col-span-4">
             <div className="flex w-full flex-col">

@@ -1,11 +1,12 @@
+import { Head, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
+import { useEffect } from 'react';
+
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import GuestLayout from '@/layouts/GuestLayout';
-import { Head, useForm } from '@inertiajs/react';
-import { useEffect } from 'react';
 
 export default function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -44,7 +45,7 @@ export default function ConfirmPassword() {
             value={data.password}
             className="mt-1 block w-full"
             isFocused={true}
-            onChange={(e) => setData('password', e.target.value)}
+            onChange={e => setData('password', e.target.value)}
           />
 
           <InputError message={errors.password} className="mt-2" />

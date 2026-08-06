@@ -1,9 +1,15 @@
+import { Head } from '@inertiajs/react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-import { Head } from '@inertiajs/react';
 import EditArticleForm from './Partials/EditArticleForm';
 
-export default function Edit({ auth = undefined, article = undefined, volumes = undefined, tags = undefined }: any) {
+export default function Edit({
+  auth = undefined,
+  article = undefined,
+  volumes = undefined,
+  tags = undefined,
+}: any) {
   return (
     <AuthenticatedLayout user={auth.user}>
       <Head title="Edit Article" />

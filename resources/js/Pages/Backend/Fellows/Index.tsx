@@ -1,12 +1,13 @@
+import { Head, useForm } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Head, useForm } from '@inertiajs/react';
-import { Link } from '@inertiajs/react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, fellows = undefined }: any) {
   const { delete: destroy, get } = useForm();

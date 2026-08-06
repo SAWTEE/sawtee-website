@@ -14,8 +14,7 @@ export type MemberInstituteLogo = {
 export const memberInstituteLogos: MemberInstituteLogo[] = [
   {
     slug: 'bela',
-    member_name:
-      'Bangladesh Environmental Lawyers’ Association (BELA), Dhaka',
+    member_name: 'Bangladesh Environmental Lawyers’ Association (BELA), Dhaka',
     member_website_link: 'https://www.belabangla.org/',
     short_label: 'BELA',
     logo: '/assets/member-institutes/bela.png',
@@ -29,8 +28,7 @@ export const memberInstituteLogos: MemberInstituteLogo[] = [
   },
   {
     slug: 'cag',
-    member_name:
-      'Citizen consumer and civic Action Group (CAG), Chennai',
+    member_name: 'Citizen consumer and civic Action Group (CAG), Chennai',
     member_website_link: 'https://www.cag.org.in/',
     short_label: 'CAG',
     logo: '/assets/member-institutes/cag.png',
@@ -44,8 +42,7 @@ export const memberInstituteLogos: MemberInstituteLogo[] = [
   },
   {
     slug: 'drag',
-    member_name:
-      'Development Research and Action Group (DRAG), New Delhi',
+    member_name: 'Development Research and Action Group (DRAG), New Delhi',
     member_website_link: 'https://dragindia.org/',
     short_label: 'DRAG',
     logo: null,
@@ -68,16 +65,14 @@ export const memberInstituteLogos: MemberInstituteLogo[] = [
   },
   {
     slug: 'jdhr',
-    member_name:
-      'Journalists for Democracy and Human Rights (JDHR), Islamabad',
+    member_name: 'Journalists for Democracy and Human Rights (JDHR), Islamabad',
     member_website_link: 'http://www.jdhr.org/',
     short_label: 'JDHR',
     logo: null,
   },
   {
     slug: 'sdpi',
-    member_name:
-      'Sustainable Development Policy Institute (SDPI), Islamabad',
+    member_name: 'Sustainable Development Policy Institute (SDPI), Islamabad',
     member_website_link: 'https://sdpi.org/',
     short_label: 'SDPI',
     logo: null,

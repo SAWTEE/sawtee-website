@@ -1,10 +1,9 @@
-import PrimaryButton from '@/components/Backend/PrimaryButton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { useToast } from '@/hooks/use-toast';
+import { useForm } from '@inertiajs/react';
+import React from 'react';
 
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
+import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,10 +12,16 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { useForm } from '@inertiajs/react';
-import React from 'react';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
-export default function EditSlideForm({ open = undefined, setOpen = undefined, slide = undefined, setEditSlide = undefined }: any) {
+export default function EditSlideForm({
+  open = undefined,
+  setOpen = undefined,
+  slide = undefined,
+  setEditSlide = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: slide.title,
     subtitle: slide.subtitle,

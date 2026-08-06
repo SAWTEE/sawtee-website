@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+
 import type {
   Article,
   FrontendArchiveProps,
@@ -130,7 +131,17 @@ describe('Frontend page prop contracts', () => {
     const categoryProps: FrontendCategoryProps = {
       ...emptySharedProps(),
       category: { id: 1, name: 'In Focus', slug: 'in-focus' },
-      posts: { data: [], current_page: 1, last_page: 1, per_page: 10, total: 0, from: null, to: null, path: '/', links: [] },
+      posts: {
+        data: [],
+        current_page: 1,
+        last_page: 1,
+        per_page: 10,
+        total: 0,
+        from: null,
+        to: null,
+        path: '/',
+        links: [],
+      },
       seo,
     };
 
@@ -144,7 +155,17 @@ describe('Frontend page prop contracts', () => {
     const archiveProps: FrontendArchiveProps = {
       ...emptySharedProps(),
       layout_title: 'Tag',
-      posts: { data: [], current_page: 1, last_page: 1, per_page: 10, total: 0, from: null, to: null, path: '/', links: [] },
+      posts: {
+        data: [],
+        current_page: 1,
+        last_page: 1,
+        per_page: 10,
+        total: 0,
+        from: null,
+        to: null,
+        path: '/',
+        links: [],
+      },
       seo,
     };
 
@@ -176,7 +197,12 @@ describe('Frontend page prop contracts', () => {
         slug: 'vol-1',
       },
       relatedArticles: [
-        { id: 2, title: 'Related', slug: 'related', published_at: '2024-01-02T00:00:00Z' },
+        {
+          id: 2,
+          title: 'Related',
+          slug: 'related',
+          published_at: '2024-01-02T00:00:00Z',
+        },
       ],
       featured_image: null,
       seo,

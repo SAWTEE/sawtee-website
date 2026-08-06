@@ -1,8 +1,9 @@
+import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
+import { Fragment, type ReactNode } from 'react';
+
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import ZoomableImage from '@/components/Frontend/ZoomableImage';
 import type { ContactPageData, PageData } from '@/types';
-import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
-import { Fragment, type ReactNode } from 'react';
 
 function isContactPageData(
   data: PageData | undefined

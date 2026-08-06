@@ -82,7 +82,10 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
                   <ol className="text-muted-foreground list-decimal space-y-2.5 pl-5 marker:text-[#006181]/70">
                     {institutes.map(({ member_name, member_website_link }) => {
                       return (
-                        <li key={member_name} className="text-[0.95rem] md:text-base">
+                        <li
+                          key={member_name}
+                          className="text-[0.95rem] md:text-base"
+                        >
                           <a
                             target="_blank"
                             title={member_name}

@@ -3,6 +3,7 @@ import ReadingProgress from '@/components/Frontend/ReadingProgress';
 import MainLayout from '@/layouts/MainLayout';
 import PostLayout from '@/layouts/PostLayout';
 import type { FrontendPostProps } from '@/types';
+
 import WebinarPost from './Pages/WebinarPost';
 
 export default function Post({
@@ -55,7 +56,7 @@ export default function Post({
                   target="_blank"
                   href={file}
                   rel="noopener noreferrer"
-                  className="text-[#006181] hover:text-[#006181]/80 font-medium underline-offset-4 dark:text-[#4da3c0]"
+                  className="font-medium text-[#006181] underline-offset-4 hover:text-[#006181]/80 dark:text-[#4da3c0]"
                 >
                   {`Download PDF: ${post.title}`}
                   <span className="sr-only"> (opens in a new tab)</span>

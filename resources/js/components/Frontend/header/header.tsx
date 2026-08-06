@@ -1,7 +1,9 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
-import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
+import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+
+import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types';
+
 import DesktopNavigation from './DesktopNavigation';
 import { ModeToggle } from './mode-toggle';
 import SearchModal from './searchModal';

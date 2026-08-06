@@ -1,4 +1,7 @@
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import { Head, useForm } from '@inertiajs/react';
+import { useEffect, useState } from 'react';
+
+import InputError from '@/components/Backend/InputError.jsx';
 import {
   Accordion,
   AccordionContent,
@@ -6,6 +9,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -17,14 +21,11 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { slugify } from '@/lib/helpers';
-import { Head, useForm } from '@inertiajs/react';
-import { useEffect, useState } from 'react';
 
-import { Input } from '@/components/ui/input';
 import MenuItemsList from './MenuList';
 import EditMenuForm from './Partials/EditMenu';
-import InputError from '@/components/Backend/InputError.jsx';
 
 export default function ManageMenu({
   auth = undefined,

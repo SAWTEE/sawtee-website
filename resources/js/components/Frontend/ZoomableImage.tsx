@@ -1,3 +1,5 @@
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+
 import {
   Dialog,
   DialogContent,
@@ -5,7 +7,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { cn } from '@/lib/utils';
-import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 type ZoomableImageProps = {
   src: string;
@@ -38,7 +39,7 @@ export default function ZoomableImage({
       </DialogTrigger>
       <DialogContent
         className={cn(
-          'flex w-fit max-h-[90vh] max-w-[90vw] items-center justify-center',
+          'flex max-h-[90vh] w-fit max-w-[90vw] items-center justify-center',
           'gap-0 overflow-auto border-0 bg-transparent p-2 shadow-none',
           'sm:max-w-[90vw] sm:rounded-none',
           '[&>button]:top-2 [&>button]:right-2 [&>button]:rounded-full',

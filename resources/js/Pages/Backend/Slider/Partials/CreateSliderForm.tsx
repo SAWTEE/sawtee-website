@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -20,7 +22,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
 export default function CreateSliderForm({
   open = undefined,

@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import InputError from '@/components/Backend/InputError';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
@@ -12,9 +14,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
-export default function EditCategoryForm({ open = undefined, setOpen = undefined, member = undefined }: any) {
+export default function EditCategoryForm({
+  open = undefined,
+  setOpen = undefined,
+  member = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     country: member.country,
   });

@@ -1,9 +1,8 @@
-import DangerButton from '@/components/Backend/DangerButton';
-import InputError from '@/components/Backend/InputError';
-import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 
+import DangerButton from '@/components/Backend/DangerButton';
+import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -16,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
 
 export default function DeleteUserForm({ className = '' }: any) {
   const [confirmingUserDeletion, setConfirmingUserDeletion] = useState(false);
@@ -66,11 +66,11 @@ export default function DeleteUserForm({ className = '' }: any) {
   return (
     <section className={`space-y-6 ${className}`}>
       <header>
-        <h2 className="text-lg font-medium text-secondary-foreground">
+        <h2 className="text-secondary-foreground text-lg font-medium">
           Delete Account
         </h2>
 
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-sm">
           Once your account is deleted, all of its resources and data will be
           permanently deleted. Before deleting your account, please download any
           data or information that you wish to retain.
@@ -88,7 +88,7 @@ export default function DeleteUserForm({ className = '' }: any) {
               Are you sure you want to delete your account?
             </DialogDescription>
           </DialogHeader>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <p className="text-muted-foreground mt-1 text-sm">
             Once your account is deleted, all of its resources and data will be
             permanently deleted. Please enter your password to confirm you would
             like to permanently delete your account.

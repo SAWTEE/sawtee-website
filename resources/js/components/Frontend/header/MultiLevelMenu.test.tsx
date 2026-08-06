@@ -1,7 +1,9 @@
-import { forwardRef } from 'react';
 import { render, screen, within } from '@testing-library/react';
+import { forwardRef } from 'react';
 import { describe, expect, it, vi } from 'vitest';
+
 import type { MenuItem } from '@/types';
+
 import MultiLevelMenu, { isExternalUrl } from './MultiLevelMenu';
 
 vi.mock('@inertiajs/react', () => ({

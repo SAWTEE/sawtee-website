@@ -1,12 +1,14 @@
+import { Head, useForm } from '@inertiajs/react';
+import React, { useState } from 'react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Head, useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+
 import CreateMember from './Partials/CreateMember';
 import EditMember from './Partials/EditMember';
 

@@ -1,6 +1,7 @@
+import '../css/index.css';
+
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
-import '../css/index.css';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 

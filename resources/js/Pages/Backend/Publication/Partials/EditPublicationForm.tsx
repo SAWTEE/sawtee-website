@@ -1,11 +1,14 @@
+import { useForm } from '@inertiajs/react';
+import React, { useState } from 'react';
+
+import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
-import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
+import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import ContentEditor from '@/components/Backend/ContentEditor';
-import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
+import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Select,
   SelectContent,
@@ -16,9 +19,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-
-import { useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
 
 export default function EditPublicationForm({
   publication = undefined,

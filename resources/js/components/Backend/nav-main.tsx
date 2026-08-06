@@ -1,5 +1,8 @@
 'use client';
 
+import { Link, usePage } from '@inertiajs/react';
+
+import type { DashboardMenuItem } from '@/components/Backend/app-sidebar';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -7,8 +10,6 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar';
-import { Link, usePage } from '@inertiajs/react';
-import type { DashboardMenuItem } from '@/components/Backend/app-sidebar';
 
 export function NavMain({ menu }: { menu?: DashboardMenuItem[] }) {
   const { url } = usePage();

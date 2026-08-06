@@ -1,6 +1,7 @@
+import { Head } from '@inertiajs/react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-import { Head } from '@inertiajs/react';
 import EditResearchForm from './Partials/EditResearchForm';
 
 export default function Edit({ research = undefined, auth = undefined }: any) {

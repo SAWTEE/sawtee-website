@@ -1,15 +1,16 @@
+import Autoplay from 'embla-carousel-autoplay';
+import { useEffect, useMemo, useState } from 'react';
+
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
 import type { Slide } from '@/types';
-import Autoplay from 'embla-carousel-autoplay';
-import { useEffect, useMemo, useState } from 'react';
 
 type FullWidthCarouselProps = {
   slides?: Slide[];
@@ -76,7 +77,7 @@ const FullWidthCarousel = ({
   return (
     <div
       className={cn(
-        'relative w-full overflow-hidden rounded-md bg-theme-900 ring-1 ring-black/10 dark:ring-white/10',
+        'bg-theme-900 relative w-full overflow-hidden rounded-md ring-1 ring-black/10 dark:ring-white/10',
         className
       )}
       role="region"
@@ -101,7 +102,7 @@ const FullWidthCarousel = ({
                 className="relative basis-full pl-0"
                 aria-hidden={index !== current}
               >
-                <div className="relative aspect-video w-full overflow-hidden bg-theme-900 sm:aspect-2/1 lg:aspect-2/1">
+                <div className="bg-theme-900 relative aspect-video w-full overflow-hidden sm:aspect-2/1 lg:aspect-2/1">
                   {imageSrc ? (
                     <img
                       src={imageSrc}
@@ -117,7 +118,7 @@ const FullWidthCarousel = ({
                     />
                   ) : (
                     <div
-                      className="flex h-full w-full items-center justify-center bg-theme-800 text-sm text-white/70"
+                      className="bg-theme-800 flex h-full w-full items-center justify-center text-sm text-white/70"
                       aria-hidden
                     >
                       No image
@@ -130,10 +131,10 @@ const FullWidthCarousel = ({
                         className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/75 via-black/35 to-black/10"
                         aria-hidden
                       />
-                      <div className="absolute inset-x-0 bottom-0 z-10 px-5 pb-10 pt-16 sm:px-8 sm:pb-12 md:px-10 md:pb-14">
+                      <div className="absolute inset-x-0 bottom-0 z-10 px-5 pt-16 pb-10 sm:px-8 sm:pb-12 md:px-10 md:pb-14">
                         <div className="max-w-2xl">
                           {slide.title ? (
-                            <p className="text-balance text-xl font-semibold tracking-tight text-white sm:text-2xl md:text-3xl lg:text-4xl">
+                            <p className="text-xl font-semibold tracking-tight text-balance text-white sm:text-2xl md:text-3xl lg:text-4xl">
                               {slide.title}
                             </p>
                           ) : null}
@@ -156,15 +157,15 @@ const FullWidthCarousel = ({
           <>
             <CarouselPrevious
               variant="ghost"
-              className="left-2 top-1/2 z-20 h-9 w-9 -translate-y-1/2 border-0 bg-black/35 text-white shadow-none hover:bg-black/50 hover:text-white disabled:opacity-30 sm:left-3"
+              className="top-1/2 left-2 z-20 h-9 w-9 -translate-y-1/2 border-0 bg-black/35 text-white shadow-none hover:bg-black/50 hover:text-white disabled:opacity-30 sm:left-3"
             />
             <CarouselNext
               variant="ghost"
-              className="right-2 top-1/2 z-20 h-9 w-9 -translate-y-1/2 border-0 bg-black/35 text-white shadow-none hover:bg-black/50 hover:text-white disabled:opacity-30 sm:right-3"
+              className="top-1/2 right-2 z-20 h-9 w-9 -translate-y-1/2 border-0 bg-black/35 text-white shadow-none hover:bg-black/50 hover:text-white disabled:opacity-30 sm:right-3"
             />
 
             <div
-              className="absolute bottom-2 right-2 z-20 flex items-center sm:bottom-3 sm:right-3"
+              className="absolute right-2 bottom-2 z-20 flex items-center sm:right-3 sm:bottom-3"
               role="group"
               aria-label="Slide indicators"
             >

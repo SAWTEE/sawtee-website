@@ -1,9 +1,10 @@
-import Glassbox from '@/components/Frontend/Glassbox';
-import { useTheme } from '@/components/shared/theme-provider';
-import { aboutMenuData } from '@/lib/data';
 import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { lazy, Suspense } from 'react';
+
+import Glassbox from '@/components/Frontend/Glassbox';
+import { useTheme } from '@/components/shared/theme-provider';
+import { aboutMenuData } from '@/lib/data';
 import type { MenuItem } from '@/types';
 
 const SawteeGlobe = lazy(() => import('../globe'));
@@ -138,9 +139,7 @@ const MegaMenu = ({
   experts?: unknown[];
 }) => {
   if (item.name === 'Know Us') {
-    return (
-      <AboutMegaMenu item={item} introText={aboutMenuData.introText} />
-    );
+    return <AboutMegaMenu item={item} introText={aboutMenuData.introText} />;
   }
   if (item.name === 'Our Work') {
     return <OurWorkMegaMenu item={item} />;

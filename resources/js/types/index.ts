@@ -419,11 +419,7 @@ export type FrontendPostProps = PageProps<{
 
 /** Category archive `posts` varies by slug (paginated posts, research-by-year, teams). */
 export type CategoryArchivePosts =
-  | Paginated<Post>
-  | ResearchByYear
-  | Team[]
-  | Post[]
-  | null;
+  Paginated<Post> | ResearchByYear | Team[] | Post[] | null;
 
 export type FrontendCategoryProps = PageProps<{
   category: Category;

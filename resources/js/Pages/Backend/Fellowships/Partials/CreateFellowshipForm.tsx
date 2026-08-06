@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,8 +14,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
-export default function CreateFellowshipForm({ open = undefined, setOpen = undefined }: any) {
+export default function CreateFellowshipForm({
+  open = undefined,
+  setOpen = undefined,
+}: any) {
   const { setData, post, errors, reset } = useForm({
     title: '',
     description: '',

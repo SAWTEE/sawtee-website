@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+
 import AuthenticatedLayout from './AuthenticatedLayout';
 
 vi.mock('@inertiajs/react', () => ({
@@ -37,7 +38,9 @@ vi.mock('@/hooks/use-mobile', () => ({
 describe('AuthenticatedLayout', () => {
   it('renders the sidebar toggle trigger in the admin header', () => {
     render(
-      <AuthenticatedLayout user={{ id: 1, name: 'Admin', email: 'a@b.c' } as any}>
+      <AuthenticatedLayout
+        user={{ id: 1, name: 'Admin', email: 'a@b.c' } as any}
+      >
         <div>Admin page content</div>
       </AuthenticatedLayout>
     );

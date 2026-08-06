@@ -1,10 +1,3 @@
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
 import {
   ChevronsRight,
@@ -15,6 +8,15 @@ import {
   PhoneOff,
 } from 'lucide-react';
 import { useState } from 'react';
+
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { cn } from '@/lib/utils';
+
 import { SocialMenu } from '../header/social-menu';
 import { MapModel } from '../MapModal';
 import { SubscribeForm } from '../NewsletterCallout';
@@ -52,7 +54,7 @@ export default function Footer({
           </div>
           {Object.entries(menu ?? []).map(([key, item]) => {
             return (
-              <div key={key} className="min-w-0 w-full text-left">
+              <div key={key} className="w-full min-w-0 text-left">
                 <h2 className="text-secondary-foreground mb-4 text-lg font-medium sm:mb-5 sm:text-xl">
                   {item.title}
                 </h2>
@@ -156,10 +158,7 @@ export default function Footer({
                                 {title}
                               </a>
                             ) : (
-                              <Link
-                                href={url}
-                                className="min-w-0 break-words"
-                              >
+                              <Link href={url} className="min-w-0 break-words">
                                 {title}
                               </Link>
                             )}
@@ -179,7 +178,7 @@ export default function Footer({
             </span>
             <SocialMenu
               menu={socialMenu}
-              className="mt-0 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 space-x-0"
+              className="mt-0 flex flex-wrap items-center justify-center gap-x-4 space-x-0 gap-y-2"
             />
           </div>
         </div>

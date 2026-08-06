@@ -145,6 +145,11 @@ Observers clear these keys when pages, posts, publications, articles, categories
 
 **Optional advanced tip:** If you later run Redis and want tag-based invalidation, you can introduce cache tags around the same keys — but tags are **not required** for production on shared hosting.
 
+## Frontend tooling
+
+- **Import sorting:** `eslint-plugin-simple-import-sort` is enabled in `eslint.config.js`. Sort imports across the React app with `npm run lint:imports` (or `npm run lint`).
+- **Unused code:** [Knip](https://knip.dev) is configured in `knip.config.ts` for this Vite + React + Inertia layout. Laravel PHP, public assets, and vendor are ignored; `resources/js/Pages/**` are treated as entry points (Inertia dynamic pages) so they are not flagged unused while their imports are still traced. Run `npm run find-unused` (alias: `npm run knip`) and review results before deleting — only remove high-confidence unused components, never Pages.
+
 ## License
 
 The project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).

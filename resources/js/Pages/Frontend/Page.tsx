@@ -1,4 +1,8 @@
+import type { ReactNode } from 'react';
+
 import WebsiteHead from '@/components/Frontend/Head';
+import MainLayout from '@/layouts/MainLayout';
+import PageLayout from '@/layouts/PageLayout';
 import type {
   FrontendPageProps,
   Page as CmsPage,
@@ -6,9 +10,7 @@ import type {
   SeoMeta,
   Theme,
 } from '@/types';
-import type { ReactNode } from 'react';
-import MainLayout from '@/layouts/MainLayout';
-import PageLayout from '@/layouts/PageLayout';
+
 import Contact from './Pages/Contact';
 import DefaultPage from './Pages/DefaultPage';
 import MediaFellows from './Pages/MediaFellows';
@@ -88,9 +90,7 @@ const PageContent = ({
   const { content, pageData } = page;
   switch (page.page_template) {
     case 'OurWork':
-      return (
-        <OurWork themes={themes} sections={sections} content={content} />
-      );
+      return <OurWork themes={themes} sections={sections} content={content} />;
 
     case 'SectionTemplate':
       return (

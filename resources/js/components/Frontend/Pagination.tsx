@@ -1,8 +1,10 @@
-import { cn } from '@/lib/utils';
-import type { PaginationLink } from '@/types';
 import { Link } from '@inertiajs/react';
 import { MoveLeft, MoveRight } from 'lucide-react';
 import type { ReactNode } from 'react';
+
+import { cn } from '@/lib/utils';
+import type { PaginationLink } from '@/types';
+
 import { Button } from '../ui/button';
 
 type PaginationButtonProps = {
@@ -33,7 +35,7 @@ const PaginationButton = ({
         disabled={isDisabled}
         variant="outline"
         size="lg"
-        className="w-full dark:border-borderColor dark:bg-bgDarker dark:text-white"
+        className="dark:border-borderColor dark:bg-bgDarker w-full dark:text-white"
       >
         {slot === 'before' && children}
         <span>{label}</span>
@@ -52,7 +54,7 @@ const PaginationButton = ({
         disabled={isDisabled}
         variant="outline"
         size="lg"
-        className="w-full disabled:pointer-events-none disabled:cursor-not-allowed dark:border-borderColor dark:bg-bgDarker dark:text-white"
+        className="dark:border-borderColor dark:bg-bgDarker w-full disabled:pointer-events-none disabled:cursor-not-allowed dark:text-white"
       >
         {slot === 'before' && children}
         <span>{label}</span>

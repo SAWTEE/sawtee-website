@@ -1,9 +1,10 @@
+import { Link, router } from '@inertiajs/react';
+import type { ReactNode } from 'react';
+
 import WebsiteHead from '@/components/Frontend/Head';
 import { Button } from '@/components/ui/button';
 import GuestLayout from '@/layouts/GuestLayout';
 import MainLayout from '@/layouts/MainLayout';
-import { Link, router } from '@inertiajs/react';
-import type { ReactNode } from 'react';
 
 type ErrorStatus = 403 | 404 | 419 | 500 | 503;
 
@@ -102,19 +103,19 @@ export default function ErrorPage({
       />
 
       <div className="mx-auto w-full max-w-xl text-center">
-        <p className="text-sm font-semibold tracking-[0.2em] text-theme-600 uppercase dark:text-theme-300">
+        <p className="text-theme-600 dark:text-theme-300 text-sm font-semibold tracking-[0.2em] uppercase">
           SAWTEE
         </p>
         <p
-          className="mt-4 font-mono text-7xl font-semibold tracking-tight text-theme-700 tabular-nums dark:text-theme-300 sm:text-8xl"
+          className="text-theme-700 dark:text-theme-300 mt-4 font-mono text-7xl font-semibold tracking-tight tabular-nums sm:text-8xl"
           aria-hidden
         >
           {code}
         </p>
-        <h1 className="mt-4 text-balance text-2xl font-semibold tracking-tight text-slate-800 dark:text-slate-100 sm:text-3xl">
+        <h1 className="mt-4 text-2xl font-semibold tracking-tight text-balance text-slate-800 sm:text-3xl dark:text-slate-100">
           {title}
         </h1>
-        <p className="mx-auto mt-4 max-w-md text-pretty text-base leading-relaxed text-slate-600 dark:text-slate-300">
+        <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-pretty text-slate-600 dark:text-slate-300">
           {description}
         </p>
 
@@ -122,7 +123,7 @@ export default function ErrorPage({
           {isReload ? (
             <Button
               type="button"
-              className="bg-theme-600 text-white hover:bg-theme-700 dark:bg-theme-500 dark:hover:bg-theme-400"
+              className="bg-theme-600 hover:bg-theme-700 dark:bg-theme-500 dark:hover:bg-theme-400 text-white"
               onClick={() => router.reload()}
             >
               {action}
@@ -130,7 +131,7 @@ export default function ErrorPage({
           ) : (
             <Button
               asChild
-              className="bg-theme-600 text-white hover:bg-theme-700 dark:bg-theme-500 dark:hover:bg-theme-400"
+              className="bg-theme-600 hover:bg-theme-700 dark:bg-theme-500 dark:hover:bg-theme-400 text-white"
             >
               <Link href={homeHref}>{action}</Link>
             </Button>
@@ -157,7 +158,7 @@ export default function ErrorPage({
       <WebsiteHead title={`${code}: ${title}`} description={description} />
       {admin ? (
         <div className="space-y-4 text-center">
-          <p className="font-mono text-5xl font-semibold text-theme-700 tabular-nums dark:text-theme-300">
+          <p className="text-theme-700 dark:text-theme-300 font-mono text-5xl font-semibold tabular-nums">
             {code}
           </p>
           <h1 className="text-xl font-semibold text-slate-800 dark:text-slate-100">

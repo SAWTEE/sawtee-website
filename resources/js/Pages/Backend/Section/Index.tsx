@@ -1,10 +1,11 @@
+import { Head, Link, useForm } from '@inertiajs/react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { useToast } from '@/hooks/use-toast';
-import { Head, Link, useForm } from '@inertiajs/react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 export default function Index({ auth = undefined, sections = undefined }: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();

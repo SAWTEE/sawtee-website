@@ -1,3 +1,6 @@
+import { MoreHorizontal } from 'lucide-react';
+import React, { useState } from 'react';
+
 import {
   Accordion,
   AccordionContent,
@@ -14,8 +17,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
-import { MoreHorizontal } from 'lucide-react';
-import React, { useState } from 'react';
+
 import DeleteMenuItem from '../MenuItem/DeleteMenuItem';
 import EditMenuItem from '../MenuItem/EditMenuItem';
 
@@ -29,14 +31,18 @@ export default function MenuItemsList({
   const [menuItem, setMenuItem] = useState(null);
   const handleEditMenuItem = (e: any, id: any) => {
     e.preventDefault();
-    const newMenuItem = menuItems.filter((MenuItem: any) => MenuItem.id === id)[0];
+    const newMenuItem = menuItems.filter(
+      (MenuItem: any) => MenuItem.id === id
+    )[0];
     setMenuItem(newMenuItem);
     setEditMenuItem(!editMenuItem);
   };
 
   const handleDeleteMenuItem = (e: any, id: any) => {
     e.preventDefault();
-    const newMenuItem = menuItems.filter((MenuItem: any) => MenuItem.id === id)[0];
+    const newMenuItem = menuItems.filter(
+      (MenuItem: any) => MenuItem.id === id
+    )[0];
     setMenuItem(newMenuItem);
     setDeleteMenuItem(!deleteMenuItem);
   };
@@ -111,7 +117,7 @@ export default function MenuItemsList({
                     <MenuItemsList
                       firstLevelMenuItems={item.children}
                       menuItems={menuItems}
-                      className="border-text-foreground ml-1 mt-4 border-l px-4"
+                      className="border-text-foreground mt-4 ml-1 border-l px-4"
                     />
                   </AccordionContent>
                 )}

@@ -1,3 +1,5 @@
+import { useForm } from '@inertiajs/react';
+
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -20,7 +22,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
 
 export default function EditMenuItem({
   isOpen = undefined,

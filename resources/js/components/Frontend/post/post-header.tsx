@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
+
 import { cn } from '@/lib/utils';
 import type { Category } from '@/types';
-import type { ReactNode } from 'react';
+
 import PostCategories from './post-categories';
 
 type PostHeaderProps = {

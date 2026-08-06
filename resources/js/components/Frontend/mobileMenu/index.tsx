@@ -1,3 +1,7 @@
+import { Link } from '@inertiajs/react';
+import { ChevronDownIcon } from 'lucide-react';
+import React from 'react';
+
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import {
   Collapsible,
@@ -6,9 +10,6 @@ import {
 } from '@/components/ui/collapsible';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { cn } from '@/lib/utils';
-import { Link } from '@inertiajs/react';
-import { ChevronDownIcon } from 'lucide-react';
-import React from 'react';
 import type { MenuItem, SocialMenuItem } from '@/types';
 
 type MenuLinkProps = {
@@ -61,7 +62,7 @@ const DropDownMenu = ({
   return (
     <ul className="w-full list-none space-y-4">
       <Collapsible>
-        <li className="text-foreground group flex w-full items-center justify-between gap-4 border-b-2 border-border text-lg dark:border-white/20">
+        <li className="text-foreground group border-border flex w-full items-center justify-between gap-4 border-b-2 text-lg dark:border-white/20">
           <MenuLink
             className={cn(
               'flex w-full p-4 no-underline hover:underline',

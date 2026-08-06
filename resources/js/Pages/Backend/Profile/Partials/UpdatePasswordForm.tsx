@@ -1,11 +1,11 @@
+import { useForm } from '@inertiajs/react';
+import { useRef } from 'react';
+
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
-
-import { useRef } from 'react';
 
 export default function UpdatePasswordForm({ className = '' }: any) {
   // @ts-ignore allowlist-migration
@@ -57,11 +57,11 @@ export default function UpdatePasswordForm({ className = '' }: any) {
   return (
     <section className={className}>
       <header>
-        <h2 className="text-lg font-medium text-secondary-foreground">
+        <h2 className="text-secondary-foreground text-lg font-medium">
           Update Password
         </h2>
 
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="text-muted-foreground mt-1 text-sm">
           Ensure your account is using a long, random password to stay secure.
         </p>
       </header>

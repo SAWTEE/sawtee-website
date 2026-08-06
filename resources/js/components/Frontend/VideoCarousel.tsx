@@ -1,13 +1,16 @@
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  type CarouselApi,
-} from '@/components/ui/carousel';
-import { cn } from '@/lib/utils';
+import '../../../css/video-carousel.css';
+
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import '../../../css/video-carousel.css';
+
+import {
+  Carousel,
+  type CarouselApi,
+  CarouselContent,
+  CarouselItem,
+} from '@/components/ui/carousel';
+import { cn } from '@/lib/utils';
+
 import { Button } from '../ui/button';
 
 type VideoMedia = {

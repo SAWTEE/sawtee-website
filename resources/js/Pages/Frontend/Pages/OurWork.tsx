@@ -1,9 +1,10 @@
+import { Link } from '@inertiajs/react';
+import { ArrowUpRight } from 'lucide-react';
+
 import CardWithEffect from '@/components/Frontend/CardWithEffect';
 import Title from '@/components/Frontend/title';
 import { cn, htmlToText } from '@/lib/utils';
 import type { PageSection, Theme } from '@/types';
-import { Link } from '@inertiajs/react';
-import { ArrowUpRight } from 'lucide-react';
 
 type OurWorkProps = {
   themes?: Theme[] | null;
@@ -40,7 +41,10 @@ export default function OurWork({
 
   return (
     <div className="relative mx-auto max-w-7xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
-      <section className="mx-auto max-w-3xl text-center" aria-labelledby="our-work-intro">
+      <section
+        className="mx-auto max-w-3xl text-center"
+        aria-labelledby="our-work-intro"
+      >
         <h2 id="our-work-intro" className="sr-only">
           Our Work
         </h2>
@@ -108,7 +112,7 @@ export default function OurWork({
                 <CardWithEffect key={id} className="group p-0">
                   <Link
                     href={href}
-                    className="relative block aspect-3/2 w-full overflow-hidden focus-visible:ring-theme-500 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                    className="focus-visible:ring-theme-500 relative block aspect-3/2 w-full overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                   >
                     <img
                       className="h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
@@ -117,7 +121,8 @@ export default function OurWork({
                       loading="lazy"
                       decoding="async"
                       style={{
-                        filter: 'saturate(0.72) contrast(0.96) brightness(0.88)',
+                        filter:
+                          'saturate(0.72) contrast(0.96) brightness(0.88)',
                       }}
                     />
                     {/* Muted brand wash so busy or soft assets read as editorial stills */}

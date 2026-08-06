@@ -1,7 +1,9 @@
 'use client';
 
-import { BadgeCheck, LogOut } from 'lucide-react';
 import { Link } from '@inertiajs/react';
+import { CaretSortIcon } from '@radix-ui/react-icons';
+import { BadgeCheck, LogOut } from 'lucide-react';
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -18,7 +20,6 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
-import { CaretSortIcon } from '@radix-ui/react-icons';
 import type { User } from '@/types';
 
 export function NavUser({ user }: { user?: User }) {

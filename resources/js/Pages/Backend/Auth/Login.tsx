@@ -1,12 +1,13 @@
+import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
+
 import Checkbox from '@/components/Backend/Checkbox';
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
-import GuestLayout from '@/layouts/GuestLayout';
 import { useToast } from '@/hooks/use-toast';
-import { Head, Link, useForm } from '@inertiajs/react';
+import GuestLayout from '@/layouts/GuestLayout';
 
 type LoginProps = { status?: string; canResetPassword?: boolean };
 
@@ -65,7 +66,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             className="mt-1 block w-full"
             autoComplete="username"
             isFocused={true}
-            onChange={(e) => setData('email', e.target.value)}
+            onChange={e => setData('email', e.target.value)}
           />
 
           <InputError message={errors.email} className="mt-2" />
@@ -81,7 +82,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
             value={data.password}
             className="mt-1 block w-full"
             autoComplete="current-password"
-            onChange={(e) => setData('password', e.target.value)}
+            onChange={e => setData('password', e.target.value)}
           />
 
           <InputError message={errors.password} className="mt-2" />
@@ -102,7 +103,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
           {canResetPassword && (
             <Link
               href={route('password.request')}
-              className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+              className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:outline-none"
             >
               Forgot your password?
             </Link>

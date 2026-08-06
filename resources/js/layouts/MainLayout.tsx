@@ -1,23 +1,22 @@
-import { useEffect, useState, type ReactNode } from 'react';
-import { ThemeProvider } from '@/components/shared/theme-provider';
-import Footer from '@/components/Frontend/footer/footer';
-import Header from '@/components/Frontend/header/header';
-import { Button } from '@/components/ui/button';
-import { mobileMenu, socialMenu } from '@/lib/data';
-import { cn } from '@/lib/utils';
 import { usePage } from '@inertiajs/react';
 import { ArrowUpToLineIcon } from 'lucide-react';
-import SearchModal from '@/components/Frontend/header/searchModal';
-import type { MenuItem, SharedProps } from '@/types';
+import { type ReactNode, useEffect, useState } from 'react';
 
+import Footer from '@/components/Frontend/footer/footer';
+import Header from '@/components/Frontend/header/header';
+import SearchModal from '@/components/Frontend/header/searchModal';
+import MobileMenu from '@/components/Frontend/mobileMenu';
+import { ThemeProvider } from '@/components/shared/theme-provider';
+import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-
-import MobileMenu from '@/components/Frontend/mobileMenu';
+import { mobileMenu, socialMenu } from '@/lib/data';
+import { cn } from '@/lib/utils';
+import type { MenuItem, SharedProps } from '@/types';
 
 type MainLayoutProps = {
   children?: ReactNode;
@@ -95,7 +94,7 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
 
       <Button
         className={cn(
-          'scroll-to-top group fixed bottom-20 right-12 z-50 flex h-10 w-10 items-center justify-center rounded-full p-2 backdrop-blur-md transition-all duration-300 ease-in-out',
+          'scroll-to-top group fixed right-12 bottom-20 z-50 flex h-10 w-10 items-center justify-center rounded-full p-2 backdrop-blur-md transition-all duration-300 ease-in-out',
           visible ? 'translate-y-0' : 'translate-y-60'
         )}
         aria-label="Scroll to top"

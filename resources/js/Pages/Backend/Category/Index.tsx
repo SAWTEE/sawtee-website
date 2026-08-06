@@ -1,16 +1,21 @@
+import { Head, useForm } from '@inertiajs/react';
+import React, { useState } from 'react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import { Head, useForm } from '@inertiajs/react';
-import React, { useState } from 'react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+
 import CreateCategoryForm from './Partials/CreateCategoryForm';
 import EditCategoryForm from './Partials/EditCategoryForm';
 
-export default function Index({ auth = undefined, categories = undefined }: any) {
+export default function Index({
+  auth = undefined,
+  categories = undefined,
+}: any) {
   const { delete: destroy } = useForm();
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);

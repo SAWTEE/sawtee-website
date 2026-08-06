@@ -1,5 +1,6 @@
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef, useState } from 'react';
+
 import { useTheme } from '../shared/theme-provider';
 
 const FONT_STACK =

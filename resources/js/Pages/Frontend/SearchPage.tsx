@@ -1,3 +1,7 @@
+import { Link, router } from '@inertiajs/react';
+import { SearchIcon } from 'lucide-react';
+import { FormEvent, useEffect, useId, useState } from 'react';
+
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
 import { Button } from '@/components/ui/button';
@@ -5,9 +9,6 @@ import { Input } from '@/components/ui/input';
 import MainLayout from '@/layouts/MainLayout';
 import { cn, htmlToText } from '@/lib/utils';
 import type { FrontendSearchProps, SearchResultPost } from '@/types';
-import { Link, router } from '@inertiajs/react';
-import { SearchIcon } from 'lucide-react';
-import { FormEvent, useEffect, useId, useState } from 'react';
 
 function categoryLabel(post: SearchResultPost): string | null {
   if (typeof post.category === 'string') {
@@ -65,12 +66,12 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
               ))}
             {label && post.author ? (
               <span
-                className="bg-[#006181]/25 h-1 w-1 rounded-full dark:bg-[#006181]/45"
+                className="h-1 w-1 rounded-full bg-[#006181]/25 dark:bg-[#006181]/45"
                 aria-hidden
               />
             ) : null}
             {post.author ? (
-              <span className="text-muted-foreground normal-case tracking-normal">
+              <span className="text-muted-foreground tracking-normal normal-case">
                 {post.author}
               </span>
             ) : null}
@@ -188,7 +189,7 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
                     onChange={e => setSearchQuery(e.target.value)}
                     className={cn(
                       '[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
-                      'h-12 w-full appearance-none rounded-md border border-[#006181]/20 bg-background/80 py-3 pr-4 pl-10 text-base shadow-none backdrop-blur-sm',
+                      'bg-background/80 h-12 w-full appearance-none rounded-md border border-[#006181]/20 py-3 pr-4 pl-10 text-base shadow-none backdrop-blur-sm',
                       'placeholder:text-muted-foreground/80',
                       'focus-visible:border-[#006181]/45 focus-visible:ring-[#006181]/30',
                       'dark:border-[#006181]/35 dark:bg-black/40 dark:focus-visible:border-[#006181]/55'

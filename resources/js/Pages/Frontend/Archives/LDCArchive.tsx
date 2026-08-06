@@ -1,10 +1,11 @@
+import { Link } from '@inertiajs/react';
+import { ArrowUpRight, ExternalLink } from 'lucide-react';
+import type { ReactNode } from 'react';
+
 import { features } from '@/lib/data';
 import { DateFormat } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import type { Post } from '@/types';
-import { Link } from '@inertiajs/react';
-import { ArrowUpRight, ExternalLink } from 'lucide-react';
-import type { ReactNode } from 'react';
 
 type LDCArchiveProps = {
   posts?: Post[] | null;
@@ -281,7 +282,7 @@ function ResourceCard({
   return (
     <article
       className={cn(
-        'group relative flex h-full flex-col border border-transparent bg-bgDarker/60 transition-colors',
+        'group bg-bgDarker/60 relative flex h-full flex-col border border-transparent transition-colors',
         'hover:border-[#006181]/18 hover:bg-[#006181]/[0.03]',
         'dark:bg-black/30 dark:hover:border-[#006181]/30 dark:hover:bg-[#006181]/10',
         featured ? 'p-6 md:p-7' : 'p-5 md:p-6'
@@ -318,7 +319,7 @@ function ResourceCard({
           {post.title}
         </h4>
 
-        <span className="text-muted-foreground mt-auto inline-flex items-center gap-1 pt-4 text-xs font-medium tracking-wide uppercase opacity-0 transition-opacity group-hover:opacity-100 group-focus-within:opacity-100">
+        <span className="text-muted-foreground mt-auto inline-flex items-center gap-1 pt-4 text-xs font-medium tracking-wide uppercase opacity-0 transition-opacity group-focus-within:opacity-100 group-hover:opacity-100">
           {external ? 'External' : 'Open'}
           {external ? (
             <ExternalLink className="h-3 w-3" aria-hidden />

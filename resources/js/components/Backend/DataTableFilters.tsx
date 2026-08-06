@@ -1,3 +1,6 @@
+import { router } from '@inertiajs/react';
+import { useState } from 'react';
+
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -8,8 +11,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { router } from '@inertiajs/react';
-import { useState } from 'react';
 export function CustomFilter({ table = undefined, column = undefined }: any) {
   const [value, setValue] = useState(undefined);
   return (

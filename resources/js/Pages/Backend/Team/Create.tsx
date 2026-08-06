@@ -1,6 +1,7 @@
+import { Head } from '@inertiajs/react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-import { Head } from '@inertiajs/react';
 import CreateTeamForm from './Partials/CreateTeamForm';
 
 export default function Create({ auth = undefined }: any) {

@@ -1,10 +1,12 @@
+import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
+
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { useToast } from '@/hooks/use-toast';
-import { useForm } from '@inertiajs/react';
-import { useState } from 'react';
+
 import EditSlideForm from './EditSlideForm';
 
 const Slides = ({ slides = undefined, slider = undefined }: any) => {

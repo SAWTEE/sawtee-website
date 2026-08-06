@@ -58,9 +58,9 @@ export function ModeToggle() {
           title={`Theme: ${activeLabel}`}
           className={cn(
             'text-muted-foreground relative h-10 w-10 shrink-0 rounded-md border border-[#006181]/15 bg-transparent shadow-none transition-colors',
-            'hover:border-[#006181]/35 hover:bg-[#006181]/5 hover:text-primary',
+            'hover:text-primary hover:border-[#006181]/35 hover:bg-[#006181]/5',
             'focus-visible:ring-[#006181]/40',
-            'data-[state=open]:border-[#006181]/35 data-[state=open]:bg-[#006181]/5 data-[state=open]:text-primary',
+            'data-[state=open]:text-primary data-[state=open]:border-[#006181]/35 data-[state=open]:bg-[#006181]/5',
             'dark:border-[#006181]/30 dark:text-zinc-300',
             'dark:hover:border-[#006181]/45 dark:hover:bg-[#006181]/10 dark:hover:text-zinc-100',
             'dark:data-[state=open]:border-[#006181]/45 dark:data-[state=open]:bg-[#006181]/10 dark:data-[state=open]:text-zinc-100'
@@ -86,9 +86,7 @@ export function ModeToggle() {
           />
           <span className="sr-only">
             Current theme: {activeLabel}
-            {theme === 'system' && resolvedTheme
-              ? ` (${resolvedTheme})`
-              : ''}
+            {theme === 'system' && resolvedTheme ? ` (${resolvedTheme})` : ''}
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -114,10 +112,10 @@ export function ModeToggle() {
                 value={value}
                 className={cn(
                   'cursor-pointer rounded-md py-2 pr-2 pl-8 text-sm',
-                  'focus:bg-[#006181]/8 focus:text-foreground',
+                  'focus:text-foreground focus:bg-[#006181]/8',
                   'dark:focus:bg-[#006181]/15 dark:focus:text-zinc-100',
                   selected &&
-                    'bg-[#006181]/6 text-foreground dark:bg-[#006181]/12 dark:text-zinc-100'
+                    'text-foreground bg-[#006181]/6 dark:bg-[#006181]/12 dark:text-zinc-100'
                 )}
               >
                 <span className="flex items-start gap-2.5">

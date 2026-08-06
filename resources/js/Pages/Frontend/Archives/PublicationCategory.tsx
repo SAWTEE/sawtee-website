@@ -60,7 +60,7 @@ export default function PublicationCategory({
                               className="group relative"
                               referrerPolicy="no-referrer"
                             >
-                              <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                              <div className="absolute top-0 left-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
                               <img
                                 className="aspect-3/4 h-full w-full rounded-md object-cover"
                                 src={
@@ -85,7 +85,7 @@ export default function PublicationCategory({
                               referrerPolicy="no-referrer"
                               rel="noopener noreferrer"
                             >
-                              <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
+                              <div className="absolute top-0 left-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
                               <img
                                 className="aspect-3/4 h-full w-full rounded-md object-cover"
                                 src={

@@ -1,9 +1,9 @@
-import { useMemo } from 'react';
 import { cva } from 'class-variance-authority';
+import { useMemo } from 'react';
 
-import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 
 function FieldSet({ className = '', ...props }: any) {
   return (
@@ -117,7 +117,7 @@ function FieldTitle({ className = '', ...props }: any) {
     <div
       data-slot="field-label"
       className={cn(
-        'flex w-fit items-center gap-2 text-sm font-medium leading-snug group-data-[disabled=true]/field:opacity-50',
+        'flex w-fit items-center gap-2 text-sm leading-snug font-medium group-data-[disabled=true]/field:opacity-50',
         className
       )}
       {...props}
@@ -130,8 +130,8 @@ function FieldDescription({ className = '', ...props }: any) {
     <p
       data-slot="field-description"
       className={cn(
-        'text-sm font-normal leading-normal text-muted-foreground group-has-data-[orientation=horizontal]/field:text-balance',
-        'nth-last-2:-mt-1 last:mt-0 in-data-[variant=legend]:-mt-1.5',
+        'text-muted-foreground text-sm leading-normal font-normal group-has-data-[orientation=horizontal]/field:text-balance',
+        'last:mt-0 in-data-[variant=legend]:-mt-1.5 nth-last-2:-mt-1',
         '[&>a:hover]:text-primary [&>a]:underline [&>a]:underline-offset-4',
         className
       )}
@@ -140,7 +140,11 @@ function FieldDescription({ className = '', ...props }: any) {
   );
 }
 
-function FieldSeparator({ children = undefined, className = '', ...props }: any) {
+function FieldSeparator({
+  children = undefined,
+  className = '',
+  ...props
+}: any) {
   return (
     <div
       data-slot="field-separator"
@@ -154,7 +158,7 @@ function FieldSeparator({ children = undefined, className = '', ...props }: any)
       <Separator className="absolute inset-0 top-1/2" />
       {children && (
         <span
-          className="relative mx-auto block w-fit bg-background px-2 text-muted-foreground"
+          className="bg-background text-muted-foreground relative mx-auto block w-fit px-2"
           data-slot="field-separator-content"
         >
           {children}
@@ -164,7 +168,12 @@ function FieldSeparator({ children = undefined, className = '', ...props }: any)
   );
 }
 
-function FieldError({ className = '', children = undefined, errors = undefined, ...props }: any) {
+function FieldError({
+  className = '',
+  children = undefined,
+  errors = undefined,
+  ...props
+}: any) {
   const content = useMemo(() => {
     if (children) {
       return children;
@@ -196,7 +205,7 @@ function FieldError({ className = '', children = undefined, errors = undefined, 
     <div
       role="alert"
       data-slot="field-error"
-      className={cn('text-sm font-normal text-destructive', className)}
+      className={cn('text-destructive text-sm font-normal', className)}
       {...props}
     >
       {content}
@@ -206,13 +215,13 @@ function FieldError({ className = '', children = undefined, errors = undefined, 
 
 export {
   Field,
-  FieldLabel,
+  FieldContent,
   FieldDescription,
   FieldError,
   FieldGroup,
+  FieldLabel,
   FieldLegend,
   FieldSeparator,
   FieldSet,
-  FieldContent,
   FieldTitle,
 };

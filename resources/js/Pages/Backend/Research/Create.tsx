@@ -1,6 +1,7 @@
+import { Head } from '@inertiajs/react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
-import { Head } from '@inertiajs/react';
 import CreateResearchForm from './Partials/CreateResearchForm';
 
 export default function Create({ auth = undefined }: any) {

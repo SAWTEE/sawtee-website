@@ -1,5 +1,6 @@
-import type { Article } from '@/types';
 import { Link } from '@inertiajs/react';
+
+import type { Article } from '@/types';
 
 type TableOfContentsProps = {
   articles?: Article[] | null;
@@ -22,7 +23,7 @@ export const TableOfContents = ({
               >
                 <div className="flex w-full flex-1 flex-col gap-1.5">
                   <Link
-                    className="text-secondary-foreground group-hover:text-[#006181] dark:group-hover:text-[#4da3c0] font-serif text-lg leading-snug font-medium tracking-tight no-underline md:text-xl"
+                    className="text-secondary-foreground font-serif text-lg leading-snug font-medium tracking-tight no-underline group-hover:text-[#006181] md:text-xl dark:group-hover:text-[#4da3c0]"
                     href={`/category/publications/trade-insight/${volumeSlug}/${article.slug}`}
                   >
                     {article.title}

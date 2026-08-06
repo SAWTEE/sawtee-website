@@ -1,7 +1,8 @@
+import type { ReactNode } from 'react';
+
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import { cn } from '@/lib/utils';
-import type { ReactNode } from 'react';
 
 type PageLayoutProps = {
   title?: string | null;

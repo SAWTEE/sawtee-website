@@ -1,8 +1,9 @@
+import { Link } from '@inertiajs/react';
+import type { ComponentPropsWithoutRef } from 'react';
+
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { Category } from '@/types';
-import { Link } from '@inertiajs/react';
-import type { ComponentPropsWithoutRef } from 'react';
 
 type PostCategoryProps = ComponentPropsWithoutRef<typeof Button>;
 
@@ -10,7 +11,7 @@ export const PostCategory = ({ className, ...props }: PostCategoryProps) => (
   <Button
     variant="outline"
     className={cn(
-      'category border-[#006181]/25 text-[#006181] hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15 h-auto rounded-md px-3 py-1 text-xs font-medium tracking-wide uppercase',
+      'category h-auto rounded-md border-[#006181]/25 px-3 py-1 text-xs font-medium tracking-wide text-[#006181] uppercase hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15',
       className
     )}
     {...props}

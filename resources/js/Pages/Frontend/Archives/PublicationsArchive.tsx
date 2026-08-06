@@ -1,19 +1,20 @@
+import { Link } from '@inertiajs/react';
+
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { Separator } from '@/components/ui/separator';
-import { cn } from '@/lib/utils';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
+import { cn } from '@/lib/utils';
 import type {
   Category,
   FrontendPublicationsArchiveProps,
   Publication,
   PublicationsBySlug,
 } from '@/types';
-import { Link } from '@inertiajs/react';
 
 export default function PublicationsArchive({
   category,

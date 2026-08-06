@@ -1,9 +1,10 @@
+import { type ReactNode, useEffect, useMemo, useRef } from 'react';
+
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
-import type { Post } from '@/types';
-import { useEffect, useMemo, useRef, type ReactNode } from 'react';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
+import type { Post } from '@/types';
 
 const calculateReadingTime = (
   content: string,

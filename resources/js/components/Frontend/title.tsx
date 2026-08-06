@@ -1,5 +1,6 @@
-import { FadeText } from '../shared/FadeText';
 import { cn } from '@/lib/utils';
+
+import { FadeText } from '../shared/FadeText';
 
 type TitleProps = {
   title?: string;

@@ -1,3 +1,14 @@
+import { router } from '@inertiajs/react';
+import { ArrowRight, SearchIcon } from 'lucide-react';
+import {
+  FormEvent,
+  KeyboardEvent,
+  useEffect,
+  useId,
+  useRef,
+  useState,
+} from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -9,16 +20,6 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
-import { router } from '@inertiajs/react';
-import { ArrowRight, SearchIcon } from 'lucide-react';
-import {
-  FormEvent,
-  KeyboardEvent,
-  useEffect,
-  useId,
-  useRef,
-  useState,
-} from 'react';
 
 export default function SearchModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,9 +58,7 @@ export default function SearchModal() {
       const target = event.target as HTMLElement | null;
       const tag = target?.tagName?.toLowerCase();
       const isTyping =
-        tag === 'input' ||
-        tag === 'textarea' ||
-        target?.isContentEditable;
+        tag === 'input' || tag === 'textarea' || target?.isContentEditable;
 
       if (event.key === '/' && !isOpen && !isTyping) {
         event.preventDefault();
@@ -215,13 +214,13 @@ export default function SearchModal() {
 
         <div className="text-muted-foreground flex items-center justify-between gap-3 border-t border-[#006181]/10 bg-[#006181]/4 px-5 py-3 text-xs dark:border-[#006181]/20 dark:bg-[#006181]/10">
           <span className="inline-flex items-center gap-2">
-            <kbd className="rounded border border-[#006181]/20 bg-background px-1.5 py-0.5 font-sans text-[10px] dark:border-[#006181]/35">
+            <kbd className="bg-background rounded border border-[#006181]/20 px-1.5 py-0.5 font-sans text-[10px] dark:border-[#006181]/35">
               Enter
             </kbd>
             <span>to search</span>
           </span>
           <span className="inline-flex items-center gap-2">
-            <kbd className="rounded border border-[#006181]/20 bg-background px-1.5 py-0.5 font-sans text-[10px] dark:border-[#006181]/35">
+            <kbd className="bg-background rounded border border-[#006181]/20 px-1.5 py-0.5 font-sans text-[10px] dark:border-[#006181]/35">
               Esc
             </kbd>
             <span>to close</span>

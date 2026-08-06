@@ -1,5 +1,6 @@
 import { Head } from '@inertiajs/react';
 import type { ReactNode } from 'react';
+
 import type { SeoMeta } from '@/types';
 
 type WebsiteHeadProps = Partial<SeoMeta> & {
@@ -48,8 +49,7 @@ const WebsiteHead = ({
   children,
 }: WebsiteHeadProps) => {
   const resolvedTitle = title?.trim() || 'SAWTEE';
-  const resolvedDescription =
-    description?.trim() || DEFAULT_DESCRIPTION;
+  const resolvedDescription = description?.trim() || DEFAULT_DESCRIPTION;
   const resolvedImage = toAbsoluteUrl(image ?? DEFAULT_IMAGE);
   const resolvedUrl = toAbsoluteUrl(url ?? '/');
   const brandedTitle = withBrandTitle(resolvedTitle);
@@ -57,12 +57,12 @@ const WebsiteHead = ({
   return (
     <Head>
       <title>{resolvedTitle}</title>
-      <meta head-key="description" name="description" content={resolvedDescription} />
       <meta
-        head-key="og:title"
-        property="og:title"
-        content={brandedTitle}
+        head-key="description"
+        name="description"
+        content={resolvedDescription}
       />
+      <meta head-key="og:title" property="og:title" content={brandedTitle} />
       <meta head-key="og:type" property="og:type" content={type} />
       <meta
         head-key="og:description"

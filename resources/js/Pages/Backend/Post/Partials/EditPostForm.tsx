@@ -1,8 +1,10 @@
+import { useForm } from '@inertiajs/react';
+import { CalendarIcon, QuestionMarkCircledIcon } from '@radix-ui/react-icons';
+import React from 'react';
+
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
 import InputError from '@/components/Backend/InputError';
-// import { MultiSelect } from '@/components/Backend/MultiSelect';
-import { MultiSelect } from '@/components/ui/multi-select';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
   Accordion,
@@ -14,13 +16,14 @@ import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+// import { MultiSelect } from '@/components/Backend/MultiSelect';
+import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { formatDateTimeForInput } from '@/lib/helpers';
 import {
   Select,
   SelectContent,
@@ -38,10 +41,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
+import { formatDateTimeForInput } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import { useForm } from '@inertiajs/react';
-import { CalendarIcon, QuestionMarkCircledIcon } from '@radix-ui/react-icons';
-import React from 'react';
 
 export default function EditPostForm({
   post: postData = undefined,

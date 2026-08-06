@@ -1,12 +1,15 @@
-import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
-import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-import TWTags from '@/components/shared/TWTags';
 import { Head } from '@inertiajs/react';
-
 import React from 'react';
 
-export default function Index({ auth = undefined, subscribers = undefined }: any) {
+import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
+import { DataTable } from '@/components/Backend/FrontDataTable';
+import TWTags from '@/components/shared/TWTags';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+
+export default function Index({
+  auth = undefined,
+  subscribers = undefined,
+}: any) {
   const defaultColumns = [
     {
       accessorKey: 'id',

@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/button';
 import {
-  forwardRef,
-  useRef,
   type ButtonHTMLAttributes,
+  forwardRef,
   type ReactNode,
+  useRef,
 } from 'react';
+
+import { Button } from '@/components/ui/button';
 
 type PrimaryButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   isLoading?: boolean;

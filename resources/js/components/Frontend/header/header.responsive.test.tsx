@@ -1,5 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
+
 import Header from './header';
 
 vi.mock('@inertiajs/react', () => ({
@@ -33,7 +34,7 @@ describe('Header responsiveness', () => {
     expect(toggle.parentElement?.className).toMatch(/lg:hidden/);
     const mobileThemeToggle = screen
       .getAllByTestId('mode-toggle')
-      .find((el) => el.parentElement === toggle.parentElement);
+      .find(el => el.parentElement === toggle.parentElement);
     expect(mobileThemeToggle).toBeTruthy();
   });
 

@@ -1,7 +1,9 @@
+import type { ReactNode } from 'react';
+
 import { formatDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import type { Tag } from '@/types';
-import type { ReactNode } from 'react';
+
 import PostTags from './post-tags';
 
 type PostMetaProps = {

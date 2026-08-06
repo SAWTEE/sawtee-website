@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
-import { emptySharedProps } from './index';
+
 import type { MenuItem, PageProps, Paginated, User } from './index';
+import { emptySharedProps } from './index';
 
 describe('frontend type contracts', () => {
   it('builds empty shared props for layouts', () => {

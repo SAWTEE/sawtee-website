@@ -1,12 +1,12 @@
-import PrimaryButton from '@/components/Backend/PrimaryButton';
+import { Head, Link, useForm } from '@inertiajs/react';
+import React from 'react';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
-import { Head, Link, useForm } from '@inertiajs/react';
-import React from 'react';
+import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, teams = undefined }: any) {
   const { toast } = useToast();

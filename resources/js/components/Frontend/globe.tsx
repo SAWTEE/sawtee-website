@@ -1,8 +1,9 @@
 'use client';
 
-import { Globe } from '@/components/ui/globe';
 import type { COBEOptions } from 'cobe';
 import { useMemo } from 'react';
+
+import { Globe } from '@/components/ui/globe';
 
 /**
  * City markers for SAWTEE member institutions (About page /
@@ -59,7 +60,7 @@ const SawteeGlobe = ({ darkMode = false }: SawteeGlobeProps) => {
   );
 
   return (
-    <div className="pointer-events-none absolute inset-0 z-0 top-4 -left-28 aspect-square w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]">
+    <div className="pointer-events-none absolute inset-0 top-4 -left-28 z-0 aspect-square w-[150%] sm:-top-2 sm:-left-32 md:-left-44 md:w-[150%] lg:-top-10 lg:-left-10 lg:w-[150%] xl:-left-32 xl:w-[150%]">
       <Globe className="top-0 max-w-none" config={config} />
     </div>
   );

@@ -1,11 +1,12 @@
+import { Head, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import { useEffect, useRef } from 'react';
-import GuestLayout from '@/layouts/GuestLayout';
+
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TextInput from '@/components/Backend/TextInput';
-import { Head, useForm } from '@inertiajs/react';
+import GuestLayout from '@/layouts/GuestLayout';
 
 type ResetPasswordProps = { token: string; email: string };
 

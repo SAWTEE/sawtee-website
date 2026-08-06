@@ -1,16 +1,17 @@
+import { Link } from '@inertiajs/react';
 import type { ComponentProps, ComponentType } from 'react';
+
 import { NavMain } from '@/components/Backend/nav-main';
 import { NavUser } from '@/components/Backend/nav-user';
-import { Link } from '@inertiajs/react';
 import ApplicationLogo from '@/components/shared/ApplicationLogo';
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarFooter,
   SidebarRail,
 } from '@/components/ui/sidebar';
 import type { User } from '@/types';
