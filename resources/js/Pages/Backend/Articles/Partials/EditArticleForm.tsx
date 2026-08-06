@@ -30,7 +30,11 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function EditArticleForm({ article = undefined, tags = undefined, volumes = undefined }: any) {
+export default function EditArticleForm({
+  article = undefined,
+  tags = undefined,
+  volumes = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: article.title,
     slug: article.slug,
@@ -49,7 +53,10 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
     content: article.content,
   });
   const { toast } = useToast();
-  const [tagOptions, setTagOptions] = React.useState([]);
+  const tagOptions = (tags ?? []).map((tag: any) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
   const [image, setImage] = React.useState(
     data.image ? data.image.preview_url : null
   );
@@ -114,11 +121,6 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
   };
 
   React.useEffect(() => {
-    tags.length !== tagOptions.length &&
-      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
-  }, [tags]);
-
-  React.useEffect(() => {
     setArticleTags(
       article.tags.map((tag: any) => ({ value: tag.id, label: tag.name }))
     );
@@ -126,7 +128,7 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
       'tags',
       article.tags.map((tag: any) => tag.id)
     );
-  }, [article]);
+  }, [article, setData]);
 
   return (
     <form onSubmit={submit}>
@@ -243,7 +245,8 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
                   setData('trade_insight_volume_id', Number(value));
 
                   setSelectedVolume(
-                    volumes.filter((vol: any) => vol.id === Number(value))[0]?.volume
+                    volumes.filter((vol: any) => vol.id === Number(value))[0]
+                      ?.volume
                   );
                 }}
               >
@@ -353,7 +356,9 @@ export default function EditArticleForm({ article = undefined, tags = undefined,
             name="content"
             initialValue={data.content ?? ''}
             id="content"
-            onChange={(evt: any, editor: any) => setData('content', editor.getContent())}
+            onChange={(evt: any, editor: any) =>
+              setData('content', editor.getContent())
+            }
           />
 
           {errors.content && (

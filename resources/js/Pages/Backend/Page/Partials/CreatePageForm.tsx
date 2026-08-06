@@ -44,7 +44,7 @@ export default function CreatePageForm() {
           "These pages depend upon the json data provided to the template. Please add json data to the template. May throw error if you don't.",
       });
     }
-  }, [data.page_template]);
+  }, [data.page_template, toast]);
 
   // @ts-ignore allowlist-migration
   const submit = e => {

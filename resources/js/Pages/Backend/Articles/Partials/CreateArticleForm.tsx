@@ -20,7 +20,10 @@ import {
 import { useForm } from '@inertiajs/react';
 import React from 'react';
 
-export default function CreateArticleForm({ tags = undefined, volumes = undefined }: any) {
+export default function CreateArticleForm({
+  tags = undefined,
+  volumes = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     slug: '',
@@ -36,7 +39,10 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
     content: '',
   });
   const { toast } = useToast();
-  const [tagOptions, setTagOptions] = React.useState([]);
+  const tagOptions = (tags ?? []).map((tag: any) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
   const [image, setImage] = React.useState(null);
   const [articleTags, setArticleTags] = React.useState([]);
 
@@ -95,11 +101,6 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
       },
     });
   };
-
-  React.useEffect(() => {
-    tags.length !== tagOptions.length &&
-      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
-  }, [tags]);
 
   return (
     <form onSubmit={submit}>
@@ -294,7 +295,9 @@ export default function CreateArticleForm({ tags = undefined, volumes = undefine
             name="content"
             initialValue=""
             id="content"
-            onChange={(evt: any, editor: any) => setData('content', editor.getContent())}
+            onChange={(evt: any, editor: any) =>
+              setData('content', editor.getContent())
+            }
           />
 
           {errors.content && (

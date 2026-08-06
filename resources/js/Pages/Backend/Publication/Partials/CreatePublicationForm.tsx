@@ -20,7 +20,10 @@ import { useToast } from '@/hooks/use-toast';
 import { useForm } from '@inertiajs/react';
 import React, { useState } from 'react';
 
-export default function CreatePublicationForm({ categories = undefined, tags = undefined }: any) {
+export default function CreatePublicationForm({
+  categories = undefined,
+  tags = undefined,
+}: any) {
   const { data, setData, post, processing, errors, reset } = useForm({
     category_id: '',
     title: '',
@@ -32,14 +35,12 @@ export default function CreatePublicationForm({ categories = undefined, tags = u
     tags: [],
   });
   const [image, setImage] = useState(null);
-  const [tagOptions, setTagOptions] = useState([]);
+  const tagOptions = (tags ?? []).map((tag: any) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
   const [publicationTags, setPublicationTags] = React.useState([]);
   const { toast } = useToast();
-
-  React.useEffect(() => {
-    tags.length !== tagOptions.length &&
-      setTagOptions(tags.map((tag: any) => ({ value: tag.id, label: tag.name })));
-  }, [tags]);
 
   function setDataImage(image: any) {
     if (image) {

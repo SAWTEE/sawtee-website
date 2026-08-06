@@ -60,6 +60,38 @@ const getResolvedTheme = (theme: Theme): 'dark' | 'light' => {
   return theme;
 };
 
+const applyTheme = (
+  newTheme: Theme,
+  attribute: string,
+  disableTransitionOnChange: boolean
+) => {
+  if (typeof window === 'undefined') return;
+
+  const root = window.document.documentElement;
+  const resolvedTheme = getResolvedTheme(newTheme);
+
+  if (disableTransitionOnChange) {
+    const css = document.createElement('style');
+    css.appendChild(
+      document.createTextNode(
+        '*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
+      )
+    );
+    document.head.appendChild(css);
+
+    requestAnimationFrame(() => {
+      document.head.removeChild(css);
+    });
+  }
+
+  if (attribute === 'class') {
+    root.classList.remove('light', 'dark');
+    root.classList.add(resolvedTheme);
+  } else {
+    root.setAttribute(attribute, resolvedTheme);
+  }
+};
+
 type ThemeProviderProps = {
   children?: ReactNode;
   defaultTheme?: Theme;
@@ -89,39 +121,11 @@ export function ThemeProvider({
     setMounted(true);
   }, []);
 
-  const applyTheme = (newTheme: Theme) => {
-    if (typeof window === 'undefined') return;
-
-    const root = window.document.documentElement;
-    const resolvedTheme = getResolvedTheme(newTheme);
-
-    if (disableTransitionOnChange) {
-      const css = document.createElement('style');
-      css.appendChild(
-        document.createTextNode(
-          '*{-webkit-transition:none!important;-moz-transition:none!important;-o-transition:none!important;-ms-transition:none!important;transition:none!important}'
-        )
-      );
-      document.head.appendChild(css);
-
-      requestAnimationFrame(() => {
-        document.head.removeChild(css);
-      });
-    }
-
-    if (attribute === 'class') {
-      root.classList.remove('light', 'dark');
-      root.classList.add(resolvedTheme);
-    } else {
-      root.setAttribute(attribute, resolvedTheme);
-    }
-  };
-
   useEffect(() => {
     if (mounted) {
-      applyTheme(theme);
+      applyTheme(theme, attribute, disableTransitionOnChange);
     }
-  }, [theme, mounted]);
+  }, [theme, mounted, attribute, disableTransitionOnChange]);
 
   useEffect(() => {
     if (!mounted || !enableSystem) return;
@@ -130,13 +134,13 @@ export function ThemeProvider({
 
     const handleChange = () => {
       if (theme === 'system') {
-        applyTheme('system');
+        applyTheme('system', attribute, disableTransitionOnChange);
       }
     };
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme, mounted, enableSystem]);
+  }, [theme, mounted, enableSystem, attribute, disableTransitionOnChange]);
 
   const value: ThemeProviderState = {
     theme,

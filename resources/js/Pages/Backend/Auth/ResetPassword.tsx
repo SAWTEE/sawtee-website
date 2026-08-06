@@ -1,5 +1,5 @@
 import type { FormEvent } from 'react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import GuestLayout from '@/layouts/GuestLayout';
 import InputError from '@/components/Backend/InputError';
 import InputLabel from '@/components/Backend/InputLabel';
@@ -17,9 +17,12 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
     password_confirmation: '',
   });
 
+  const resetRef = useRef(reset);
+  resetRef.current = reset;
+
   useEffect(() => {
     return () => {
-      reset('password', 'password_confirmation');
+      resetRef.current('password', 'password_confirmation');
     };
   }, []);
 
@@ -44,7 +47,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             value={data.email}
             className="mt-1 block w-full"
             autoComplete="username"
-            onChange={(e) => setData('email', e.target.value)}
+            onChange={e => setData('email', e.target.value)}
           />
 
           <InputError message={errors.email} className="mt-2" />
@@ -61,7 +64,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             className="mt-1 block w-full"
             autoComplete="new-password"
             isFocused={true}
-            onChange={(e) => setData('password', e.target.value)}
+            onChange={e => setData('password', e.target.value)}
           />
 
           <InputError message={errors.password} className="mt-2" />
@@ -80,7 +83,7 @@ export default function ResetPassword({ token, email }: ResetPasswordProps) {
             value={data.password_confirmation}
             className="mt-1 block w-full"
             autoComplete="new-password"
-            onChange={(e) => setData('password_confirmation', e.target.value)}
+            onChange={e => setData('password_confirmation', e.target.value)}
           />
 
           <InputError message={errors.password_confirmation} className="mt-2" />

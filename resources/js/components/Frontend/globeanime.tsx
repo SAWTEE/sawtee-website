@@ -3,115 +3,115 @@
 import anime from 'animejs';
 import { useEffect, useRef } from 'react';
 
+const dots = [
+  {
+    id: 'dot1',
+    type: 'dot',
+    left: '50%',
+    top: '29.9%',
+    delay: 1,
+  },
+  {
+    id: 'dot2',
+    type: 'dot',
+    left: '24.3%',
+    top: '50.2%',
+    delay: 1,
+  },
+  {
+    id: 'dot3',
+    type: 'dot',
+    left: '77.8%',
+    top: '63.4%',
+    delay: 1,
+  },
+];
+
+const svgs = [
+  {
+    id: 'svg1',
+    type: 'svg',
+    viewbox: '0 0 155 284',
+    width: '15.244%',
+    height: '41.24%',
+    left: '38.8%',
+    top: '31.2%',
+    path: 'M.797 283.216c14.605-22.693 64.498-78.738 87.739-104.396-22.406-17.823-47.852-46.354-57.983-58.555 36.536-29.153 96.735-65.699 122.267-80.327-6.727-8.041-21.226-27.282-26.518-39.053',
+    x1: '100%',
+    x2: '100%',
+    y1: '-20%',
+    y1config: {
+      initial: '-20%',
+      frames: ['-20%', '100%'],
+    },
+    y2: '0',
+    y2config: {
+      initial: '0',
+      frames: ['0', '130%'],
+    },
+    duration: 350,
+    delay: 1350,
+    offset: 0,
+    easing: 'linear',
+  },
+  {
+    id: 'svg2',
+    type: 'svg',
+    viewbox: '0 0 272 235',
+    width: '27.458%',
+    height: '34.045%',
+    left: '50.8%',
+    top: '31.4%',
+    path: 'M271.749 233.614C215.075 230.474 159.599 210.964 138.945 201.602C144.38 186.681 156.517 152.612 161.587 135.71C126.058 122.39 44.25 76.75 1.25 0.75',
+    x1: '100%',
+    x2: '100%',
+    y1: '-20%',
+    y1config: {
+      initial: '-20%',
+      frames: ['-20%', '100%'],
+    },
+    y2: '0',
+    y2config: {
+      initial: '0',
+      frames: ['0', '130%'],
+    },
+    duration: 300,
+    delay: 1350,
+    offset: 0,
+    easing: 'linear',
+  },
+  {
+    id: 'svg3',
+    type: 'svg',
+    viewbox: '0 0 261 144',
+    width: '26.687%',
+    height: '20.49%',
+    left: '25.1%',
+    top: '31.4%',
+    path: 'M260.5 1.5C157.75 30.75 67.75 89 1.13281 143.202',
+    x1: '100%',
+    x2: '100%',
+    y1: '-20%',
+    y1config: {
+      initial: '-20%',
+      frames: ['-20%', '100%'],
+    },
+    y2: '0',
+    y2config: {
+      initial: '0',
+      frames: ['0', '130%'],
+    },
+    duration: 200,
+    delay: 1350,
+    offset: 0,
+    easing: 'linear',
+  },
+];
+
 const Globeanime = ({ darkMode = false }: any) => {
   const ref = useRef(null);
 
   const stopColor = darkMode ? '#FFFFFF' : '#000000';
-
-  const dots = [
-    {
-      id: 'dot1',
-      type: 'dot',
-      left: '50%',
-      top: '29.9%',
-      delay: 1,
-    },
-    {
-      id: 'dot2',
-      type: 'dot',
-      left: '24.3%',
-      top: '50.2%',
-      delay: 1,
-    },
-    {
-      id: 'dot3',
-      type: 'dot',
-      left: '77.8%',
-      top: '63.4%',
-      delay: 1,
-    },
-  ];
-
-  const svgs = [
-    {
-      id: 'svg1',
-      type: 'svg',
-      viewbox: '0 0 155 284',
-      width: '15.244%',
-      height: '41.24%',
-      left: '38.8%',
-      top: '31.2%',
-      path: 'M.797 283.216c14.605-22.693 64.498-78.738 87.739-104.396-22.406-17.823-47.852-46.354-57.983-58.555 36.536-29.153 96.735-65.699 122.267-80.327-6.727-8.041-21.226-27.282-26.518-39.053',
-      x1: '100%',
-      x2: '100%',
-      y1: '-20%',
-      y1config: {
-        initial: '-20%',
-        frames: ['-20%', '100%'],
-      },
-      y2: '0',
-      y2config: {
-        initial: '0',
-        frames: ['0', '130%'],
-      },
-      duration: 350,
-      delay: 1350,
-      offset: 0,
-      easing: 'linear',
-    },
-    {
-      id: 'svg2',
-      type: 'svg',
-      viewbox: '0 0 272 235',
-      width: '27.458%',
-      height: '34.045%',
-      left: '50.8%',
-      top: '31.4%',
-      path: 'M271.749 233.614C215.075 230.474 159.599 210.964 138.945 201.602C144.38 186.681 156.517 152.612 161.587 135.71C126.058 122.39 44.25 76.75 1.25 0.75',
-      x1: '100%',
-      x2: '100%',
-      y1: '-20%',
-      y1config: {
-        initial: '-20%',
-        frames: ['-20%', '100%'],
-      },
-      y2: '0',
-      y2config: {
-        initial: '0',
-        frames: ['0', '130%'],
-      },
-      duration: 300,
-      delay: 1350,
-      offset: 0,
-      easing: 'linear',
-    },
-    {
-      id: 'svg3',
-      type: 'svg',
-      viewbox: '0 0 261 144',
-      width: '26.687%',
-      height: '20.49%',
-      left: '25.1%',
-      top: '31.4%',
-      path: 'M260.5 1.5C157.75 30.75 67.75 89 1.13281 143.202',
-      x1: '100%',
-      x2: '100%',
-      y1: '-20%',
-      y1config: {
-        initial: '-20%',
-        frames: ['-20%', '100%'],
-      },
-      y2: '0',
-      y2config: {
-        initial: '0',
-        frames: ['0', '130%'],
-      },
-      duration: 200,
-      delay: 1350,
-      offset: 0,
-      easing: 'linear',
-    },
-  ];
 
   useEffect(() => {
     const tl = anime.timeline({

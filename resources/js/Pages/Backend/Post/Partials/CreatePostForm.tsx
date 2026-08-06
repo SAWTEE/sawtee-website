@@ -59,7 +59,10 @@ export default function CreatePostForm({
   });
   const { toast } = useToast();
   const [, setSelectedCategory] = React.useState('Featured Events');
-  const [tagOptions, setTagOptions] = React.useState([]);
+  const tagOptions = (tags ?? []).map((tag: any) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
   const [image, setImage] = React.useState(null);
   const [postTags, setPostTags] = React.useState([]);
 
@@ -121,13 +124,6 @@ export default function CreatePostForm({
       },
     });
   };
-
-  React.useEffect(() => {
-    tags.length !== tagOptions.length &&
-      setTagOptions(
-        tags.map((tag: any) => ({ value: tag.id, label: tag.name }))
-      );
-  }, [tags]);
 
   return (
     <form onSubmit={submit}>

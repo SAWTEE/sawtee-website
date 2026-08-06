@@ -83,7 +83,10 @@ export default function EditPostForm({
   );
   const [files, setFiles] = React.useState(postData.post_content_files);
   const [postTags, setPostTags] = React.useState([]);
-  const [tagOptions, setTagOptions] = React.useState([]);
+  const tagOptions = (tags ?? []).map((tag: any) => ({
+    value: tag.id,
+    label: tag.name,
+  }));
   const [, setSelectedCategory] = React.useState(
     categories
       ? categories.filter((cat: any) => cat.id === data.category_id)[0].name
@@ -149,13 +152,6 @@ export default function EditPostForm({
       }
     );
   };
-
-  React.useEffect(() => {
-    tags.length !== tagOptions.length &&
-      setTagOptions(
-        tags.map((tag: any) => ({ value: tag.id, label: tag.name }))
-      );
-  }, [tags]);
 
   React.useEffect(() => {
     setPostTags(
