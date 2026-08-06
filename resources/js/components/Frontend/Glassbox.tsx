@@ -10,7 +10,6 @@ type GlassboxProps = HTMLAttributes<HTMLDivElement> & {
 const Glassbox = ({ children, className = '', ...rest }: GlassboxProps) => {
   return (
     <Card
-      variant="glass"
       className={cn(
         'text-secondary-foreground w-full gap-0 rounded-lg py-4 dark:text-zinc-200',
         className

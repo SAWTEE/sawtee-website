@@ -5,7 +5,13 @@ import { getGlassStyles, type GlassCustomization } from '@/lib/glass-utils';
 import { hoverEffects, type HoverEffect } from '@/lib/hover-effects';
 
 type GlassCardVariant =
-  'default' | 'glass' | 'glassSubtle' | 'frosted' | 'fluted' | 'crystal';
+  | 'classic'
+  | 'default'
+  | 'glass'
+  | 'glassSubtle'
+  | 'frosted'
+  | 'fluted'
+  | 'crystal';
 
 export interface GlassCardProps extends React.ComponentProps<'div'> {
   variant?: GlassCardVariant;
@@ -22,11 +28,20 @@ function getVariantClass(
   if (variant === 'default') {
     return 'bg-card text-card-foreground border shadow-sm';
   }
+
+  // Previous Glassbox look (pre Crenspire glass-ui)
+  if (variant === 'classic') {
+    return 'border border-white/40 bg-white/70 text-secondary-foreground shadow-sm backdrop-blur-md dark:border-white/10 dark:bg-black/55 dark:text-zinc-200';
+  }
+
   if (hasCustomGlass) {
     return 'glass-bg text-foreground';
   }
 
-  const variants: Record<Exclude<GlassCardVariant, 'default'>, string> = {
+  const variants: Record<
+    Exclude<GlassCardVariant, 'classic' | 'default'>,
+    string
+  > = {
     glass: 'glass-bg text-foreground',
     glassSubtle:
       'glass-bg text-foreground opacity-50 backdrop-blur-[var(--glass-blur-sm)]',
@@ -40,13 +55,13 @@ function getVariantClass(
 
 /**
  * Crenspire glass-ui Card — separate from shadcn `@/components/ui/card`.
- * Default variant is glass; purple demo gradients are opt-in only.
+ * Default variant is classic (legacy Glassbox); purple demo gradients are opt-in only.
  */
 export const Card = React.forwardRef<HTMLDivElement, GlassCardProps>(
   (
     {
       className,
-      variant = 'glass',
+      variant = 'classic',
       gradient = false,
       animated = false,
       hover = 'none',
@@ -58,7 +73,8 @@ export const Card = React.forwardRef<HTMLDivElement, GlassCardProps>(
     ref
   ) => {
     const hasCustomGlass = glass !== undefined;
-    const glassStyles = variant !== 'default' ? getGlassStyles(glass) : {};
+    const usesGlassStyles = variant !== 'default' && variant !== 'classic';
+    const glassStyles = usesGlassStyles ? getGlassStyles(glass) : {};
 
     return (
       <div
@@ -68,9 +84,9 @@ export const Card = React.forwardRef<HTMLDivElement, GlassCardProps>(
           'relative flex flex-col gap-6 overflow-hidden rounded-xl py-6',
           getVariantClass(variant, hasCustomGlass),
           gradient &&
-            'from-theme-500/10 to-theme-500/5 bg-gradient-to-br via-sky-500/10',
+            'from-theme-500/10 to-theme-500/5 bg-linear-to-br via-sky-500/10',
           animated &&
-            'transition-all duration-300 hover:scale-[1.02] hover:shadow-[var(--glass-shadow-lg)]',
+            'transition-all duration-300 hover:scale-[1.02] hover:shadow-[--glass-shadow-lg]',
           hoverEffects({ hover }),
           className
         )}
