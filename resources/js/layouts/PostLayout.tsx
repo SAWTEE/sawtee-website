@@ -60,60 +60,80 @@ const PostLayout = ({
     if (contentRef.current) {
       const anchors = contentRef.current.querySelectorAll('a');
 
-      anchors.forEach((anchor: any) => {
+      anchors.forEach((anchor: HTMLAnchorElement) => {
         anchor.setAttribute('target', '_blank');
         anchor.setAttribute('rel', 'noopener noreferrer');
       });
     }
   }, [children]);
 
+  const hasRelated = (relatedPosts?.length ?? 0) > 0;
+
   return (
-    <div className="relative w-full py-10">
-      <div className="mx-auto mt-5 w-full max-w-5xl">
-        <PostHeader categories={post.category} heading={post.title} />
-        {featured_image && (
+    <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
+      <header className="mx-auto w-full max-w-3xl">
+        <PostHeader
+          categories={post.category}
+          heading={post.title}
+          className="text-left"
+        />
+        <PostMeta
+          className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
+          author={post.author}
+          date={post.published_at}
+          readingTime={readingTime}
+          tags={post.tags}
+        />
+      </header>
+
+      {featured_image && (
+        <div className="mx-auto mt-8 max-w-4xl md:mt-10">
           <FeaturedMedia
-            className={'rounded-xl'}
+            className="overflow-hidden rounded-lg border border-[#006181]/10 shadow-sm dark:border-white/10"
             src={featured_image}
             srcSet={srcSet}
             alt={post.title}
             priority
           />
-        )}
-      </div>
+        </div>
+      )}
 
-      <div className="w-full">
-        <div className="post-body mx-auto max-w-7xl pt-10 leading-8">
-          <div className="max-w-[60ch] text-lg lg:ml-14">
-            <PostMeta
-              className="py-2"
-              author={post.author}
-              date={post.published_at}
-              readingTime={readingTime}
-              tags={post.tags}
-            />
-          </div>
-          <div className="grid gap-6 lg:grid-cols-12">
-            <div className="post-content max-w-[60ch] text-lg lg:col-span-8 lg:ml-14">
-              <div
-                ref={contentRef}
-                className="post-content prose-base text-lg text-secondary-foreground"
-              >
-                {children}
-              </div>
-              <div className="sharethis-sticky-share-buttons"></div>
+      <div className="post-body mx-auto mt-10 max-w-7xl md:mt-12">
+        <div
+          className={
+            hasRelated
+              ? 'grid gap-10 lg:grid-cols-12 lg:gap-12'
+              : 'mx-auto max-w-3xl'
+          }
+        >
+          <div
+            className={
+              hasRelated
+                ? 'post-content max-w-[65ch] lg:col-span-8 lg:max-w-none'
+                : 'post-content'
+            }
+          >
+            <div
+              ref={contentRef}
+              className="post-content prose-base text-secondary-foreground text-[1.05rem] leading-[1.75] md:text-lg md:leading-8"
+            >
+              {children}
             </div>
-            <aside className="w-full self-start lg:sticky lg:top-32 lg:col-span-4">
+            <div className="sharethis-sticky-share-buttons"></div>
+          </div>
+
+          {hasRelated && (
+            <aside className="w-full self-start lg:sticky lg:top-28 lg:col-span-4 lg:pt-1">
               <SidebarWidget
                 title="Related Posts"
                 array={relatedPosts}
                 link={`/category/${post.category?.slug}`}
               />
             </aside>
-          </div>
+          )}
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 

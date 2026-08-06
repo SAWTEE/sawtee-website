@@ -64,6 +64,7 @@ export default function Article({
   const { title, subtitle, content } = article;
   const volumeLabel = volume.volume ?? volume.title;
   const volumePath = volume.slug ?? volume.volume_slug ?? '';
+  const hasRelated = relatedArticles.length > 0;
 
   return (
     <MainLayout>
@@ -79,79 +80,91 @@ export default function Article({
         jsonLd={seo?.jsonLd}
       />
 
-      <div className="relative w-full px-10 py-10 lg:px-20">
-        <div className="mx-auto mt-5 max-w-5xl">
-          <div
-            className={'post-categories flex flex-wrap justify-center gap-4'}
-          >
+      <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
+        <header className="mx-auto w-full max-w-3xl">
+          <div className="post-categories mb-3 flex flex-wrap gap-2">
             <Link href={`/trade-insight/${volumePath}`}>
               <Button
-                className={
-                  'category rounded-md px-3 py-1 text-sm font-semibold'
-                }
+                variant="outline"
+                className="category border-[#006181]/25 text-[#006181] hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15 h-auto rounded-md px-3 py-1 text-xs font-medium tracking-wide uppercase"
               >
                 {volumeLabel}
               </Button>
             </Link>
           </div>
-          <h1 className="captialize my-3 text-2xl font-bold text-slate-800 dark:text-slate-300 md:text-3xl lg:my-5 xl:text-5xl">
+          <h1 className="text-primary font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl xl:text-4xl dark:text-zinc-100">
             {title}
           </h1>
           {subtitle && (
-            <p className="text-lg text-muted-foreground">{subtitle}</p>
+            <p className="text-muted-foreground mt-3 max-w-prose text-base leading-relaxed md:text-lg">
+              {subtitle}
+            </p>
           )}
+          <PostMeta
+            className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
+            author={article.author}
+            date={article.published_at}
+            readingTime={readingTime}
+            tags={article.tags}
+          />
+        </header>
 
-          {featured_image && (
+        {featured_image && (
+          <div className="mx-auto mt-8 max-w-4xl md:mt-10">
             <FeaturedMedia
-              className={'rounded-xl'}
+              className="overflow-hidden rounded-lg border border-[#006181]/10 shadow-sm dark:border-white/10"
               src={featured_image}
               srcSet={srcSet ?? undefined}
               alt={title}
               priority
             />
-          )}
-        </div>
+          </div>
+        )}
 
-        <div className="w-full">
-          <div className="post-body mx-auto max-w-7xl pt-10 leading-8">
-            <div className="max-w-[60ch] text-lg lg:ml-14">
-              <PostMeta
-                className="py-2"
-                author={article.author}
-                date={article.published_at}
-                readingTime={readingTime}
-                tags={article.tags}
-              />
-            </div>
-            <div className="grid gap-6 lg:grid-cols-12">
-              <div className="post-content max-w-[60ch] text-lg lg:col-span-8 lg:ml-14">
-                <div className="post-content prose-base text-lg text-secondary-foreground">
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: content ?? '',
-                    }}
-                  />
-                </div>
-                <div className="sharethis-sticky-share-buttons"></div>
+        <div className="post-body mx-auto mt-10 max-w-7xl md:mt-12">
+          <div
+            className={
+              hasRelated
+                ? 'grid gap-10 lg:grid-cols-12 lg:gap-12'
+                : 'mx-auto max-w-3xl'
+            }
+          >
+            <div
+              className={
+                hasRelated
+                  ? 'post-content max-w-[65ch] lg:col-span-8 lg:max-w-none'
+                  : 'post-content'
+              }
+            >
+              <div className="post-content prose-base text-secondary-foreground text-[1.05rem] leading-[1.75] md:text-lg md:leading-8">
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: content ?? '',
+                  }}
+                />
               </div>
-              <aside className="w-full self-start lg:sticky lg:top-32 lg:col-span-4">
-                <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border-none shadow-none">
+              <div className="sharethis-sticky-share-buttons"></div>
+            </div>
+
+            {hasRelated && (
+              <aside className="w-full self-start lg:sticky lg:top-28 lg:col-span-4 lg:pt-1">
+                <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20">
                   <SimpleList
-                    className={'border-none px-8'}
-                    heading={'Related Articles'}
+                    className="border-l-[3px] border-l-[#006181] px-5 md:px-6"
+                    heading="Related Articles"
                   >
-                    {relatedArticles?.map(post => {
+                    {relatedArticles.map(post => {
                       return (
-                        <li className="group mb-4" key={post.id}>
+                        <li className="group mb-5 last:mb-3" key={post.id}>
                           <Link
-                            className="text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80"
+                            className="text-secondary-foreground group-hover:text-[#006181] dark:group-hover:text-[#4da3c0] no-underline"
                             href={`/trade-insight/${volume.volume}/${post.slug}`}
                           >
-                            <p className="lg:text-md text-sm leading-5">
+                            <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">
                               {post.title}
                             </p>
                           </Link>
-                          <p className="mt-2 text-xs text-muted-foreground">
+                          <p className="text-muted-foreground mt-1.5 text-xs">
                             {formatDate(post.published_at)}
                           </p>
                         </li>
@@ -160,10 +173,10 @@ export default function Article({
                   </SimpleList>
                 </Glassbox>
               </aside>
-            </div>
+            )}
           </div>
         </div>
-      </div>
+      </article>
     </MainLayout>
   );
 }

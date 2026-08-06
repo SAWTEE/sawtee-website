@@ -19,7 +19,7 @@ export default function SimpleList({
       {...rest}
     >
       {heading && (
-        <h3 className="mb-4 text-lg font-semibold dark:text-secondary-foreground md:text-xl">
+        <h3 className="text-primary mb-4 font-serif text-lg font-semibold tracking-tight md:text-xl dark:text-zinc-100">
           {heading}
         </h3>
       )}

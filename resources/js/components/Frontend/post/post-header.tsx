@@ -30,7 +30,7 @@ const PostHeader = ({
     {heading && (
       <h1
         className={cn(
-          'captialize my-3 font-serif text-2xl font-bold text-slate-800 md:text-3xl lg:my-5 xl:text-5xl dark:text-slate-300',
+          'text-primary my-3 font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl lg:my-4 xl:text-4xl dark:text-zinc-100',
           textStyle
         )}
       >
@@ -38,7 +38,11 @@ const PostHeader = ({
       </h1>
     )}
 
-    {description && <p>{description}</p>}
+    {description && (
+      <p className="text-muted-foreground mt-2 max-w-prose text-base leading-relaxed md:text-lg">
+        {description}
+      </p>
+    )}
     {children}
   </div>
 );

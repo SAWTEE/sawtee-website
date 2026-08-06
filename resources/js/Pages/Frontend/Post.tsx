@@ -50,14 +50,17 @@ export default function Post({
               }}
             />
             {file && (
-              <a
-                target="_blank"
-                href={file}
-                rel="noopener noreferrer"
-              >
-                {`Download PDF: ${post.title}`}
-                <span className="sr-only"> (opens in a new tab)</span>
-              </a>
+              <p className="mt-10 border-t border-[#006181]/12 pt-6 dark:border-[#006181]/20">
+                <a
+                  target="_blank"
+                  href={file}
+                  rel="noopener noreferrer"
+                  className="text-[#006181] hover:text-[#006181]/80 font-medium underline-offset-4 dark:text-[#4da3c0]"
+                >
+                  {`Download PDF: ${post.title}`}
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              </p>
             )}
           </>
         )}

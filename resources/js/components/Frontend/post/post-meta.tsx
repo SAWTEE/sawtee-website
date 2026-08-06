@@ -1,6 +1,7 @@
 import { formatDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import type { Tag } from '@/types';
+import type { ReactNode } from 'react';
 import PostTags from './post-tags';
 
 type PostMetaProps = {
@@ -11,6 +12,12 @@ type PostMetaProps = {
   className?: string;
 };
 
+const MetaSep = () => (
+  <span className="text-[#006181]/35 dark:text-[#006181]/50" aria-hidden>
+    ·
+  </span>
+);
+
 const PostMeta = ({
   author,
   date,
@@ -18,15 +25,40 @@ const PostMeta = ({
   tags,
   className,
   ...rest
-}: PostMetaProps) => (
-  <div className={cn('post-meta', className)} {...rest}>
-    <div className="flex w-full flex-wrap items-center gap-6 gap-y-2 text-sm text-muted-foreground">
-      {readingTime && <p>Reading Time: {readingTime}</p>}
-      {author && <p>Author: {author}</p>}
-      {date && <time dateTime={date}>Published date: {formatDate(date)}</time>}
-      {tags && tags.length > 0 && <PostTags tags={tags} />}
+}: PostMetaProps) => {
+  const items: Array<{ key: string; node: ReactNode }> = [];
+
+  if (readingTime) {
+    items.push({ key: 'reading', node: <span>{readingTime}</span> });
+  }
+  if (author) {
+    items.push({ key: 'author', node: <span>{author}</span> });
+  }
+  if (date) {
+    items.push({
+      key: 'date',
+      node: <time dateTime={date}>{formatDate(date)}</time>,
+    });
+  }
+
+  return (
+    <div className={cn('post-meta', className)} {...rest}>
+      <div className="text-muted-foreground flex w-full flex-wrap items-center gap-x-2.5 gap-y-2 text-sm tracking-wide">
+        {items.map((item, i) => (
+          <span key={item.key} className="inline-flex items-center gap-2.5">
+            {i > 0 && <MetaSep />}
+            {item.node}
+          </span>
+        ))}
+        {tags && tags.length > 0 && (
+          <span className="inline-flex items-center gap-2.5">
+            {items.length > 0 && <MetaSep />}
+            <PostTags tags={tags} />
+          </span>
+        )}
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default PostMeta;

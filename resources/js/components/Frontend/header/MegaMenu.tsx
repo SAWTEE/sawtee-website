@@ -38,7 +38,6 @@ const ListContainerVariants = {
 type MegaSectionProps = {
   item: MenuItem;
   introText?: string;
-  introImage?: string;
 };
 
 const AboutMegaMenu = ({ item, introText, ...rest }: MegaSectionProps) => {
@@ -183,11 +182,7 @@ const MegaMenu = ({
 }) => {
   if (item.name === 'Know Us') {
     return (
-      <AboutMegaMenu
-        item={item}
-        introText={aboutMenuData.introText}
-        introImage={aboutMenuData.introImage}
-      />
+      <AboutMegaMenu item={item} introText={aboutMenuData.introText} />
     );
   }
   if (item.name === 'Our Work') {

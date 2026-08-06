@@ -1,18 +1,10 @@
 export const aboutMenuData = {
   introText:
     'South Asia Watch on Trade, Economics and Environment (SAWTEE) was launched in 1994 as a loose regional network of non-governmental organizations (NGOs) from five South Asian countries: Bangladesh, India, Nepal, Pakistan and Sri Lanka. Taking into consideration the emerging need for fair, effective and meaningful integration of South Asian countries into the regional as well as global economies, the major motto of this regional initiative has been “GLOBALIZATION YES, BUT WITH SAFETY NETS”',
-  introImage: '/assets/Airports_Network_Map.png',
 };
 
 export const features = [
-  // {
-  //   id: '1',
-  //  title: 'Reform Monitoring Platform',
-  //  image_src: '/assets/Policy-Reform-Banner-green-sized.webp',
-  //  link: '/reform-monitoring-platform',
-  //  description:
-  //    'The Reform Monitoring Platform intends to strengthen monitoring and evaluation of the policy reform process through an online reform tracking system to increase transparency, inclusiveness, and accountability of trade and investment related reforms.',
-  // },
+  // Reform Monitoring Platform feature card kept commented until relaunch.
   {
     id: '2',
     title: 'Media fellowship',

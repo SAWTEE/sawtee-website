@@ -169,7 +169,7 @@
   .post-content a,
   .page-content a,
   .primary-link {
-    @apply underline text-sky-600 underline-offset-4 hover:text-sky-600/70;
+    @apply text-[#006181] underline underline-offset-4 hover:text-[#006181]/70 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80;
   }
   .sidebar > :last-child,
   .post-body > aside > :last-child {
