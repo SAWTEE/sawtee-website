@@ -1,6 +1,5 @@
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import ZoomableImage from '@/components/Frontend/ZoomableImage';
-import { Button } from '@/components/ui/button';
 import type { ContactPageData, PageData } from '@/types';
 import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment, type ReactNode } from 'react';
@@ -19,12 +18,12 @@ type ContactProps = {
 const Contact = ({ pageData }: ContactProps) => {
   if (!isContactPageData(pageData)) {
     return (
-      <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
-        <div className="bg-bgDarker rounded-xl p-6 shadow-lg md:p-12">
-          <p className="mb-4 text-center text-2xl font-bold md:text-4xl">
+      <section className="contact-page-content mx-auto w-full max-w-5xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
+        <div className="border-borderColor/70 bg-bgDarker/80 rounded-lg border border-l-[3px] border-l-[#006181] p-6 shadow-sm md:p-10 dark:border-white/10 dark:border-l-[#006181]/80 dark:bg-black/40">
+          <h2 className="text-primary text-center font-serif text-2xl font-semibold tracking-tight md:text-3xl dark:text-zinc-100">
             South Asia Watch on Trade, Economics and Environment (SAWTEE)
-          </p>
-          <p className="text-center text-slate-600 dark:text-slate-300">
+          </h2>
+          <p className="text-muted-foreground mt-4 text-center text-sm leading-relaxed md:text-base">
             Contact details are unavailable right now. Please try again later.
           </p>
         </div>
@@ -35,64 +34,82 @@ const Contact = ({ pageData }: ContactProps) => {
   const phoneNumbers = pageData.phone_numbers ?? [];
 
   return (
-    <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
-      <div className="bg-bgDarker rounded-xl p-6 shadow-lg md:p-12">
-        <p className="mb-4 text-center text-2xl font-bold md:text-4xl">
-          South Asia Watch on Trade, Economics and Environment (SAWTEE)
-        </p>
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+    <section className="contact-page-content mx-auto w-full max-w-5xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
+      <div className="border-borderColor/70 bg-bgDarker/80 rounded-lg border border-l-[3px] border-l-[#006181] p-6 shadow-sm md:p-10 dark:border-white/10 dark:border-l-[#006181]/80 dark:bg-black/40">
+        <header className="mb-8 border-b border-[#006181]/12 pb-8 text-center md:mb-10 md:pb-10 dark:border-[#006181]/20">
+          <h2 className="text-primary font-serif text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl dark:text-zinc-100">
+            South Asia Watch on Trade, Economics and Environment (SAWTEE)
+          </h2>
+          <div className="text-muted-foreground mt-4 space-y-1 text-sm md:text-base">
+            <p>
+              <span className="text-primary/80 font-medium dark:text-zinc-200">
+                Working days:
+              </span>{' '}
+              Monday–Friday
+            </p>
+            {pageData.opening_hours ? (
+              <p>
+                <span className="text-primary/80 font-medium dark:text-zinc-200">
+                  Office hours:
+                </span>{' '}
+                {pageData.opening_hours}
+              </p>
+            ) : null}
+          </div>
+        </header>
+
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 md:gap-10">
           <div>
-            <div className="space-y-2 pb-3 text-xl uppercase md:text-2xl">
-              <p className="font-semibold">
-                Working days:{' ' + 'Monday-Friday'}
-              </p>
-              <p className="text-lg font-semibold">
-                Office hours:
-                {` ${pageData.opening_hours ?? ''}`}
-              </p>
-            </div>
-            <div className="flex flex-col items-center gap-3 py-3 md:py-6 lg:items-start lg:py-8">
+            <ul className="space-y-3">
               {phoneNumbers.map(number => {
                 return (
                   <Fragment key={number}>
-                    <ActionButton href={`tel:${number}`}>
-                      <Phone className="mr-2 h-5 w-5" aria-hidden />
-                      {number}
-                    </ActionButton>
+                    <li>
+                      <ContactAction href={`tel:${number}`}>
+                        <Phone className="h-4 w-4 shrink-0" aria-hidden />
+                        {number}
+                      </ContactAction>
+                    </li>
                   </Fragment>
                 );
               })}
 
               {pageData.fax ? (
-                <ActionButton>
-                  <PhoneOff className="mr-2 h-5 w-5" aria-hidden />
-                  {pageData.fax}
-                </ActionButton>
+                <li>
+                  <ContactAction>
+                    <PhoneOff className="h-4 w-4 shrink-0" aria-hidden />
+                    {pageData.fax}
+                  </ContactAction>
+                </li>
               ) : null}
 
               {pageData.email ? (
-                <ActionButton href={`mailto:${pageData.email}`}>
-                  <Mail className="mr-2 h-5 w-5" aria-hidden />
-                  {pageData.email}
-                </ActionButton>
+                <li>
+                  <ContactAction href={`mailto:${pageData.email}`}>
+                    <Mail className="h-4 w-4 shrink-0" aria-hidden />
+                    {pageData.email}
+                  </ContactAction>
+                </li>
               ) : null}
 
               {pageData.address ? (
-                <ActionButton>
-                  <MapPin className="mr-2 h-5 w-5" aria-hidden />
-                  {pageData.address}
-                </ActionButton>
+                <li>
+                  <ContactAction>
+                    <MapPin className="h-4 w-4 shrink-0" aria-hidden />
+                    {pageData.address}
+                  </ContactAction>
+                </li>
               ) : null}
-            </div>
+            </ul>
 
             <SocialMenu
-              className="sm:justify-start"
+              className="mt-6 sm:justify-start"
               menu={pageData.social_menus}
             />
           </div>
 
           {pageData.location_image ? (
-            <div className="max-h-96 p-8">
+            <div className="overflow-hidden rounded-md border border-[#006181]/12 dark:border-[#006181]/25">
               <ZoomableImage
                 className="aspect-square w-full object-cover"
                 src={pageData.location_image}
@@ -101,11 +118,12 @@ const Contact = ({ pageData }: ContactProps) => {
             </div>
           ) : null}
         </div>
-        {pageData.map_url && (
-          <div className="mt-8 aspect-video">
+
+        {pageData.map_url ? (
+          <div className="mt-10 overflow-hidden rounded-md border border-[#006181]/12 md:mt-12 dark:border-[#006181]/25">
             <iframe
               src={pageData.map_url}
-              width="100%"
+              className="aspect-video w-full"
               height="500"
               allowFullScreen={true}
               loading="lazy"
@@ -113,35 +131,31 @@ const Contact = ({ pageData }: ContactProps) => {
               referrerPolicy="no-referrer-when-downgrade"
             />
           </div>
-        )}
+        ) : null}
       </div>
     </section>
   );
 };
 
-const ActionButton = ({
+const ContactAction = ({
   href,
   children,
-  ...rest
 }: {
   href?: string;
   children?: ReactNode;
 }) => {
+  const className =
+    'text-secondary-foreground inline-flex items-center gap-2.5 text-[0.95rem] leading-relaxed transition-colors hover:text-[#006181] focus-visible:text-[#006181] focus-visible:outline-none md:text-base dark:text-zinc-300 dark:hover:text-[#4da3c0] dark:focus-visible:text-[#4da3c0]';
+
   if (href) {
     return (
-      <Button variant="link" asChild {...rest}>
-        <a className="flex items-center" href={href}>
-          {children}
-        </a>
-      </Button>
+      <a className={className} href={href}>
+        {children}
+      </a>
     );
   }
 
-  return (
-    <Button variant="link" type="button" {...rest}>
-      <span className="flex items-center">{children}</span>
-    </Button>
-  );
+  return <span className={className}>{children}</span>;
 };
 
 export default Contact;

@@ -14,9 +14,12 @@ export default function AirBnbCard({
   return img && img.length > 0 ? (
     img.map(image_src => {
       return (
-        <div key={image_src} className="h-auto max-h-64 w-full overflow-hidden">
+        <div
+          key={image_src}
+          className="h-auto max-h-64 w-full overflow-hidden rounded-md border border-[#006181]/12 dark:border-[#006181]/25"
+        >
           <ZoomableImage
-            className="h-full w-full max-w-full rounded-lg object-cover"
+            className="h-full w-full max-w-full object-cover"
             src={image_src}
             alt={title}
           />
@@ -24,10 +27,9 @@ export default function AirBnbCard({
       );
     })
   ) : (
-    <div className="w-full">
+    <div className="w-full overflow-hidden rounded-md border border-[#006181]/12 dark:border-[#006181]/25">
       <iframe
-        width="673"
-        height="489"
+        className="aspect-video w-full"
         src={mediaSrc ?? undefined}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
