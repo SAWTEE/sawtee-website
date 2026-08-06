@@ -12,7 +12,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 import type { MenuItem, SharedProps } from '@/types';
 import MegaMenu from './MegaMenu';
-import MultiLevelMenu from './MultiLevelMenu';
+import MultiLevelMenu, { topLevelNavItemClassName } from './MultiLevelMenu';
 
 type DesktopNavigationProps = {
   menu?: MenuItem[];
@@ -35,9 +35,6 @@ function usesMegaMenu(item: MenuItem): boolean {
 function hasMenuChildren(item: MenuItem): boolean {
   return (item.children?.length ?? 0) > 0;
 }
-
-const topLevelItemClassName =
-  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium dark:text-white';
 
 export default function DesktopNavigation({
   menu = [],
@@ -104,7 +101,7 @@ export default function DesktopNavigation({
                 >
                   <Link href={menuItem.url}>
                     <NavigationMenuTrigger
-                      className={cn(topLevelItemClassName)}
+                      className={cn(topLevelNavItemClassName)}
                       hasChildren={nested}
                     >
                       {menuItem.title}
@@ -129,19 +126,17 @@ export default function DesktopNavigation({
               >
                 <MultiLevelMenu
                   item={menuItem}
-                  triggerClassName={topLevelItemClassName}
+                  triggerClassName={topLevelNavItemClassName}
                   triggerAddon={<FocusHighlight active={highlighted} />}
                   openOnHover
                   open={activeKey === key}
-                  onOpenChange={(open) => {
+                  onOpenChange={open => {
                     if (open) {
                       activate(key);
                       return;
                     }
                     // Functional update avoids stale closures from delayed hover-close.
-                    setActiveKey((current) =>
-                      current === key ? null : current
-                    );
+                    setActiveKey(current => (current === key ? null : current));
                   }}
                 />
               </NavigationMenuItem>
@@ -157,7 +152,7 @@ export default function DesktopNavigation({
                 onPointerEnter={() => activate(key)}
                 onFocus={() => activate(key)}
               >
-                <Link href={menuItem.url} className={cn(topLevelItemClassName)}>
+                <Link href={menuItem.url} className={cn(topLevelNavItemClassName)}>
                   {menuItem.title}
                   <FocusHighlight active={highlighted} />
                 </Link>
@@ -175,7 +170,7 @@ function FocusHighlight({ active }: { active: boolean }) {
     <AnimatePresence>
       {active ? (
         <motion.div
-          className="absolute bottom-0 left-0 right-0 top-0 -z-10 rounded-md bg-accent dark:bg-neutral-800"
+          className="bg-accent absolute top-0 right-0 bottom-0 left-0 -z-10 rounded-md dark:bg-neutral-800"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}

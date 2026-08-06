@@ -144,6 +144,52 @@ describe('DesktopNavigation', () => {
     );
   });
 
+  it('applies the same top-level typography to links, mega, and multilevel triggers', () => {
+    render(
+      <DesktopNavigation
+        menu={[
+          {
+            id: 10,
+            title: 'Home',
+            name: 'Home',
+            url: '/',
+            children: [],
+          },
+          {
+            id: 20,
+            title: 'Our Work',
+            name: 'Our Work',
+            url: '/our-work',
+            children: [
+              {
+                id: 21,
+                title: 'Trade',
+                name: 'Trade',
+                url: '/our-work/trade',
+                children: [],
+              },
+            ],
+          },
+          ...publicationsMenu,
+        ]}
+      />
+    );
+
+    const home = screen.getByRole('link', { name: 'Home' });
+    const ourWorkTrigger = screen
+      .getByRole('link', { name: /our work/i })
+      .querySelector('[data-slot="navigation-menu-trigger"]');
+    const publications = screen.getByRole('button', { name: /publications/i });
+
+    expect(ourWorkTrigger).toBeTruthy();
+
+    for (const el of [home, ourWorkTrigger!, publications]) {
+      expect(el.className).toMatch(/text-sm/);
+      expect(el.className).toMatch(/font-medium/);
+      expect(el.className).toMatch(/tracking-normal/);
+    }
+  });
+
   it('closes multilevel menu when pointer moves to another top-level item', () => {
     render(
       <DesktopNavigation

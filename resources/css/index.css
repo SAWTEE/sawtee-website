@@ -159,6 +159,14 @@
     cursor: pointer;
   }
 
+  /* Keep in @layer base so utilities (font-medium, text-sm, …) can override. */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+  }
+
   input::placeholder,
   textarea::placeholder {
     color: var(--color-gray-400);
@@ -263,14 +271,6 @@ canvas, iframe {
 .offset-element {
     scroll-margin-top: 80px;
 }
-
-input,
-button,
-textarea,
-select {
-    font: inherit;
-}
-
 
 #root,
 #__next {

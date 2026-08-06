@@ -148,8 +148,14 @@ export function MultiLevelMenuItems({
   );
 }
 
-const triggerBaseClassName =
-  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50 dark:text-white';
+/** Shared top-level desktop nav typography (links, mega, multilevel triggers). */
+export const topLevelNavItemClassName =
+  'group relative inline-flex h-9 w-max items-center justify-center rounded-md bg-transparent px-4 py-2 text-sm font-medium tracking-normal dark:text-white';
+
+const triggerBaseClassName = cn(
+  topLevelNavItemClassName,
+  'outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50'
+);
 
 export type MultiLevelMenuProps = {
   /** Parent item: label drives the trigger; `children` form the dropdown tree. */
