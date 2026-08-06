@@ -1,0 +1,90 @@
+[
+  {
+    "id": 1,
+    "country": "Bangladesh",
+    "member_name": "Bangladesh Environmental Lawyers’ Association (BELA), Dhaka",
+    "member_website_link": "https://www.belabangla.org/",
+    "slug": "bela",
+    "logo": "/assets/member-institutes/bela.png"
+  },
+  {
+    "id": 2,
+    "country": "Bangladesh",
+    "member_name": "Unnayan Shamannay, Dhaka",
+    "member_website_link": "https://www.unsy.org/",
+    "slug": "unnayan-shamannay",
+    "logo": "/assets/member-institutes/unnayan-shamannay.png"
+  },
+  {
+    "id": 1,
+    "country": "India",
+    "member_name": "Citizen consumer and civic Action Group (CAG), Chennai",
+    "member_website_link": "https://www.cag.org.in/",
+    "slug": "cag",
+    "logo": "/assets/member-institutes/cag.png"
+  },
+  {
+    "id": 2,
+    "country": "India",
+    "member_name": "Consumer Unity & Trust Society (CUTS), Jaipur",
+    "member_website_link": "https://cuts-international.org/",
+    "slug": "cuts",
+    "logo": "/assets/member-institutes/cuts.jpg"
+  },
+  {
+    "id": 3,
+    "country": "India",
+    "member_name": "Development Research and Action Group (DRAG), New Delhi",
+    "member_website_link": "https://dragindia.org/",
+    "slug": "drag",
+    "logo": null
+  },
+  {
+    "id": 1,
+    "country": "Nepal",
+    "member_name": "Society for Legal and Environmental Analysis and Development Research (LEADERS), Kathmandu",
+    "member_website_link": "https://leadersnepal.org.np/",
+    "slug": "leaders",
+    "logo": "/assets/member-institutes/leaders.png"
+  },
+  {
+    "id": 2,
+    "country": "Nepal",
+    "member_name": "Forum for Protection of Public Interest (Pro Public), Kathmandu",
+    "member_website_link": "http://propublic.org/",
+    "slug": "pro-public",
+    "logo": "/assets/member-institutes/pro-public.png"
+  },
+  {
+    "id": 1,
+    "country": "Pakistan",
+    "member_name": "Journalists for Democracy and Human Rights (JDHR), Islamabad",
+    "member_website_link": "http://www.jdhr.org/",
+    "slug": "jdhr",
+    "logo": null
+  },
+  {
+    "id": 2,
+    "country": "Pakistan",
+    "member_name": "Sustainable Development Policy Institute (SDPI), Islamabad",
+    "member_website_link": "https://sdpi.org/",
+    "slug": "sdpi",
+    "logo": null
+  },
+  {
+    "id": 1,
+    "country": "Sri Lanka",
+    "member_name": "Institute of Policy Studies (IPS), Colombo",
+    "member_website_link": "https://www.ips.lk/",
+    "slug": "ips",
+    "logo": "/assets/member-institutes/ips.png"
+  },
+  {
+    "id": 2,
+    "country": "Sri Lanka",
+    "member_name": "Law & Society Trust (LST), Colombo",
+    "member_website_link": "https://www.lstlanka.org/",
+    "slug": "lst",
+    "logo": null
+  }
+]

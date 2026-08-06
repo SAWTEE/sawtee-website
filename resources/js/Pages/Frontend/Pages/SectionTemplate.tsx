@@ -1,3 +1,4 @@
+import MemberInstitutesMarquee from '@/components/Frontend/MemberInstitutesMarquee';
 import {
   Accordion,
   AccordionContent,
@@ -86,6 +87,8 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
           </Accordion>
         );
       })}
+
+      <MemberInstitutesMarquee />
     </div>
   );
 };
