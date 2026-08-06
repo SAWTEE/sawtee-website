@@ -1,15 +1,22 @@
+import CardWithEffect from '@/components/Frontend/CardWithEffect';
 import { cn, htmlToText } from '@/lib/utils';
+import type { PageSection, Theme } from '@/types';
 import { Link } from '@inertiajs/react';
-import CardWithEffect from '../../../components/Frontend/CardWithEffect';
+
+type OurWorkProps = {
+  themes?: Theme[] | null;
+  sections?: PageSection[] | null;
+  content?: string | null;
+};
 
 export default function OurWork({
-  themes = undefined,
-  sections = undefined,
-}: any) {
-  const Themes = (themes ?? []).filter((theme: any) => theme.title !== 'Covid');
-  const intro = sections?.find((section: any) => section.title === 'Intro');
+  themes = null,
+  sections = null,
+}: OurWorkProps) {
+  const Themes = (themes ?? []).filter(theme => theme.title !== 'Covid');
+  const intro = sections?.find(section => section.title === 'Intro');
   const sectors =
-    sections?.filter((section: any) => section.parent_id !== null) ?? [];
+    sections?.filter(section => section.parent_id !== null) ?? [];
 
   return (
     <div className="intro relative mx-auto max-w-7xl px-5 py-20 md:px-10">
@@ -39,7 +46,7 @@ export default function OurWork({
       )}
 
       <div className="mx-auto mb-10 grid max-w-5xl grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-6">
-        {Themes?.map((theme: any, index: any) => {
+        {Themes.map((theme, index) => {
           const wide = index <= 1 || index === Themes.length - 2;
 
           return (
@@ -71,7 +78,7 @@ export default function OurWork({
         })}
       </div>
       <div className="page_content mx-auto grid max-w-5xl items-center gap-8 px-8 py-12 md:grid-cols-2 md:px-4">
-        {sectors.map(({ id, title, description, media, link }: any) => {
+        {sectors.map(({ id, title, description, media, link }) => {
           return (
             <CardWithEffect key={id} className="cards max-w-lg p-0">
               <img

@@ -88,7 +88,7 @@ export default function SearchPage({ posts, query, seo }: FrontendSearchProps) {
               </div>
             )}
             <div className="grid place-items-center gap-10 md:grid-cols-2">
-              {results?.map((post: any) => {
+              {results?.map(post => {
                 return (
                   <PostPreviewCard
                     className="w-full"

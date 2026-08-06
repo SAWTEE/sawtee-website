@@ -57,6 +57,18 @@ export type MediaItem = {
   responsive_images?: unknown;
 };
 
+/** Morph file attachment (Publication / Research). */
+export type FileAttachment = {
+  id: number;
+  name: string;
+  path?: string;
+  url?: string;
+  fileable_type?: string | null;
+  fileable_id?: number | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+};
+
 export type Post = {
   id: number;
   title: string;
@@ -66,6 +78,7 @@ export type Post = {
   content?: string | null;
   status?: string;
   author?: string | null;
+  genre?: string | null;
   link?: string | null;
   published_at?: string | null;
   meta_title?: string | null;
@@ -78,6 +91,144 @@ export type Post = {
   resolved_meta_title?: string;
   resolved_meta_description?: string;
 };
+
+/** CMS page section (`sections` table). */
+export type PageSection = {
+  id: number;
+  title: string;
+  description?: string | null;
+  link?: string | null;
+  type: 'default' | 'tabs' | 'accordian' | 'members' | string;
+  parent_id?: number | null;
+  page_id: number;
+  order?: number | null;
+  media?: MediaItem[];
+  created_at?: string | null;
+  updated_at?: string | null;
+};
+
+export type Theme = {
+  id: number;
+  title: string;
+  description: string;
+  created_at?: string | null;
+  updated_at?: string | null;
+};
+
+/** Trade Insight article (`articles` table). */
+export type Article = {
+  id: number;
+  title: string;
+  publication_id: number;
+  slug?: string | null;
+  subtitle?: string | null;
+  excerpt?: string | null;
+  author?: string | null;
+  content?: string | null;
+  published_at: string;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  tags?: Tag[];
+  media?: MediaItem[];
+  created_at?: string | null;
+  updated_at?: string | null;
+  resolved_meta_title?: string;
+  resolved_meta_description?: string;
+};
+
+/** Team member (`teams` table). */
+export type Team = {
+  id: number;
+  name: string;
+  email?: string | null;
+  designation?: string | null;
+  order?: number | null;
+  bio?: string | null;
+  media?: MediaItem[];
+  created_at?: string | null;
+  updated_at?: string | null;
+};
+
+/** Research report (`research` table). */
+export type Research = {
+  id: number;
+  title: string;
+  slug?: string | null;
+  subtitle?: string | null;
+  description?: string | null;
+  year: number;
+  link?: string | null;
+  meta_title?: string | null;
+  meta_description?: string | null;
+  media?: MediaItem[];
+  file?: FileAttachment | null;
+  created_at?: string | null;
+  updated_at?: string | null;
+  resolved_meta_title?: string;
+  resolved_meta_description?: string;
+};
+
+/** Research archive payload: `groupBy('year')` from BuildCategoryArchive. */
+export type ResearchByYear = Record<string, Research[]>;
+
+/** Publications index: subcategory slug → latest publications. */
+export type PublicationsBySlug = Record<string, Publication[]>;
+
+/** Contact template `page.pageData` JSON. */
+export type ContactPageData = {
+  opening_hours?: string | null;
+  phone_numbers?: string[];
+  fax?: string | null;
+  email?: string | null;
+  address?: string | null;
+  location_image?: string | null;
+  map_url?: string | null;
+  social_menus?: SocialMenuItem[] | null;
+};
+
+/** SectionTemplate member institutions `page.pageData` JSON. */
+export type MemberInstitute = {
+  id?: number;
+  member_name: string;
+  member_website_link: string;
+};
+
+export type MemberCountry = {
+  id: number;
+  country: string;
+  institutes: MemberInstitute[];
+};
+
+/** Static media-fellowship UI data (`resources/js/lib/media-fellowship`). */
+export type MediaFellowPublishedStory = {
+  title: string;
+  link: string;
+  image_src: string[];
+  media_src: string | null;
+};
+
+export type MediaFellow = {
+  id: number;
+  name: string;
+  avatar: string;
+  designation: string;
+  bio: string;
+  experience: string[];
+  published_stories: MediaFellowPublishedStory[];
+};
+
+export type MediaFellowshipYear = {
+  year: string;
+  description: string;
+  fellows: MediaFellow[];
+};
+
+export type PageData =
+  | ContactPageData
+  | MemberCountry[]
+  | MediaFellow[]
+  | Record<string, unknown>
+  | null;
 
 export type SeoMeta = {
   title: string;
@@ -98,7 +249,7 @@ export type Page = {
   page_template?: string | null;
   meta_title?: string | null;
   meta_description?: string | null;
-  pageData?: Record<string, unknown> | null;
+  pageData?: PageData;
   resolved_meta_title?: string;
   resolved_meta_description?: string;
 };
@@ -106,13 +257,22 @@ export type Page = {
 export type Publication = {
   id: number;
   title: string;
-  slug?: string;
+  slug?: string | null;
   subtitle?: string | null;
+  volume?: string | null;
   volume_slug?: string | null;
-  created_at?: string | number;
+  description?: string | null;
+  category_id?: number;
   category?: Category | null;
   media?: MediaItem[];
-  file?: { id?: number; name?: string; url?: string; path?: string } | null;
+  file?: FileAttachment | null;
+  articles?: Article[];
+  meta_title?: string | null;
+  meta_description?: string | null;
+  created_at?: string | number;
+  updated_at?: string;
+  resolved_meta_title?: string;
+  resolved_meta_description?: string;
 };
 
 export type Slide = {
@@ -149,6 +309,19 @@ export type Paginated<T> = {
   last_page_url?: string;
   next_page_url?: string | null;
   prev_page_url?: string | null;
+};
+
+/** Laravel `simplePaginate()` payload (e.g. TeamsArchive). */
+export type SimplePaginated<T> = {
+  data: T[];
+  current_page: number;
+  first_page_url?: string;
+  from: number | null;
+  next_page_url: string | null;
+  path: string;
+  per_page: number;
+  prev_page_url: string | null;
+  to: number | null;
 };
 
 export type ZiggyConfig = {
@@ -227,8 +400,8 @@ export type HomePageProps = PageProps<{
 
 export type FrontendPageProps = PageProps<{
   page: Page;
-  sections?: unknown[];
-  themes?: unknown[] | null;
+  sections?: PageSection[];
+  themes?: Theme[] | null;
   featured_image?: string | MediaItem | null;
   srcSet?: string | null;
   seo?: SeoMeta;
@@ -244,9 +417,17 @@ export type FrontendPostProps = PageProps<{
   seo?: SeoMeta;
 }>;
 
+/** Category archive `posts` varies by slug (paginated posts, research-by-year, teams). */
+export type CategoryArchivePosts =
+  | Paginated<Post>
+  | ResearchByYear
+  | Team[]
+  | Post[]
+  | null;
+
 export type FrontendCategoryProps = PageProps<{
   category: Category;
-  posts?: unknown;
+  posts?: CategoryArchivePosts;
   infocus?: Post[] | null;
   sawteeInMedia?: Post[] | null;
   events?: Post[] | null;
@@ -255,8 +436,13 @@ export type FrontendCategoryProps = PageProps<{
   seo?: SeoMeta;
 }>;
 
+export type SearchResultPost = Post & {
+  category?: Category | string | null;
+  category_slug?: string;
+};
+
 export type FrontendSearchProps = PageProps<{
-  posts?: Paginated<Post & { category?: string; category_slug?: string }>;
+  posts?: Paginated<SearchResultPost>;
   query?: string;
   seo?: SeoMeta;
 }>;
@@ -268,12 +454,57 @@ export type FrontendArchiveProps = PageProps<{
   posts?: Paginated<Post> | Post[];
   sawteeInMedia?: Post[] | null;
   category?: Category;
-  publications?: unknown;
-  teams?: unknown;
+  publications?: PublicationsBySlug | Paginated<Publication> | null;
+  teams?: SimplePaginated<Team> | null;
   infocus?: Post[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
   seo?: SeoMeta;
+}>;
+
+export type FrontendArticleProps = PageProps<{
+  article: Article;
+  volume: Publication;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  relatedArticles?: Pick<Article, 'id' | 'title' | 'slug' | 'published_at'>[];
+  seo?: SeoMeta;
+}>;
+
+export type FrontendTradeInsightProps = PageProps<{
+  tradeInsightVolume: Publication;
+  media?: string | null;
+  seo?: SeoMeta;
+}>;
+
+export type FrontendTeamsArchiveProps = PageProps<{
+  category: Category;
+  teams: SimplePaginated<Team>;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  seo?: SeoMeta;
+}>;
+
+export type FrontendPublicationsArchiveProps = PageProps<{
+  category: Category;
+  publications?: PublicationsBySlug | null;
+  infocus?: Post[] | null;
+  sawteeInMedia?: Post[] | null;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  seo?: SeoMeta;
+  showSubscriptionBox?: boolean;
+}>;
+
+export type FrontendPublicationCategoryProps = PageProps<{
+  category: Category;
+  publications: Paginated<Publication>;
+  infocus?: Post[] | null;
+  sawteeInMedia?: Post[] | null;
+  featured_image?: string | null;
+  srcSet?: string | null;
+  seo?: SeoMeta;
+  showSubscriptionBox?: boolean;
 }>;
 
 /** Runtime helper used by tests and typed defaults. */

@@ -1,12 +1,8 @@
+import type { PageSection } from '@/types';
 import type { ReactNode } from 'react';
 
-type SectionLike = {
-  title?: string;
-  description?: string | null;
-};
-
 type DefaultPageProps = {
-  sections?: SectionLike[] | null;
+  sections?: PageSection[] | null;
   content?: string | null;
   children?: ReactNode;
 };

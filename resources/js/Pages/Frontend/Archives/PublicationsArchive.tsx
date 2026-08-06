@@ -4,34 +4,47 @@ import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { cn } from '@/lib/utils';
+import MainLayout from '@/layouts/MainLayout';
+import PageLayout from '@/layouts/PageLayout';
+import type {
+  Category,
+  FrontendPublicationsArchiveProps,
+  Publication,
+  PublicationsBySlug,
+} from '@/types';
 import { Link } from '@inertiajs/react';
 import { Separator } from '@radix-ui/react-dropdown-menu';
 import React from 'react';
-import MainLayout from '@/layouts/MainLayout';
-import PageLayout from '@/layouts/PageLayout';
 
 export default function PublicationsArchive({
-  category = undefined,
-  infocus = undefined,
-  sawteeInMedia = undefined,
-  publications = undefined,
+  category,
+  infocus = null,
+  sawteeInMedia = null,
+  publications = null,
   showSubscriptionBox = true,
-  featured_image = undefined,
-  srcSet = undefined}: any) {
-  // const isTradeInsightCategory = category.slug === 'trade-insight';
+  featured_image = null,
+  srcSet = null,
+  seo,
+}: FrontendPublicationsArchiveProps) {
+  const image =
+    typeof featured_image === 'string' && featured_image !== ''
+      ? featured_image
+      : '/assets/logo-sawtee.webp';
+
   return (
     <MainLayout>
       <WebsiteHead
-        title={category.meta_title ? category.meta_title : category.name}
-        description={category.meta_description}
-        image={
-          featured_image
-            ? featured_image.original_url
-            : '/assets/logo-sawtee.webp'
-        }
+        title={seo?.title ?? (category.meta_title ? category.meta_title : category.name)}
+        description={seo?.description ?? category.meta_description ?? undefined}
+        image={seo?.image ?? image}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
       />
       <PageLayout
-        featured_image={featured_image}
+        featured_image={
+          typeof featured_image === 'string' ? featured_image : null
+        }
         srcSet={srcSet}
         title={category.name}
         showBackgroundPattern={false}
@@ -40,7 +53,7 @@ export default function PublicationsArchive({
           <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
             <section className="archive-list md:col-span-2 xl:col-span-4">
               <ItemsList
-                items={category.children}
+                items={category.children ?? []}
                 publications={publications}
               />
             </section>
@@ -74,11 +87,21 @@ export default function PublicationsArchive({
   );
 }
 
+type ItemComponentProps = {
+  item: Category;
+  publications?: PublicationsBySlug | null;
+  isTradeInsightCategory?: boolean;
+  className?: string;
+};
+
 const ItemComponent = ({
-  item = undefined,
-  publications = undefined,
-  isTradeInsightCategory = undefined,
-  className = ''}: any) => {
+  item,
+  publications = null,
+  isTradeInsightCategory = false,
+  className = '',
+}: ItemComponentProps) => {
+  const pubs = publications?.[item.slug] ?? [];
+
   return (
     <div className={cn('w-full', className)} key={item.name}>
       <h3 className="pb-8 text-2xl lg:text-3xl" id={item.name}>
@@ -90,9 +113,9 @@ const ItemComponent = ({
           {item.name}
         </Link>
       </h3>
-      {publications[item.slug] && publications[item.slug].length > 0 && (
+      {pubs.length > 0 && (
         <div className="grid grid-cols-4 gap-6">
-          {publications[item.slug].map((publication: any) => {
+          {pubs.map((publication: Publication) => {
             return isTradeInsightCategory ? (
               <div key={publication.id}>
                 <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
@@ -105,13 +128,14 @@ const ItemComponent = ({
                     className="group relative"
                     target="_blank"
                     referrerPolicy="no-referrer"
-                   rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                  >
                     <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
                     <img
                       className="aspect-3/4 h-full w-full rounded-md object-cover"
                       src={
-                        `${publication.media[0]?.original_url}` ||
+                        `${publication.media?.[0]?.original_url ?? ''}` ||
                         '/assets/SM-placeholder-150x150.png'
                       }
                       alt={publication.title}
@@ -125,7 +149,8 @@ const ItemComponent = ({
                     className="underline"
                     target="_blank"
                     href={`/publications/${publication.file?.name}`}
-                   rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                  >
                     <p className="mt-4 text-center text-sm font-semibold">
                       {publication.title}
                     </p>
@@ -149,13 +174,14 @@ const ItemComponent = ({
                     className="group relative"
                     target="_blank"
                     referrerPolicy="no-referrer"
-                   rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                  >
                     <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
                     <img
                       className="aspect-3/4 h-full w-full rounded-md object-cover"
                       src={
-                        `${publication.media[0]?.original_url}` ||
+                        `${publication.media?.[0]?.original_url ?? ''}` ||
                         '/assets/SM-placeholder-150x150.png'
                       }
                       alt={publication.title}
@@ -169,7 +195,8 @@ const ItemComponent = ({
                     className="underline"
                     target="_blank"
                     href={`/publications/${publication.file?.name}`}
-                   rel="noopener noreferrer">
+                    rel="noopener noreferrer"
+                  >
                     <p className="mt-4 text-center text-sm font-semibold">
                       {publication.title}
                     </p>
@@ -198,13 +225,22 @@ const ItemComponent = ({
   );
 };
 
-// Main component that receives the data
-const ItemsList = ({ items = undefined, publications = undefined, className = '' }: any) => {
+type ItemsListProps = {
+  items: Category[];
+  publications?: PublicationsBySlug | null;
+  className?: string;
+};
+
+const ItemsList = ({
+  items,
+  publications = null,
+  className = '',
+}: ItemsListProps) => {
   return (
     <div className="flex flex-col gap-4">
-      {items.map(
-        // @ts-ignore allowlist-migration
-        (item, i, isTradeInsightCategory = item.slug === 'trade-insight') => (
+      {items.map((item, i) => {
+        const isTradeInsightCategory = item.slug === 'trade-insight';
+        return (
           <React.Fragment key={item.id}>
             <ItemComponent
               className={className}
@@ -216,8 +252,8 @@ const ItemsList = ({ items = undefined, publications = undefined, className = ''
               <Separator className="my-12 border-t-4 border-bgDarker" />
             )}
           </React.Fragment>
-        )
-      )}
+        );
+      })}
     </div>
   );
 };

@@ -8,11 +8,28 @@ import { Separator } from '@/components/ui/separator';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { slugify } from '@/lib/helpers';
 import { cn, htmlToText } from '@/lib/utils';
+import type { MemberCountry, PageData, PageSection } from '@/types';
 
-export default function SectionTemplate({ sections, pageData }: any) {
+function isMemberCountries(
+  data: PageData | undefined
+): data is MemberCountry[] {
+  return Array.isArray(data);
+}
+
+type SectionTemplateProps = {
+  sections?: PageSection[] | null;
+  pageData?: PageData;
+  content?: string | null;
+  size?: string;
+};
+
+export default function SectionTemplate({
+  sections,
+  pageData,
+}: SectionTemplateProps) {
   return (
     <div className="page-content mx-auto max-w-2xl px-[32px] py-[80px] text-lg leading-8 md:px-0">
-      {sections?.map((section: any) => {
+      {sections?.map(section => {
         if (section.parent_id === null) {
           return (
             <PageSection
@@ -23,17 +40,23 @@ export default function SectionTemplate({ sections, pageData }: any) {
           );
         }
       })}
-      {pageData && <Members memberInstitutions={pageData} />}
+      {isMemberCountries(pageData) && (
+        <Members memberInstitutions={pageData} />
+      )}
     </div>
   );
 }
 
-const Members = ({ memberInstitutions = undefined }: any) => {
+type MembersProps = {
+  memberInstitutions?: MemberCountry[] | null;
+};
+
+const Members = ({ memberInstitutions = null }: MembersProps) => {
   return (
     <div id="member-institutions" className="offset-element">
       <PageSectionTitle titleText={'Member Institutions'} />
 
-      {memberInstitutions?.map(({ country, institutes, id }: any) => {
+      {memberInstitutions?.map(({ country, institutes, id }) => {
         return (
           <Accordion key={id} type="single" collapsible className="w-full">
             <AccordionItem value={country}>
@@ -44,7 +67,7 @@ const Members = ({ memberInstitutions = undefined }: any) => {
               </AccordionTrigger>
               <AccordionContent className="ml-6">
                 <ol className="list-decimal space-y-2 text-zinc-700 dark:text-zinc-300">
-                  {institutes.map(({ member_name, member_website_link }: any) => {
+                  {institutes.map(({ member_name, member_website_link }) => {
                     return (
                       <li key={member_name} className="text-lg">
                         <a
@@ -69,7 +92,12 @@ const Members = ({ memberInstitutions = undefined }: any) => {
   );
 };
 
-const PageSection = ({ section = undefined, sections = undefined }: any) => {
+type PageSectionViewProps = {
+  section: PageSection;
+  sections: PageSection[];
+};
+
+const PageSection = ({ section, sections }: PageSectionViewProps) => {
   const { title, description } = section;
 
   const isTabs = section.type === 'tabs';
@@ -78,7 +106,7 @@ const PageSection = ({ section = undefined, sections = undefined }: any) => {
 
   const sectionID = slugify(title);
 
-  const childSections = sections.filter((sec: any) => sec.parent_id === section.id);
+  const childSections = sections.filter(sec => sec.parent_id === section.id);
   return (
     <div id={sectionID} className="offset-element">
       <PageSectionTitle titleText={title} />
@@ -87,22 +115,24 @@ const PageSection = ({ section = undefined, sections = undefined }: any) => {
         <div className="px-6 py-4">
           <Tabs defaultValue={childSections[0].title} orientation="vertical">
             <TabsList className="grid h-auto w-full grid-cols-3 bg-bgDarker/60 p-2">
-              {childSections.map(({ title }: any) => (
-                <TabsTrigger key={title} value={title}>
+              {childSections.map(({ title: childTitle }) => (
+                <TabsTrigger key={childTitle} value={childTitle}>
                   <p className="font-sans text-lg font-bold md:text-xl">
-                    {title}
+                    {childTitle}
                   </p>
                 </TabsTrigger>
               ))}
             </TabsList>
-            {childSections.map(({ description, title }: any) => (
+            {childSections.map(({ description: childDescription, title: childTitle }) => (
               <TabsContent
-                key={title}
-                value={title}
+                key={childTitle}
+                value={childTitle}
                 className="space-y-2 rounded-xl bg-bgDarker/60 p-6 leading-8 text-zinc-700 dark:text-zinc-300"
               >
-                {description && (
-                  <p className="list-decimal px-4">{htmlToText(description)}</p>
+                {childDescription && (
+                  <p className="list-decimal px-4">
+                    {htmlToText(childDescription)}
+                  </p>
                 )}
               </TabsContent>
             ))}
@@ -111,21 +141,20 @@ const PageSection = ({ section = undefined, sections = undefined }: any) => {
       )}
 
       {isAccordian &&
-        childSections?.map(({ title, description }: any) => {
+        childSections.map(({ title: childTitle, description: childDescription }) => {
           return (
-            <Accordion key={title} type="single" collapsible className="w-full">
-              <AccordionItem value={title}>
+            <Accordion key={childTitle} type="single" collapsible className="w-full">
+              <AccordionItem value={childTitle}>
                 <AccordionTrigger>
                   <p className="font-sans text-lg font-bold text-primary md:text-xl">
-                    {title}
+                    {childTitle}
                   </p>
                 </AccordionTrigger>
                 <AccordionContent className="rounded-md bg-bgDarker/60">
                   <div
                     className="p-6 text-lg leading-8 text-zinc-700 dark:text-zinc-300"
-                    // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
                     dangerouslySetInnerHTML={{
-                      __html: description,
+                      __html: childDescription ?? '',
                     }}
                   />
                 </AccordionContent>
@@ -137,9 +166,8 @@ const PageSection = ({ section = undefined, sections = undefined }: any) => {
       {isDefault && (
         <div
           className="text-zinc-700 dark:text-zinc-300"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation>
           dangerouslySetInnerHTML={{
-            __html: description,
+            __html: description ?? '',
           }}
         />
       )}
@@ -148,7 +176,15 @@ const PageSection = ({ section = undefined, sections = undefined }: any) => {
   );
 };
 
-const PageSectionTitle = ({ titleText = undefined, className = '' }: any) => {
+type PageSectionTitleProps = {
+  titleText?: string | null;
+  className?: string;
+};
+
+const PageSectionTitle = ({
+  titleText = null,
+  className = '',
+}: PageSectionTitleProps) => {
   return (
     <h2
       className={cn(

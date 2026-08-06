@@ -8,18 +8,20 @@ import {
 } from '@/components/ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { mediaFellowshipData } from '@/lib/media-fellowship';
+import type { MediaFellow, MediaFellowshipYear } from '@/types';
 
 export default function MediaFellows() {
-  const sortByYear = mediaFellowshipData.sort(
+  const sortByYear: MediaFellowshipYear[] = [...mediaFellowshipData].sort(
     (a, b) => Number(b.year) - Number(a.year)
   );
 
   return (
     <div className="mx-auto max-w-2xl px-8 py-20 md:px-0">
       <Glassbox className="mt-8 px-6 text-slate-800">
-        {sortByYear?.map(({ year, description, fellows }: any) => {
+        {sortByYear.map(({ year, description, fellows }) => {
           return (
             <Accordion
+              key={year}
               type="single"
               collapsible
               defaultValue={year}
@@ -35,8 +37,8 @@ export default function MediaFellows() {
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
 
-                  {fellows.map((fellow: any) => {
-                    return <Fellow mediaFellow={fellow} />;
+                  {fellows.map(fellow => {
+                    return <Fellow key={fellow.id} mediaFellow={fellow} />;
                   })}
                 </AccordionContent>
               </AccordionItem>
@@ -48,7 +50,11 @@ export default function MediaFellows() {
   );
 }
 
-export const Fellow = ({ mediaFellow }: any) => {
+type FellowProps = {
+  mediaFellow: MediaFellow;
+};
+
+export const Fellow = ({ mediaFellow }: FellowProps) => {
   const {
     id,
     name,
@@ -57,16 +63,18 @@ export const Fellow = ({ mediaFellow }: any) => {
     bio,
     published_stories,
     experience,
-  } = mediaFellow ?? {};
+  } = mediaFellow;
+
+  const nameParts = name.split(' ');
 
   return (
-    <div className="my-10" id={id}>
+    <div className="my-10" id={String(id)}>
       <div className="flex items-center">
         <Avatar>
           <AvatarImage src={avatar} alt={name} />
           <AvatarFallback>
-            {name.split(' ')[0][0]}
-            {name.split(' ')[1][0]}
+            {nameParts[0]?.[0]}
+            {nameParts[1]?.[0]}
           </AvatarFallback>
         </Avatar>
         <div className="ml-6 flex items-center gap-4">
@@ -84,14 +92,15 @@ export const Fellow = ({ mediaFellow }: any) => {
           </AccordionTrigger>
           <AccordionContent>
             <ol className="ml-6 list-decimal">
-              {published_stories?.map(({ title, link }: any) => {
+              {published_stories.map(({ title, link }) => {
                 return (
                   <li key={title} className="text-lg">
                     <a
                       target="_blank"
                       className="underline hover:underline-offset-2"
                       href={link}
-                     rel="noopener noreferrer">
+                      rel="noopener noreferrer"
+                    >
                       {title}
                     </a>
                   </li>
@@ -100,9 +109,9 @@ export const Fellow = ({ mediaFellow }: any) => {
             </ol>
 
             <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {published_stories?.map(({ image_src, title, media_src }: any, i: any) => {
+              {published_stories.map(({ image_src, title, media_src }, i) => {
                 return (
-                  <div key={i} className="grid gap-4">
+                  <div key={`${title}-${i}`} className="grid gap-4">
                     <AirBnbCard
                       img={image_src}
                       title={title}
@@ -119,9 +128,10 @@ export const Fellow = ({ mediaFellow }: any) => {
             {'Experience with the Fellowship'}
           </AccordionTrigger>
           <AccordionContent>
-            {experience?.map((exp: any) => {
+            {experience.map((exp, i) => {
               return (
                 <p
+                  key={i}
                   className="experience-text my-2 text-lg"
                   dangerouslySetInnerHTML={{
                     __html: exp,

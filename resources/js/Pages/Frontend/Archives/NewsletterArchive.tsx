@@ -1,7 +1,11 @@
 import VerticalTimeline from '@/components/Frontend/Timeline';
-// Here we have used react-icons package for the icons
+import type { Post } from '@/types';
 
-const NewsletterArchive = ({ posts = undefined }: any) => {
+type NewsletterArchiveProps = {
+  posts?: Post[] | null;
+};
+
+const NewsletterArchive = ({ posts = null }: NewsletterArchiveProps) => {
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (

@@ -1,37 +1,43 @@
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
-import { Fragment } from 'react';
-import '../../../../css/our-team.css';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
+import type { FrontendTeamsArchiveProps, Team } from '@/types';
+import { Fragment } from 'react';
+import '../../../../css/our-team.css';
 import TeamMember from '../TeamMember';
 
-const TeamsArchive = ({ category = undefined, teams = undefined, featured_image = undefined, srcSet = undefined }: any) => {
+export default function TeamsArchive({
+  category,
+  teams,
+  featured_image = null,
+  srcSet = null,
+  seo,
+}: FrontendTeamsArchiveProps) {
+  const image =
+    typeof featured_image === 'string' && featured_image !== ''
+      ? featured_image
+      : '/assets/logo-sawtee.webp';
+
   return (
     <MainLayout>
       <WebsiteHead
-        title={category.meta_title ? category.meta_title : category.name}
-        description={category.meta_description}
-        image={
-          featured_image
-            ? featured_image.original_url
-            : '/assets/logo-sawtee.webp'
-        }
+        title={seo?.title ?? (category.meta_title ? category.meta_title : category.name)}
+        description={seo?.description ?? category.meta_description ?? undefined}
+        image={seo?.image ?? image}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
       />
       <PageLayout
-        featured_image={featured_image}
+        featured_image={
+          typeof featured_image === 'string' ? featured_image : null
+        }
         srcSet={srcSet}
         title={category.name}
         showBackgroundPattern={false}
       >
-        <Section
-          // @ts-ignore allowlist-migration
-          pb="80px"
-          py={{ base: '24px', lg: '80px' }}
-          px={{ base: '32px', lg: '80px' }}
-          size={'full'}
-          mx="auto"
-        >
+        <Section className="mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20">
           <div className="container max-w-5xl p-5 md:p-10">
             <div className="mb-8 flex justify-center">
               <h3 className="mb-3 text-center text-3xl font-bold">
@@ -45,10 +51,10 @@ const TeamsArchive = ({ category = undefined, teams = undefined, featured_image 
               </div>
             ) : (
               <div className="flex flex-col gap-10">
-                {teams.data.map((post: any) => {
+                {teams.data.map((member: Team) => {
                   return (
-                    <Fragment key={post.id}>
-                      <TeamMember member={post} />
+                    <Fragment key={member.id}>
+                      <TeamMember member={member} />
                     </Fragment>
                   );
                 })}
@@ -59,6 +65,4 @@ const TeamsArchive = ({ category = undefined, teams = undefined, featured_image 
       </PageLayout>
     </MainLayout>
   );
-};
-
-export default TeamsArchive;
+}

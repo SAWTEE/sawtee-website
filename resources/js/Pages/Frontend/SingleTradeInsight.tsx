@@ -1,39 +1,51 @@
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import { TableOfContents } from '@/components/Frontend/TableOfContents';
+import { Button } from '@/components/ui/button';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
-import { Button } from '@/components/ui/button';
+import type { FrontendTradeInsightProps } from '@/types';
 
-export default function SingleTradeInsight({ tradeInsightVolume = undefined, media = undefined }: any) {
+export default function SingleTradeInsight({
+  tradeInsightVolume,
+  media = null,
+  seo,
+}: FrontendTradeInsightProps) {
+  const volumeLabel = tradeInsightVolume.volume ?? tradeInsightVolume.title;
+
   return (
     <MainLayout>
       <WebsiteHead
-        title={tradeInsightVolume.volume}
-        description={tradeInsightVolume.meta_description}
-        image={'/assets/logo-sawtee.webp'}
+        title={seo?.title ?? volumeLabel ?? ''}
+        description={
+          seo?.description ?? tradeInsightVolume.meta_description ?? undefined
+        }
+        image={seo?.image ?? '/assets/logo-sawtee.webp'}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
       />
-      <PageLayout title={tradeInsightVolume.volume} featured_image={null}>
+      <PageLayout title={volumeLabel} featured_image={null}>
         <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
           <div className="">
             <div className="flex flex-col justify-center gap-4 md:flex-row md:items-center lg:gap-4">
               <img
                 className="aspect-auto w-full max-w-[300px] rounded-sm object-cover md:w-[30%] md:rounded-t-lg"
-                src={media}
-                alt={tradeInsightVolume.volume}
+                src={media ?? undefined}
+                alt={volumeLabel ?? ''}
               />
 
               <div className="md:w-[70 %] flex w-full flex-col gap-4 rounded-md md:p-4">
                 <h2 className="text-xl font-semibold text-gray-900 dark:text-white md:text-3xl">
                   {tradeInsightVolume.subtitle
                     ? tradeInsightVolume.subtitle
-                    : tradeInsightVolume.volume}
+                    : volumeLabel}
                 </h2>
 
                 <div
                   className="text-md md:text-md prose-base text-secondary-foreground lg:text-lg"
                   dangerouslySetInnerHTML={{
-                    __html: tradeInsightVolume.description,
+                    __html: tradeInsightVolume.description ?? '',
                   }}
                 />
                 <div className="mt-4 flex gap-4">
@@ -43,7 +55,7 @@ export default function SingleTradeInsight({ tradeInsightVolume = undefined, med
                       target="_blank"
                       rel="noopener noreferrer"
                     >
-                      {`Download PDF: ${tradeInsightVolume.volume}`}
+                      {`Download PDF: ${volumeLabel}`}
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   </Button>

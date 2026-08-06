@@ -1,8 +1,11 @@
-const TeamMember = ({ member = undefined }: any) => {
-  // const avatar = member.media.filter(
-  //   media => media.collection_name === 'avatar'
-  // )[0];
-  return member.name;
+import type { Team } from '@/types';
+
+type TeamMemberProps = {
+  member?: Team | null;
+};
+
+const TeamMember = ({ member = null }: TeamMemberProps) => {
+  return member?.name ?? null;
 };
 
 export default TeamMember;

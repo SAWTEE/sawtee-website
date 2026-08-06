@@ -7,7 +7,7 @@ type WebinarPostProps = {
 };
 
 const WebinarPost = ({ post }: WebinarPostProps) => {
-  const file = post.media?.filter((m: any) => m.collection_name === 'post-files')[0];
+  const file = post.media?.filter(m => m.collection_name === 'post-files')[0];
   return (
     <div>
       <div className="mb-6">{htmlToText(post.content)}</div>

@@ -1,17 +1,22 @@
-import React from 'react';
+import type { Article } from '@/types';
 import { Link } from '@inertiajs/react';
 
-export const TableOfContents = ({ articles = undefined, volumeSlug = undefined }: any) => {
+type TableOfContentsProps = {
+  articles?: Article[] | null;
+  volumeSlug?: string | null;
+};
+
+export const TableOfContents = ({
+  articles = null,
+  volumeSlug = null,
+}: TableOfContentsProps) => {
   return (
     <section className="mb-10 border-t border-border/40">
-      {/* Vertical Scroll Area */}
-
       {articles && articles.length > 0 ? (
         <ul className="flex flex-col gap-1 pt-10">
-          {articles.map((article: any) => {
+          {articles.map(article => {
             return (
               <li className="group mb-4" key={article.id}>
-                {/* Article Item Container */}
                 <div className="flex w-full flex-1 flex-col gap-1.5">
                   <Link
                     className="text-xl text-secondary-foreground underline underline-offset-2 group-hover:text-primary/80 group-hover:underline-offset-4 dark:group-hover:text-secondary-foreground/80 md:text-2xl"
@@ -20,7 +25,6 @@ export const TableOfContents = ({ articles = undefined, volumeSlug = undefined }
                     {article.title}
                   </Link>
 
-                  {/* Article Category Badge */}
                   <span className="text-xs font-medium italic text-theme-500 dark:text-theme-300">
                     {article.author ? article.author : 'Author not specified'}
                   </span>

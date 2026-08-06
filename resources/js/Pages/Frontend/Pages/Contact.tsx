@@ -3,11 +3,21 @@ import 'react-medium-image-zoom/dist/styles.css';
 
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import { Button } from '@/components/ui/button';
+import type { ContactPageData, PageData } from '@/types';
 import { Mail, MapPin, Phone, PhoneOff } from 'lucide-react';
 import { Fragment, type ReactNode } from 'react';
 
-const Contact = ({ pageData = undefined }: any) => {
-  if (!pageData) {
+function isContactPageData(data: PageData | undefined): data is ContactPageData {
+  return !!data && !Array.isArray(data) && typeof data === 'object';
+}
+
+type ContactProps = {
+  pageData?: PageData;
+  content?: string | null;
+};
+
+const Contact = ({ pageData }: ContactProps) => {
+  if (!isContactPageData(pageData)) {
     return (
       <section className="contact-page-content mx-auto w-full max-w-5xl px-4 py-12 md:px-8">
         <div className="rounded-xl bg-bgDarker p-6 shadow-lg md:p-12">
@@ -42,7 +52,7 @@ const Contact = ({ pageData = undefined }: any) => {
               </p>
             </div>
             <div className="flex flex-col items-center gap-3 py-3 md:py-6 lg:items-start lg:py-8">
-              {phoneNumbers.map((number: any) => {
+              {phoneNumbers.map(number => {
                 return (
                   <Fragment key={number}>
                     <ActionButton href={`tel:${number}`}>
@@ -100,8 +110,7 @@ const Contact = ({ pageData = undefined }: any) => {
               src={pageData.map_url}
               width="100%"
               height="500"
-              // @ts-ignore allowlist-migration
-              allowFullScreen="true"
+              allowFullScreen={true}
               loading="lazy"
               title="Map of SAWTEE office location"
               referrerPolicy="no-referrer-when-downgrade"

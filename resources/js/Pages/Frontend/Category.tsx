@@ -11,18 +11,38 @@ import LDCArchive from './Archives/LDCArchive';
 import EventsArchive from './Archives/EventsArchive';
 import NewsletterArchive from './Archives/NewsletterArchive';
 import ResearchArchive from './Archives/ResearchArchive';
-import type { FrontendCategoryProps } from '@/types';
-import type { ComponentType, ReactNode } from 'react';
-
-const CovidArchiveView = CovidArchive as ComponentType<{ posts?: unknown }>;
-const LDCArchiveView = LDCArchive as ComponentType<{ posts?: unknown }>;
-const ResearchArchiveView = ResearchArchive as ComponentType<{ posts?: unknown }>;
-const NewsletterArchiveView = NewsletterArchive as ComponentType<{ posts?: unknown }>;
-const EventsArchiveView = EventsArchive as ComponentType<{ posts?: unknown }>;
-const DefaultArchiveView = DefaultArchive as ComponentType<{ posts?: unknown; category?: unknown }>;
-const SubscriptionCardView = SubscriptionCard as ComponentType<any>;
+import type {
+  FrontendCategoryProps,
+  Paginated,
+  Post,
+  ResearchByYear,
+} from '@/types';
+import type { ReactNode } from 'react';
 
 type Props = FrontendCategoryProps & { showSubscriptionBox?: boolean };
+
+function isPaginatedPosts(
+  posts: FrontendCategoryProps['posts']
+): posts is Paginated<Post> {
+  return (
+    !!posts &&
+    typeof posts === 'object' &&
+    !Array.isArray(posts) &&
+    'data' in posts &&
+    Array.isArray((posts as Paginated<Post>).data)
+  );
+}
+
+function isResearchByYear(
+  posts: FrontendCategoryProps['posts']
+): posts is ResearchByYear {
+  return (
+    !!posts &&
+    typeof posts === 'object' &&
+    !Array.isArray(posts) &&
+    !('data' in posts)
+  );
+}
 
 export default function Category({
   category,
@@ -35,35 +55,35 @@ export default function Category({
   seo,
   showSubscriptionBox = true,
 }: Props) {
-  const isInFocus = category.slug.includes('infocus') || category.slug.includes('in-focus');
+  const isInFocus =
+    category.slug.includes('infocus') || category.slug.includes('in-focus');
   const isMedia = category.slug.includes('sawtee-in-media');
   const isEvents = category.slug.includes('featured-events');
-  const paginated =
-    posts && typeof posts === 'object' && posts !== null && 'data' in (posts as object)
-      ? (posts as { data: unknown; links: any; current_page: number; last_page: number; next_page_url?: string | null; prev_page_url?: string | null })
-      : null;
+  const paginated = isPaginatedPosts(posts) ? posts : null;
 
   const renderArchiveComponent = (): ReactNode => {
     switch (true) {
       case category.slug.includes('covid'):
-        return <CovidArchiveView posts={paginated?.data} />;
+        return <CovidArchive posts={paginated?.data} />;
       case category.slug.includes('ldc'):
-        return <LDCArchiveView posts={paginated?.data} />;
+        return <LDCArchive posts={paginated?.data} />;
       case category.slug.includes('research'):
-        return <ResearchArchiveView posts={posts} />;
+        return (
+          <ResearchArchive
+            posts={isResearchByYear(posts) ? posts : null}
+          />
+        );
       case category.slug.includes('newsletters'):
-        return <NewsletterArchiveView posts={paginated?.data} />;
+        return <NewsletterArchive posts={paginated?.data} />;
       case category.slug.includes('featured-events'):
-        return <EventsArchiveView posts={paginated?.data} />;
+        return <EventsArchive posts={paginated?.data} />;
       default:
-        return <DefaultArchiveView posts={paginated?.data} category={category} />;
+        return <DefaultArchive posts={paginated?.data} />;
     }
   };
 
   const image =
-    typeof featured_image === 'string'
-      ? featured_image
-      : (featured_image as { original_url?: string } | null | undefined)?.original_url;
+    typeof featured_image === 'string' ? featured_image : featured_image;
 
   return (
     <MainLayout>
@@ -102,7 +122,7 @@ export default function Category({
             <div className="flex flex-col gap-12">
               {showSubscriptionBox && (
                 <Glassbox className={'w-full p-0'}>
-                  <SubscriptionCardView />
+                  <SubscriptionCard />
                 </Glassbox>
               )}
               {!isMedia && sawteeInMedia && (

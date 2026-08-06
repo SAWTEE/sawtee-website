@@ -1,32 +1,35 @@
+import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
-import MainLayout from '@/layouts/MainLayout';
+import SimpleList from '@/components/Frontend/SimpleList';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostMeta from '@/components/Frontend/post/post-meta';
-import { formatDate } from '@/lib/helpers';
-
-import { Link } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
-import Glassbox from '@/components/Frontend/Glassbox';
-import SimpleList from '@/components/Frontend/SimpleList';
+import { formatDate } from '@/lib/helpers';
+import MainLayout from '@/layouts/MainLayout';
+import type { FrontendArticleProps } from '@/types';
+import { Link } from '@inertiajs/react';
 import { useMemo } from 'react';
 
-// Custom reading time calculator
-// @ts-ignore allowlist-migration
-const calculateReadingTime = (content, options = {}) => {
+type ReadingTimeOptions = {
+  wordsPerMinute?: number;
+  emoji?: boolean;
+};
+
+const calculateReadingTime = (
+  content: string | null | undefined,
+  options: ReadingTimeOptions = {}
+): string | null => {
   if (!content) return null;
 
-  // @ts-ignore allowlist-migration
   const { wordsPerMinute = 225, emoji = false } = options;
 
-  // Remove HTML tags and get clean text
   const cleanText = content
-    .replace(/<[^>]*>/g, '') // Remove HTML tags
-    .replace(/\s+/g, ' ') // Normalize whitespace
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 
   if (!cleanText) return null;
 
-  // Count words
   const words = cleanText.split(/\s+/).length;
   const minutes = Math.ceil(words / wordsPerMinute);
 
@@ -38,12 +41,13 @@ const calculateReadingTime = (content, options = {}) => {
 };
 
 export default function Article({
-  article = undefined,
-  volume = undefined,
-  featured_image = undefined,
-  srcSet = undefined,
-  relatedArticles = undefined}: any) {
-  // Use useMemo to calculate reading time efficiently
+  article,
+  volume,
+  featured_image = null,
+  srcSet = null,
+  relatedArticles = [],
+  seo,
+}: FrontendArticleProps) {
   const readingTime = useMemo(() => {
     if (!article?.content) return null;
 
@@ -53,17 +57,26 @@ export default function Article({
     });
   }, [article?.content]);
 
-  if (!article) {
+  if (!article || !volume) {
     return null;
   }
 
   const { title, subtitle, content } = article;
+  const volumeLabel = volume.volume ?? volume.title;
+  const volumePath = volume.slug ?? volume.volume_slug ?? '';
+
   return (
     <MainLayout>
       <WebsiteHead
-        title={`${volume.volume}`}
-        description={article.meta_description}
-        image={featured_image ? featured_image : '/assets/logo-sawtee.webp'}
+        title={seo?.title ?? volumeLabel ?? ''}
+        description={seo?.description ?? article.meta_description ?? undefined}
+        image={
+          seo?.image ??
+          (featured_image ? featured_image : '/assets/logo-sawtee.webp')
+        }
+        url={seo?.url}
+        type={seo?.type ?? 'article'}
+        jsonLd={seo?.jsonLd}
       />
 
       <div className="relative w-full px-10 py-10 lg:px-20">
@@ -71,13 +84,13 @@ export default function Article({
           <div
             className={'post-categories flex flex-wrap justify-center gap-4'}
           >
-            <Link href={`/trade-insight/${volume.slug}`}>
+            <Link href={`/trade-insight/${volumePath}`}>
               <Button
                 className={
                   'category rounded-md px-3 py-1 text-sm font-semibold'
                 }
               >
-                {volume.volume}
+                {volumeLabel}
               </Button>
             </Link>
           </div>
@@ -92,7 +105,7 @@ export default function Article({
             <FeaturedMedia
               className={'rounded-xl'}
               src={featured_image}
-              srcSet={srcSet}
+              srcSet={srcSet ?? undefined}
               alt={title}
               priority
             />
@@ -115,7 +128,7 @@ export default function Article({
                 <div className="post-content prose-base text-lg text-secondary-foreground">
                   <div
                     dangerouslySetInnerHTML={{
-                      __html: content,
+                      __html: content ?? '',
                     }}
                   />
                 </div>
@@ -127,7 +140,7 @@ export default function Article({
                     className={'border-none px-8'}
                     heading={'Related Articles'}
                   >
-                    {relatedArticles?.map((post: any) => {
+                    {relatedArticles?.map(post => {
                       return (
                         <li className="group mb-4" key={post.id}>
                           <Link
@@ -144,11 +157,6 @@ export default function Article({
                         </li>
                       );
                     })}
-                    {/* <ExploreButton
-          text={`More articles`}
-          link={link ?? `${array[0].category.slug / array[0].slug}`}
-          className="p-0"
-        /> */}
                   </SimpleList>
                 </Glassbox>
               </aside>

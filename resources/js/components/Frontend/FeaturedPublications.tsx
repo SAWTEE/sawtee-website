@@ -11,13 +11,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
-type FeaturedPublication = Publication & {
-  subtitle?: string | null;
-  volume_slug?: string | null;
-  created_at?: string | number;
-  media?: MediaItem[];
-  file?: { id?: number; name?: string; url?: string; path?: string } | null;
-};
+type FeaturedPublication = Publication;
 
 type FeaturedPublicationsProps = {
   publications?: FeaturedPublication[];

@@ -6,28 +6,37 @@ import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
+import type { FrontendPublicationCategoryProps } from '@/types';
 
-export default function Publications({
-  category = undefined,
-  publications = undefined,
-  infocus = undefined,
-  sawteeInMedia = undefined,
-  featured_image = undefined,
+export default function PublicationCategory({
+  category,
+  publications,
+  infocus = null,
+  sawteeInMedia = null,
+  featured_image = null,
   showSubscriptionBox = true,
-  srcSet = undefined}: any) {
+  srcSet = null,
+  seo,
+}: FrontendPublicationCategoryProps) {
+  const image =
+    typeof featured_image === 'string' && featured_image !== ''
+      ? featured_image
+      : '/assets/logo-sawtee.webp';
+
   return (
     <MainLayout>
       <WebsiteHead
-        title={category.meta_title || category.name}
-        description={category.meta_description}
-        image={
-          featured_image
-            ? featured_image.original_url
-            : '/assets/logo-sawtee.webp'
-        }
+        title={seo?.title ?? (category.meta_title || category.name)}
+        description={seo?.description ?? category.meta_description ?? undefined}
+        image={seo?.image ?? image}
+        url={seo?.url}
+        type={seo?.type}
+        jsonLd={seo?.jsonLd}
       />
       <PageLayout
-        featured_image={featured_image}
+        featured_image={
+          typeof featured_image === 'string' ? featured_image : null
+        }
         srcSet={srcSet}
         title={category.name}
       >
@@ -36,7 +45,7 @@ export default function Publications({
             <section className="archive-list md:col-span-2 xl:col-span-4">
               <div>
                 <div className="grid grid-cols-4 gap-6 gap-y-20">
-                  {publications?.data?.map((publication: any) => {
+                  {publications?.data?.map(publication => {
                     return (
                       <div key={publication.id}>
                         <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
@@ -55,7 +64,7 @@ export default function Publications({
                               <img
                                 className="aspect-3/4 h-full w-full rounded-md object-cover"
                                 src={
-                                  `${publication.media[0]?.original_url}` ||
+                                  `${publication.media?.[0]?.original_url ?? ''}` ||
                                   '/assets/SM-placeholder-150x150.png'
                                 }
                                 alt={publication.title}
@@ -74,12 +83,13 @@ export default function Publications({
                               className="group relative"
                               target="_blank"
                               referrerPolicy="no-referrer"
-                             rel="noopener noreferrer">
+                              rel="noopener noreferrer"
+                            >
                               <div className="absolute left-0 top-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
                               <img
                                 className="aspect-3/4 h-full w-full rounded-md object-cover"
                                 src={
-                                  `${publication.media[0]?.original_url}` ||
+                                  `${publication.media?.[0]?.original_url ?? ''}` ||
                                   '/assets/SM-placeholder-150x150.png'
                                 }
                                 alt={publication.title}
@@ -95,7 +105,8 @@ export default function Publications({
                             target="_blank"
                             referrerPolicy="no-referrer"
                             href={`/publications/${publication.file?.name}`}
-                           rel="noopener noreferrer">
+                            rel="noopener noreferrer"
+                          >
                             <p className="mt-4 text-center text-sm font-semibold">
                               {publication.title}
                             </p>

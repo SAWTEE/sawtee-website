@@ -1,4 +1,6 @@
-export const mediaFellowshipData = [
+import type { MediaFellowshipYear } from '@/types';
+
+export const mediaFellowshipData: MediaFellowshipYear[] = [
   {
     year: '2023',
     description:

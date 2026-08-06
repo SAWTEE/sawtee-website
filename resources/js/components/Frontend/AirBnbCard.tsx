@@ -1,12 +1,19 @@
 import Zoom from 'react-medium-image-zoom';
 import 'react-medium-image-zoom/dist/styles.css';
 
+type AirBnbCardProps = {
+  img?: string[] | null;
+  title?: string;
+  mediaSrc?: string | null;
+};
+
 export default function AirBnbCard({
-  img = undefined,
+  img = null,
   title = 'media fellowship',
-  mediaSrc = undefined}: any) {
-  return img.length > 0 ? (
-    img.map((image_src: any) => {
+  mediaSrc = null,
+}: AirBnbCardProps) {
+  return img && img.length > 0 ? (
+    img.map(image_src => {
       return (
         <div key={image_src} className="h-auto max-h-64 w-full overflow-hidden">
           <Zoom>
@@ -25,12 +32,11 @@ export default function AirBnbCard({
       <iframe
         width="673"
         height="489"
-        src={mediaSrc}
+        src={mediaSrc ?? undefined}
         title={title}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         referrerPolicy="strict-origin-when-cross-origin"
-        // @ts-ignore allowlist-migration
-        allowfullscreen
+        allowFullScreen
       />
     </div>
   );

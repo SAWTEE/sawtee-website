@@ -7,10 +7,6 @@ import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
 import DefaultArchive from '@/Pages/Frontend/Archives/DefaultArchive';
 import type { FrontendArchiveProps } from '@/types';
-import type { ComponentType } from 'react';
-
-const DefaultArchiveView = DefaultArchive as ComponentType<{ posts?: unknown; category?: unknown }>;
-const SubscriptionCardView = SubscriptionCard as ComponentType<any>;
 
 type Props = FrontendArchiveProps & { showSubscriptionBox?: boolean };
 
@@ -40,7 +36,7 @@ export default function Archive({
         <div className="mx-auto grid gap-12 px-8 py-8 md:grid-cols-2 md:px-10 md:py-20 lg:grid-cols-6">
           <section className="archive-list col-span-1 flex flex-col items-center gap-12 lg:col-span-4">
             <div>
-              <DefaultArchiveView posts={postRows} />
+              <DefaultArchive posts={postRows} />
 
               {paginated && (
                 <div className="w-full p-8">
@@ -60,7 +56,7 @@ export default function Archive({
             <div className="flex flex-col gap-12">
               {showSubscriptionBox && (
                 <Glassbox className={'w-full p-0'}>
-                  <SubscriptionCardView />
+                  <SubscriptionCard />
                 </Glassbox>
               )}
 

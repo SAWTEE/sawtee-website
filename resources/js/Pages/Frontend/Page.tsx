@@ -1,6 +1,12 @@
 import WebsiteHead from '@/components/Frontend/Head';
-import type { FrontendPageProps, Page as CmsPage, SeoMeta } from '@/types';
-import type { ComponentType, ReactNode } from 'react';
+import type {
+  FrontendPageProps,
+  Page as CmsPage,
+  PageSection,
+  SeoMeta,
+  Theme,
+} from '@/types';
+import type { ReactNode } from 'react';
 import MainLayout from '@/layouts/MainLayout';
 import PageLayout from '@/layouts/PageLayout';
 import Contact from './Pages/Contact';
@@ -9,15 +15,6 @@ import MediaFellows from './Pages/MediaFellows';
 import OurWork from './Pages/OurWork';
 import ReformMonitor from './Pages/ReformMonitor';
 import SectionTemplate from './Pages/SectionTemplate';
-
-type LooseProps = Record<string, unknown>;
-
-const OurWorkPage = OurWork as ComponentType<LooseProps>;
-const SectionTemplatePage = SectionTemplate as ComponentType<LooseProps>;
-const ContactPage = Contact as ComponentType<LooseProps>;
-const MediaFellowsPage = MediaFellows as ComponentType<LooseProps>;
-const ReformMonitorPage = ReformMonitor as ComponentType<LooseProps>;
-const DefaultPageView = DefaultPage as ComponentType<LooseProps>;
 
 function featuredImageUrl(
   featured_image: FrontendPageProps['featured_image']
@@ -79,8 +76,8 @@ export default function Page({
 
 type PageContentProps = {
   page: CmsPage;
-  sections?: unknown[];
-  themes?: unknown[] | null;
+  sections?: PageSection[];
+  themes?: Theme[] | null;
 };
 
 const PageContent = ({
@@ -92,12 +89,12 @@ const PageContent = ({
   switch (page.page_template) {
     case 'OurWork':
       return (
-        <OurWorkPage themes={themes} sections={sections} content={content} />
+        <OurWork themes={themes} sections={sections} content={content} />
       );
 
     case 'SectionTemplate':
       return (
-        <SectionTemplatePage
+        <SectionTemplate
           sections={sections}
           content={content}
           pageData={pageData}
@@ -106,15 +103,15 @@ const PageContent = ({
       );
 
     case 'Contact':
-      return <ContactPage content={content} pageData={pageData} />;
+      return <Contact content={content ?? undefined} pageData={pageData} />;
 
     case 'MediaFellows':
-      return <MediaFellowsPage />;
+      return <MediaFellows />;
 
     case 'ReformMonitor':
-      return <ReformMonitorPage content={content} />;
+      return <ReformMonitor content={content ?? undefined} />;
 
     default:
-      return <DefaultPageView sections={sections} content={content} />;
+      return <DefaultPage sections={sections} content={content} />;
   }
 };

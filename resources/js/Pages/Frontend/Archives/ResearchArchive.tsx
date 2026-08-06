@@ -1,30 +1,45 @@
 import Glassbox from '@/components/Frontend/Glassbox';
 import { cn } from '@/lib/utils';
+import type { Research, ResearchByYear } from '@/types';
 import { FileText } from 'lucide-react';
+import type { ReactNode } from 'react';
 
-const ResearchArchive = ({ posts = undefined }: any) => {
-  // Get the data of the current list.
-  if (!posts || posts.length <= 0)
+type ResearchArchiveProps = {
+  posts?: ResearchByYear | Research[] | null;
+};
+
+const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
+  if (!posts) {
     return <p className="text-2xl">"No posts found"</p>;
+  }
 
-  // @ts-ignore allowlist-migration
-  const sortedPosts = Object.entries(posts).sort(([a], [b]) => b - a);
+  const byYear: ResearchByYear = Array.isArray(posts)
+    ? {}
+    : posts;
+
+  if (Object.keys(byYear).length <= 0) {
+    return <p className="text-2xl">"No posts found"</p>;
+  }
+
+  const sortedPosts = Object.entries(byYear).sort(
+    ([a], [b]) => Number(b) - Number(a)
+  );
 
   return (
     <div className="mx-auto mb-5 flex w-full max-w-3xl flex-col items-start justify-start gap-10">
-      {sortedPosts.map((tagitem: any) => {
+      {sortedPosts.map(([year, items]) => {
         return (
-          <div className="z-10 w-full" key={tagitem[0]}>
+          <div className="z-10 w-full" key={year}>
             <h2 className="my-5 text-lg font-bold md:text-xl xl:text-2xl">
-              {tagitem[0]}
+              {year}
             </h2>
             <Glassbox className={'w-full rounded-xl p-4 text-left'}>
-              {tagitem[1].map((researchItem: any, idx: any) => (
+              {items.map((researchItem, idx) => (
                 <ResearchItem
                   key={researchItem.id}
-                  skipTrail={idx !== tagitem[1].length - 1}
+                  skipTrail={idx !== items.length - 1}
                   className={
-                    idx !== tagitem[1].length - 1 ? 'min-h-12' : 'min-h-auto'
+                    idx !== items.length - 1 ? 'min-h-12' : 'min-h-auto'
                   }
                 >
                   <h3 className="text-md tracking-wide text-secondary-foreground/90 hover:text-primary/80 hover:underline hover:underline-offset-4 dark:hover:text-secondary-foreground/80 md:text-lg">
@@ -33,9 +48,10 @@ const ResearchArchive = ({ posts = undefined }: any) => {
                       href={
                         researchItem.file
                           ? `/Research_Reports/${researchItem.file.name}`
-                          : researchItem.link
+                          : (researchItem.link ?? undefined)
                       }
-                     rel="noopener noreferrer">
+                      rel="noopener noreferrer"
+                    >
                       {researchItem.title}
                     </a>
                   </h3>
@@ -51,7 +67,17 @@ const ResearchArchive = ({ posts = undefined }: any) => {
 
 export default ResearchArchive;
 
-const ResearchItem = ({ skipTrail = undefined, children = undefined, className = '' }: any) => {
+type ResearchItemProps = {
+  skipTrail?: boolean;
+  children?: ReactNode;
+  className?: string;
+};
+
+const ResearchItem = ({
+  skipTrail = false,
+  children,
+  className = '',
+}: ResearchItemProps) => {
   return (
     <div className={cn('flex items-start', className)}>
       <div className="relative mr-4 flex flex-col items-center justify-center">

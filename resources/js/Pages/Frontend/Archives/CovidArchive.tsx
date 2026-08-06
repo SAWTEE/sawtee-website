@@ -7,15 +7,19 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { DateFormat } from '@/lib/helpers';
+import type { Post } from '@/types';
 
-const CovidArchive = ({ posts = [] }: { posts?: any[] }) => {
+type CovidArchiveProps = {
+  posts?: Post[];
+};
+
+const CovidArchive = ({ posts = [] }: CovidArchiveProps) => {
   return (
     <div className="grid w-full grid-cols-1 gap-x-4 gap-y-10 px-4 md:px-8 lg:grid-cols-2">
-      {posts.map((post: any) => {
-        const authors = () => {
+      {posts.map(post => {
+        const authors = (): string[] => {
           if (post.author) {
-            const result = post.author.replace('and', ',').split(',');
-            return result;
+            return post.author.replace('and', ',').split(',');
           }
           return [];
         };
@@ -34,7 +38,7 @@ const CovidArchive = ({ posts = [] }: { posts?: any[] }) => {
                   {DateFormat(post.published_at)}
                 </time>
               </div>
-              <a href={post.link} className="primary-link">
+              <a href={post.link ?? undefined} className="primary-link">
                 <h3 className="text-md font-normal tracking-normal lg:text-lg lg:leading-5">
                   {post.title}
                 </h3>
@@ -43,12 +47,12 @@ const CovidArchive = ({ posts = [] }: { posts?: any[] }) => {
                 {post.author ? (
                   <div className="flex -space-x-4 transition-all duration-300 ease-in hover:space-x-1 rtl:space-x-reverse">
                     <TooltipProvider>
-                      {authors().map((author: any) => (
+                      {authors().map(author => (
                         <Tooltip key={author}>
                           <TooltipTrigger>
                             <div className="relative inline-flex h-10 w-10 cursor-pointer items-center justify-center overflow-hidden rounded-full border bg-gray-100 shadow-sm dark:bg-gray-600">
                               <span className="font-medium text-gray-600 dark:text-gray-300">
-                                {author.split(' ').map((initial: any) => {
+                                {author.split(' ').map(initial => {
                                   return initial[0];
                                 })}
                               </span>
