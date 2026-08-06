@@ -36,12 +36,22 @@ export default function ZoomableImage({
           />
         </button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-[90vw] border-0 bg-transparent p-0 shadow-none sm:rounded-none">
+      <DialogContent
+        className={cn(
+          'flex w-fit max-h-[90vh] max-w-[90vw] items-center justify-center',
+          'gap-0 overflow-auto border-0 bg-transparent p-2 shadow-none',
+          'sm:max-w-[90vw] sm:rounded-none',
+          '[&>button]:top-2 [&>button]:right-2 [&>button]:rounded-full',
+          '[&>button]:bg-black/55 [&>button]:p-1.5 [&>button]:text-white',
+          '[&>button]:opacity-100 [&>button]:hover:opacity-90',
+          '[&>button]:focus:ring-white/40'
+        )}
+      >
         <VisuallyHidden>
           <DialogTitle>{alt}</DialogTitle>
         </VisuallyHidden>
         <img
-          className="max-h-[90vh] w-full object-contain"
+          className="h-auto max-h-[calc(90vh-1rem)] w-auto max-w-[calc(90vw-1rem)] object-contain"
           src={src}
           alt={alt}
         />
