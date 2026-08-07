@@ -18,7 +18,11 @@ export default function InputError({
   const content = message ?? children;
 
   return content ? (
-    <p {...props} className={`text-sm text-red-600 ${className}`}>
+    <p
+      {...props}
+      role="alert"
+      className={`text-sm text-destructive ${className}`}
+    >
       {content}
     </p>
   ) : null;

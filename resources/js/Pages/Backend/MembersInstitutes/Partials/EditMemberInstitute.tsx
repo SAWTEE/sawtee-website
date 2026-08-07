@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -11,7 +11,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -20,6 +19,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditMemberInstitute({
   open = undefined,
@@ -27,7 +27,7 @@ export default function EditMemberInstitute({
   institute = undefined,
   members = undefined,
 }: any) {
-  const { data, setData, post, errors, reset } = useForm({
+  const { data, setData, post, errors } = useForm({
     name: institute.name,
     link: institute.link,
     logo_image_src: institute.logo_image_src,
@@ -52,20 +52,7 @@ export default function EditMemberInstitute({
           });
           setOpen(!open);
         },
-        onError: errors => {
-          for (const key in errors) {
-            if (Object.hasOwnProperty.call(errors, key)) {
-              const value = errors[key];
-              // @ts-ignore allowlist-migration
-              reset(key);
-              return toast({
-                title: 'Uh oh, Something went wrong',
-                variant: 'destructive',
-                description: `${key.toUpperCase()} field error` + `: ${value}`,
-              });
-            }
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -77,83 +64,89 @@ export default function EditMemberInstitute({
           <DialogTitle>Edit</DialogTitle>
           <DialogDescription>Edit institute</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="grid grid-cols-4 items-center gap-4">
-            <div className="col-span-2">
-              <Label htmlFor="name" className="text-right">
-                Institute Name
-              </Label>
-              <Input
-                id="name"
-                name="name"
-                value={data.name}
-                onChange={e => setData('name', e.target.value)}
-                required
-              />
-
-              {errors.name && (
-                <InputError className="mt-2">{errors.name}</InputError>
+            <FormField
+              id="name"
+              label="Institute Name"
+              error={errors.name}
+              required
+              className="col-span-2"
+            >
+              {field => (
+                <Input
+                  {...field}
+                  name="name"
+                  value={data.name}
+                  onChange={e => setData('name', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div className="col-span-2">
-              <Label htmlFor="link" className="text-right">
-                Institute link
-              </Label>
-              <Input
-                id="link"
-                name="link"
-                className="col-span-3"
-                value={data.link}
-                onChange={e => setData('link', e.target.value)}
-                required
-              />
-
-              {errors.link && (
-                <InputError className="mt-2">{errors.link}</InputError>
+            <FormField
+              id="link"
+              label="Institute link"
+              error={errors.link}
+              required
+              className="col-span-2"
+            >
+              {field => (
+                <Input
+                  {...field}
+                  name="link"
+                  className="col-span-3"
+                  value={data.link}
+                  onChange={e => setData('link', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div className="col-span-2">
-              <Label htmlFor="logo_image_src" className="text-right">
-                Logo Image Source
-              </Label>
-              <Input
-                id="logo_image_src"
-                name="logo_image_src"
-                className="col-span-3"
-                value={data.logo_image_src}
-                onChange={e => setData('logo_image_src', e.target.value)}
-              />
-
-              {errors.logo_image_src && (
-                <InputError className="mt-2">
-                  {errors.logo_image_src}
-                </InputError>
+            <FormField
+              id="logo_image_src"
+              label="Logo Image Source"
+              error={errors.logo_image_src}
+              className="col-span-2"
+            >
+              {field => (
+                <Input
+                  {...field}
+                  name="logo_image_src"
+                  className="col-span-3"
+                  value={data.logo_image_src}
+                  onChange={e => setData('logo_image_src', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div className="col-span-2 flex flex-col gap-2">
-              <Label htmlFor="member_id">Select Member Country</Label>
-              <Select
-                name="member_id"
-                // @ts-ignore allowlist-migration
-                id="member_id"
-                value={data.member_id}
-                onValueChange={value => setData('member_id', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select member country" />
-                </SelectTrigger>
-                <SelectContent>
-                  {members.map((member: any) => (
-                    <SelectItem key={member.id} value={member.id}>
-                      {member.country}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <FormField
+              id="member_id"
+              label="Select Member Country"
+              error={errors.member_id}
+              className="col-span-2"
+            >
+              {field => (
+                <Select
+                  name="member_id"
+                  value={data.member_id}
+                  onValueChange={value => setData('member_id', value)}
+                >
+                  <SelectTrigger
+                    id={field.id}
+                    aria-invalid={field['aria-invalid']}
+                    aria-describedby={field['aria-describedby']}
+                  >
+                    <SelectValue placeholder="Select member country" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {members.map((member: any) => (
+                      <SelectItem key={member.id} value={member.id}>
+                        {member.country}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              )}
+            </FormField>
           </div>
 
           <DialogFooter>

@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\AttachesUploadedMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\FellowRequest;
 use App\Models\Fellow;
 use App\Models\Fellowship;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class FellowController extends Controller
 {
+    use AttachesUploadedMedia;
+
     public function index(): Response
     {
         return Inertia::render('Backend/Fellows/Index', [
@@ -29,13 +33,13 @@ class FellowController extends Controller
 
     public function store(FellowRequest $request): RedirectResponse
     {
-        $fellow = Fellow::create($request->validated());
+        return DB::transaction(function () use ($request) {
+            $fellow = Fellow::create($request->validated());
 
-        if ($request->hasFile('image')) {
-            $fellow->addMediaFromRequest('image')->toMediaCollection('profile_picture');
-        }
+            $this->attachImageFromRequest($fellow, $request, 'profile_picture');
 
-        return to_route('admin.fellows.index');
+            return to_route('admin.fellows.index');
+        });
     }
 
     public function edit(Fellow $fellow): Response
@@ -48,14 +52,16 @@ class FellowController extends Controller
 
     public function update(FellowRequest $request, Fellow $fellow): RedirectResponse
     {
-        if ($request->hasFile('image')) {
-            $fellow->clearMediaCollection('profile_picture');
-            $fellow->addMediaFromRequest('image')->toMediaCollection('profile_picture');
-        }
+        return DB::transaction(function () use ($request, $fellow) {
+            if ($request->hasFile('image')) {
+                $fellow->clearMediaCollection('profile_picture');
+                $this->attachImageFromRequest($fellow, $request, 'profile_picture');
+            }
 
-        $fellow->update($request->validated());
+            $fellow->update($request->validated());
 
-        return to_route('admin.fellows.index');
+            return to_route('admin.fellows.index');
+        });
     }
 
     public function destroy(Fellow $fellow): RedirectResponse

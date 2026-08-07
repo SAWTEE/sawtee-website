@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,15 +11,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditTag({
   tag = undefined,
   open = undefined,
   setOpen = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     name: tag.name,
   });
   const { toast } = useToast();
@@ -39,15 +39,9 @@ export default function EditTag({
             title: 'Tag edited.',
             description: 'Tag edited Successfully',
           });
-          reset('name');
           setOpen(!open);
         },
-        onError: errors => {
-          if (errors.name) {
-            reset('name');
-            console.error(errors);
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -60,23 +54,25 @@ export default function EditTag({
           <DialogDescription>{`Edit tag: ${tag.name}`}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="flex items-end gap-2">
-            <div className="w-2/3">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                name="name"
-                value={data.name}
-                placeholder="enter tag name"
-                onChange={e => setData('name', e.target.value)}
-                required
-              />
-
-              {errors.name && (
-                <InputError className="mt-2">{errors.name}</InputError>
+            <FormField
+              id="name"
+              label="Name"
+              error={errors.name}
+              required
+              className="w-2/3"
+            >
+              {field => (
+                <Input
+                  {...field}
+                  name="name"
+                  value={data.name}
+                  placeholder="enter tag name"
+                  onChange={e => setData('name', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
             <div className="flex w-1/3 gap-2">
               <Button variant="outline" onClick={() => setOpen(!open)}>
                 Cancel

@@ -21,4 +21,16 @@ class TagRequest extends AdminFormRequest
             ],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please enter a name.',
+            'name.max' => 'Name must not be longer than 60 characters.',
+            'name.unique' => 'A tag with this name already exists.',
+        ];
+    }
 }

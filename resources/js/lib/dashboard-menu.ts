@@ -13,7 +13,9 @@ import {
   TagsIcon,
   UserPen,
   UsersIcon,
+  Link2,
   Wand,
+  Wrench,
 } from 'lucide-react';
 
 import { HomeIcon } from '@/components/shared/icons';
@@ -23,6 +25,16 @@ export const DashBoardMenuItems = [
     name: 'Dashboard',
     icon: HomeIcon,
     route: 'admin.dashboard',
+  },
+  {
+    name: 'Maintenance',
+    icon: Wrench,
+    route: 'admin.maintenance.index',
+  },
+  {
+    name: 'Link Checker',
+    icon: Link2,
+    route: 'admin.link-checker.index',
   },
   {
     name: 'Website',

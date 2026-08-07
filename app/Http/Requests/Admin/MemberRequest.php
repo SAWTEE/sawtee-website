@@ -15,4 +15,14 @@ class MemberRequest extends AdminFormRequest
             'country' => ['required', 'string', 'max:255'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'country.required' => 'Please enter a country.',
+        ];
+    }
 }

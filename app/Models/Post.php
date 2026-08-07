@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\DeletesAssociatedFiles;
 use App\Models\Concerns\HasSeoMeta;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Attributes\SearchUsingPrefix;
 use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
@@ -20,11 +22,13 @@ use Spatie\Sluggable\SlugOptions;
 
 class Post extends Model implements HasMedia
 {
+    use DeletesAssociatedFiles;
     use HasFactory;
     use HasSeoMeta;
     use HasSlug;
     use InteractsWithMedia;
     use Searchable;
+    use SoftDeletes;
 
     protected $fillable = [
         'title',
@@ -98,21 +102,17 @@ class Post extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        // @phpstan-ignore-next-line
         $this->addMediaConversion('preview')
-            ->fit(Fit::Max, 300, 200)
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
             ->quality(75)
             ->nonQueued();
 
-        // @phpstan-ignore-next-line
-        $this->addMediaConversion('responsive')
-            ->fit(Fit::Max, 1200, 800)
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('post-featured-image')
-            ->quality(75)
             ->format('webp')
-            ->withResponsiveImages()
-            ->nonQueued();
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

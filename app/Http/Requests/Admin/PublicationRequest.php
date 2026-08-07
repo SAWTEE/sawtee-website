@@ -31,4 +31,35 @@ class PublicationRequest extends AdminFormRequest
             'tags.*' => ['numeric', 'exists:tags,id'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'category_id.required' => 'Please select a category.',
+            'category_id.exists' => 'The selected category is invalid.',
+            'title.required' => 'Please enter a title.',
+            'title.unique' => 'A publication with this title already exists.',
+            'description.max' => 'Description must not be longer than 2000 characters.',
+            'image.image' => 'The featured image must be an image file.',
+            'image.mimes' => 'Featured image must be a JPEG, PNG, JPG, GIF, or WebP file.',
+            'image.max' => 'Featured image must not be larger than 2 MB.',
+            'file.required' => 'Please upload a file.',
+            'file.mimes' => 'Attachment must be a PDF, DOC, DOCX, PPT, or PPTX file.',
+            'file.max' => 'Attachment must not be larger than 10 MB.',
+            'tags.*.exists' => 'One or more selected tags are invalid.',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'category_id' => 'category',
+        ];
+    }
 }

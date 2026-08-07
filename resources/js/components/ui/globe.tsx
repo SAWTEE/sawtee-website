@@ -102,12 +102,12 @@ export function Globe({
   return (
     <div
       className={cn(
-        'absolute inset-0 mx-auto aspect-square w-full max-w-[600px]',
+        'absolute inset-0 mx-auto aspect-square w-full max-w-150',
         className
       )}
     >
       <canvas
-        className="size-full opacity-0 transition-opacity duration-500 [contain:layout_paint_size]"
+        className="size-full opacity-0 transition-opacity duration-500 contain-[layout_paint_size]"
         ref={canvasRef}
         onPointerDown={e => {
           pointerInteracting.current = e.clientX;

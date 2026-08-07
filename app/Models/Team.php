@@ -34,22 +34,17 @@ class Team extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Crop, 120, 80)
-            ->quality(90)
-            ->keepOriginalImageFormat()
-            ->nonQueued();
-
-        $this
-            ->addMediaConversion('responsive')
-            ->fit(Fit::Max, 600, 400)
-            ->performOnCollections('avatar')
-            ->quality(75)
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
-            ->withResponsiveImages()
+            ->quality(75)
             ->nonQueued();
 
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
+            ->performOnCollections('avatar')
+            ->format('webp')
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

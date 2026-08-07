@@ -78,21 +78,17 @@ class Category extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        // @phpstan-ignore-next-line
         $this->addMediaConversion('preview')
-            ->fit(Fit::Max, 300, 100)
-            ->quality(75)
-            ->keepOriginalImageFormat()
-            ->nonQueued();
-
-        // @phpstan-ignore-next-line
-        $this->addMediaConversion('responsive')
-            ->fit(Fit::Max, 1200, 400)
-            ->performOnCollections('category_media')
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
             ->quality(75)
-            ->withResponsiveImages()
             ->nonQueued();
+
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
+            ->performOnCollections('category_media')
+            ->format('webp')
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

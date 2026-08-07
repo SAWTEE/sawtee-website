@@ -1,6 +1,6 @@
 import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, ChevronRightIcon } from 'lucide-react';
-import { useState, type ComponentProps } from 'react';
+import { type ComponentProps, useState } from 'react';
 
 import { cn } from '@/lib/utils';
 

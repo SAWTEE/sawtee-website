@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +11,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -22,6 +21,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateSliderForm({
   open = undefined,
@@ -44,14 +44,10 @@ export default function CreateSliderForm({
           title: 'Slider Created.',
           description: 'Slider Created Successfully',
         });
+        reset();
         setOpen(!open);
       },
-      onError: errors => {
-        if (errors.title) {
-          // @ts-ignore allowlist-migration
-          reset('title');
-        }
-      },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
@@ -62,51 +58,51 @@ export default function CreateSliderForm({
           <DialogTitle>Create Slider</DialogTitle>
           <DialogDescription>Add new slider.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit} className="space-y-4">
-          <div>
-            <Label htmlFor="name">Name</Label>
-
-            <Input
-              id="name"
-              name="name"
-              placeholder="enter name of slider"
-              onChange={e => setData('name', e.target.value)}
-            />
-
-            {errors.name && (
-              <InputError className="mt-2">{errors.name}</InputError>
+        <form onSubmit={submit} noValidate className="space-y-4">
+          <FormField id="name" label="Name" error={errors.name}>
+            {field => (
+              <Input
+                {...field}
+                name="name"
+                placeholder="enter name of slider"
+                onChange={e => setData('name', e.target.value)}
+              />
             )}
-          </div>
+          </FormField>
 
-          <div className="w-[280px]">
-            <Label htmlFor="pages">Pages</Label>
-            <Select
-              // @ts-ignore allowlist-migration
-              id="pages"
-              name="pages"
-              // @ts-ignore allowlist-migration
-              onValueChange={value => setData('page_id', value)}
-              placeholder="Select pages"
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select pages" />
-              </SelectTrigger>
+          <FormField
+            id="page_id"
+            label="Pages"
+            error={errors.page_id}
+            className="w-[280px]"
+          >
+            {field => (
+              <Select
+                name="pages"
+                // @ts-ignore allowlist-migration
+                onValueChange={value => setData('page_id', value)}
+              >
+                <SelectTrigger
+                  id={field.id}
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
+                  <SelectValue placeholder="Select pages" />
+                </SelectTrigger>
 
-              <SelectContent className="w-[280px]">
-                <SelectGroup>
-                  <SelectLabel>Pages</SelectLabel>
-                  {pages.map((page: any) => (
-                    <SelectItem key={page.id} value={page.id}>
-                      {page.name}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            {errors.page_id && (
-              <InputError className="mt-2">{errors.page_id}</InputError>
+                <SelectContent className="w-[280px]">
+                  <SelectGroup>
+                    <SelectLabel>Pages</SelectLabel>
+                    {pages.map((page: any) => (
+                      <SelectItem key={page.id} value={page.id}>
+                        {page.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             )}
-          </div>
+          </FormField>
           <div className="space-x-2">
             <PrimaryButton type="submit" isLoading={processing}>
               Create

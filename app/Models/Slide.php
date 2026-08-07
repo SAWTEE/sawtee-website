@@ -28,19 +28,17 @@ class Slide extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Max, 300, 150)
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
+            ->quality(75)
             ->nonQueued();
 
-        $this
-            ->addMediaConversion('responsive')
-            ->fit(Fit::Max, 1280, 720)
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('slides')
-            ->quality(75)
             ->format('webp')
-            ->withResponsiveImages()
+            ->quality(80)
             ->nonQueued();
     }
 

@@ -26,4 +26,33 @@ class ArticleRequest extends AdminFormRequest
             'tags.*' => ['numeric', 'exists:tags,id'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Please enter a title.',
+            'publication_id.required' => 'Please select a publication.',
+            'publication_id.exists' => 'The selected publication is invalid.',
+            'image.image' => 'The featured image must be an image file.',
+            'image.mimes' => 'Featured image must be a JPEG, PNG, JPG, or WebP file.',
+            'image.max' => 'Featured image must not be larger than 2 MB.',
+            'tags.*.exists' => 'One or more selected tags are invalid.',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'publication_id' => 'publication',
+            'published_at' => 'publish date',
+            'meta_title' => 'meta title',
+            'meta_description' => 'meta description',
+        ];
+    }
 }

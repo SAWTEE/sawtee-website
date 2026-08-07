@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,15 +12,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditCategoryForm({
   open = undefined,
   setOpen = undefined,
   member = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     country: member.country,
   });
   const { toast } = useToast();
@@ -42,20 +42,7 @@ export default function EditCategoryForm({
           });
           setOpen(!open);
         },
-        onError: errors => {
-          for (const key in errors) {
-            if (Object.hasOwnProperty.call(errors, key)) {
-              const value = errors[key];
-              // @ts-ignore allowlist-migration
-              reset(key);
-              return toast({
-                title: 'Uh oh, Something went wrong',
-                variant: 'destructive',
-                description: `${key.toUpperCase()} field error` + `: ${value}`,
-              });
-            }
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -67,27 +54,27 @@ export default function EditCategoryForm({
           <DialogTitle>Edit</DialogTitle>
           <DialogDescription>Edit member</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <div className="col-span-4">
-                <Label htmlFor="country" className="text-right">
-                  country
-                </Label>
-                <Input
-                  id="country"
-                  name="memebr"
-                  className="col-span-3"
-                  value={data.country}
-                  placeholder="enter category name"
-                  onChange={e => setData('country', e.target.value)}
-                  required
-                />
-
-                {errors.country && (
-                  <InputError className="mt-2">{errors.country}</InputError>
+              <FormField
+                id="country"
+                label="country"
+                error={errors.country}
+                required
+                className="col-span-4"
+              >
+                {field => (
+                  <Input
+                    {...field}
+                    name="memebr"
+                    className="col-span-3"
+                    value={data.country}
+                    placeholder="enter category name"
+                    onChange={e => setData('country', e.target.value)}
+                  />
                 )}
-              </div>
+              </FormField>
             </div>
           </div>
 

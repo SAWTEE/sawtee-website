@@ -1,9 +1,8 @@
 import { Link, useForm, usePage } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
-import InputLabel from '@/components/Backend/InputLabel';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import TextInput from '@/components/Backend/TextInput';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 export default function UpdateProfileInformation({
@@ -52,40 +51,34 @@ export default function UpdateProfileInformation({
         </p>
       </header>
 
-      <form onSubmit={submit} className="mt-6 space-y-6">
-        <div>
-          <InputLabel htmlFor="name" value="Name" />
+      <form onSubmit={submit} noValidate className="mt-6 space-y-6">
+        <FormField id="name" label="Name" error={errors.name} required>
+          {field => (
+            <Input
+              {...field}
+              className="mt-1 block w-full"
+              value={data.name}
+              // @ts-ignore allowlist-migration
+              onChange={e => setData('name', e.target.value)}
+              autoFocus
+              autoComplete="name"
+            />
+          )}
+        </FormField>
 
-          <TextInput
-            id="name"
-            className="mt-1 block w-full"
-            value={data.name}
-            // @ts-ignore allowlist-migration
-            onChange={e => setData('name', e.target.value)}
-            required
-            isFocused
-            autoComplete="name"
-          />
-
-          <InputError className="mt-2" message={errors.name} />
-        </div>
-
-        <div>
-          <InputLabel htmlFor="email" value="Email" />
-
-          <TextInput
-            id="email"
-            type="email"
-            className="mt-1 block w-full"
-            value={data.email}
-            // @ts-ignore allowlist-migration
-            onChange={e => setData('email', e.target.value)}
-            required
-            autoComplete="username"
-          />
-
-          <InputError className="mt-2" message={errors.email} />
-        </div>
+        <FormField id="email" label="Email" error={errors.email} required>
+          {field => (
+            <Input
+              {...field}
+              type="email"
+              className="mt-1 block w-full"
+              value={data.email}
+              // @ts-ignore allowlist-migration
+              onChange={e => setData('email', e.target.value)}
+              autoComplete="username"
+            />
+          )}
+        </FormField>
 
         {mustVerifyEmail && user.email_verified_at === null && (
           <div>

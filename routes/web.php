@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\FellowController;
 use App\Http\Controllers\Admin\FellowshipController;
 use App\Http\Controllers\Admin\HomePageSectionController;
 use App\Http\Controllers\Admin\InstituteController;
+use App\Http\Controllers\Admin\LinkCheckerController;
+use App\Http\Controllers\Admin\MaintenanceController;
 use App\Http\Controllers\Admin\MemberController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\PageController;
@@ -61,6 +63,10 @@ Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.sh
 
 Route::middleware(['auth', 'verified', 'inertia.encrypt'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/maintenance', [MaintenanceController::class, 'index'])->name('maintenance.index');
+    Route::post('/maintenance/clean', [MaintenanceController::class, 'clean'])->name('maintenance.clean');
+    Route::get('/link-checker', [LinkCheckerController::class, 'index'])->name('link-checker.index');
+    Route::post('/link-checker/scan', [LinkCheckerController::class, 'scan'])->name('link-checker.scan');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -87,10 +93,16 @@ Route::middleware(['auth', 'verified', 'inertia.encrypt'])->prefix('admin')->as(
 
     Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
+    Route::get('/posts/trash', [PostController::class, 'trash'])->name('posts.trash');
     Route::get('/posts/edit/{post}', [PostController::class, 'edit'])->name('posts.edit');
     Route::post('/posts/store', [PostController::class, 'store'])->name('posts.store');
     Route::patch('/posts/update/{post}', [PostController::class, 'update'])->name('posts.update');
+    Route::post('/posts/restore/{post}', [PostController::class, 'restore'])->withTrashed()->name('posts.restore');
+    Route::post('/posts/batch-restore', [PostController::class, 'batchRestore'])->name('posts.batch-restore');
+    Route::delete('/posts/batch', [PostController::class, 'batchDestroy'])->name('posts.batch-destroy');
     Route::delete('/posts/delete/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+    Route::delete('/posts/force/{post}', [PostController::class, 'forceDestroy'])->withTrashed()->name('posts.force-destroy');
+    Route::delete('/posts/batch-force', [PostController::class, 'batchForceDestroy'])->name('posts.batch-force-destroy');
 
     Route::post('/post/uploadmedia', [PostController::class, 'uploadmedia'])->name('post.upload');
     Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');

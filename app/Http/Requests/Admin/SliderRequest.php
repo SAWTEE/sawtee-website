@@ -22,4 +22,26 @@ class SliderRequest extends AdminFormRequest
             'page_id' => ['nullable', 'numeric', 'exists:pages,id'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please enter a name.',
+            'name.unique' => 'A slider with this name already exists.',
+            'page_id.exists' => 'The selected page is invalid.',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'page_id' => 'page',
+        ];
+    }
 }

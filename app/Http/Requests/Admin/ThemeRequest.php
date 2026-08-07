@@ -22,4 +22,17 @@ class ThemeRequest extends AdminFormRequest
             'description' => ['required', 'string', 'max:2000'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Please enter a title.',
+            'title.unique' => 'A theme with this title already exists.',
+            'description.required' => 'Please enter a description.',
+            'description.max' => 'Description must not be longer than 2000 characters.',
+        ];
+    }
 }

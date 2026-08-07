@@ -111,7 +111,7 @@ class HomePageDataAssembler
                 $this->publishedPostsByCategorySlug('webinar-series', 5),
                 'post-featured-image',
                 // Main carousel needs the large WebP; thumbs still read preview_url.
-                'responsive'
+                'large'
             ),
             'slidesResponsiveImages' => $slidesResponsiveImages,
             'homePageSections' => HomePageSection::all()->toArray(),
@@ -175,9 +175,10 @@ class HomePageDataAssembler
         foreach ($slides as $slide) {
             /** @var Slide $slide */
             $media = $slide->getFirstMedia('slides');
-            // Prefer WebP conversion over multi‑MB originals for LCP / image delivery.
-            $slidesResponsiveImages[] = $media?->getSrcSet('responsive') ?? '';
-            $payload[] = $this->modelToArrayWithOptimizedMedia($slide, 'slides', 'responsive');
+            // Only emit srcSet when the large file exists; a bare conversion URL 404s
+            // and can break <img> even when original_url is valid.
+            $slidesResponsiveImages[] = MediaConversionUrl::optional($media, 'large') ?? '';
+            $payload[] = $this->modelToArrayWithOptimizedMedia($slide, 'slides', 'large');
         }
 
         return [$payload, $slidesResponsiveImages];
@@ -248,14 +249,14 @@ class HomePageDataAssembler
      */
     protected function optimizeMediaArray(array $mediaArray, Media $media, string $conversion): array
     {
-        if ($media->hasGeneratedConversion('preview')) {
-            $mediaArray['preview_url'] = $media->getUrl('preview');
-        }
+        // Spatie appends preview_url from hasGeneratedConversion alone; overwrite when
+        // the file is missing (stale flags / format mismatch) so the frontend never 404s.
+        $mediaArray['preview_url'] = MediaConversionUrl::isUsable($media, 'preview')
+            ? $media->getUrl('preview')
+            : $media->getUrl();
 
-        if ($media->hasGeneratedConversion($conversion)) {
-            // Frontend components read `original_url`; serve the optimized conversion instead.
-            $mediaArray['original_url'] = $media->getUrl($conversion);
-        }
+        // Frontend components read `original_url`; prefer optimized conversions on disk.
+        $mediaArray['original_url'] = MediaConversionUrl::resolve($media, $conversion, 'preview');
 
         return $mediaArray;
     }

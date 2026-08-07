@@ -118,7 +118,7 @@
     --muted-foreground: 195 10% 68%;
     --accent: 195 18% 18%;
     --accent-foreground: 195 40% 88%;
-    --destructive: 0 62.8% 30.6%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 98%;
     --border: 195 10% 24%;
     /* Slightly lighter than surface so admin/frontend inputs stay readable */

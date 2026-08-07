@@ -26,4 +26,20 @@ class TeamRequest extends AdminFormRequest
             'image' => $this->whenUploaded('image', ['image', 'max:2048']),
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please enter a name.',
+            'email.email' => 'Please enter a valid email address.',
+            'email.unique' => 'A team member with this email already exists.',
+            'designation.required' => 'Please enter a designation.',
+            'order.required' => 'Please enter a display order.',
+            'image.image' => 'The photo must be an image file.',
+            'image.max' => 'Photo must not be larger than 2 MB.',
+        ];
+    }
 }

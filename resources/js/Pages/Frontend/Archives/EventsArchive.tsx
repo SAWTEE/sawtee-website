@@ -27,7 +27,7 @@ const EventsArchive = ({ posts = null, ...rest }: EventsArchiveProps) => {
               className="relative flex w-full flex-col overflow-hidden p-0 shadow-sm xl:flex-row xl:items-stretch xl:gap-6 xl:border-0 xl:bg-transparent xl:p-0 xl:shadow-none"
               {...rest}
             >
-              <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-zinc-100 xl:aspect-auto xl:w-[min(42%,28rem)] xl:min-h-[220px] xl:self-stretch xl:rounded-lg dark:bg-zinc-800/60">
+              <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-zinc-100 xl:aspect-auto xl:min-h-[220px] xl:w-[min(42%,28rem)] xl:self-stretch xl:rounded-lg dark:bg-zinc-800/60">
                 {featured_image?.original_url ? (
                   <img
                     src={featured_image.original_url}

@@ -2,12 +2,11 @@ import { useForm } from '@inertiajs/react';
 import { AlertCircleIcon, PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -18,6 +17,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 import CreateSlideForm from '../../Slide/CreateSlideForm';
 import Slides from '../../Slide/Slides';
@@ -27,7 +27,7 @@ export default function EditSliderForm({
   slides = undefined,
   pages = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     name: slider.name,
     page_id: slider.page_id,
   });
@@ -50,13 +50,7 @@ export default function EditSliderForm({
             description: 'Slider changes saved Successfully',
           });
         },
-        onError: errors => {
-          console.error(errors);
-          if (errors.title) {
-            // @ts-ignore allowlist-migration
-            reset('title');
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -70,49 +64,56 @@ export default function EditSliderForm({
         </Alert>
       )}
       <div className="grid items-end gap-4 lg:grid-cols-5">
-        <form onSubmit={submit} className="col-span-4">
+        <form onSubmit={submit} noValidate className="col-span-4">
           <div className="grid w-full grid-cols-1 items-end gap-6 lg:grid-cols-4">
-            <div className="col-span-2">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                id="name"
-                name="name"
-                value={data.name}
-                onChange={e => setData('name', e.target.value)}
-              />
-              {errors.name && (
-                <InputError className="mt-2">{errors.name}</InputError>
+            <FormField
+              id="name"
+              label="Name"
+              error={errors.name}
+              className="col-span-2"
+            >
+              {field => (
+                <Input
+                  {...field}
+                  name="name"
+                  value={data.name}
+                  onChange={e => setData('name', e.target.value)}
+                />
               )}
-            </div>
-            <div className="col-span-1">
-              <Label htmlFor="pages">Page</Label>
-              <Select
-                // @ts-ignore allowlist-migration
-                id="pages"
-                name="pages"
-                value={data.page_id}
-                placeholder="Select pages"
-                onValueChange={value => setData('page_id', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select pages" />
-                </SelectTrigger>
-                <SelectContent className="w-[280px]">
-                  <SelectGroup>
-                    <SelectLabel>Pages</SelectLabel>
+            </FormField>
+            <FormField
+              id="page_id"
+              label="Page"
+              error={errors.page_id}
+              className="col-span-1"
+            >
+              {field => (
+                <Select
+                  name="pages"
+                  value={data.page_id}
+                  onValueChange={value => setData('page_id', value)}
+                >
+                  <SelectTrigger
+                    id={field.id}
+                    aria-invalid={field['aria-invalid']}
+                    aria-describedby={field['aria-describedby']}
+                  >
+                    <SelectValue placeholder="Select pages" />
+                  </SelectTrigger>
+                  <SelectContent className="w-[280px]">
+                    <SelectGroup>
+                      <SelectLabel>Pages</SelectLabel>
 
-                    {pages.map((page: any) => (
-                      <SelectItem key={page.id} value={page.id}>
-                        {page.name}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {errors.page_id && (
-                <InputError className="mt-2">{errors.page_id}</InputError>
+                      {pages.map((page: any) => (
+                        <SelectItem key={page.id} value={page.id}>
+                          {page.name}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
               )}
-            </div>
+            </FormField>
             <PrimaryButton type="submit" disabled={processing}>
               Save slider
             </PrimaryButton>

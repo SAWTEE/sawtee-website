@@ -1,10 +1,9 @@
 import { useForm } from '@inertiajs/react';
 import { useRef } from 'react';
 
-import InputError from '@/components/Backend/InputError';
-import InputLabel from '@/components/Backend/InputLabel';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import TextInput from '@/components/Backend/TextInput';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
 
 export default function UpdatePasswordForm({ className = '' }: any) {
@@ -66,58 +65,64 @@ export default function UpdatePasswordForm({ className = '' }: any) {
         </p>
       </header>
 
-      <form onSubmit={updatePassword} className="mt-6 space-y-6">
-        <div>
-          <InputLabel htmlFor="current_password" value="Current Password" />
+      <form onSubmit={updatePassword} noValidate className="mt-6 space-y-6">
+        <FormField
+          id="current_password"
+          label="Current Password"
+          error={errors.current_password}
+          required
+        >
+          {field => (
+            <Input
+              {...field}
+              // @ts-ignore allowlist-migration
+              ref={currentPasswordInput}
+              value={data.current_password}
+              onChange={e => setData('current_password', e.target.value)}
+              type="password"
+              className="mt-1 block w-full"
+              autoComplete="current-password"
+            />
+          )}
+        </FormField>
 
-          <TextInput
-            id="current_password"
-            // @ts-ignore allowlist-migration
-            ref={currentPasswordInput}
-            value={data.current_password}
-            onChange={e => setData('current_password', e.target.value)}
-            type="password"
-            className="mt-1 block w-full"
-            autoComplete="current-password"
-          />
+        <FormField
+          id="password"
+          label="New Password"
+          error={errors.password}
+          required
+        >
+          {field => (
+            <Input
+              {...field}
+              // @ts-ignore allowlist-migration
+              ref={passwordInput}
+              value={data.password}
+              onChange={e => setData('password', e.target.value)}
+              type="password"
+              className="mt-1 block w-full"
+              autoComplete="new-password"
+            />
+          )}
+        </FormField>
 
-          <InputError message={errors.current_password} className="mt-2" />
-        </div>
-
-        <div>
-          <InputLabel htmlFor="password" value="New Password" />
-
-          <TextInput
-            id="password"
-            // @ts-ignore allowlist-migration
-            ref={passwordInput}
-            value={data.password}
-            onChange={e => setData('password', e.target.value)}
-            type="password"
-            className="mt-1 block w-full"
-            autoComplete="new-password"
-          />
-
-          <InputError message={errors.password} className="mt-2" />
-        </div>
-
-        <div>
-          <InputLabel
-            htmlFor="password_confirmation"
-            value="Confirm Password"
-          />
-
-          <TextInput
-            id="password_confirmation"
-            value={data.password_confirmation}
-            onChange={e => setData('password_confirmation', e.target.value)}
-            type="password"
-            className="mt-1 block w-full"
-            autoComplete="new-password"
-          />
-
-          <InputError message={errors.password_confirmation} className="mt-2" />
-        </div>
+        <FormField
+          id="password_confirmation"
+          label="Confirm Password"
+          error={errors.password_confirmation}
+          required
+        >
+          {field => (
+            <Input
+              {...field}
+              value={data.password_confirmation}
+              onChange={e => setData('password_confirmation', e.target.value)}
+              type="password"
+              className="mt-1 block w-full"
+              autoComplete="new-password"
+            />
+          )}
+        </FormField>
 
         <div className="flex items-center gap-4">
           <PrimaryButton disabled={processing}>Save</PrimaryButton>

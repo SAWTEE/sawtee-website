@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Publication;
 use App\Models\Research;
 use App\Models\Team;
+use App\Support\MediaConversionUrl;
 use App\Support\ResolvesSeoMeta;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -34,7 +35,10 @@ class BuildCategoryArchive
             $slug === 'publications' ? ['parent', 'children'] : ['parent']
         )->where('slug', $slug)->firstOrFail();
         $featuredImage = $category->getFirstMediaUrl('category_media');
-        $categoryResponsiveImages = $category->getFirstMedia('category_media')?->getSrcset('responsive');
+        $categoryResponsiveImages = MediaConversionUrl::optional(
+            $category->getFirstMedia('category_media'),
+            'large'
+        );
 
         return match ($slug) {
             'research' => $this->handleResearchCategory($category, $featuredImage, $categoryResponsiveImages),
@@ -144,7 +148,10 @@ class BuildCategoryArchive
             if ($isArticleSlug) {
                 $articleModel = Article::with(['tags', 'media'])->where('slug', $article)->firstOrFail();
                 $media = $articleModel->getFirstMediaUrl('article-featured-image');
-                $srcSet = $articleModel->getFirstMedia('article-featured-image')?->getSrcSet('responsive');
+                $srcSet = MediaConversionUrl::optional(
+                    $articleModel->getFirstMedia('article-featured-image'),
+                    'large'
+                );
                 $relatedArticles = Article::select(['id', 'title', 'slug', 'published_at'])
                     ->where('publication_id', $tradeInsightVolume->id)
                     ->whereKeyNot($articleModel->id)
@@ -339,7 +346,7 @@ class BuildCategoryArchive
 
         $file = $post->getFirstMediaUrl('post-files');
         $media = $post->getFirstMediaUrl('post-featured-image');
-        $srcSet = $post->getFirstMedia('post-featured-image')?->getSrcSet('responsive');
+        $srcSet = MediaConversionUrl::optional($post->getFirstMedia('post-featured-image'), 'large');
 
         return Inertia::render('Frontend/Post', [
             'post' => $post,

@@ -3,10 +3,10 @@ import React from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -17,12 +17,13 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateSectionForm({
   sections = undefined,
   pages = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, reset, progress } = useForm({
     title: '',
     description: '',
     type: 'default',
@@ -59,134 +60,147 @@ export default function CreateSectionForm({
     post(route('admin.sections.store'), {
       preserveScroll: true,
       preserveState: true,
-      onSuccess: () =>
+      onSuccess: () => {
         toast({
           title: 'Section Created.',
           description: `Section ${data.title} created Successfully`,
-        }),
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            // @ts-ignore allowlist-migration
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              variant: 'destructive',
-              description: `${key.toUpperCase()} field error` + `: ${value}`,
-            });
-          }
-        }
+        });
+        reset();
       },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid-rows-[minmax(auto, 1fr)] grid gap-4 lg:grid-cols-[repeat(4,minmax(100px,1fr))]">
-        <div className="col-span-4">
-          <Label htmlFor="title">Section Title</Label>
+        <FormField
+          id="title"
+          label="Section Title"
+          error={errors.title}
+          className="col-span-4"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="text"
+              name="title"
+              autoComplete="title"
+              className="mt-1"
+              onChange={e => setData('title', e.target.value)}
+            />
+          )}
+        </FormField>
 
-          <Input
-            type="text"
-            id="title"
-            name="title"
-            autoComplete="title"
-            className="mt-1"
-            onChange={e => setData('title', e.target.value)}
-          />
-
-          {errors.title && <InputError mt={2}>{errors.title}</InputError>}
-        </div>
-
-        <div className="col-span-2">
+        <Field
+          data-invalid={errors.image || undefined}
+          className="col-span-2 gap-2"
+        >
+          <FieldLabel htmlFor="image">Image</FieldLabel>
           <DropZone
             htmlFor={'image'}
             onValueChange={setDataImage}
             defaultValue={image}
+            error={errors.image}
+            progress={progress}
+            uploading={processing}
           />
-
-          {errors.image && (
-            <InputError className="mt-2">{errors.image}</InputError>
-          )}
-        </div>
+        </Field>
         <div className="col-span-2 grid w-full grid-cols-subgrid gap-4">
-          <div className="col-span-1">
-            <Label as="legend" htmlFor="page_id">
-              For Page
-            </Label>
-
-            <Select
-              name="page_id"
-              // @ts-ignore allowlist-migration
-              id="page_id"
-              onValueChange={value => {
-                // @ts-ignore allowlist-migration
-                setData('page_id', value);
-              }}
-            >
-              <SelectTrigger className="mt-1">
-                <SelectValue placeholder="Select Page" />
-              </SelectTrigger>
-              <SelectContent className="w-[300px]">
-                <SelectGroup>
-                  <SelectLabel>Pages</SelectLabel>
-                  {pages &&
-                    pages.length > 0 &&
-                    pages.map((item: any) => (
-                      <SelectItem key={item.id} value={item.id.toString()}>
-                        {item.name}
-                      </SelectItem>
-                    ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div className="col-span-1">
-            <Label htmlFor="order">Order</Label>
-            <Input
-              type="number"
-              id="order"
-              name="order"
-              className="mt-1"
-              defaultValue={0}
-              onChange={e => {
-                // @ts-ignore allowlist-migration
-                setData('order', Number(e.target.value));
-              }}
-            />
-            {errors.order && <InputError mt={2}>{errors.order}</InputError>}
-          </div>
-
-          <div className="col-span-2">
-            <Label htmlFor="link">Link</Label>
-
-            <Input
-              type="text"
-              id="link"
-              name="link"
-              className="mt-1"
-              autoComplete="link"
-              onChange={e => setData('link', e.target.value)}
-            />
-
-            {errors.link && (
-              <InputError className="mt-2">{errors.link}</InputError>
+          <FormField
+            id="page_id"
+            label="For Page"
+            error={errors.page_id}
+            className="col-span-1"
+          >
+            {field => (
+              <Select
+                name="page_id"
+                onValueChange={value => {
+                  // @ts-ignore allowlist-migration
+                  setData('page_id', value);
+                }}
+              >
+                <SelectTrigger
+                  id={field.id}
+                  className="mt-1"
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
+                  <SelectValue placeholder="Select Page" />
+                </SelectTrigger>
+                <SelectContent className="w-[300px]">
+                  <SelectGroup>
+                    <SelectLabel>Pages</SelectLabel>
+                    {pages &&
+                      pages.length > 0 &&
+                      pages.map((item: any) => (
+                        <SelectItem key={item.id} value={item.id.toString()}>
+                          {item.name}
+                        </SelectItem>
+                      ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
             )}
-          </div>
+          </FormField>
 
-          <div className="col-span-1">
-            <fieldset>
-              <Label htmlFor="type">Section Type</Label>
+          <FormField
+            id="order"
+            label="Order"
+            error={errors.order}
+            className="col-span-1"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="number"
+                name="order"
+                className="mt-1"
+                defaultValue={0}
+                onChange={e => {
+                  // @ts-ignore allowlist-migration
+                  setData('order', Number(e.target.value));
+                }}
+              />
+            )}
+          </FormField>
 
+          <FormField
+            id="link"
+            label="Link"
+            error={errors.link}
+            className="col-span-2"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="text"
+                name="link"
+                className="mt-1"
+                autoComplete="link"
+                onChange={e => setData('link', e.target.value)}
+              />
+            )}
+          </FormField>
+
+          <FormField
+            id="type"
+            label="Section Type"
+            error={errors.type}
+            className="col-span-1"
+          >
+            {field => (
               <Select
                 name="type"
-                // @ts-ignore allowlist-migration
-                id="type"
                 onValueChange={value => setData('type', value)}
               >
-                <SelectTrigger className="mt-1">
+                <SelectTrigger
+                  id={field.id}
+                  className="mt-1"
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
                   <SelectValue placeholder="Select Section Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -200,27 +214,29 @@ export default function CreateSectionForm({
                   </SelectGroup>
                 </SelectContent>
               </Select>
-
-              {errors.type && <InputError mt={2}>{errors.type}</InputError>}
-            </fieldset>
-          </div>
-          <div className="col-span-1">
-            <fieldset>
-              <Label as="legend" htmlFor="parent_id">
-                Parent Section
-              </Label>
-
+            )}
+          </FormField>
+          <FormField
+            id="parent_id"
+            label="Parent Section"
+            error={errors.parent_id}
+            className="col-span-1"
+          >
+            {field => (
               <Select
                 name="parent_id"
-                // @ts-ignore allowlist-migration
-                id="parent_id"
                 disabled={data.type === 'default'}
                 onValueChange={value => {
                   // @ts-ignore allowlist-migration
                   setData('parent_id', value);
                 }}
               >
-                <SelectTrigger className="mt-1">
+                <SelectTrigger
+                  id={field.id}
+                  className="mt-1"
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
                   <SelectValue placeholder="Select Parent" />
                 </SelectTrigger>
                 <SelectContent className="w-[300px]">
@@ -234,12 +250,15 @@ export default function CreateSectionForm({
                   </SelectGroup>
                 </SelectContent>
               </Select>
-            </fieldset>
-          </div>
+            )}
+          </FormField>
         </div>
 
-        <div className="col-span-4">
-          <Label htmlFor="description">Description</Label>
+        <Field
+          data-invalid={errors.description || undefined}
+          className="col-span-4 gap-2"
+        >
+          <FieldLabel htmlFor="description">Description</FieldLabel>
           <ContentEditor
             name="description"
             id="description"
@@ -249,11 +268,8 @@ export default function CreateSectionForm({
               setData('description', editor.getContent())
             }
           />
-
-          {errors.description && (
-            <InputError mt={2}>{errors.description}</InputError>
-          )}
-        </div>
+          <FieldError>{errors.description}</FieldError>
+        </Field>
         <PrimaryButton type="submit" isLoading={processing}>
           Save
         </PrimaryButton>

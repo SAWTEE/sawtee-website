@@ -1,12 +1,13 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateHomePageSectionForm() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -22,63 +23,71 @@ export default function CreateHomePageSectionForm() {
     e.preventDefault();
     post(route('admin.home-page-sections.store'), {
       preserveScroll: true,
-      onSuccess: () =>
+      onSuccess: () => {
         toast({
           title: 'Section Created.',
           description: 'Home Page Section Created Successfully',
-        }),
-      onError: errors => {
-        if (errors.name) {
-          reset('name');
-        }
+        });
+        reset();
       },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-1">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="enter section name"
-            onChange={e => {
-              setData('name', e.target.value);
-            }}
-          />
-
-          {errors.name && (
-            <InputError className="mt-2">{errors.name}</InputError>
+        <FormField
+          id="name"
+          label="Name"
+          error={errors.name}
+          className="col-span-1"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="text"
+              name="name"
+              placeholder="enter section name"
+              onChange={e => {
+                setData('name', e.target.value);
+              }}
+            />
           )}
-        </div>
-        <div className="col-span-1">
-          <Label htmlFor="description">description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            onChange={e => setData('description', e.target.value)}
-            // @ts-ignore allowlist-migration
-            mt={1}
-          />
-          {errors.description && (
-            <InputError className="mt-2">{errors.description}</InputError>
+        </FormField>
+        <FormField
+          id="description"
+          label="description"
+          error={errors.description}
+          className="col-span-1"
+        >
+          {field => (
+            <Textarea
+              {...field}
+              name="description"
+              onChange={e => setData('description', e.target.value)}
+              // @ts-ignore allowlist-migration
+              mt={1}
+            />
           )}
-        </div>
-        <div>
-          <Label htmlFor="order">Order</Label>
-          <Input
-            type="number"
-            id="order"
-            name="order"
-            onChange={e => {
-              setData('order', e.target.value);
-            }}
-          />
-        </div>
-        <div className="col-span-1 flex items-center space-x-2">
+        </FormField>
+        <FormField id="order" label="Order" error={errors.order}>
+          {field => (
+            <Input
+              {...field}
+              type="number"
+              name="order"
+              onChange={e => {
+                setData('order', e.target.value);
+              }}
+            />
+          )}
+        </FormField>
+        <Field
+          data-invalid={errors.show || undefined}
+          orientation="horizontal"
+          className="col-span-1 items-center"
+        >
           <Switch
             // @ts-ignore allowlist-migration
             value={data.show}
@@ -88,12 +97,9 @@ export default function CreateHomePageSectionForm() {
             // @ts-ignore allowlist-migration
             onChange={e => setData('show', e.target.value)}
           />
-          <Label htmlFor="show"> Section Visible</Label>
-
-          {errors.show && (
-            <InputError className="mt-2">{errors.show}</InputError>
-          )}
-        </div>
+          <FieldLabel htmlFor="show"> Section Visible</FieldLabel>
+          <FieldError>{errors.show}</FieldError>
+        </Field>
 
         <PrimaryButton type="submit" isLoading={processing}>
           Save

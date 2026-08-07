@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,16 +12,16 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditTheme({
   theme = undefined,
   open = undefined,
   setOpen = undefined,
 }: any) {
-  const { data, setData, post, errors, reset } = useForm({
+  const { data, setData, post, errors } = useForm({
     title: theme.title,
     description: theme.description,
   });
@@ -43,14 +43,9 @@ export default function EditTheme({
             title: 'Theme edited.',
             description: 'Theme edited Successfully',
           });
-          reset('title', 'description');
           setOpen(!open);
         },
-        onError: errors => {
-          if (errors.title) {
-            reset('title');
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -63,36 +58,44 @@ export default function EditTheme({
           <DialogDescription>{`Edit theme: ${theme.title}.`}</DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <div className="col-span-4">
-                <Label htmlFor="title">Title</Label>
+              <FormField
+                id="title"
+                label="Title"
+                error={errors.title}
+                required
+                className="col-span-4"
+              >
+                {field => (
+                  <Input
+                    {...field}
+                    name="title"
+                    placeholder="enter theme name"
+                    value={data.title}
+                    onChange={e => setData('title', e.target.value)}
+                  />
+                )}
+              </FormField>
 
-                <Input
-                  name="title"
-                  placeholder="enter theme name"
-                  value={data.title}
-                  onChange={e => setData('title', e.target.value)}
-                  required
-                />
-
-                <InputError className="mt-2">{errors.title}</InputError>
-              </div>
-
-              <div className="col-span-4">
-                <Label htmlFor="description">Description</Label>
-
-                <Textarea
-                  name="description"
-                  rows={6}
-                  value={data.description}
-                  placeholder="enter theme description"
-                  onChange={e => setData('description', e.target.value)}
-                />
-
-                <InputError className="mt-2">{errors.description}</InputError>
-              </div>
+              <FormField
+                id="description"
+                label="Description"
+                error={errors.description}
+                className="col-span-4"
+              >
+                {field => (
+                  <Textarea
+                    {...field}
+                    name="description"
+                    rows={6}
+                    value={data.description}
+                    placeholder="enter theme description"
+                    onChange={e => setData('description', e.target.value)}
+                  />
+                )}
+              </FormField>
             </div>
           </div>
           <DialogFooter>

@@ -48,14 +48,20 @@ export function TypeFilter({
   value = undefined,
   label = undefined,
   route = undefined,
+  only = undefined,
 }: any) {
   const [, setSelectedType] = useState(value);
   function handleTypeFilter(id: any) {
     setSelectedType(id);
-    router.visit(route, {
-      data: { category_id: id },
-      preserveState: true,
-    });
+    router.get(
+      route,
+      { category_id: id },
+      {
+        only: only ?? undefined,
+        preserveState: true,
+        preserveScroll: true,
+      }
+    );
   }
   return (
     <Select

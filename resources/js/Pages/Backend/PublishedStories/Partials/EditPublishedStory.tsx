@@ -1,9 +1,10 @@
 import { useForm } from '@inertiajs/react';
+import { useState } from 'react';
 
-import InputError from '@/components/Backend/InputError';
+import FileUpload from '@/components/Backend/FileUpload';
+import FormField from '@/components/Backend/FormField';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -12,17 +13,27 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditPublishedStory({ fellows, publishedStory }: any) {
-  const { data, setData, post, errors, reset } = useForm({
+  const existingMedia =
+    publishedStory.media?.filter(
+      (m: any) => m.collection_name === 'published-story-images'
+    ) ?? [];
+
+  const { data, setData, post, errors, progress, processing } = useForm({
     title: publishedStory.title,
     fellow_id: publishedStory.fellow_id,
     link: publishedStory.link,
-    images: publishedStory.media?.filter(
-      (m: any) => m.collection_name === 'published-story-images'
-    ),
+    images: [] as any,
   });
   const { toast } = useToast();
+  const [existingImages, setExistingImages] = useState(
+    existingMedia.map((image: any) => ({
+      name: image.file_name ?? image.name ?? 'Image',
+      url: image.original_url ?? image.url ?? null,
+    }))
+  );
 
   const submit = (e: any) => {
     e.preventDefault();
@@ -39,116 +50,99 @@ export default function EditPublishedStory({ fellows, publishedStory }: any) {
             title: 'Story Edited.',
             description: 'Story Edited Successfully',
           });
-          reset();
         },
-        onError: (errors: any) => {
-          for (const key in errors) {
-            if (Object.hasOwnProperty.call(errors, key)) {
-              const value = errors[key];
-              reset(key as any);
-              return toast({
-                title: 'Uh oh, Something went wrong',
-                description: `${key.toUpperCase()} field error` + `: ${value}`,
-              });
-            }
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-4 items-center gap-4">
-        <div className="col-span-4">
-          <Label htmlFor="title">Name</Label>
-          <Input
-            id="title"
-            name="title"
-            className="col-span-3"
-            value={data.title}
-            onChange={(e: any) => setData('title', e.target.value)}
-            required
-          />
-
-          {errors.title && (
-            <InputError className="mt-2">{errors.title}</InputError>
+        <FormField
+          id="title"
+          label="Name"
+          error={errors.title}
+          required
+          className="col-span-4"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="title"
+              className="col-span-3"
+              value={data.title}
+              onChange={(e: any) => setData('title', e.target.value)}
+            />
           )}
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="link">Link</Label>
-          <Input
-            id="link"
-            name="link"
-            value={data.link}
-            onChange={(e: any) => setData('link', e.target.value)}
-          />
+        </FormField>
+        <FormField
+          id="link"
+          label="Link"
+          error={errors.link}
+          className="col-span-2"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="link"
+              value={data.link}
+              onChange={(e: any) => setData('link', e.target.value)}
+            />
+          )}
+        </FormField>
 
-          <InputError className="mt-2">{errors.link}</InputError>
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="fellow_id">Select Fellow</Label>
-          <Select
-            value={String(data.fellow_id ?? '')}
-            onValueChange={value => setData('fellow_id', Number(value))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select fellow" />
-            </SelectTrigger>
-            <SelectContent>
-              {fellows.map((fellow: any) => (
-                <SelectItem key={fellow.id} value={String(fellow.id)}>
-                  {fellow.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="images">Image</Label>
-
-          {/* <DropZone
-            htmlFor={'image'}
-            onValueChange={setDataImage}
-            defaultValue={image}
-            //   className="h-64"
-          /> */}
-
-          <Input
-            type="file"
-            multiple
-            className="mt-1"
-            accept="image/*"
+        <FormField
+          id="fellow_id"
+          label="Select Fellow"
+          error={errors.fellow_id}
+          className="col-span-2"
+        >
+          {field => (
+            <Select
+              value={String(data.fellow_id ?? '')}
+              onValueChange={value => setData('fellow_id', Number(value))}
+            >
+              <SelectTrigger
+                id={field.id}
+                aria-invalid={field['aria-invalid']}
+                aria-describedby={field['aria-describedby']}
+              >
+                <SelectValue placeholder="Select fellow" />
+              </SelectTrigger>
+              <SelectContent>
+                {fellows.map((fellow: any) => (
+                  <SelectItem key={fellow.id} value={String(fellow.id)}>
+                    {fellow.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </FormField>
+        <div className="col-span-4">
+          <FileUpload
             id="images"
             name="images"
-            onChange={(e: any) => {
-              setData('images', Array.from(e.target.files));
+            label="Images"
+            multiple
+            accept="image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp"
+            value={
+              Array.isArray(data.images) && data.images[0] instanceof File
+                ? data.images
+                : null
+            }
+            existing={existingImages}
+            progress={progress}
+            error={(errors as any).images ?? (errors as any).image}
+            onChange={files => setData('images', files ?? [])}
+            onRemove={() => {
+              setData('images', '');
+              setExistingImages([]);
             }}
+            uploading={processing}
           />
-
-          {(errors as any).image && (
-            <InputError className="mt-2">{(errors as any).image}</InputError>
-          )}
         </div>
-
-        {data.images.length > 0 && (
-          <div className="col-span-2">
-            <p>Previous Images</p>
-            <div className="mt-1 flex flex-wrap gap-2">
-              {data.images.map((image: any) => {
-                return (
-                  <div
-                    key={image.id ?? image.original_url}
-                    className="aspect-square w-24"
-                  >
-                    <img src={image.original_url} alt={image.file_name} />
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        )}
         <Button type="submit">Save Changes</Button>
       </div>
     </form>

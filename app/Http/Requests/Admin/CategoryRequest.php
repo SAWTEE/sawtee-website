@@ -26,4 +26,33 @@ class CategoryRequest extends AdminFormRequest
             'meta_description' => ['nullable', 'string', 'max:255'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please enter a name.',
+            'name.unique' => 'A category with this name already exists.',
+            'type.required' => 'Please choose a type.',
+            'type.in' => 'Type must be post, publication, research, or team.',
+            'parent_id.exists' => 'The selected parent category is invalid.',
+            'image.image' => 'The featured image must be an image file.',
+            'image.mimes' => 'Featured image must be a JPEG, PNG, JPG, or WebP file.',
+            'image.max' => 'Featured image must not be larger than 2 MB.',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'parent_id' => 'parent category',
+            'meta_title' => 'meta title',
+            'meta_description' => 'meta description',
+        ];
+    }
 }

@@ -2,7 +2,9 @@ import { useForm } from '@inertiajs/react';
 import { QuestionMarkCircledIcon } from '@radix-ui/react-icons';
 import { useState } from 'react';
 
-import InputError from '@/components/Backend/InputError';
+import DropZone from '@/components/Backend/DropZone';
+import FileUpload from '@/components/Backend/FileUpload';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
   Accordion,
@@ -10,9 +12,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import {
   Tooltip,
@@ -21,103 +22,117 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateResearchForm() {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, reset, progress } = useForm({
     title: '',
     subtitle: '',
     description: '',
     year: '',
     link: '',
     image: undefined,
-    file: undefined,
+    file: undefined as any,
     meta_title: '',
     meta_description: '',
   });
   const { toast } = useToast();
   const [image, setImage] = useState(null);
 
+  function setDataImage(imageFile: any) {
+    if (imageFile) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        // @ts-ignore allowlist-migration
+        setImage(e.target.result);
+      };
+      reader.readAsDataURL(imageFile);
+      setData('image', imageFile);
+    } else {
+      setImage(null);
+      // @ts-ignore allowlist-migration
+      setData('image', null);
+    }
+  }
+
   // @ts-ignore allowlist-migration
   const submit = e => {
     e.preventDefault();
     post(route('admin.research.store'), {
       preserveScroll: true,
-      onSuccess: () =>
+      onSuccess: () => {
         toast({
           title: 'Research Created.',
           description: `Research ${data.title} Successfully`,
-        }),
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            // @ts-ignore allowlist-migration
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              description: `${key.toUpperCase()} field error` + `: ${value}`,
-            });
-          }
-        }
+        });
+        reset();
+        setImage(null);
       },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12 flex flex-col gap-8 px-4 md:col-span-8">
-          <div className="mx-2">
-            <Label htmlFor="title">Title</Label>
-            <Input
-              type="text"
-              id="title"
-              name="title"
-              placeholder="enter research title"
-              className="mt-1"
-              autoComplete="title"
-              onChange={e => setData('title', e.target.value)}
-            />
-
-            {errors.title && (
-              <InputError className="mt-2">{errors.title}</InputError>
+          <FormField
+            id="title"
+            label="Title"
+            error={errors.title}
+            className="mx-2"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="text"
+                name="title"
+                placeholder="enter research title"
+                className="mt-1"
+                autoComplete="title"
+                onChange={e => setData('title', e.target.value)}
+              />
             )}
-          </div>
+          </FormField>
 
-          <div className="mx-2">
-            <Label htmlFor="subtitle">Subtitle</Label>
-
-            <Input
-              type="text"
-              id="subtitle"
-              name="subtitle"
-              className="mt-1"
-              placeholder="enter research subtitle"
-              autoComplete="subtitle"
-              onChange={e => setData('subtitle', e.target.value)}
-            />
-
-            {errors.title && (
-              <InputError className={'mt-2'}>{errors.title}</InputError>
+          <FormField
+            id="subtitle"
+            label="Subtitle"
+            error={errors.subtitle}
+            className="mx-2"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="text"
+                name="subtitle"
+                className="mt-1"
+                placeholder="enter research subtitle"
+                autoComplete="subtitle"
+                onChange={e => setData('subtitle', e.target.value)}
+              />
             )}
-          </div>
-          <div className="mx-2">
-            <Label htmlFor="description">Description</Label>
-            <Textarea
-              name="description"
-              id="description"
-              rows={6}
-              className="mt-1"
-              // @ts-ignore allowlist-migration
-              resize={'vertical'}
-              placeholder="Describe your research here."
-              onChange={e => setData('description', e.target.value)}
-            />
+          </FormField>
 
-            {errors.description && (
-              <InputError className={'mt-2'}>{errors.description}</InputError>
+          <FormField
+            id="description"
+            label="Description"
+            error={errors.description}
+            className="mx-2"
+          >
+            {field => (
+              <Textarea
+                {...field}
+                name="description"
+                rows={6}
+                className="mt-1"
+                // @ts-ignore allowlist-migration
+                resize={'vertical'}
+                placeholder="Describe your research here."
+                onChange={e => setData('description', e.target.value)}
+              />
             )}
-          </div>
+          </FormField>
         </div>
         <div className="col-span-12 flex flex-col gap-8 self-center px-3 md:col-span-4">
           <Accordion type="single" collapsible>
@@ -139,127 +154,107 @@ export default function CreateResearchForm() {
               </AccordionTrigger>
               <AccordionContent>
                 <div className="flex flex-col justify-start gap-4">
-                  <div className="mx-2">
-                    <Label htmlFor="meta_title">Meta Title</Label>
-                    <Input
-                      id="meta_title"
-                      name="meta_title"
-                      className="mt-1"
-                      placeholder="enter meta title"
-                      onChange={e => setData('meta_title', e.target.value)}
-                    />
+                  <FormField
+                    id="meta_title"
+                    label="Meta Title"
+                    error={errors.meta_title}
+                    className="mx-2"
+                  >
+                    {field => (
+                      <Input
+                        {...field}
+                        name="meta_title"
+                        className="mt-1"
+                        placeholder="enter meta title"
+                        onChange={e => setData('meta_title', e.target.value)}
+                      />
+                    )}
+                  </FormField>
 
-                    <InputError className="mt-2">
-                      {errors.meta_title}
-                    </InputError>
-                  </div>
-
-                  <div className="mx-2">
-                    <Label htmlFor="meta_description">Meta Description</Label>
-                    <Textarea
-                      id="meta_description"
-                      name="meta_description"
-                      className="mt-1 block"
-                      placeholder="enter meta_description"
-                      rows={3}
-                      onChange={e =>
-                        setData('meta_description', e.target.value)
-                      }
-                    />
-                    <InputError className="mt-2">
-                      {errors.meta_description}
-                    </InputError>
-                  </div>
+                  <FormField
+                    id="meta_description"
+                    label="Meta Description"
+                    error={errors.meta_description}
+                    className="mx-2"
+                  >
+                    {field => (
+                      <Textarea
+                        {...field}
+                        name="meta_description"
+                        className="mt-1 block"
+                        placeholder="enter meta_description"
+                        rows={3}
+                        onChange={e =>
+                          setData('meta_description', e.target.value)
+                        }
+                      />
+                    )}
+                  </FormField>
                 </div>
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          <fieldset className="mx-2">
-            <Label as="legend" htmlFor="year">
-              Year
-            </Label>
 
-            <Input
-              name="year"
-              id="year"
-              className="mt-1"
-              // @ts-ignore allowlist-migration
-              onChange={e => setData('year', Number(e.target.value))}
-            />
-            {errors.year && (
-              <InputError className={'mt-2'}>{errors.year}</InputError>
+          <FormField id="year" label="Year" error={errors.year} className="mx-2">
+            {field => (
+              <Input
+                {...field}
+                name="year"
+                className="mt-1"
+                // @ts-ignore allowlist-migration
+                onChange={e => setData('year', Number(e.target.value))}
+              />
             )}
-          </fieldset>
+          </FormField>
 
           <div className="mx-2">
-            <Label htmlFor="file">File Upload</Label>
-
-            <Input
-              type="file"
-              accept=".pdf,.doc,.docx,.ppt,.pptx"
+            <FileUpload
               id="file"
               name="file"
-              className="mt-1"
-              onChange={e => {
-                // @ts-ignore allowlist-migration
-                setData('file', e.target.files[0]);
-              }}
+              label="File Upload"
+              accept=".pdf,.doc,.docx,.ppt,.pptx"
+              value={data.file instanceof File ? data.file : null}
+              progress={progress}
+              error={errors.file}
+              onChange={file => setData('file', file ?? undefined)}
+              onRemove={() => setData('file', undefined)}
+              uploading={processing}
             />
-
-            {errors.file && <InputError>{errors.file}</InputError>}
           </div>
 
-          <div className="mx-2">
-            <Label htmlFor="link">External Link</Label>
+          <FormField
+            id="link"
+            label="External Link"
+            error={errors.link}
+            className="mx-2"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="text"
+                name="link"
+                className="mt-1"
+                placeholder="enter research link"
+                autoComplete="link"
+                onChange={e => setData('link', e.target.value)}
+              />
+            )}
+          </FormField>
 
-            <Input
-              type="text"
-              id="link"
-              name="link"
-              className="mt-1"
-              placeholder="enter research link"
-              autoComplete="link"
-              onChange={e => setData('link', e.target.value)}
+          <Field
+            data-invalid={errors.image || undefined}
+            className="mx-2 gap-2"
+          >
+            <FieldLabel htmlFor="image">Featured Image</FieldLabel>
+            <DropZone
+              htmlFor="image"
+              defaultValue={image}
+              onValueChange={setDataImage}
+              error={errors.image}
+              progress={progress}
+              uploading={processing}
             />
-
-            {errors.link && (
-              <InputError className={'mt-2'}>{errors.link}</InputError>
-            )}
-          </div>
-
-          <div className="mx-2">
-            <Label htmlFor="image">Featured Image</Label>
-
-            {image && (
-              <div className="w-[minmax(auto, 450px)]">
-                <AspectRatio ratio={16 / 9}>
-                  <img
-                    src={image}
-                    alt="featured"
-                    className="h-full w-full rounded-md object-cover"
-                  />
-                </AspectRatio>
-              </div>
-            )}
-
-            <Input
-              type="file"
-              accept="image/*"
-              id="image"
-              name="image"
-              className="mt-1"
-              placeholder="Browse Image"
-              onChange={e => {
-                // @ts-ignore allowlist-migration
-                setData('image', e.target.files[0]);
-                // @ts-ignore allowlist-migration
-                setImage(URL.createObjectURL(e.target.files[0]));
-              }}
-            />
-            {errors.image && (
-              <InputError className={'mt-2'}>{errors.image}</InputError>
-            )}
-          </div>
+          </Field>
 
           <PrimaryButton type="submit" disabled={processing}>
             Add

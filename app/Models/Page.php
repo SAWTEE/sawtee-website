@@ -59,21 +59,17 @@ class Page extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Max, 300, 100)
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
             ->quality(75)
             ->nonQueued();
 
-        $this
-            ->addMediaConversion('responsive')
-            ->fit(Fit::Max, 1200, 400)
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('page-media')
-            ->quality(75)
             ->format('webp')
-            ->withResponsiveImages()
-            ->nonQueued();
+            ->quality(80);
     }
 
     // protected $with = ['media'];

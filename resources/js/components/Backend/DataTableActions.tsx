@@ -26,16 +26,15 @@ export default function DataTableActions({
   id = undefined,
   handleEdit = undefined,
   handleDelete = undefined,
+  deleteTitle = 'Are you absolutely sure?',
+  deleteDescription = 'This action cannot be undone. This will permanently delete this item and remove it from the servers.',
 }: any) {
   return (
     <AlertDialog>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone. This will permanently delete this item
-            and remove it from the servers.
-          </AlertDialogDescription>
+          <AlertDialogTitle>{deleteTitle}</AlertDialogTitle>
+          <AlertDialogDescription>{deleteDescription}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>

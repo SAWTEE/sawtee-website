@@ -24,6 +24,21 @@ class SitemapCache
         return Cache::remember(self::KEY, self::TTL_SECONDS, fn () => $this->build());
     }
 
+    /**
+     * @return list<string>
+     */
+    public function locs(): array
+    {
+        if (! preg_match_all('#<loc>\s*(.*?)\s*</loc>#', $this->xml(), $matches)) {
+            return [];
+        }
+
+        return array_values(array_unique(array_map(
+            fn (string $loc): string => html_entity_decode($loc, ENT_QUOTES | ENT_HTML5),
+            $matches[1]
+        )));
+    }
+
     protected function build(): string
     {
         $urls = collect();

@@ -35,4 +35,32 @@ class PageRequest extends AdminFormRequest
             'file' => $this->whenUploaded('file', ['file', 'max:5120']),
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please enter a name.',
+            'name.unique' => 'A page with this name already exists.',
+            'slug.unique' => 'A page with this slug already exists.',
+            'image.image' => 'The featured image must be an image file.',
+            'image.mimes' => 'Featured image must be a JPEG, PNG, JPG, or WebP file.',
+            'image.max' => 'Featured image must not be larger than 2 MB.',
+            'file.max' => 'Attachment must not be larger than 5 MB.',
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function attributes(): array
+    {
+        return [
+            'meta_title' => 'meta title',
+            'meta_description' => 'meta description',
+            'page_template' => 'page template',
+        ];
+    }
 }

@@ -3,11 +3,11 @@ import React, { useState } from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FileUpload from '@/components/Backend/FileUpload';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import { Field, FieldDescription, FieldLabel } from '@/components/ui/field';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
 import {
   Select,
@@ -19,23 +19,27 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditPublicationForm({
   publication = undefined,
   categories = undefined,
   tags = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, progress } = useForm({
     category_id: publication.category_id,
     title: publication.title,
     subtitle: publication.subtitle || '',
     volume: publication.volume || '',
     description: publication.description,
     image: publication.media[0] ? publication.media[0].original_url : null,
-    file: publication.file ? publication.file.name : null,
+    file: null as File | string | null,
   });
   const { toast } = useToast();
   const [image, setImage] = useState(data.image);
+  const [filename, setFilename] = useState(
+    publication.file ? publication.file.name : null
+  );
   const tagOptions = (tags ?? []).map((tag: any) => ({
     value: tag.id,
     label: tag.name,
@@ -59,15 +63,9 @@ export default function EditPublicationForm({
       setData('image', image);
     } else {
       setImage(null);
-      setData('image', null);
+      setData('image', '');
     }
   }
-
-  // React.useEffect(() => {
-  //   publication.tags.map((tag: any) => {
-  //     setPostTags(prev => [...prev, { value: tag.id, label: tag.name }]);
-  //   });
-  // }, [publication]);
 
   // @ts-ignore allowlist-migration
   const submit = e => {
@@ -84,90 +82,79 @@ export default function EditPublicationForm({
             title: 'Publication Edited.',
             description: `Publication ${data.title} Successfully`,
           }),
-        onError: () => {
-          for (const key in errors) {
-            if (Object.hasOwnProperty.call(errors, key)) {
-              // @ts-ignore allowlist-migration
-              const value = errors[key];
-              // @ts-ignore allowlist-migration
-              reset(key);
-              return toast({
-                title: 'Uh oh, Something went wrong',
-                description: `${key.toUpperCase()} field error` + `: ${value}`,
-              });
-            }
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-12 gap-4">
         <div className="col-span-12 flex flex-col gap-8 self-center px-4 md:col-span-8">
-          <div className="mx-2">
-            <Label htmlFor="title">Title/Issue</Label>
-            <Input
-              type="text"
-              required
-              id="title"
-              name="title"
-              autoFocus
-              className="mt-1"
-              value={data.title}
-              onChange={e => setData('title', e.target.value)}
-            />
-
-            {errors.title && (
-              <InputError className="mt-2">{errors.title}</InputError>
-            )}
-          </div>
-          <div className="mx-2">
-            <Label htmlFor="subtitle">Subtitle</Label>
-            <Input
-              type="text"
-              id="subtitle"
-              name="subtitle"
-              className="mt-1"
-              autoComplete="subtitle"
-              value={data.subtitle}
-              onChange={e => setData('subtitle', e.target.value)}
-            />
-
-            {errors.title && (
-              <InputError className="mt-2">{errors.title}</InputError>
-            )}
-          </div>
-
-          <div className="mx-2">
-            <Field>
-              <FieldLabel htmlFor="volume">Volume</FieldLabel>
+          <FormField
+            id="title"
+            label="Title/Issue"
+            error={errors.title}
+            required
+            className="mx-2"
+          >
+            {field => (
               <Input
-                required
+                {...field}
                 type="text"
-                id="volume"
+                name="title"
+                autoFocus
+                className="mt-1"
+                value={data.title}
+                onChange={e => setData('title', e.target.value)}
+              />
+            )}
+          </FormField>
+
+          <FormField
+            id="subtitle"
+            label="Subtitle"
+            error={errors.subtitle}
+            className="mx-2"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="text"
+                name="subtitle"
+                className="mt-1"
+                autoComplete="subtitle"
+                value={data.subtitle}
+                onChange={e => setData('subtitle', e.target.value)}
+              />
+            )}
+          </FormField>
+
+          <FormField
+            id="volume"
+            label="Volume"
+            error={errors.volume}
+            description="This feild is required for publications under the category of Trade Insight."
+            className="mx-2"
+          >
+            {field => (
+              <Input
+                {...field}
+                type="text"
                 name="volume"
                 className="mt-1"
                 value={data.volume}
                 onChange={e => setData('volume', e.target.value)}
               />
-              <FieldDescription>
-                This feild is required for publications under the category of
-                Trade Insight.
-              </FieldDescription>
-            </Field>
-
-            {errors.volume && (
-              <InputError className="mt-2">{errors.volume}</InputError>
             )}
-          </div>
+          </FormField>
 
-          <div className="mx-2">
-            <Label htmlFor="description">Description</Label>
-
+          <Field
+            data-invalid={errors.description || undefined}
+            className="mx-2"
+          >
+            <FieldLabel htmlFor="description">Description</FieldLabel>
             <ContentEditor
-              // type="classic"
               name="description"
               initialValue={data.description || ''}
               id="description"
@@ -175,48 +162,48 @@ export default function EditPublicationForm({
                 setData('description', editor.getContent())
               }
             />
-
-            {errors.description && (
-              <InputError className="mt-2">{errors.description}</InputError>
-            )}
-          </div>
+            <FieldError>{errors.description}</FieldError>
+          </Field>
         </div>
         <div className="col-span-12 flex flex-col gap-8 self-center px-3 md:col-span-4">
-          <fieldset className="mx-2">
-            <Label as="legend" htmlFor="category_id">
-              Category
-            </Label>
+          <FormField
+            id="category_id"
+            label="Category"
+            error={errors.category_id}
+            className="mx-2"
+          >
+            {field => (
+              <Select
+                name="category_id"
+                value={data.category_id}
+                onValueChange={value => {
+                  setData('category_id', Number(value));
+                }}
+              >
+                <SelectTrigger
+                  id={field.id}
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
+                  <SelectValue placeholder="Select Category" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Categories</SelectLabel>
+                  </SelectGroup>
 
-            <Select
-              name="category_id"
-              value={data.category_id}
-              onValueChange={value => {
-                setData('category_id', Number(value));
-              }}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select Category" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Categories</SelectLabel>
-                </SelectGroup>
-
-                {categories.map((category: any) => (
-                  <SelectItem key={category.id} value={category.id}>
-                    {category.name}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-
-            {errors.category_id && (
-              <InputError className={'mt-2'}>{errors.category_id}</InputError>
+                  {categories.map((category: any) => (
+                    <SelectItem key={category.id} value={category.id}>
+                      {category.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             )}
-          </fieldset>
+          </FormField>
 
-          <div id={'tags'} className="mx-2">
-            <Label htmlFor="tags">{' Add Tags'}</Label>
+          <Field id="tags" className="mx-2 gap-2">
+            <FieldLabel htmlFor="tags">{' Add Tags'}</FieldLabel>
             {tagOptions && (
               <MultiSelect
                 name={'tags'}
@@ -230,48 +217,50 @@ export default function EditPublicationForm({
                 setValues={setDataTags}
               />
             )}
-          </div>
-          <div className="mx-2">
-            <Label htmlFor="image">Featured Image</Label>
+          </Field>
+
+          <Field
+            data-invalid={errors.image || undefined}
+            className="mx-2 gap-2"
+          >
+            <FieldLabel htmlFor="image">Featured Image</FieldLabel>
             <DropZone
               htmlFor={'image'}
               onValueChange={setDataImage}
               defaultValue={image}
+              error={errors.image}
+              progress={progress}
+              uploading={processing}
             />
-
-            {errors.image && (
-              <InputError className="mt-2">{errors.image}</InputError>
-            )}
-          </div>
+          </Field>
 
           <div className="mx-2">
-            <Label htmlFor="file">File Upload</Label>
-            {data.file && (
-              <Input
-                type="text"
-                id="file"
-                name="file"
-                className="mt-1"
-                value={data.file.name || data.file}
-                readOnly
-              />
-            )}
-            {!data.file && (
-              <Input
-                type="file"
-                accept=".pdf,.doc,.docx,.ppt,.pptx"
-                id="file"
-                className="mt-1"
-                name="file"
-                onChange={e => {
-                  // @ts-ignore allowlist-migration
-                  setData('file', e.target.files[0]);
-                }}
-              />
-            )}
-            {errors.file && (
-              <InputError className="mt-2">{errors.file}</InputError>
-            )}
+            <FileUpload
+              id="file"
+              name="file"
+              label="File Upload"
+              accept=".pdf,.doc,.docx,.ppt,.pptx"
+              value={data.file instanceof File ? data.file : null}
+              existing={filename ? { name: filename } : null}
+              progress={progress}
+              error={errors.file}
+              onChange={file => {
+                const next = Array.isArray(file)
+                  ? (file[0] ?? '')
+                  : (file ?? '');
+                setData('file', next);
+                if (next instanceof File) {
+                  setFilename(next.name);
+                } else {
+                  setFilename(null);
+                }
+              }}
+              onRemove={() => {
+                setData('file', '');
+                setFilename(null);
+              }}
+              uploading={processing}
+            />
           </div>
 
           <PrimaryButton type="submit" disabled={processing}>

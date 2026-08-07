@@ -3,7 +3,8 @@ import React from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FileUpload from '@/components/Backend/FileUpload';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
   AlertDialog,
@@ -14,8 +15,8 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
@@ -28,10 +29,12 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 import { slugify } from '@/lib/helpers';
 import { pageTemplates } from '@/lib/pageTemplates';
+
 export default function EditPageForm({ page = undefined }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, progress } = useForm({
     name: page.name,
     slug: page.slug,
     content: page.content,
@@ -39,7 +42,7 @@ export default function EditPageForm({ page = undefined }: any) {
     meta_title: page.meta_title,
     meta_description: page.meta_description,
     page_template: page.page_template,
-    file: page.file ?? null,
+    file: null as any,
   });
   const [showData, setShowData] = React.useState(false);
 
@@ -48,7 +51,18 @@ export default function EditPageForm({ page = undefined }: any) {
   const [image, setImage] = React.useState(
     page.media[0] ? page.media[0].original_url : null
   );
-  const [, setFilename] = React.useState(null);
+  const [existingPageData, setExistingPageData] = React.useState(
+    page.pageData
+      ? { name: 'Current page data (JSON)' }
+      : page.file
+        ? {
+            name:
+              typeof page.file === 'string'
+                ? page.file
+                : (page.file.name ?? 'page-data.json'),
+          }
+        : null
+  );
 
   React.useEffect(() => {
     if (['About', 'Contact', 'MediaFellows'].includes(data.page_template)) {
@@ -76,11 +90,7 @@ export default function EditPageForm({ page = undefined }: any) {
             title: 'Page Edited.',
             description: 'Page Edited Successfully',
           }),
-        onError: errors => {
-          if (errors.name) {
-            reset('name');
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -101,141 +111,171 @@ export default function EditPageForm({ page = undefined }: any) {
   }
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-2">
-          <Label htmlFor="name">Name</Label>
-          <Input
-            type="text"
-            id="name"
-            name="name"
-            placeholder="enter page name"
-            value={data.name}
-            onChange={e => {
-              setData('name', e.target.value);
-              setSlug(slugify(e.target.value));
-            }}
-          />
-
-          {errors.name && (
-            <InputError className="mt-2">{errors.name}</InputError>
-          )}
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="slug">Slug</Label>
-          <Input
-            type="text"
-            id="slug"
-            name="slug"
-            value={slug}
-            // @ts-ignore allowlist-migration
-            display="flex"
-            onChange={e => setSlug(e.target.value)}
-            mt={1}
-          />
-          {errors.slug && (
-            <InputError className="mt-2">{errors.slug}</InputError>
-          )}
-        </div>
-        <div className="col-span-1 flex flex-col gap-4">
-          <div className="col-span-1">
-            <Label htmlFor="file">Add JSON Data File</Label>
-
-            <Button
-              type="button"
-              variant="link"
-              className="ml-4 inline-flex"
-              onClick={() => setShowData(!showData)}
-            >
-              View Page Data
-            </Button>
+        <FormField
+          id="name"
+          label="Name"
+          error={errors.name}
+          className="col-span-2"
+        >
+          {field => (
             <Input
-              type="file"
-              accept=".json"
-              id="file"
-              name="file"
-              // placeholder={filename}
+              {...field}
+              type="text"
+              name="name"
+              placeholder="enter page name"
+              value={data.name}
               onChange={e => {
-                // @ts-ignore allowlist-migration
-                setFilename(e.target.files[0].name);
-                // @ts-ignore allowlist-migration
-                setData('file', e.target.files[0]);
+                setData('name', e.target.value);
+                setSlug(slugify(e.target.value));
               }}
             />
-          </div>
+          )}
+        </FormField>
 
-          <div className="col-span-1">
-            <Label htmlFor="meta_title">Meta Title</Label>
-
+        <FormField
+          id="slug"
+          label="Slug"
+          error={errors.slug}
+          className="col-span-2"
+        >
+          {field => (
             <Input
-              id="meta_title"
-              name="meta_title"
-              placeholder="enter meta title"
-              value={data.meta_title}
-              onChange={e => setData('meta_title', e.target.value)}
-            />
-
-            {errors.meta_title && (
-              <InputError className="mt-2">{errors.meta_title}</InputError>
-            )}
-          </div>
-          <div className="col-span-1">
-            <Label htmlFor="meta_description">Meta Description</Label>
-
-            <Textarea
-              id="meta_description"
-              name="meta_description"
-              placeholder="enter meta description"
-              rows={5}
-              value={data.meta_description ?? ''}
-              onChange={e => setData('meta_description', e.target.value)}
-            />
-
-            {errors.meta_description && (
-              <InputError className="mt-2">
-                {errors.meta_description}
-              </InputError>
-            )}
-          </div>
-          <div className="col-span-1">
-            <Label htmlFor="page_template">Page Template</Label>
-            <Select
+              {...field}
+              type="text"
+              name="slug"
+              value={slug}
               // @ts-ignore allowlist-migration
-              placeholder="Select menu to edit"
-              value={data.page_template}
-              name="page_template"
-              id="page_template"
-              onValueChange={value => setData('page_template', value)}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder="Select page template" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectLabel>Page Templates</SelectLabel>
-                  {pageTemplates?.map((template: any) => (
-                    <SelectItem key={template} value={template}>
-                      {template}
-                    </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+              display="flex"
+              onChange={e => setSlug(e.target.value)}
+              mt={1}
+            />
+          )}
+        </FormField>
+
+        <div className="col-span-1 flex flex-col gap-4">
+          <div>
+            <div className="mb-2 flex items-center justify-between gap-2">
+              <FieldLabel htmlFor="file">Add JSON Data File</FieldLabel>
+              <Button
+                type="button"
+                variant="link"
+                className="h-auto p-0"
+                onClick={() => setShowData(!showData)}
+              >
+                View Page Data
+              </Button>
+            </div>
+            <FileUpload
+              id="file"
+              name="file"
+              accept=".json"
+              value={data.file instanceof File ? data.file : null}
+              existing={existingPageData}
+              progress={progress}
+              error={errors.file}
+              onChange={file => {
+                const next = Array.isArray(file)
+                  ? (file[0] ?? '')
+                  : (file ?? '');
+                setData('file', next);
+              }}
+              onRemove={() => {
+                setData('file', '');
+                setExistingPageData(null);
+              }}
+              uploading={processing}
+            />
           </div>
+
+          <FormField
+            id="meta_title"
+            label="Meta Title"
+            error={errors.meta_title}
+          >
+            {field => (
+              <Input
+                {...field}
+                name="meta_title"
+                placeholder="enter meta title"
+                value={data.meta_title}
+                onChange={e => setData('meta_title', e.target.value)}
+              />
+            )}
+          </FormField>
+
+          <FormField
+            id="meta_description"
+            label="Meta Description"
+            error={errors.meta_description}
+          >
+            {field => (
+              <Textarea
+                {...field}
+                name="meta_description"
+                placeholder="enter meta description"
+                rows={5}
+                value={data.meta_description ?? ''}
+                onChange={e => setData('meta_description', e.target.value)}
+              />
+            )}
+          </FormField>
+
+          <FormField
+            id="page_template"
+            label="Page Template"
+            error={errors.page_template}
+          >
+            {field => (
+              <Select
+                // @ts-ignore allowlist-migration
+                placeholder="Select menu to edit"
+                value={data.page_template}
+                name="page_template"
+                onValueChange={value => setData('page_template', value)}
+              >
+                <SelectTrigger
+                  id={field.id}
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
+                  <SelectValue placeholder="Select page template" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectLabel>Page Templates</SelectLabel>
+                    {pageTemplates?.map((template: any) => (
+                      <SelectItem key={template} value={template}>
+                        {template}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            )}
+          </FormField>
         </div>
 
-        <div className="col-span-1">
+        <Field
+          data-invalid={errors.image || undefined}
+          className="col-span-1 gap-2"
+        >
           <DropZone
             htmlFor="image"
             onValueChange={setDataImage}
             defaultValue={image}
+            error={errors.image}
+            progress={progress}
+            uploading={processing}
           />
-          {errors.image && (
-            <InputError className="mt-2">{errors.image}</InputError>
-          )}
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="content">Content</Label>
+        </Field>
+
+        <Field
+          data-invalid={errors.content || undefined}
+          className="col-span-2"
+        >
+          <FieldLabel htmlFor="content">Content</FieldLabel>
           <ContentEditor
             name="content"
             id="content"
@@ -244,11 +284,9 @@ export default function EditPageForm({ page = undefined }: any) {
               setData('content', editor.getContent());
             }}
           />
+          <FieldError>{errors.content}</FieldError>
+        </Field>
 
-          {errors.content && (
-            <InputError className="mt-2">{errors.content}</InputError>
-          )}
-        </div>
         <ShowPageData
           open={showData}
           onOpenChange={setShowData}

@@ -6,6 +6,7 @@ use App\Models\Page;
 use App\Models\Section;
 use App\Models\Theme;
 use App\Support\HomePageDataAssembler;
+use App\Support\MediaConversionUrl;
 use App\Support\ResolvesSeoMeta;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -36,7 +37,7 @@ class ResolvePageBySlug
             'sections' => $sections,
             'themes' => $themes,
             'featured_image' => $featuredImage,
-            'srcSet' => $page->getFirstMedia('page-media')?->getSrcset('responsive'),
+            'srcSet' => MediaConversionUrl::optional($page->getFirstMedia('page-media'), 'large'),
             'seo' => $this->seo->for(
                 model: $page,
                 image: $featuredImage ?: '/assets/logo-sawtee.webp',

@@ -2,7 +2,7 @@ import { useForm } from '@inertiajs/react';
 import React, { useEffect, useState } from 'react';
 
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import {
   Accordion,
   AccordionContent,
@@ -18,8 +18,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -31,12 +31,14 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
+
 export default function CreateCategoryForm({
   open = undefined,
   setOpen = undefined,
   categories = undefined,
 }: any) {
-  const { data, setData, post, errors, reset } = useForm({
+  const { data, setData, post, errors, reset, progress, processing } = useForm({
     name: '',
     slug: '',
     type: 'post',
@@ -85,19 +87,7 @@ export default function CreateCategoryForm({
         reset();
         setOpen(false);
       },
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            // @ts-ignore allowlist-migration
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              description: `${key.toUpperCase()} field error` + `: ${value}`,
-            });
-          }
-        }
-      },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
@@ -108,67 +98,70 @@ export default function CreateCategoryForm({
           <DialogTitle>Create</DialogTitle>
           <DialogDescription>Create new categoy.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="grid gap-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
-              <div className="col-span-4">
-                <Label htmlFor="name" className="text-right">
-                  Name
-                </Label>
-                <Input
-                  id="name"
-                  name="name"
-                  className="col-span-3"
-                  placeholder="enter category name"
-                  onChange={e => setData('name', e.target.value)}
-                  required
-                />
-
-                {errors.name && (
-                  <InputError className="mt-2">{errors.name}</InputError>
+              <FormField
+                id="name"
+                label="Name"
+                error={errors.name}
+                required
+                className="col-span-4"
+              >
+                {field => (
+                  <Input
+                    {...field}
+                    name="name"
+                    className="col-span-3"
+                    placeholder="enter category name"
+                    onChange={e => setData('name', e.target.value)}
+                  />
                 )}
-              </div>
+              </FormField>
               <div className="col-span-4">
                 <Accordion type="single" collapsible>
                   <AccordionItem value="item-1">
                     <AccordionTrigger>SEO Meta Tags</AccordionTrigger>
                     <AccordionContent>
                       <div className="flex flex-col justify-start gap-4">
-                        <div className="col-span-4">
-                          <Label htmlFor="meta_title">Meta Title</Label>
-                          <Input
-                            id="meta_title"
-                            name="meta_title"
-                            className="mt-1"
-                            placeholder="enter meta title"
-                            onChange={e =>
-                              setData('meta_title', e.target.value)
-                            }
-                          />
+                        <FormField
+                          id="meta_title"
+                          label="Meta Title"
+                          error={errors.meta_title}
+                          className="col-span-4"
+                        >
+                          {field => (
+                            <Input
+                              {...field}
+                              name="meta_title"
+                              className="mt-1"
+                              placeholder="enter meta title"
+                              onChange={e =>
+                                setData('meta_title', e.target.value)
+                              }
+                            />
+                          )}
+                        </FormField>
 
-                          <InputError className="mt-2">
-                            {errors.meta_title}
-                          </InputError>
-                        </div>
-
-                        <div className="col-span-4">
-                          <Label htmlFor="meta_description">
-                            Meta Description
-                          </Label>
-                          <Textarea
-                            id="meta_description"
-                            name="meta_description"
-                            className="mt-1 block"
-                            placeholder="enter meta_description"
-                            rows={3}
-                            onChange={e =>
-                              setData('meta_description', e.target.value)
-                            }
-                          />
-                          <InputError className="mt-2">
-                            {errors.meta_description}
-                          </InputError>
-                        </div>
+                        <FormField
+                          id="meta_description"
+                          label="Meta Description"
+                          error={errors.meta_description}
+                          className="col-span-4"
+                        >
+                          {field => (
+                            <Textarea
+                              {...field}
+                              name="meta_description"
+                              className="mt-1 block"
+                              placeholder="enter meta_description"
+                              rows={3}
+                              onChange={e =>
+                                setData('meta_description', e.target.value)
+                              }
+                            />
+                          )}
+                        </FormField>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -176,74 +169,92 @@ export default function CreateCategoryForm({
               </div>
             </div>
             <div className="grid grid-cols-4 items-center gap-2">
-              <div className="col-span-2">
-                <Label htmlFor="image">Featured Image</Label>
-
+              <Field
+                data-invalid={errors.image || undefined}
+                className="col-span-2 gap-2"
+              >
+                <FieldLabel htmlFor="image">Featured Image</FieldLabel>
                 <DropZone
                   htmlFor={'image'}
                   onValueChange={setDataImage}
                   defaultValue={image}
-                  //   className="h-64"
+                  error={errors.image}
+                  progress={progress}
+                  uploading={processing}
                 />
-
-                {errors.image && (
-                  <InputError className="mt-2">{errors.image}</InputError>
-                )}
-              </div>
+              </Field>
               <div className="col-span-2 flex flex-col gap-2">
-                <div>
-                  <Label htmlFor="type">Select Category Type</Label>
-                  <Select
-                    name="type"
-                    value={data.type}
-                    onValueChange={value => setData('type', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select category type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectGroup>
-                        <SelectLabel>Category Types</SelectLabel>
-                      </SelectGroup>
-
-                      {['post', 'publication'].map((type: any) => (
-                        <SelectItem key={type} value={type}>
-                          {type}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                {['post', 'publication'].includes(data.type) && (
-                  <div>
-                    <Label htmlFor="parent_id">Select Parent</Label>
+                <FormField
+                  id="type"
+                  label="Select Category Type"
+                  error={errors.type}
+                >
+                  {field => (
                     <Select
-                      name="parent_id"
-                      value={data.parent_id}
-                      onValueChange={value => {
-                        setData('parent_id', value);
-                      }}
+                      name="type"
+                      value={data.type}
+                      onValueChange={value => setData('type', value)}
                     >
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select parent category" />
+                      <SelectTrigger
+                        id={field.id}
+                        aria-invalid={field['aria-invalid']}
+                        aria-describedby={field['aria-describedby']}
+                      >
+                        <SelectValue placeholder="Select category type" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectLabel className="capitalize">{`categories with type ${data.type}`}</SelectLabel>
+                          <SelectLabel>Category Types</SelectLabel>
                         </SelectGroup>
-                        {/* @ts-ignore allowlist-migration */}
-                        <SelectItem value={null}>Select Parent</SelectItem>
-                        {filteredCategories?.map((Category: any) => (
-                          <SelectItem
-                            key={Category.id}
-                            value={Category.id.toString()}
-                          >
-                            {Category.name}
+
+                        {['post', 'publication'].map((type: any) => (
+                          <SelectItem key={type} value={type}>
+                            {type}
                           </SelectItem>
                         ))}
                       </SelectContent>
                     </Select>
-                  </div>
+                  )}
+                </FormField>
+                {['post', 'publication'].includes(data.type) && (
+                  <FormField
+                    id="parent_id"
+                    label="Select Parent"
+                    error={errors.parent_id}
+                  >
+                    {field => (
+                      <Select
+                        name="parent_id"
+                        value={data.parent_id}
+                        onValueChange={value => {
+                          setData('parent_id', value);
+                        }}
+                      >
+                        <SelectTrigger
+                          id={field.id}
+                          aria-invalid={field['aria-invalid']}
+                          aria-describedby={field['aria-describedby']}
+                        >
+                          <SelectValue placeholder="Select parent category" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            <SelectLabel className="capitalize">{`categories with type ${data.type}`}</SelectLabel>
+                          </SelectGroup>
+                          {/* @ts-ignore allowlist-migration */}
+                          <SelectItem value={null}>Select Parent</SelectItem>
+                          {filteredCategories?.map((Category: any) => (
+                            <SelectItem
+                              key={Category.id}
+                              value={Category.id.toString()}
+                            >
+                              {Category.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
+                  </FormField>
                 )}
               </div>
             </div>

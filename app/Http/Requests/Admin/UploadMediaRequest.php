@@ -5,7 +5,7 @@ namespace App\Http\Requests\Admin;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 /**
- * Ad-hoc upload from the rich text editor, which posts a single `file` field.
+ * Ad-hoc image upload from the rich text editor (TinyMCE).
  */
 class UploadMediaRequest extends AdminFormRequest
 {
@@ -15,7 +15,20 @@ class UploadMediaRequest extends AdminFormRequest
     public function rules(): array
     {
         return [
-            'file' => ['required', 'file', 'max:10240'],
+            'file' => ['required', 'image', 'mimes:jpeg,jpg,png,webp', 'max:2048'],
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'file.required' => 'Please upload an image.',
+            'file.image' => 'The upload must be an image.',
+            'file.mimes' => 'Image must be a JPEG, PNG, or WebP file.',
+            'file.max' => 'Image must not be larger than 2 MB.',
         ];
     }
 }

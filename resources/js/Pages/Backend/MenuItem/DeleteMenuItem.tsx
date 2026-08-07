@@ -43,7 +43,7 @@ export default function DeleteMenuItem({
           <DialogTitle>Delete Menu item</DialogTitle>
           <DialogDescription>This action is irreversible.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div
             // @ts-ignore allowlist-migration
             className="mb-4 border-l-4 border-orange-500 bg-orange-100 p-4 text-orange-700"

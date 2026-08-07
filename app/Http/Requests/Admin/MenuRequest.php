@@ -41,4 +41,19 @@ class MenuRequest extends AdminFormRequest
             'content' => ['nullable', 'string'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'title.required' => 'Please enter a title.',
+            'title.max' => 'Title must not be longer than 100 characters.',
+            'title.unique' => 'A menu with this title already exists.',
+            'location.required' => 'Please enter a location.',
+            'location.max' => 'Location must not be longer than 100 characters.',
+            'location.unique' => 'A menu with this location already exists.',
+        ];
+    }
 }

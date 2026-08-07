@@ -19,3 +19,7 @@ Posts and publications can attach downloadable files. PDFs may be optimised on u
 ## Sliders
 
 **Sliders** belong to a page (usually Home). **Slides** hold title, subtitle, and image for the home carousel.
+
+## Orphaned files
+
+**Maintenance** in the admin sidebar scans for uploads that are no longer referenced and can dry-run or delete them. Prefer a dry-run first on staging/production. This is separate from day-to-day featured-image uploads on content forms.

@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,15 +12,15 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditMenuForm({
   open = undefined,
   setOpen = undefined,
   menu = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     title: menu.title,
     location: menu.location,
   });
@@ -44,14 +44,7 @@ export default function EditMenuForm({
           });
           setOpen(!open);
         },
-        onError: errors => {
-          if (errors.title) {
-            reset('title');
-          }
-          if (errors.location) {
-            reset('location');
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -63,37 +56,30 @@ export default function EditMenuForm({
           <DialogTitle>Edit Menu</DialogTitle>
           <DialogDescription>Manage menu</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Title</Label>
-              <Input
-                id="title"
-                name="title"
-                autoFocus
-                value={data.title}
-                onChange={e => setData('title', e.target.value)}
-              />
-
-              {errors.title && (
-                <InputError className="mt-2">{errors.title}</InputError>
+            <FormField id="title" label="Title" error={errors.title}>
+              {field => (
+                <Input
+                  {...field}
+                  name="title"
+                  autoFocus
+                  value={data.title}
+                  onChange={e => setData('title', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div>
-              <Label htmlFor="location">location</Label>
-
-              <Input
-                id="location"
-                name="location"
-                value={data.location}
-                onChange={e => setData('location', e.target.value)}
-              />
-
-              {errors.location && (
-                <InputError className="mt-2">{errors.location}</InputError>
+            <FormField id="location" label="location" error={errors.location}>
+              {field => (
+                <Input
+                  {...field}
+                  name="location"
+                  value={data.location}
+                  onChange={e => setData('location', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
             <DialogFooter>
               <PrimaryButton type="submit" isLoading={processing}>
                 Save

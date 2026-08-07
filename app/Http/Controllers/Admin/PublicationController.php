@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\AttachesUploadedMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PublicationRequest;
 use App\Models\Category;
@@ -12,12 +13,16 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PublicationController extends Controller
 {
+    use AttachesUploadedMedia;
+
     public function index(Request $request): Response
     {
         $root = Category::with('children')
@@ -58,21 +63,21 @@ class PublicationController extends Controller
 
     public function store(PublicationRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        return DB::transaction(function () use ($request) {
+            $validated = $request->validated();
 
-        $publication = new Publication($validated);
-        $publication->slug = $this->buildSlug($validated);
-        $publication->save();
+            $publication = new Publication($validated);
+            $publication->slug = $this->buildSlug($validated);
+            $publication->save();
 
-        if ($request->hasFile('image')) {
-            $publication->addMediaFromRequest('image')->toMediaCollection('publication_featured_image');
-        }
+            $this->attachImageFromRequest($publication, $request, 'publication_featured_image');
 
-        $publication->tags()->sync($validated['tags'] ?? []);
+            $publication->tags()->sync($validated['tags'] ?? []);
 
-        $this->replaceFile($publication, $request->file('file'));
+            $this->replaceFile($publication, $request->file('file'));
 
-        return to_route('admin.publications.index');
+            return to_route('admin.publications.index');
+        });
     }
 
     public function edit(Publication $publication): Response
@@ -86,25 +91,31 @@ class PublicationController extends Controller
 
     public function update(PublicationRequest $request, Publication $publication): RedirectResponse
     {
-        $validated = $request->validated();
+        return DB::transaction(function () use ($request, $publication) {
+            $validated = $request->validated();
 
-        if ($request->has('tags')) {
-            $publication->tags()->sync($validated['tags'] ?? []);
-        }
+            if ($request->has('tags')) {
+                $publication->tags()->sync($validated['tags'] ?? []);
+            }
 
-        if ($request->hasFile('image')) {
-            $publication->addMediaFromRequest('image')->toMediaCollection('publication_featured_image');
-        } elseif ($request->mediaWasCleared()) {
-            $publication->clearMediaCollection('publication_featured_image');
-        }
+            if ($request->hasFile('image')) {
+                $this->attachImageFromRequest($publication, $request, 'publication_featured_image');
+            } elseif ($request->mediaWasCleared()) {
+                $publication->clearMediaCollection('publication_featured_image');
+            }
 
-        $this->replaceFile($publication, $request->file('file'));
+            if ($request->hasFile('file')) {
+                $this->replaceFile($publication, $request->file('file'));
+            } elseif ($request->mediaWasCleared('file')) {
+                $publication->file?->delete();
+            }
 
-        $publication->fill($validated);
-        $publication->slug = $this->buildSlug($validated);
-        $publication->save();
+            $publication->fill($validated);
+            $publication->slug = $this->buildSlug($validated);
+            $publication->save();
 
-        return to_route('admin.publications.index');
+            return to_route('admin.publications.index');
+        });
     }
 
     public function destroy(Publication $publication): RedirectResponse
@@ -128,14 +139,14 @@ class PublicationController extends Controller
             return;
         }
 
-        $publication->file()->delete();
+        $publication->file?->delete();
 
         $name = $upload->getClientOriginalName();
-        $upload->move(public_path('publications'), $name);
+        Storage::disk('publications')->putFileAs('', $upload, $name);
 
         $file = new File;
         $file->name = $name;
-        $file->path = public_path('publications/'.$name);
+        $file->path = Storage::disk('publications')->path($name);
 
         $publication->file()->save($file);
     }

@@ -2,7 +2,7 @@ import { useForm } from '@inertiajs/react';
 import { useState } from 'react';
 
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,16 +12,17 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 function CreateSlideForm({
   open = undefined,
   setOpen = undefined,
   slider = undefined,
 }: any) {
-  const { setData, post, processing, errors, reset } = useForm({
+  const { setData, post, processing, errors, reset, progress } = useForm({
     title: '',
     subtitle: '',
     slider_id: slider.id,
@@ -57,14 +58,11 @@ function CreateSlideForm({
           title: 'Slide Created.',
           description: 'Slide Created Successfully',
         });
+        reset();
         setImage(null);
         setOpen(!open);
       },
-      onError: errors => {
-        if (errors.title) {
-          reset('title');
-        }
-      },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
@@ -75,48 +73,41 @@ function CreateSlideForm({
           <DialogTitle>Create Slide</DialogTitle>
           <DialogDescription>Add new slide.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="flex flex-col gap-4">
-            <div>
-              <Label htmlFor="title">Title</Label>
-
-              <Input
-                id="title"
-                name="title"
-                placeholder="enter title"
-                onChange={e => setData('title', e.target.value)}
-              />
-
-              {errors.title && (
-                <InputError className="mt-2">{errors.title}</InputError>
+            <FormField id="title" label="Title" error={errors.title}>
+              {field => (
+                <Input
+                  {...field}
+                  name="title"
+                  placeholder="enter title"
+                  onChange={e => setData('title', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div>
-              <Label htmlFor="subtitle">Subtitle</Label>
-
-              <Input
-                id="subtitle"
-                name="subtitle"
-                placeholder="enter subtitle"
-                onChange={e => setData('subtitle', e.target.value)}
-              />
-              {errors.subtitle && (
-                <InputError className="mt-2">{errors.subtitle}</InputError>
+            <FormField id="subtitle" label="Subtitle" error={errors.subtitle}>
+              {field => (
+                <Input
+                  {...field}
+                  name="subtitle"
+                  placeholder="enter subtitle"
+                  onChange={e => setData('subtitle', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div>
-              <Label htmlFor="image">Slide Image</Label>
+            <Field data-invalid={(errors as any).image || undefined} className="gap-2">
+              <FieldLabel htmlFor="image">Slide Image</FieldLabel>
               <DropZone
                 htmlFor={'image'}
                 onValueChange={setDataImage}
                 defaultValue={image}
+                error={(errors as any).image}
+                progress={progress}
+                uploading={processing}
               />
-
-              {/* @ts-ignore allowlist-migration */}
-              {errors.image && <InputError mt={2}>{errors.image}</InputError>}
-            </div>
+            </Field>
             <div className="space-x-2">
               <PrimaryButton type="submit" isLoading={processing}>
                 Save

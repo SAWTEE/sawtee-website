@@ -54,21 +54,17 @@ class Article extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        // @phpstan-ignore-next-line
         $this->addMediaConversion('preview')
-            ->fit(Fit::Max, 300, 200)
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
             ->quality(75)
             ->nonQueued();
 
-        // @phpstan-ignore-next-line
-        $this->addMediaConversion('responsive')
-            ->fit(Fit::Max, 1200, 800)
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('article-featured-image')
-            ->quality(75)
             ->format('webp')
-            ->withResponsiveImages()
-            ->nonQueued();
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

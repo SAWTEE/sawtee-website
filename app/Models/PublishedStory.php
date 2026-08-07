@@ -23,14 +23,17 @@ class PublishedStory extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        // @phpstan-ignore-next-line
-        $this->addMediaConversion('responsive')
-            ->fit(Fit::Max, 400, 250)
-            ->performOnCollections('published-story-images')
-            ->quality(75)
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
-            ->withResponsiveImages()
+            ->quality(75)
             ->nonQueued();
+
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
+            ->performOnCollections('published-story-images')
+            ->format('webp')
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

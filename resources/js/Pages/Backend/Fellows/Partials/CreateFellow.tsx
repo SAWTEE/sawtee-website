@@ -3,10 +3,10 @@ import { useState } from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import { Button } from '@/components/ui/button';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -16,9 +16,10 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateFellow({ fellowships = undefined }: any) {
-  const { data, setData, post, errors, reset } = useForm({
+  const { data, setData, post, errors, reset, progress, processing } = useForm({
     name: '',
     fellowship_id: undefined,
     designation: '',
@@ -58,105 +59,112 @@ export default function CreateFellow({ fellowships = undefined }: any) {
         });
         reset();
       },
-      onError: errors => {
-        for (const key in errors) {
-          if (Object.hasOwnProperty.call(errors, key)) {
-            const value = errors[key];
-            // @ts-ignore allowlist-migration
-            reset(key);
-            return toast({
-              title: 'Uh oh, Something went wrong',
-              description: `${key.toUpperCase()} field error` + `: ${value}`,
-            });
-          }
-        }
-      },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-4 items-center gap-4">
-        <div className="col-span-2">
-          <Label htmlFor="name" className="text-right">
-            Name
-          </Label>
-          <Input
-            id="name"
-            name="name"
-            className="col-span-3"
-            placeholder="enter fellow name"
-            onChange={e => setData('name', e.target.value)}
-            required
-          />
-
-          {errors.name && (
-            <InputError className="mt-2">{errors.name}</InputError>
+        <FormField
+          id="name"
+          label="Name"
+          error={errors.name}
+          required
+          className="col-span-2"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="name"
+              className="col-span-3"
+              placeholder="enter fellow name"
+              onChange={e => setData('name', e.target.value)}
+            />
           )}
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="designation">Designation</Label>
-          <Input
-            id="designation"
-            name="designation"
-            placeholder="enter fellow designation"
-            onChange={e => setData('designation', e.target.value)}
-          />
+        </FormField>
+        <FormField
+          id="designation"
+          label="Designation"
+          error={errors.designation}
+          className="col-span-2"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="designation"
+              placeholder="enter fellow designation"
+              onChange={e => setData('designation', e.target.value)}
+            />
+          )}
+        </FormField>
 
-          <InputError className="mt-2">{errors.designation}</InputError>
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="description">Description</Label>
-          <Textarea
-            id="description"
-            name="description"
-            className="mt-1 block"
-            placeholder="enter description"
-            rows={8}
-            onChange={e => setData('description', e.target.value)}
-          />
-          <InputError className="mt-2">{errors.description}</InputError>
-        </div>
-        <div className="col-span-1">
-          <Label htmlFor="fellowship_id">Select Fellowship Year</Label>
-          <Select
-            name="fellowship_id"
-            // @ts-ignore allowlist-migration
-            id="fellowship_id"
-            value={data.fellowship_id ?? ''}
-            // @ts-ignore allowlist-migration
-            onValueChange={value => setData('fellowship_id', Number(value))}
-          >
-            <SelectTrigger>
-              <SelectValue placeholder="Select fellowship year" />
-            </SelectTrigger>
-            <SelectContent>
-              {fellowships.map((fellowship: any) => (
-                <SelectItem key={fellowship.id} value={fellowship.id}>
-                  {fellowship.year}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        <div className="col-span-1">
-          <Label htmlFor="image">Image</Label>
-
+        <FormField
+          id="description"
+          label="Description"
+          error={errors.description}
+          className="col-span-2"
+        >
+          {field => (
+            <Textarea
+              {...field}
+              name="description"
+              className="mt-1 block"
+              placeholder="enter description"
+              rows={8}
+              onChange={e => setData('description', e.target.value)}
+            />
+          )}
+        </FormField>
+        <FormField
+          id="fellowship_id"
+          label="Select Fellowship Year"
+          error={errors.fellowship_id}
+          className="col-span-1"
+        >
+          {field => (
+            <Select
+              name="fellowship_id"
+              value={data.fellowship_id ?? ''}
+              // @ts-ignore allowlist-migration
+              onValueChange={value => setData('fellowship_id', Number(value))}
+            >
+              <SelectTrigger
+                id={field.id}
+                aria-invalid={field['aria-invalid']}
+                aria-describedby={field['aria-describedby']}
+              >
+                <SelectValue placeholder="Select fellowship year" />
+              </SelectTrigger>
+              <SelectContent>
+                {fellowships.map((fellowship: any) => (
+                  <SelectItem key={fellowship.id} value={fellowship.id}>
+                    {fellowship.year}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          )}
+        </FormField>
+        <Field
+          data-invalid={errors.image || undefined}
+          className="col-span-1 gap-2"
+        >
+          <FieldLabel htmlFor="image">Image</FieldLabel>
           <DropZone
             htmlFor={'image'}
             onValueChange={setDataImage}
             defaultValue={image}
-            //   className="h-64"
+            error={errors.image}
+            progress={progress}
+            uploading={processing}
           />
-
-          {errors.image && (
-            <InputError className="mt-2">{errors.image}</InputError>
-          )}
-        </div>
-        <div className="col-span-4">
-          <Label htmlFor="experience">Experience</Label>
-
+        </Field>
+        <Field
+          data-invalid={errors.experience || undefined}
+          className="col-span-4 gap-2"
+        >
+          <FieldLabel htmlFor="experience">Experience</FieldLabel>
           <ContentEditor
             // type="classic"
             name="experience"
@@ -166,11 +174,8 @@ export default function CreateFellow({ fellowships = undefined }: any) {
               setData('experience', editor.getContent())
             }
           />
-
-          {errors.experience && (
-            <InputError className={'mt-2'}>{errors.experience}</InputError>
-          )}
-        </div>
+          <FieldError>{errors.experience}</FieldError>
+        </Field>
         <Button type="submit">Create</Button>
       </div>
     </form>

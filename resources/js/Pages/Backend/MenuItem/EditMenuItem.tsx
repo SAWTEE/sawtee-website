@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,7 +12,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -22,6 +22,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditMenuItem({
   isOpen = undefined,
@@ -30,7 +31,7 @@ export default function EditMenuItem({
   setMenuItem = undefined,
   menuItems = undefined,
 }: any) {
-  const { data, setData, patch, processing, reset } = useForm({
+  const { data, setData, patch, processing, errors } = useForm({
     title: item.title,
     name: item.name,
     menu_id: item.menu_id,
@@ -52,9 +53,9 @@ export default function EditMenuItem({
           description: 'Menu Item Updated Successfully',
         });
         setMenuItem(null);
-        reset();
         onClose(!isOpen);
       },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
@@ -68,80 +69,88 @@ export default function EditMenuItem({
             done.
           </DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="grid gap-4 py-4">
-            <div className="">
-              <Label htmlFor="title">Title</Label>
-              <Input
-                name="title"
-                id="title"
-                value={data.title}
-                className="col-span-3"
-                onChange={e => setData('title', e.target.value)}
-              />
-            </div>
-            <div className="">
-              <Label htmlFor="name">Name</Label>
-              <Input
-                name="name"
-                id="name"
-                value={data.name}
-                className="col-span-3"
-                onChange={e => setData('name', e.target.value)}
-              />
-            </div>
-            <div className="">
-              <Label htmlFor="url">URL</Label>
-              <Input
-                name="url"
-                id="url"
-                value={data.url}
-                className="col-span-3"
-                onChange={e => setData('url', e.target.value)}
-              />
-            </div>
-            <div className="">
-              <Label htmlFor="order">Order</Label>
-              <Input
-                type="number"
-                name="order"
-                id="order"
-                value={data.order}
-                className="col-span-3"
-                onChange={e => setData('order', e.target.value)}
-              />
-            </div>
-            <div className="">
-              <Label htmlFor="parent_id">Select parent</Label>
-              <Select
-                name="parent_id"
-                // @ts-ignore allowlist-migration
-                id="parent_id"
-                placeholder="Select parent menu item"
-                value={data.parent_id}
-                className="col-span-3"
-                // @ts-ignore allowlist-migration
-                onChange={e => setData('parent_id', e.target.value)}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select parent menu item" />
-                </SelectTrigger>
-                <SelectContent className="w-full">
-                  <SelectGroup>
-                    <SelectLabel>Menu Items</SelectLabel>
-                    {menuItems.map(
-                      // @ts-ignore allowlist-migration
-                      menuItem =>
-                        menuItem.id !== item.id && (
-                          <SelectItem key={menuItem.id} value={menuItem.id}>
-                            {menuItem.title}
-                          </SelectItem>
-                        )
-                    )}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
+            <FormField id="title" label="Title" error={errors.title}>
+              {field => (
+                <Input
+                  {...field}
+                  name="title"
+                  value={data.title}
+                  className="col-span-3"
+                  onChange={e => setData('title', e.target.value)}
+                />
+              )}
+            </FormField>
+            <FormField id="name" label="Name" error={errors.name}>
+              {field => (
+                <Input
+                  {...field}
+                  name="name"
+                  value={data.name}
+                  className="col-span-3"
+                  onChange={e => setData('name', e.target.value)}
+                />
+              )}
+            </FormField>
+            <FormField id="url" label="URL" error={errors.url}>
+              {field => (
+                <Input
+                  {...field}
+                  name="url"
+                  value={data.url}
+                  className="col-span-3"
+                  onChange={e => setData('url', e.target.value)}
+                />
+              )}
+            </FormField>
+            <FormField id="order" label="Order" error={errors.order}>
+              {field => (
+                <Input
+                  {...field}
+                  type="number"
+                  name="order"
+                  value={data.order}
+                  className="col-span-3"
+                  onChange={e => setData('order', e.target.value)}
+                />
+              )}
+            </FormField>
+            <FormField
+              id="parent_id"
+              label="Select parent"
+              error={errors.parent_id}
+            >
+              {field => (
+                <Select
+                  name="parent_id"
+                  value={data.parent_id}
+                  onValueChange={value => setData('parent_id', value)}
+                >
+                  <SelectTrigger
+                    id={field.id}
+                    aria-invalid={field['aria-invalid']}
+                    aria-describedby={field['aria-describedby']}
+                  >
+                    <SelectValue placeholder="Select parent menu item" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    <SelectGroup>
+                      <SelectLabel>Menu Items</SelectLabel>
+                      {menuItems.map(
+                        // @ts-ignore allowlist-migration
+                        menuItem =>
+                          menuItem.id !== item.id && (
+                            <SelectItem key={menuItem.id} value={menuItem.id}>
+                              {menuItem.title}
+                            </SelectItem>
+                          )
+                      )}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              )}
+            </FormField>
           </div>
           <DialogFooter>
             <PrimaryButton type="submit" isLoading={processing}>

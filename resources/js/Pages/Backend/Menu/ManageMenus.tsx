@@ -1,7 +1,7 @@
 import { Head, useForm } from '@inertiajs/react';
 import { useEffect, useState } from 'react';
 
-import InputError from '@/components/Backend/InputError.jsx';
+import FormField from '@/components/Backend/FormField';
 import {
   Accordion,
   AccordionContent,
@@ -10,7 +10,6 @@ import {
 } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -21,7 +20,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
+import { toastFormErrors } from '@/lib/form-errors';
 import { slugify } from '@/lib/helpers';
 
 import MenuItemsList from './MenuList';
@@ -63,7 +62,7 @@ export default function ManageMenu({
   }, [menuItems]);
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Manage Menus" />
 
       {editMenu && (
@@ -139,7 +138,7 @@ export default function ManageMenu({
           />
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
 
@@ -206,9 +205,7 @@ const AddToMenu = ({
 
         reset();
       },
-      onError: errors => {
-        console.error(errors);
-      },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
   return (
@@ -217,142 +214,148 @@ const AddToMenu = ({
         <AccordionTrigger>Add {name}</AccordionTrigger>
 
         <AccordionContent>
-          <div className={'space-y-4'}>
+          <form
+            className="space-y-4"
+            noValidate
+            onSubmit={e => {
+              addToMenu(e);
+              setSelectedData(null);
+              setParent(null);
+            }}
+          >
             {options && (
-              <div>
-                <Label htmlFor={name}>Select {name}</Label>
+              <FormField id={name} label={`Select ${name}`}>
+                {field => (
+                  <Select
+                    name={name}
+                    // @ts-ignore allowlist-migration
+                    value={selectedData ? selectedData.id : ''}
+                    onValueChange={value => {
+                      const selected = options.filter(
+                        // @ts-ignore allowlist-migration
+                        option => option.id === Number(value)
+                      )[0];
+                      setSelectedData(selected);
+                      handleSelected(selected);
+                    }}
+                  >
+                    <SelectTrigger
+                      id={field.id}
+                      aria-invalid={field['aria-invalid']}
+                      aria-describedby={field['aria-describedby']}
+                    >
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>Select {name}</SelectLabel>
+                      </SelectGroup>
+                      {options?.map((option: any) => {
+                        return (
+                          <SelectItem key={option.id} value={option.id}>
+                            {option.name || option.title}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
+                )}
+              </FormField>
+            )}
+
+            <FormField id={`${name}-title`} label="Title" error={errors.title}>
+              {field => (
+                <Input
+                  {...field}
+                  name="title"
+                  value={data.title}
+                  onChange={e => setData('title', e.target.value)}
+                />
+              )}
+            </FormField>
+
+            <FormField id={`${name}-name`} label="Name" error={errors.name}>
+              {field => (
+                <Input
+                  {...field}
+                  name="name"
+                  value={data.name}
+                  onChange={e => setData('name', e.target.value)}
+                />
+              )}
+            </FormField>
+
+            <FormField id={`${name}-url`} label="URL" error={errors.url}>
+              {field => (
+                <Input
+                  {...field}
+                  name="url"
+                  value={data.url}
+                  onChange={e => setData('url', e.target.value)}
+                />
+              )}
+            </FormField>
+
+            <FormField id={`${name}-order`} label="Order" error={errors.order}>
+              {field => (
+                <Input
+                  {...field}
+                  type="number"
+                  name="order"
+                  value={data.order}
+                  onChange={e => setData('order', e.target.value)}
+                />
+              )}
+            </FormField>
+
+            <FormField
+              id={`${name}-parent_id`}
+              label="Select parent menu item"
+              error={errors.parent_id}
+            >
+              {field => (
                 <Select
-                  name={name}
-                  // @ts-ignore allowlist-migration
-                  id={name}
-                  placeholder={`Select ${name}`}
-                  // @ts-ignore allowlist-migration
-                  value={selectedData ? selectedData.id : ''}
+                  name="parent_id"
+                  value={data.parent_id}
                   onValueChange={value => {
-                    const selected = options.filter(
-                      // @ts-ignore allowlist-migration
-                      option => option.id === Number(value)
-                    )[0];
-                    setSelectedData(selected);
-                    handleSelected(selected);
+                    const order =
+                      menuItems.filter(
+                        // @ts-ignore allowlist-migration
+                        menuItem => menuItem.id === Number(value)
+                      )[0].children.length + 1;
+                    setData({
+                      ...data,
+                      order: order,
+                      parent_id: value,
+                    });
                   }}
                 >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select an option" />
+                  <SelectTrigger
+                    id={field.id}
+                    aria-invalid={field['aria-invalid']}
+                    aria-describedby={field['aria-describedby']}
+                  >
+                    <SelectValue placeholder="Select parent" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectLabel>Select {name}</SelectLabel>
-                    </SelectGroup>
-                    {options?.map((option: any) => {
-                      return (
-                        <SelectItem key={option.id} value={option.id}>
-                          {option.name || option.title}
+                      <SelectLabel>Select parent</SelectLabel>
+
+                      {menuItems?.map((menuItem: any) => (
+                        <SelectItem key={menuItem.id} value={menuItem.id}>
+                          {menuItem.title}
                         </SelectItem>
-                      );
-                    })}
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
-              </div>
-            )}
-
-            <div>
-              <Label htmlFor="title">Title</Label>
-              <Input
-                name="title"
-                id="title"
-                value={data.title}
-                onChange={e => setData('title', e.target.value)}
-              />
-              {errors.title && <InputError mt={2}>{errors.title}</InputError>}
-            </div>
-
-            <div>
-              <Label htmlFor="name">Name</Label>
-              <Input
-                name="name"
-                id="name"
-                value={data.name}
-                onChange={e => setData('name', e.target.value)}
-              />
-              {errors.name && <InputError mt={2}>{errors.name}</InputError>}
-            </div>
-
-            <div>
-              <Label htmlFor="url">URL</Label>
-              <Input
-                name="url"
-                id="url"
-                value={data.url}
-                onChange={e => setData('url', e.target.value)}
-              />
-              {errors.url && <InputError mt={2}>{errors.url}</InputError>}
-            </div>
-
-            <div>
-              <Label htmlFor="order">Order</Label>
-              <Input
-                type="number"
-                name="order"
-                id="order"
-                value={data.order}
-                onChange={e => setData('order', e.target.value)}
-              />
-              {errors.order && <InputError mt={2}>{errors.order}</InputError>}
-            </div>
-            <div>
-              <Label htmlFor="parent_id">Select parent menu item</Label>
-              <Select
-                name="parent_id"
-                // @ts-ignore allowlist-migration
-                id="parent_id"
-                placeholder="Select parent"
-                value={data.parent_id}
-                onValueChange={value => {
-                  const order =
-                    menuItems.filter(
-                      // @ts-ignore allowlist-migration
-                      menuItem => menuItem.id === Number(value)
-                    )[0].children.length + 1;
-                  setData({
-                    ...data,
-                    order: order,
-                    parent_id: value,
-                  });
-                }}
-              >
-                <SelectTrigger>
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Select parent</SelectLabel>
-
-                    {menuItems?.map((menuItem: any) => (
-                      <SelectItem key={menuItem.id} value={menuItem.id}>
-                        {menuItem.title}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              {errors.parent_id && (
-                <InputError mt={2}>{errors.parent_id}</InputError>
               )}
-            </div>
+            </FormField>
 
-            <Button
-              // @ts-ignore allowlist-migration
-              isLoading={processing}
-              onClick={e => {
-                addToMenu(e);
-                setSelectedData(null);
-                setParent(null);
-              }}
-            >
+            <Button type="submit" disabled={processing}>
               Add to Menu
             </Button>
-          </div>
+          </form>
         </AccordionContent>
       </AccordionItem>
     </Accordion>

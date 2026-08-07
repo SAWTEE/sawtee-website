@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Concerns\AttachesUploadedMedia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\SectionRequest;
 use App\Models\Page;
 use App\Models\Section;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class SectionController extends Controller
 {
+    use AttachesUploadedMedia;
+
     public function index(): Response
     {
         $sections = Section::with(['page:id,name', 'parent:id,title'])
@@ -34,13 +38,13 @@ class SectionController extends Controller
 
     public function store(SectionRequest $request): RedirectResponse
     {
-        $section = Section::create($request->validated());
+        return DB::transaction(function () use ($request) {
+            $section = Section::create($request->validated());
 
-        if ($request->hasFile('image')) {
-            $section->addMediaFromRequest('image')->toMediaCollection('section-media');
-        }
+            $this->attachImageFromRequest($section, $request, 'section-media');
 
-        return to_route('admin.sections.index');
+            return to_route('admin.sections.index');
+        });
     }
 
     public function edit(Section $section): Response
@@ -54,16 +58,18 @@ class SectionController extends Controller
 
     public function update(SectionRequest $request, Section $section): RedirectResponse
     {
-        if ($request->hasFile('image')) {
-            $section->clearMediaCollection('section-media');
-            $section->addMediaFromRequest('image')->toMediaCollection('section-media');
-        } elseif ($request->mediaWasCleared()) {
-            $section->clearMediaCollection('section-media');
-        }
+        return DB::transaction(function () use ($request, $section) {
+            if ($request->hasFile('image')) {
+                $section->clearMediaCollection('section-media');
+                $this->attachImageFromRequest($section, $request, 'section-media');
+            } elseif ($request->mediaWasCleared()) {
+                $section->clearMediaCollection('section-media');
+            }
 
-        $section->update($request->validated());
+            $section->update($request->validated());
 
-        return to_route('admin.sections.index');
+            return to_route('admin.sections.index');
+        });
     }
 
     public function destroy(Section $section): RedirectResponse

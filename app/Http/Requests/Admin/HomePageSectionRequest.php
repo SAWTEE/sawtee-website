@@ -24,4 +24,18 @@ class HomePageSectionRequest extends AdminFormRequest
             'show' => ['required', 'boolean'],
         ];
     }
+
+    /**
+     * @return array<string, string>
+     */
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Please enter a name.',
+            'name.max' => 'Name must not be longer than 100 characters.',
+            'name.unique' => 'A home page section with this name already exists.',
+            'description.max' => 'Description must not be longer than 255 characters.',
+            'show.required' => 'Please choose whether to show this section.',
+        ];
+    }
 }

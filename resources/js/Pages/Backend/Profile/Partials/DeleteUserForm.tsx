@@ -2,7 +2,7 @@ import { useForm } from '@inertiajs/react';
 import { useRef, useState } from 'react';
 
 import DangerButton from '@/components/Backend/DangerButton';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,7 +14,6 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 
 export default function DeleteUserForm({ className = '' }: any) {
@@ -93,30 +92,28 @@ export default function DeleteUserForm({ className = '' }: any) {
             permanently deleted. Please enter your password to confirm you would
             like to permanently delete your account.
           </p>
-          <form onSubmit={deleteUser} className="dark:bg-bgDarker">
-            <div className="grid gap-4">
-              <div className="grid grid-cols-4 items-center gap-4">
-                <div className="col-span-4">
-                  <Label htmlFor="password" className="text-right">
-                    Password
-                  </Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    name="password"
-                    // @ts-ignore allowlist-migration
-                    ref={passwordInput}
-                    value={data.password}
-                    onChange={e => setData('password', e.target.value)}
-                    //   className="mt-1 block w-3/4"
-                    isFocused
-                    placeholder="Password"
-                    className="col-span-3"
-                  />
-                </div>
-              </div>
-              <InputError message={errors.password} className="mt-2" />
-            </div>
+          <form onSubmit={deleteUser} noValidate className="dark:bg-bgDarker">
+            <FormField
+              id="password"
+              label="Password"
+              error={errors.password}
+              required
+            >
+              {field => (
+                <Input
+                  {...field}
+                  type="password"
+                  name="password"
+                  // @ts-ignore allowlist-migration
+                  ref={passwordInput}
+                  value={data.password}
+                  onChange={e => setData('password', e.target.value)}
+                  placeholder="Password"
+                  autoFocus
+                  className="col-span-3"
+                />
+              )}
+            </FormField>
           </form>
           <DialogFooter>
             <div className="mt-6 flex justify-end">
@@ -131,6 +128,7 @@ export default function DeleteUserForm({ className = '' }: any) {
                 type="submit"
                 className="ms-3"
                 disabled={processing}
+                onClick={deleteUser}
               >
                 Delete Account
               </Button>

@@ -2,15 +2,16 @@ import { useForm } from '@inertiajs/react';
 import React from 'react';
 
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
+import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateTeamForm() {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, reset, progress } = useForm({
     name: '',
     email: '',
     designation: null,
@@ -42,7 +43,7 @@ export default function CreateTeamForm() {
     e.preventDefault();
     post(route('admin.teams.store'), {
       preserveScroll: true,
-      onSuccess: () =>
+      onSuccess: () => {
         toast({
           position: 'top-right',
           title: 'Team member Created.',
@@ -50,94 +51,116 @@ export default function CreateTeamForm() {
           status: 'success',
           duration: 6000,
           isClosable: true,
-        }),
-      onError: errors => {
-        if (errors.name) {
-          reset('name');
-        }
+        });
+        reset();
+        setImage(null);
       },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-4 gap-4">
-        <div className="col-span-3">
-          <Label htmlFor="name">Name</Label>
-
-          <Input
-            id="name"
-            name="name"
-            placeholder="enter member name"
-            onChange={e => setData('name', e.target.value)}
-            required
-          />
-
-          {errors.name && <InputError mt={2}>{errors.name}</InputError>}
-        </div>
-
-        <div className="col-span-1">
-          <Label htmlFor="email">email</Label>
-
-          <Input
-            type="email"
-            id="email"
-            name="email"
-            placeholder="enter member email"
-            onChange={e => setData('email', e.target.value)}
-          />
-
-          {errors.email && <InputError>{errors.email}</InputError>}
-        </div>
-
-        <div className="col-span-2">
-          <Label htmlFor="designation">Designation</Label>
-          <Input
-            id="designation"
-            name="designation"
-            placeholder="enter member designation"
-            // @ts-ignore allowlist-migration
-            onChange={e => setData('designation', e.target.value)}
-          />
-          {errors.designation && (
-            <InputError mt={2}>{errors.designation}</InputError>
+        <FormField
+          id="name"
+          label="Name"
+          error={errors.name}
+          required
+          className="col-span-3"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="name"
+              placeholder="enter member name"
+              onChange={e => setData('name', e.target.value)}
+            />
           )}
-        </div>
-        <div className="col-span-1">
-          <Label htmlFor="order">Order</Label>
-          <Input
-            type="number"
-            id="order"
-            name="order"
-            defaultValue={data.order}
-            // @ts-ignore allowlist-migration
-            onChange={e => setData('order', e.target.value)}
-          />
-          {errors.order && <InputError mt={2}>{errors.order}</InputError>}
-        </div>
-        <div className="col-span-2">
-          <Label htmlFor="bio">Bio</Label>
-          <Textarea
-            id="bio"
-            name="bio"
-            placeholder="enter member bio"
-            rows={8}
-            onChange={e => setData('bio', e.target.value)}
-          />
-          {errors.bio && <InputError mt={2}>{errors.bio}</InputError>}
-        </div>
+        </FormField>
 
-        <div className="col-span-2">
+        <FormField
+          id="email"
+          label="email"
+          error={errors.email}
+          className="col-span-1"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="email"
+              name="email"
+              placeholder="enter member email"
+              onChange={e => setData('email', e.target.value)}
+            />
+          )}
+        </FormField>
+
+        <FormField
+          id="designation"
+          label="Designation"
+          error={errors.designation}
+          className="col-span-2"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="designation"
+              placeholder="enter member designation"
+              // @ts-ignore allowlist-migration
+              onChange={e => setData('designation', e.target.value)}
+            />
+          )}
+        </FormField>
+        <FormField
+          id="order"
+          label="Order"
+          error={errors.order}
+          className="col-span-1"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="number"
+              name="order"
+              defaultValue={data.order}
+              // @ts-ignore allowlist-migration
+              onChange={e => setData('order', e.target.value)}
+            />
+          )}
+        </FormField>
+        <FormField
+          id="bio"
+          label="Bio"
+          error={errors.bio}
+          className="col-span-2"
+        >
+          {field => (
+            <Textarea
+              {...field}
+              name="bio"
+              placeholder="enter member bio"
+              rows={8}
+              onChange={e => setData('bio', e.target.value)}
+            />
+          )}
+        </FormField>
+
+        <Field
+          data-invalid={errors.image || undefined}
+          className="col-span-2 gap-2"
+        >
+          <FieldLabel htmlFor="image">Image</FieldLabel>
           <DropZone
             id="image"
             name="image"
-            accept="image/.png,.jpg,.jpeg,.webp"
             defaultValue={image}
             onValueChange={setDataImage}
+            error={errors.image}
+            progress={progress}
+            uploading={processing}
           />
-
-          {errors.image && <InputError mt={2}>{errors.image}</InputError>}
-        </div>
+        </Field>
         <PrimaryButton type="submit" isLoading={processing}>
           Save
         </PrimaryButton>

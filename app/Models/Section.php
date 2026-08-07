@@ -43,21 +43,17 @@ class Section extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Max, 300, 200)
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
             ->quality(75)
             ->nonQueued();
 
-        $this
-            ->addMediaConversion('responsive')
-            ->fit(Fit::Max, 1200, 800)
-            ->quality(75)
-            ->format('webp')
-            ->withResponsiveImages()
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('section-media')
-            ->nonQueued();
+            ->format('webp')
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

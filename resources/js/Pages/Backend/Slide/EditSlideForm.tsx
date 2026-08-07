@@ -2,7 +2,7 @@ import { useForm } from '@inertiajs/react';
 import React from 'react';
 
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -12,9 +12,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Field, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditSlideForm({
   open = undefined,
@@ -22,7 +23,7 @@ export default function EditSlideForm({
   slide = undefined,
   setEditSlide = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, progress } = useForm({
     title: slide.title,
     subtitle: slide.subtitle,
     slider_id: slide.slider_id,
@@ -65,11 +66,7 @@ export default function EditSlideForm({
           setEditSlide(null);
           setOpen(!open);
         },
-        onError: errors => {
-          if (errors.title) {
-            reset('title');
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -81,49 +78,43 @@ export default function EditSlideForm({
           <DialogTitle>Edit Slide</DialogTitle>
           <DialogDescription>Change slide data.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="flex flex-col gap-4">
-            <div>
-              <Label htmlFor="title">Title</Label>
-
-              <Input
-                id="title"
-                name="title"
-                placeholder="enter title"
-                value={data.title}
-                onChange={e => setData('title', e.target.value)}
-              />
-
-              {errors.title && (
-                <InputError className="mt-2">{errors.title}</InputError>
+            <FormField id="title" label="Title" error={errors.title}>
+              {field => (
+                <Input
+                  {...field}
+                  name="title"
+                  placeholder="enter title"
+                  value={data.title}
+                  onChange={e => setData('title', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div>
-              <Label htmlFor="subtitle">Subtitle</Label>
-
-              <Input
-                id="subtitle"
-                name="subtitle"
-                placeholder="enter subtitle"
-                value={data.subtitle}
-                onChange={e => setData('subtitle', e.target.value)}
-              />
-              {errors.subtitle && (
-                <InputError className="mt-2">{errors.subtitle}</InputError>
+            <FormField id="subtitle" label="Subtitle" error={errors.subtitle}>
+              {field => (
+                <Input
+                  {...field}
+                  name="subtitle"
+                  placeholder="enter subtitle"
+                  value={data.subtitle}
+                  onChange={e => setData('subtitle', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div>
-              <Label htmlFor="image">Slide Image</Label>
+            <Field data-invalid={errors.image || undefined} className="gap-2">
+              <FieldLabel htmlFor="image">Slide Image</FieldLabel>
               <DropZone
                 htmlFor={'image'}
                 onValueChange={setDataImage}
                 defaultValue={image}
+                error={errors.image}
+                progress={progress}
+                uploading={processing}
               />
-
-              {errors.image && <InputError mt={2}>{errors.image}</InputError>}
-            </div>
+            </Field>
             <div>
               <PrimaryButton type="submit" isLoading={processing}>
                 Save

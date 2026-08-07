@@ -34,6 +34,7 @@ export function DataTable({
   pagination = true,
   showGlobalFilter = false,
   showCustomFilter = true,
+  bulkActions = undefined,
 }: any) {
   const [sorting, setSorting] = React.useState([]);
   const [columns, setColumns] = React.useState([]);
@@ -60,6 +61,8 @@ export function DataTable({
     onColumnVisibilityChange: setColumnVisibility,
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
+    getRowId: (row: any) => String(row.id),
+    enableRowSelection: true,
     state: {
       sorting,
       columnFilters,
@@ -68,6 +71,9 @@ export function DataTable({
       rowSelection,
     },
   });
+
+  const selectedRows = table.getFilteredSelectedRowModel().rows;
+  const selectedCount = selectedRows.length;
 
   return (
     <div>
@@ -90,11 +96,19 @@ export function DataTable({
             label={'categories'}
             value={typeFilterOptions.selectedId}
             route={typeFilterOptions.route}
+            only={typeFilterOptions.only}
           />
         )}
         {showColumnFilters && (
           <DataTableViewOptions table={table} label={'Select columns'} />
         )}
+        {selectedCount > 0 &&
+          typeof bulkActions === 'function' &&
+          bulkActions({
+            selectedIds: selectedRows.map((row: any) => row.original.id),
+            selectedCount,
+            clearSelection: () => setRowSelection({}),
+          })}
       </div>
       <div className="rounded-md border">
         <Table>

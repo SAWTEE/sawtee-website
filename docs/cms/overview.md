@@ -6,7 +6,7 @@ The admin area lives at **`/admin`**. After login you get a sidebar of content t
 
 | Area | What it controls on the site |
 | --- | --- |
-| **Posts** | News, blogs, events, newsletters, webinars, “in media”, etc. (by category) |
+| **Posts** | News, blogs, events, newsletters, webinars, “in media”, etc. (by category). Soft-deleted posts go to **Trash** until restored or permanently deleted. |
 | **Articles** | Pieces attached to a publication volume |
 | **Publications** | Trade Insight / report volumes and PDFs |
 | **Research** | Research reports and downloads |
@@ -17,6 +17,8 @@ The admin area lives at **`/admin`**. After login you get a sidebar of content t
 | **Sliders & slides** | Home carousel |
 | **Team / fellows / institutes** | People and member networks |
 | **Dashboard** | Content counts with month-over-month trends, plus first-party page-view analytics (views / top paths) |
+| **Maintenance** | Find orphaned media/files; dry-run or delete unused uploads |
+| **Link Checker** | Crawl the public site and list broken links |
 
 ## Publishing basics
 
@@ -25,6 +27,8 @@ The admin area lives at **`/admin`**. After login you get a sidebar of content t
 3. Add a **featured image** where the design expects one.  
 4. Fill **meta title / description** for SEO when possible.  
 5. Save — the public site picks up changes (home/menus may cache for a few minutes).
+
+Titles are validated for uniqueness where it matters (e.g. post titles must be unique **within the same category**).
 
 ## Permissions
 

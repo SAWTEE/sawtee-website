@@ -15,7 +15,7 @@ class ContentCache
     /**
      * Bump when cached payload shape changes (e.g. arrays instead of Eloquent).
      */
-    public const PAYLOAD_VERSION = 'v4';
+    public const PAYLOAD_VERSION = 'v5';
 
     public static function menuKey(string $location): string
     {

@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\EditorUpload;
 use App\Models\HomePageSection;
 use App\Models\Menu;
 use App\Models\Post;
@@ -180,20 +181,22 @@ test('team update ignores its own email and rejects one already taken', function
     ])->assertSessionHasErrors('email');
 });
 
-test('editor media upload validates the file and returns its public location', function () {
-    Storage::fake('public');
-
+test('editor media upload validates the file and stores an optimized media-library image', function () {
     $this->post(route('admin.post.upload'), [])
         ->assertSessionHasErrors('file');
 
-    $this->post(route('admin.post.upload'), [
-        'file' => UploadedFile::fake()->image('diagram.png'),
-    ])->assertOk()->assertJson([
-        'location' => '/storage/uploads/diagram.png',
-        'text' => 'diagram.png',
+    $response = $this->post(route('admin.post.upload'), [
+        'file' => UploadedFile::fake()->image('diagram.png', 800, 600),
     ]);
 
-    Storage::disk('public')->assertExists('uploads/diagram.png');
+    $response->assertOk();
+    $location = $response->json('location');
+
+    expect($location)->toStartWith('/media-library/')
+        ->and($response->json('text'))->toBe('diagram.png')
+        ->and(EditorUpload::query()->count())->toBe(1);
+
+    Storage::disk('public')->assertMissing('uploads/diagram.png');
 });
 
 test('menu update resolves the menu from the serialised payload and ignores its own title', function () {

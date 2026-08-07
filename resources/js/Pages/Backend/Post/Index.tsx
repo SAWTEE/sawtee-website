@@ -1,12 +1,29 @@
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, router, useForm } from '@inertiajs/react';
+import { Trash2Icon } from 'lucide-react';
+import { useState } from 'react';
 
 import DataTableActions from '@/components/Backend/DataTableActions';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
+import { cn } from '@/lib/utils';
+
+const softDeleteDescription =
+  'This will move the post to the trash. Associated media is kept until the post is permanently deleted.';
 
 export default function Index({
   auth = undefined,
@@ -16,18 +33,48 @@ export default function Index({
 }: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
+  const [pendingBulkIds, setPendingBulkIds] = useState<number[]>([]);
+  const [bulkDialogOpen, setBulkDialogOpen] = useState(false);
+  const [bulkClearSelection, setBulkClearSelection] = useState<
+    (() => void) | null
+  >(null);
+  const [bulkProcessing, setBulkProcessing] = useState(false);
 
   const handleDelete = (e: any, id: any) => {
     e.preventDefault();
     destroy(route('admin.posts.destroy', id), {
       preserveState: true,
       preserveScroll: true,
+      invalidateCacheTags: ['admin-nav', 'posts'],
       onSuccess: () => {
         toast({
           title: 'Post deleted',
-          description: `Post ID:${id} deleted Successfully`,
+          description: `Post ID:${id} moved to trash`,
         });
       },
+    });
+  };
+
+  const confirmBulkDelete = () => {
+    if (pendingBulkIds.length === 0) {
+      return;
+    }
+
+    setBulkProcessing(true);
+    router.delete(route('admin.posts.batch-destroy'), {
+      data: { ids: pendingBulkIds },
+      preserveScroll: true,
+      invalidateCacheTags: ['admin-nav', 'posts'],
+      onSuccess: () => {
+        toast({
+          title: 'Posts deleted',
+          description: `${pendingBulkIds.length} post(s) moved to trash`,
+        });
+        bulkClearSelection?.();
+        setPendingBulkIds([]);
+        setBulkDialogOpen(false);
+      },
+      onFinish: () => setBulkProcessing(false),
     });
   };
 
@@ -137,6 +184,8 @@ export default function Index({
             id={row.original.id}
             handleDelete={handleDelete}
             handleEdit={handleEdit}
+            deleteTitle="Move post to trash?"
+            deleteDescription={softDeleteDescription}
           />
         );
       },
@@ -148,9 +197,17 @@ export default function Index({
     <>
       <Head title="Posts" />
 
-      <Link href={route('admin.posts.create')}>
-        <PrimaryButton>Create New Post</PrimaryButton>
-      </Link>
+      <div className="flex items-center gap-3">
+        <Link href={route('admin.posts.create')}>
+          <PrimaryButton>Create New Post</PrimaryButton>
+        </Link>
+        <Link href={route('admin.posts.trash')}>
+          <Button variant="outline">
+            <Trash2Icon className="mr-2 h-4 w-4" />
+            Trash
+          </Button>
+        </Link>
+      </div>
       <DataTable
         defaultColumns={defaultColumns}
         data={posts}
@@ -159,8 +216,52 @@ export default function Index({
           iterable: categories,
           selectedId: categoryID,
           route: '/admin/posts',
+          only: ['posts', 'categories', 'categoryID'],
         }}
+        bulkActions={({ selectedIds, selectedCount, clearSelection }: any) => (
+          <Button
+            type="button"
+            variant="destructive"
+            size="sm"
+            onClick={() => {
+              setPendingBulkIds(selectedIds);
+              setBulkClearSelection(() => clearSelection);
+              setBulkDialogOpen(true);
+            }}
+          >
+            <Trash2Icon className="mr-2 h-4 w-4" />
+            Delete selected ({selectedCount})
+          </Button>
+        )}
       />
+
+      <AlertDialog open={bulkDialogOpen} onOpenChange={setBulkDialogOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Move {pendingBulkIds.length} post(s) to trash?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {softDeleteDescription}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel disabled={bulkProcessing}>
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              className={cn(buttonVariants({ variant: 'destructive' }))}
+              disabled={bulkProcessing}
+              onClick={e => {
+                e.preventDefault();
+                confirmBulkDelete();
+              }}
+            >
+              {bulkProcessing ? 'Deleting…' : 'Delete'}
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

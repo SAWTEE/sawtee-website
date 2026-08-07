@@ -1,21 +1,14 @@
 import { useForm } from '@inertiajs/react';
-import { CalendarIcon } from '@radix-ui/react-icons';
 import React from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
+import DatePicker from '@/components/Backend/DatePicker';
 import DropZone from '@/components/Backend/DropZone';
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { MultiSelect } from '@/components/ui/multi-select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -27,15 +20,14 @@ import {
 } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { formatDateTimeForInput } from '@/lib/helpers';
-import { cn } from '@/lib/utils';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function EditArticleForm({
   article = undefined,
   tags = undefined,
   volumes = undefined,
 }: any) {
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors, progress } = useForm({
     title: article.title,
     slug: article.slug,
     publication_id: article.publication_id ?? null,
@@ -103,19 +95,7 @@ export default function EditArticleForm({
             title: 'Article Edited.',
             description: 'Article edited Successfully',
           }),
-        onError: errors => {
-          for (const key in errors) {
-            if (Object.hasOwnProperty.call(errors, key)) {
-              const value = errors[key];
-              // @ts-ignore allowlist-migration
-              reset(key);
-              return toast({
-                title: 'Uh oh, Something went wrong',
-                description: `${key.toUpperCase()} field error ` + `: ${value}`,
-              });
-            }
-          }
-        },
+        onError: errors => toastFormErrors(errors, toast),
       }
     );
   };
@@ -131,111 +111,83 @@ export default function EditArticleForm({
   }, [article, setData]);
 
   return (
-    <form onSubmit={submit}>
+    <form onSubmit={submit} noValidate>
       <div className="grid grid-cols-4 gap-4">
-        <div className="col-span-4">
-          <Label htmlFor="title">Title</Label>
-
-          <Input
-            id="title"
-            name="title"
-            value={data.title}
-            onChange={e => setData('title', e.target.value)}
-            required
-          />
-
-          {errors.title && (
-            <InputError className="space-y-2">{errors.title}</InputError>
+        <FormField
+          id="title"
+          label="Title"
+          error={errors.title}
+          required
+          className="col-span-4"
+        >
+          {field => (
+            <Input
+              {...field}
+              name="title"
+              value={data.title}
+              onChange={e => setData('title', e.target.value)}
+            />
           )}
-        </div>
+        </FormField>
 
-        <div className="col-span-3">
-          <Label htmlFor="subtitle">Subtitle</Label>
+        <FormField
+          id="subtitle"
+          label="Subtitle"
+          error={errors.subtitle}
+          className="col-span-3"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="text"
+              name="subtitle"
+              value={data.subtitle ?? ''}
+              onChange={e => setData('subtitle', e.target.value)}
+            />
+          )}
+        </FormField>
 
-          <Input
-            type="text"
-            id="subtitle"
-            name="subtitle"
-            value={data.subtitle ?? ''}
-            onChange={e => setData('subtitle', e.target.value)}
-          />
-
-          {errors.subtitle && <InputError>{errors.subtitle}</InputError>}
-        </div>
-
-        <div className="col-span-1">
-          <div className="mx-2">
-            <Label as="legend" htmlFor="published_at">
-              Published At
-            </Label>
-
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={'outline'}
-                  className={cn(
-                    'mt-1 flex w-full pl-3 text-left font-normal',
-                    !data.published_at && 'text-muted-foreground'
-                  )}
-                >
-                  {data.published_at ? (
-                    new Date(data.published_at).toDateString()
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                  <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0" align="start">
-                <Calendar
-                  name="published_at"
-                  className="mt-1 block"
-                  id="published_at"
-                  mode="single"
-                  selected={data.published_at}
-                  // @ts-ignore allowlist-migration
-                  onSelect={value => {
-                    const formatedDate = formatDateTimeForInput(
-                      new Date(value)
-                    );
-                    setData('published_at', formatedDate);
-                  }}
-                  // @ts-ignore allowlist-migration
-                  disabled={date =>
-                    date > new Date() || date < new Date('1900-01-01')
-                  }
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
-
-            {errors.published_at && (
-              <InputError className={'mt-2'}>{errors.published_at}</InputError>
-            )}
-          </div>
-        </div>
+        <FormField
+          id="published_at"
+          label="Published At"
+          error={errors.published_at}
+          className="col-span-1 mx-2"
+        >
+          {field => (
+            <DatePicker
+              {...field}
+              value={data.published_at}
+              placeholder="Select publish date"
+              fromYear={1990}
+              toYear={new Date().getFullYear() + 1}
+              onChange={value => setData('published_at', value)}
+            />
+          )}
+        </FormField>
 
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="col-span-1">
-            <Label htmlFor="author">Author</Label>
-            <Input
-              id="author"
-              name="author"
-              value={data.author}
-              onChange={e => setData('author', e.target.value)}
-            />
-            {errors.author && (
-              <InputError className="space-y-2">{errors.author}</InputError>
+          <FormField id="author" label="Author" error={errors.author}>
+            {field => (
+              <Input
+                {...field}
+                name="author"
+                value={data.author}
+                onChange={e => setData('author', e.target.value)}
+              />
             )}
-          </div>
+          </FormField>
 
-          <div className="col-span-1">
-            {/* @ts-ignore allowlist-migration */}
-            <fieldset required className="mx-2">
-              <Label as="legend" htmlFor="category_id">
-                Volume
-              </Label>
-
+          <FormField
+            id="publication_id"
+            label="Volume"
+            error={
+              // @ts-ignore allowlist-migration
+              errors.trade_insight_volume_id || errors.publication_id
+            }
+            required
+            className="mx-2"
+          >
+            {field => (
               <Select
                 name="trade_insight_volume_id"
                 value={selectedVolume}
@@ -249,7 +201,11 @@ export default function EditArticleForm({
                   );
                 }}
               >
-                <SelectTrigger>
+                <SelectTrigger
+                  id={field.id}
+                  aria-invalid={field['aria-invalid']}
+                  aria-describedby={field['aria-describedby']}
+                >
                   <SelectValue placeholder="Select Trade Insight Volume" />
                 </SelectTrigger>
                 <SelectContent>
@@ -264,19 +220,11 @@ export default function EditArticleForm({
                   ))}
                 </SelectContent>
               </Select>
+            )}
+          </FormField>
 
-              {/* @ts-ignore allowlist-migration */}
-              {errors.trade_insight_volume_id && (
-                <InputError className={'mt-2'}>
-                  {/* @ts-ignore allowlist-migration */}
-                  {errors.trade_insight_volume_id}
-                </InputError>
-              )}
-            </fieldset>
-          </div>
-          <div className="cols-span-1">
-            <Label htmlFor="tags">Add Tags</Label>
-
+          <Field className="gap-2">
+            <FieldLabel htmlFor="tags">Add Tags</FieldLabel>
             <MultiSelect
               name={'tags'}
               id="tags"
@@ -289,69 +237,82 @@ export default function EditArticleForm({
               onValueChange={setArticleTags}
               setValues={setDataTags}
             />
-          </div>
+          </Field>
         </div>
 
-        <div className="col-span-2">
-          <Label htmlFor="excerpt">Excerpt</Label>
-          <Textarea
-            id="excerpt"
-            name="excerpt"
-            value={data.excerpt}
-            rows={8}
-            onChange={e => setData('excerpt', e.target.value)}
-          />
-          {errors.excerpt && (
-            <InputError className="space-y-2">{errors.excerpt}</InputError>
+        <FormField
+          id="excerpt"
+          label="Excerpt"
+          error={errors.excerpt}
+          className="col-span-2"
+        >
+          {field => (
+            <Textarea
+              {...field}
+              name="excerpt"
+              value={data.excerpt}
+              rows={8}
+              onChange={e => setData('excerpt', e.target.value)}
+            />
           )}
-        </div>
+        </FormField>
 
         <div className="col-span-2 flex flex-col gap-4">
-          <div className="cols-span-1">
-            <Label htmlFor="meta_title">Meta Title</Label>
-            <Input
-              id="meta_title"
-              name="meta_title"
-              className="mt-1"
-              value={data.meta_title}
-              onChange={e => setData('meta_title', e.target.value)}
-            />
+          <FormField
+            id="meta_title"
+            label="Meta Title"
+            error={errors.meta_title}
+          >
+            {field => (
+              <Input
+                {...field}
+                name="meta_title"
+                className="mt-1"
+                value={data.meta_title}
+                onChange={e => setData('meta_title', e.target.value)}
+              />
+            )}
+          </FormField>
 
-            <InputError className="mt-2">{errors.meta_title}</InputError>
-          </div>
-
-          <div className="cols-span-1">
-            <Label htmlFor="meta_description">Meta Description</Label>
-            <Textarea
-              id="meta_description"
-              name="meta_description"
-              className="mt-1 block"
-              value={data.meta_description ?? ''}
-              rows={8}
-              onChange={e => setData('meta_description', e.target.value)}
-            />
-            <InputError className="mt-2">{errors.meta_description}</InputError>
-          </div>
+          <FormField
+            id="meta_description"
+            label="Meta Description"
+            error={errors.meta_description}
+          >
+            {field => (
+              <Textarea
+                {...field}
+                name="meta_description"
+                className="mt-1 block"
+                value={data.meta_description ?? ''}
+                rows={8}
+                onChange={e => setData('meta_description', e.target.value)}
+              />
+            )}
+          </FormField>
         </div>
 
-        <div className="col-span-2">
+        <Field
+          data-invalid={errors.image || undefined}
+          className="col-span-2 gap-2"
+        >
           <DropZone
             id="image"
             name="image"
-            accept="image/.png,.jpg,.jpeg,.webp"
             defaultValue={image}
             onValueChange={setDataImage}
+            error={errors.image}
+            progress={progress}
+            uploading={processing}
           />
+        </Field>
 
-          {errors.image && (
-            <InputError className="space-y-2">{errors.image}</InputError>
-          )}
-        </div>
-        <div className="col-span-4">
-          <Label htmlFor="content">Content</Label>
-
+        <Field
+          data-invalid={errors.content || undefined}
+          className="col-span-4"
+        >
+          <FieldLabel htmlFor="content">Content</FieldLabel>
           <ContentEditor
-            // type="classic"
             name="content"
             initialValue={data.content ?? ''}
             id="content"
@@ -359,11 +320,8 @@ export default function EditArticleForm({
               setData('content', editor.getContent())
             }
           />
-
-          {errors.content && (
-            <InputError className={'mt-2'}>{errors.content}</InputError>
-          )}
-        </div>
+          <FieldError>{errors.content}</FieldError>
+        </Field>
 
         <PrimaryButton type="submit" isLoading={processing}>
           Save

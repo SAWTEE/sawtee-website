@@ -36,12 +36,17 @@ class Fellow extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        // @phpstan-ignore-next-line
         $this->addMediaConversion('preview')
-            ->fit(Fit::Max, 200, 200)
+            ->fit(Fit::Max, 400, 400)
             ->format('webp')
             ->quality(75)
             ->nonQueued();
+
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
+            ->performOnCollections('profile_picture')
+            ->format('webp')
+            ->quality(80);
     }
 
     public function registerMediaCollections(): void

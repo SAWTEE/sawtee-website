@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\DeletesAssociatedFiles;
 use App\Models\Concerns\HasSeoMeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ use Spatie\Sluggable\SlugOptions;
 
 class Publication extends Model implements HasMedia
 {
+    use DeletesAssociatedFiles;
     use HasFactory;
     use HasSeoMeta;
     use HasSlug;
@@ -88,21 +90,17 @@ class Publication extends Model implements HasMedia
 
     public function registerMediaConversions(?Media $media = null): void
     {
-        $this
-            ->addMediaConversion('preview')
-            ->fit(Fit::Max, 180, 240)
-            ->quality(70)
-            ->sharpen(10)
-            ->keepOriginalImageFormat()
+        $this->addMediaConversion('preview')
+            ->fit(Fit::Max, 400, 400)
+            ->format('webp')
+            ->quality(75)
             ->nonQueued();
 
-        $this
-            ->addMediaConversion('responsive')
-            ->fit(Fit::Max, 210, 280)
+        $this->addMediaConversion('large')
+            ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('publication_featured_image')
-            ->quality(75)
             ->format('webp')
-            ->withResponsiveImages()
+            ->quality(80)
             ->nonQueued();
     }
 

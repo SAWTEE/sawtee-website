@@ -12,6 +12,7 @@ use App\Models\MenuItem;
 use App\Models\Page;
 use App\Models\Post;
 use App\Models\Publication;
+use App\Models\TradeInsightVolume;
 use App\Observers\ContentCacheObserver;
 use App\Support\ContentCache;
 use Illuminate\Support\ServiceProvider;
@@ -38,6 +39,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Legacy morph type from before Trade Insight volumes were renamed.
+        if (! class_exists(TradeInsightVolume::class, false)) {
+            class_alias(Publication::class, TradeInsightVolume::class);
+        }
+
         // Drop Eloquent-serialized menu/home cache from pre-Laravel-13 / serializable_classes=false.
         ContentCache::forgetStaleObjectCaches();
 

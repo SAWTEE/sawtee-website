@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,8 +13,8 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
+import { toastFormErrors } from '@/lib/form-errors';
 
 export default function CreateMenu({
   open = undefined,
@@ -37,17 +37,10 @@ export default function CreateMenu({
           title: 'Menu Created.',
           description: 'Menu Created Successfully',
         });
+        reset();
         setOpen(!open);
       },
-      onError: errors => {
-        console.error(errors);
-        if (errors.title) {
-          reset('title');
-        }
-        if (errors.location) {
-          reset('location');
-        }
-      },
+      onError: errors => toastFormErrors(errors, toast),
     });
   };
   return (
@@ -58,40 +51,35 @@ export default function CreateMenu({
           <DialogDescription>Add new menu.</DialogDescription>
         </DialogHeader>
         <DialogClose />
-        <form onSubmit={submit}>
+        <form onSubmit={submit} noValidate>
           <div className="space-y-4">
-            <div>
-              <Label htmlFor="title">Menu Name</Label>
-
-              <Input
-                id="title"
-                name="title"
-                placeholder="enter menu title"
-                autoFocus
-                onChange={e => setData('title', e.target.value)}
-                required
-              />
-
-              {errors.title && (
-                <InputError className="mt-2">{errors.title}</InputError>
+            <FormField id="title" label="Menu Name" error={errors.title} required>
+              {field => (
+                <Input
+                  {...field}
+                  name="title"
+                  placeholder="enter menu title"
+                  autoFocus
+                  onChange={e => setData('title', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
 
-            <div>
-              <Label htmlFor="location">Menu Location</Label>
-
-              <Input
-                id="location"
-                name="location"
-                placeholder="enter menu location"
-                onChange={e => setData('location', e.target.value)}
-                required
-              />
-
-              {errors.location && (
-                <InputError className="mt-2">{errors.location}</InputError>
+            <FormField
+              id="location"
+              label="Menu Location"
+              error={errors.location}
+              required
+            >
+              {field => (
+                <Input
+                  {...field}
+                  name="location"
+                  placeholder="enter menu location"
+                  onChange={e => setData('location', e.target.value)}
+                />
               )}
-            </div>
+            </FormField>
             <DialogFooter>
               <PrimaryButton type="submit" isLoading={processing}>
                 Add

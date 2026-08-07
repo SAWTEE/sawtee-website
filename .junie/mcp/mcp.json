@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/ankur/Library/Application Support/Herd/bin/php84",
+            "args": [
+                "/Users/ankur/Developer/Projects/Laravel/Sites/sawtee/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
