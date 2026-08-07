@@ -6,7 +6,6 @@ import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelpe
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, pages = undefined }: any) {
   const { get, delete: destroy } = useForm();
@@ -76,7 +75,7 @@ export default function Index({ auth = undefined, pages = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Pages" />
       <Link href={route('admin.pages.create')}>
         <PrimaryButton>Create New Page</PrimaryButton>
@@ -88,6 +87,6 @@ export default function Index({ auth = undefined, pages = undefined }: any) {
           customFilterColumn={'name'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

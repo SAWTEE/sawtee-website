@@ -6,7 +6,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, sections = undefined }: any) {
   const { get, delete: destroy } = useForm();
@@ -91,7 +90,7 @@ export default function Index({ auth = undefined, sections = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Home Page Sections" />
       <Link href={route('admin.home-page-sections.create')}>
         <PrimaryButton>Create New Section</PrimaryButton>
@@ -103,6 +102,6 @@ export default function Index({ auth = undefined, sections = undefined }: any) {
           customFilterColumn={'name'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

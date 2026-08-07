@@ -70,7 +70,7 @@ jobs:
         run: |
           npm ci
           npm run typecheck
-          npm run build:ssr
+          npm run build
           test -d bootstrap/ssr && echo "✅ SSR bundle built" || (echo "❌ SSR bundle missing" && exit 1)
 
   deploy-staging:

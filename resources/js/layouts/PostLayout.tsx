@@ -39,13 +39,13 @@ type PostLayoutProps = {
   srcSet?: string | null;
 };
 
-const PostLayout = ({
+export default function PostLayout({
   children,
   relatedPosts,
   post,
   featured_image,
   srcSet,
-}: PostLayoutProps) => {
+}: PostLayoutProps) {
   const readingTime = useMemo(() => {
     if (!post.content) return null;
 
@@ -132,6 +132,4 @@ const PostLayout = ({
       </div>
     </article>
   );
-};
-
-export default PostLayout;
+}

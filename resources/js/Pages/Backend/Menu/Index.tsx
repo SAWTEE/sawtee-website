@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateMenu from './Partials/CreateMenu';
 export default function Index({ auth = undefined, menus = undefined }: any) {
@@ -74,7 +73,7 @@ export default function Index({ auth = undefined, menus = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Menus" />
       {menus.length <= 0 && (
         <Alert>
@@ -86,6 +85,6 @@ export default function Index({ auth = undefined, menus = undefined }: any) {
       <Button onClick={() => setCreateMenu(!createMenu)}>Add New Menu</Button>
       {menus && <DataTable defaultColumns={defaultColumns} data={menus} />}
       {createMenu && <CreateMenu open={createMenu} setOpen={setCreateMenu} />}
-    </AuthenticatedLayout>
+    </>
   );
 }

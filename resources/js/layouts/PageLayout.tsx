@@ -12,12 +12,12 @@ type PageLayoutProps = {
   showBackgroundPattern?: boolean;
 };
 
-const PageLayout = ({
+export default function PageLayout({
   title,
   featured_image,
   srcSet,
   children,
-}: PageLayoutProps) => {
+}: PageLayoutProps) {
   const hasFeaturedImage = Boolean(featured_image && featured_image !== '');
   return (
     <>
@@ -53,6 +53,4 @@ const PageLayout = ({
       {children}
     </>
   );
-};
-
-export default PageLayout;
+}

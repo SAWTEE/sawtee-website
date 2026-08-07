@@ -7,7 +7,6 @@ import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostMeta from '@/components/Frontend/post/post-meta';
 import SimpleList from '@/components/Frontend/SimpleList';
 import { Button } from '@/components/ui/button';
-import MainLayout from '@/layouts/MainLayout';
 import { formatDate } from '@/lib/helpers';
 import type { FrontendArticleProps } from '@/types';
 
@@ -68,7 +67,7 @@ export default function Article({
   const hasRelated = relatedArticles.length > 0;
 
   return (
-    <MainLayout>
+    <>
       <WebsiteHead
         title={seo?.title ?? volumeLabel ?? ''}
         description={seo?.description ?? article.meta_description ?? undefined}
@@ -178,6 +177,6 @@ export default function Article({
           </div>
         </div>
       </article>
-    </MainLayout>
+    </>
   );
 }

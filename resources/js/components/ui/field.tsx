@@ -49,7 +49,7 @@ function FieldGroup({ className = '', ...props }: any) {
 }
 
 const fieldVariants = cva(
-  'group/field data-[invalid=true]:text-destructive flex w-full gap-3',
+  'group/field data-[invalid]:text-destructive flex w-full gap-3',
   {
     variants: {
       orientation: {
@@ -72,7 +72,14 @@ const fieldVariants = cva(
   }
 );
 
-function Field({ className = '', orientation = 'vertical', ...props }: any) {
+function Field({
+  className = '',
+  orientation = 'vertical',
+  'data-invalid': dataInvalid,
+  ...props
+}: any) {
+  const isInvalid = Boolean(dataInvalid) && dataInvalid !== 'false';
+
   return (
     <div
       role="group"
@@ -80,6 +87,7 @@ function Field({ className = '', orientation = 'vertical', ...props }: any) {
       data-orientation={orientation}
       className={cn(fieldVariants({ orientation }), className)}
       {...props}
+      {...(isInvalid ? { 'data-invalid': true } : {})}
     />
   );
 }
@@ -103,6 +111,7 @@ function FieldLabel({ className = '', ...props }: any) {
       data-slot="field-label"
       className={cn(
         'group/field-label peer/field-label flex w-fit gap-2 leading-snug group-data-[disabled=true]/field:opacity-50',
+        'group-data-[invalid]/field:text-destructive',
         'has-[>[data-slot=field]]:w-full has-[>[data-slot=field]]:flex-col has-[>[data-slot=field]]:rounded-md has-[>[data-slot=field]]:border [&>[data-slot=field]]:p-4',
         'has-data-[state=checked]:bg-primary/5 has-data-[state=checked]:border-primary dark:has-data-[state=checked]:bg-primary/10',
         className

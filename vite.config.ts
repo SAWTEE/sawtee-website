@@ -20,6 +20,9 @@ export default defineConfig({
     inertia({
       ssr: {
         entry: 'resources/js/ssr.tsx',
+        port: 13714,
+        host: '127.0.0.1',
+        cluster: true,
       },
     }),
     tailwindcss(),
@@ -41,7 +44,8 @@ export default defineConfig({
     ],
   },
   ssr: {
-    noExternal: ['laravel-vite-plugin', '@inertiajs/server'],
+    // Prefer the React SSR adapter package; legacy `@inertiajs/server` is unused.
+    noExternal: ['laravel-vite-plugin', '@inertiajs/react'],
   },
   server: {
     // Allow the Herd site host when the browser requests the Vite origin.

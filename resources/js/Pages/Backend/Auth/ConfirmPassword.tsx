@@ -2,11 +2,9 @@ import { Head, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 import { useEffect } from 'react';
 
-import InputError from '@/components/Backend/InputError';
-import InputLabel from '@/components/Backend/InputLabel';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import TextInput from '@/components/Backend/TextInput';
-import GuestLayout from '@/layouts/GuestLayout';
+import { Input } from '@/components/ui/input';
 
 export default function ConfirmPassword() {
   const { data, setData, post, processing, errors, reset } = useForm({
@@ -26,7 +24,7 @@ export default function ConfirmPassword() {
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Confirm Password" />
 
       <div className="mb-4 text-sm text-gray-600">
@@ -34,22 +32,26 @@ export default function ConfirmPassword() {
         before continuing.
       </div>
 
-      <form onSubmit={submit}>
-        <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
-
-          <TextInput
-            id="password"
-            type="password"
-            name="password"
-            value={data.password}
-            className="mt-1 block w-full"
-            isFocused={true}
-            onChange={e => setData('password', e.target.value)}
-          />
-
-          <InputError message={errors.password} className="mt-2" />
-        </div>
+      <form onSubmit={submit} noValidate>
+        <FormField
+          id="password"
+          label="Password"
+          error={errors.password}
+          required
+          className="mt-4"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="password"
+              name="password"
+              value={data.password}
+              className="mt-1 block w-full"
+              autoFocus
+              onChange={e => setData('password', e.target.value)}
+            />
+          )}
+        </FormField>
 
         <div className="mt-4 flex items-center justify-end">
           <PrimaryButton className="ms-4" disabled={processing}>
@@ -57,6 +59,6 @@ export default function ConfirmPassword() {
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
 }

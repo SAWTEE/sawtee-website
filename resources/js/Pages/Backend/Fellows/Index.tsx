@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, fellows = undefined }: any) {
   const { delete: destroy, get } = useForm();
@@ -102,7 +101,7 @@ export default function Index({ auth = undefined, fellows = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Fellows" />
       <Link href={route('admin.fellows.create')}>
         <PrimaryButton>Create New Fellow</PrimaryButton>
@@ -114,6 +113,6 @@ export default function Index({ auth = undefined, fellows = undefined }: any) {
           customFilterColumn={'name'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

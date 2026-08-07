@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateFellowshipForm from './Partials/CreateFellowshipForm';
 import EditFellowshipForm from './Partials/EditFellowshipForm';
@@ -109,7 +108,7 @@ export default function Index({
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Fellowships" />
       <PrimaryButton onClick={() => setCreateFormOpen(!createFormOpen)}>
         Create New Fellowship
@@ -133,6 +132,6 @@ export default function Index({
           customFilterColumn={'title'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

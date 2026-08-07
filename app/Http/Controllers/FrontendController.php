@@ -19,9 +19,24 @@ class FrontendController extends Controller
         $lcpImage = data_get($home, 'slides.0.media.0.original_url');
         $lcpSrcSet = data_get($home, 'slidesResponsiveImages.0') ?: null;
 
+        // First paint: slider / LCP / above-the-fold. Below-the-fold sections defer.
+        $critical = [
+            'slides' => $home['slides'] ?? null,
+            'slidesResponsiveImages' => $home['slidesResponsiveImages'] ?? null,
+            'infocus' => $home['infocus'] ?? null,
+            'featuredPublications' => $home['featuredPublications'] ?? null,
+            'featuredBlogPosts' => $home['featuredBlogPosts'] ?? null,
+            'homePageSections' => $home['homePageSections'] ?? null,
+        ];
+
         return Inertia::render('Frontend/Pages/Home', array_merge(
-            $home,
+            $critical,
             [
+                'events' => Inertia::defer(fn () => $home['events'] ?? null, 'below'),
+                'publications' => Inertia::defer(fn () => $home['publications'] ?? null, 'below'),
+                'sawteeInMedia' => Inertia::defer(fn () => $home['sawteeInMedia'] ?? null, 'below'),
+                'newsletters' => Inertia::defer(fn () => $home['newsletters'] ?? null, 'below'),
+                'webinars' => Inertia::defer(fn () => $home['webinars'] ?? null, 'below'),
                 'seo' => $seo->for(
                     title: 'Home',
                     description: "Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges.",

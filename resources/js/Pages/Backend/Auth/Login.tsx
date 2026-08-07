@@ -2,12 +2,11 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 
 import Checkbox from '@/components/Backend/Checkbox';
-import InputError from '@/components/Backend/InputError';
-import InputLabel from '@/components/Backend/InputLabel';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import TextInput from '@/components/Backend/TextInput';
+import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import GuestLayout from '@/layouts/GuestLayout';
+import { toastFormErrors } from '@/lib/form-errors';
 
 type LoginProps = { status?: string; canResetPassword?: boolean };
 
@@ -40,53 +39,56 @@ export default function Login({ status, canResetPassword }: LoginProps) {
           description: `Today is ${new Date().toLocaleDateString()} and ${new Date().toLocaleTimeString()}, hope you have a productive day.`,
         });
       },
-      onError: () => {
+      onError: errors => {
+        toastFormErrors(errors, toast);
         reset('password');
       },
     });
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Log in" />
 
       {status && (
         <div className="mb-4 text-sm font-medium text-green-600">{status}</div>
       )}
 
-      <form onSubmit={submit}>
-        <div>
-          <InputLabel htmlFor="email" value="Email" />
+      <form onSubmit={submit} noValidate>
+        <FormField id="email" label="Email" error={errors.email} required>
+          {field => (
+            <Input
+              {...field}
+              type="email"
+              name="email"
+              value={data.email}
+              className="mt-1 block w-full"
+              autoComplete="username"
+              autoFocus
+              onChange={e => setData('email', e.target.value)}
+            />
+          )}
+        </FormField>
 
-          <TextInput
-            id="email"
-            type="email"
-            name="email"
-            value={data.email}
-            className="mt-1 block w-full"
-            autoComplete="username"
-            isFocused={true}
-            onChange={e => setData('email', e.target.value)}
-          />
-
-          <InputError message={errors.email} className="mt-2" />
-        </div>
-
-        <div className="mt-4">
-          <InputLabel htmlFor="password" value="Password" />
-
-          <TextInput
-            id="password"
-            type="password"
-            name="password"
-            value={data.password}
-            className="mt-1 block w-full"
-            autoComplete="current-password"
-            onChange={e => setData('password', e.target.value)}
-          />
-
-          <InputError message={errors.password} className="mt-2" />
-        </div>
+        <FormField
+          id="password"
+          label="Password"
+          error={errors.password}
+          required
+          className="mt-4"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="password"
+              name="password"
+              value={data.password}
+              className="mt-1 block w-full"
+              autoComplete="current-password"
+              onChange={e => setData('password', e.target.value)}
+            />
+          )}
+        </FormField>
 
         <div className="mt-4 block">
           <label className="flex items-center">
@@ -114,6 +116,6 @@ export default function Login({ status, canResetPassword }: LoginProps) {
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
 }

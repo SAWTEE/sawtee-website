@@ -1,7 +1,5 @@
 import { Head } from '@inertiajs/react';
 
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-
 import EditArticleForm from './Partials/EditArticleForm';
 
 export default function Edit({
@@ -11,7 +9,7 @@ export default function Edit({
   tags = undefined,
 }: any) {
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Edit Article" />
 
       <EditArticleForm
@@ -20,6 +18,6 @@ export default function Edit({
         volumes={volumes}
         tags={tags}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

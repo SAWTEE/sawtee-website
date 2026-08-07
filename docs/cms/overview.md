@@ -16,7 +16,7 @@ The admin area lives at **`/admin`**. After login you get a sidebar of content t
 | **Homepage sections** | Show/hide blocks on the home page |
 | **Sliders & slides** | Home carousel |
 | **Team / fellows / institutes** | People and member networks |
-| **Dashboard** | High-level counts and trends |
+| **Dashboard** | Content counts with month-over-month trends, plus first-party page-view analytics (views / top paths) |
 
 ## Publishing basics
 

@@ -352,10 +352,13 @@ export type SharedProps = {
   };
   flash: {
     message: string | null;
+    success?: string | null;
   };
-  primaryMenu: MenuItem[];
-  footerMenu: MenuItem[];
-  ziggy: ZiggyConfig;
+  /** Public frontend only (once props); absent on /admin. */
+  primaryMenu?: MenuItem[];
+  footerMenu?: MenuItem[];
+  /** Full Ziggy on first load; location-only on subsequent XHR visits. */
+  ziggy?: ZiggyConfig | { location: string };
   errors?: Record<string, string>;
   experts?: unknown[];
 };
@@ -380,7 +383,8 @@ export type DashboardProps = PageProps<{
   postsTrend: TrendDirection;
   publicationsTrend: TrendDirection;
   researchsTrend: TrendDirection;
-  analytics: AnalyticsSummary;
+  /** Deferred on first paint; may be undefined until loaded. */
+  analytics?: AnalyticsSummary | null;
 }>;
 
 export type HomePageProps = PageProps<{

@@ -30,3 +30,19 @@ Copy templates:
 cp .env.example .env
 cp .env.staging.example .env.staging
 ```
+
+## Analytics (optional)
+
+First-party page views are controlled in `config/analytics.php`. Staging checklist keys (also in `.env.staging.example`):
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `ANALYTICS_ENABLED` | `true` | Record public page views |
+| `ANALYTICS_DEDUPE_MINUTES` | `30` | Same session + path not counted again within this window |
+| `ANALYTICS_HASH_SALT` | falls back to `APP_KEY` | Salt for IP / user-agent hashes — set a dedicated value in production |
+
+Admin paths are never recorded. Dashboard analytics load as a deferred Inertia prop.
+
+## Branded errors vs debug
+
+With `APP_DEBUG=true` in `local` or `development`, Laravel’s detailed exception UI is kept (branded Inertia error pages are skipped). Staging/production should run `APP_DEBUG=false` so visitors see the branded `Errors/Error` page for common statuses (403, 404, 500, 503).

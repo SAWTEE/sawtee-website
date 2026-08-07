@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Session\TokenMismatchException;
 use Inertia\Inertia;
 use Throwable;
 
@@ -53,8 +54,23 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $e)
     {
+        // Prefer a valid Inertia redirect over the error modal for expired CSRF tokens.
+        if ($e instanceof TokenMismatchException) {
+            return back()->with(
+                'message',
+                $this->messages[419] ?? 'The page expired, please try again.'
+            );
+        }
+
         $response = parent::render($request, $e);
         $status = $response->getStatusCode();
+
+        if ($status === 419) {
+            return back()->with(
+                'message',
+                $this->messages[419] ?? 'The page expired, please try again.'
+            );
+        }
 
         if (! $this->shouldRenderBrandedError($request, $status)) {
             return $response;

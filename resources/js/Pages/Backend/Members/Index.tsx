@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateMember from './Partials/CreateMember';
 import EditMember from './Partials/EditMember';
@@ -101,7 +100,7 @@ export default function Index({ auth = undefined, members = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Mmebers" />
       <PrimaryButton onClick={() => setCreateFormOpen(!createFormOpen)}>
         Create New Member
@@ -121,6 +120,6 @@ export default function Index({ auth = undefined, members = undefined }: any) {
           customFilterColumn={'country'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

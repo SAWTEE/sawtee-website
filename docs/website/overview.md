@@ -3,8 +3,10 @@
 The public site is an **Inertia (React) + Laravel** app:
 
 - Blade shells only where needed; almost all pages are React under `resources/js/Pages/Frontend`
-- Layout: header/footer menus from the CMS, shared SEO head tags
+- Default shell: `MainLayout` (header/footer menus from the CMS, shared SEO head tags)
+- Nested chrome: archives/pages use `PageLayout`; post singles use `PostLayout`
 - Content is loaded from the same database editors manage in `/admin`
+- Common HTTP errors (403, 404, 500, 503) use a branded Inertia error page when debug mode is off
 
 ## Main content areas visitors see
 
@@ -14,5 +16,7 @@ The public site is an **Inertia (React) + Laravel** app:
 - Custom pages (Contact, Our Work, …)  
 - Team / fellows / institutes  
 - Search  
+
+Home “below the fold” blocks (events, publications, media, newsletters, webinars) load as deferred Inertia props so the first paint stays lighter.
 
 Editors do not edit React files for day-to-day content — they use the CMS. Developers change templates when design or new page types are required.

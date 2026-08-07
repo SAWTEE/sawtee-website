@@ -8,7 +8,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateSliderForm from './Partials/CreateSliderForm';
 
@@ -74,7 +73,7 @@ export default function Index({
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Manage Sliders" />
       {sliders.length <= 0 && (
         <Alert variant="destructive" className="mb-8">
@@ -105,6 +104,6 @@ export default function Index({
           pages={pages}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

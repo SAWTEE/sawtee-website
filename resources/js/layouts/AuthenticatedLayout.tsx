@@ -20,18 +20,21 @@ import {
 } from '@/components/ui/sidebar';
 import { Toaster } from '@/components/ui/toaster';
 import { DashBoardMenuItems } from '@/lib/dashboard-menu';
-import type { User } from '@/types';
+import type { SharedProps, User } from '@/types';
 
 type AuthenticatedLayoutProps = {
+  /** Optional override; defaults to shared Inertia `auth.user`. */
   user?: User | null;
   children?: ReactNode;
 };
 
 export default function Authenticated({
-  user,
+  user: userProp,
   children,
 }: AuthenticatedLayoutProps) {
-  const { url } = usePage();
+  const page = usePage<SharedProps>();
+  const user = userProp ?? page.props.auth?.user ?? null;
+  const { url } = page;
   const sections = url.split('/').filter(Boolean);
 
   return (

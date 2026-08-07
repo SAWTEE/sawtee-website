@@ -5,7 +5,6 @@ import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelpe
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 export default function Index({ auth = undefined, sections = undefined }: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
@@ -81,7 +80,7 @@ export default function Index({ auth = undefined, sections = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Sections" />
 
       <Link href={route('admin.sections.create')}>
@@ -90,6 +89,6 @@ export default function Index({ auth = undefined, sections = undefined }: any) {
       {sections && (
         <DataTable defaultColumns={defaultColumns} data={sections} />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

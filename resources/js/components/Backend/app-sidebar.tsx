@@ -37,7 +37,12 @@ export function AppSidebar({ user, menu, ...props }: AppSidebarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <Link href="/admin/dashboard" className="flex items-center gap-2">
+              <Link
+                href="/admin/dashboard"
+                prefetch="mount"
+                cacheTags={['admin-nav', 'dashboard']}
+                className="flex items-center gap-2"
+              >
                 <ApplicationLogo className="size-5" />
                 <span className="text-base font-semibold">SAWTEE CMS</span>
               </Link>

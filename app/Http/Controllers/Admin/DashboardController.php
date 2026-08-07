@@ -32,7 +32,7 @@ class DashboardController extends Controller
             'postsTrend' => $posts['trend'],
             'publicationsTrend' => $publications['trend'],
             'researchsTrend' => $researchs['trend'],
-            'analytics' => Analytics::dashboardSummary(),
+            'analytics' => Inertia::defer(fn () => Analytics::dashboardSummary()),
         ]);
     }
 }

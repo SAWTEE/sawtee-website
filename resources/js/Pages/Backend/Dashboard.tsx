@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Deferred, Head } from '@inertiajs/react';
 import React from 'react';
 
 import { TrendBadge } from '@/components/Backend/TrendBadge';
@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import type { AnalyticsSummary, DashboardProps, TrendDirection } from '@/types';
 
 export default function Dashboard({
@@ -46,7 +45,7 @@ export default function Dashboard({
   }, [auth, toast]);
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Dashboard" />
 
       <div className="flex flex-col gap-4">
@@ -77,9 +76,17 @@ export default function Dashboard({
           />
         </div>
 
-        <AnalyticsSection analytics={analytics} />
+        <Deferred data="analytics" fallback={<AnalyticsSkeleton />}>
+          {({ reloading }) =>
+            analytics ? (
+              <div className={reloading ? 'opacity-60' : undefined}>
+                <AnalyticsSection analytics={analytics} />
+              </div>
+            ) : null
+          }
+        </Deferred>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }
 
@@ -130,6 +137,21 @@ function StatsCard({
         </div>
       </CardFooter>
     </Card>
+  );
+}
+
+function AnalyticsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-4 lg:px-6">
+      {Array.from({ length: 4 }).map((_, i) => (
+        <Card key={i} className="from-primary/5 to-card bg-linear-to-t">
+          <CardHeader>
+            <div className="bg-muted h-3 w-24 animate-pulse rounded" />
+            <div className="bg-muted mt-3 h-8 w-16 animate-pulse rounded" />
+          </CardHeader>
+        </Card>
+      ))}
+    </div>
   );
 }
 

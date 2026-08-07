@@ -26,6 +26,8 @@ export function NavMain({ menu }: { menu?: DashboardMenuItem[] }) {
               key={menuItem.name}
               href={route(menuItem.route)}
               preserveState
+              prefetch
+              cacheTags={['admin-nav']}
             >
               <SidebarMenuItem>
                 <SidebarMenuButton

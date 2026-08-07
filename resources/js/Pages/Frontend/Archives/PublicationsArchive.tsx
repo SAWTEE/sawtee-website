@@ -1,4 +1,5 @@
 import { Link } from '@inertiajs/react';
+import { mainWithPageLayout } from '@/lib/page-layouts';
 
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
@@ -6,8 +7,6 @@ import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { Separator } from '@/components/ui/separator';
-import MainLayout from '@/layouts/MainLayout';
-import PageLayout from '@/layouts/PageLayout';
 import { cn } from '@/lib/utils';
 import type {
   Category,
@@ -16,7 +15,7 @@ import type {
   PublicationsBySlug,
 } from '@/types';
 
-export default function PublicationsArchive({
+function PublicationsArchive({
   category,
   infocus = null,
   sawteeInMedia = null,
@@ -32,7 +31,7 @@ export default function PublicationsArchive({
       : '/assets/logo-sawtee.webp';
 
   return (
-    <MainLayout>
+    <>
       <WebsiteHead
         title={
           seo?.title ??
@@ -44,49 +43,40 @@ export default function PublicationsArchive({
         type={seo?.type}
         jsonLd={seo?.jsonLd}
       />
-      <PageLayout
-        featured_image={
-          typeof featured_image === 'string' ? featured_image : null
-        }
-        srcSet={srcSet}
-        title={category.name}
-        showBackgroundPattern={false}
-      >
-        <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
-          <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
-            <section className="archive-list md:col-span-2 xl:col-span-4">
-              <ItemsList
-                items={category.children ?? []}
-                publications={publications}
+      <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
+        <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
+          <section className="archive-list md:col-span-2 xl:col-span-4">
+            <ItemsList
+              items={category.children ?? []}
+              publications={publications}
+            />
+          </section>
+
+          <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
+            {sawteeInMedia && (
+              <SidebarWidget
+                array={sawteeInMedia}
+                title={'SAWTEE in Media'}
+                link={'/category/sawtee-in-media'}
               />
-            </section>
+            )}
+            {infocus && (
+              <SidebarWidget
+                array={infocus}
+                title={'Infocus'}
+                link={'/category/in-focus'}
+              />
+            )}
 
-            <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
-              {sawteeInMedia && (
-                <SidebarWidget
-                  array={sawteeInMedia}
-                  title={'SAWTEE in Media'}
-                  link={'/category/sawtee-in-media'}
-                />
-              )}
-              {infocus && (
-                <SidebarWidget
-                  array={infocus}
-                  title={'Infocus'}
-                  link={'/category/in-focus'}
-                />
-              )}
-
-              {showSubscriptionBox && (
-                <Glassbox className={'w-full p-0'}>
-                  <SubscriptionCard />
-                </Glassbox>
-              )}
-            </aside>
-          </div>
-        </Section>
-      </PageLayout>
-    </MainLayout>
+            {showSubscriptionBox && (
+              <Glassbox className={'w-full p-0'}>
+                <SubscriptionCard />
+              </Glassbox>
+            )}
+          </aside>
+        </div>
+      </Section>
+    </>
   );
 }
 
@@ -224,3 +214,12 @@ const ItemsList = ({
     </div>
   );
 };
+
+PublicationsArchive.layout = mainWithPageLayout(props => ({
+  title: props.category.name,
+  featured_image:
+    typeof props.featured_image === 'string' ? props.featured_image : null,
+  srcSet: props.srcSet,
+}));
+
+export default PublicationsArchive;

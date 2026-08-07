@@ -1,7 +1,5 @@
 import { Head } from '@inertiajs/react';
 
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-
 import CreateHomePageSectionForm from './Partials/CreateHomePageSectionForm';
 
 export default function Create({
@@ -9,11 +7,11 @@ export default function Create({
   sections = undefined,
 }: any) {
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Add New Section" />
 
       {/* @ts-ignore allowlist-migration */}
       <CreateHomePageSectionForm sections={sections} />
-    </AuthenticatedLayout>
+    </>
   );
 }

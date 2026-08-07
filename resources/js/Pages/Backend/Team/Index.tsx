@@ -6,7 +6,6 @@ import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelpe
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, teams = undefined }: any) {
   const { toast } = useToast();
@@ -84,13 +83,13 @@ export default function Index({ auth = undefined, teams = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Team Members" />
 
       <Link href={route('admin.teams.create')}>
         <PrimaryButton>Add New Member</PrimaryButton>
       </Link>
       {teams && <DataTable defaultColumns={defaultColumns} data={teams} />}
-    </AuthenticatedLayout>
+    </>
   );
 }

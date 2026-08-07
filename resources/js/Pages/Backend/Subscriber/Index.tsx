@@ -4,7 +4,6 @@ import React from 'react';
 import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelper';
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import TWTags from '@/components/shared/TWTags';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({
   auth = undefined,
@@ -39,7 +38,7 @@ export default function Index({
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Subscribers" />
       {subscribers.length === 0 && (
         <p className="text-center text-gray-500">No Subscribers Found</p>
@@ -51,6 +50,6 @@ export default function Index({
           customFilterColumn={'email'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

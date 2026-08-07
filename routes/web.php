@@ -59,7 +59,7 @@ Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)->nam
 Route::get('/category/{categories:slug}/{subcategory?}/{post?}/{article?}', [FrontendController::class, 'category'])->name('category.show');
 Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
 
-Route::middleware(['auth', 'verified'])->prefix('admin')->as('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'inertia.encrypt'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

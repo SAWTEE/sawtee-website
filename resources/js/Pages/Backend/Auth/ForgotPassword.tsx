@@ -1,10 +1,9 @@
 import { Head, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 
-import InputError from '@/components/Backend/InputError';
+import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import TextInput from '@/components/Backend/TextInput';
-import GuestLayout from '@/layouts/GuestLayout';
+import { Input } from '@/components/ui/input';
 
 type ForgotPasswordProps = { status?: string };
 
@@ -20,7 +19,7 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Forgot Password" />
 
       <div className="dark:text-muted-foreground mb-4 text-sm text-gray-600">
@@ -33,18 +32,20 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
         <div className="mb-4 text-sm font-medium text-green-600">{status}</div>
       )}
 
-      <form onSubmit={submit}>
-        <TextInput
-          id="email"
-          type="email"
-          name="email"
-          value={data.email}
-          className="mt-1 block w-full"
-          isFocused={true}
-          onChange={e => setData('email', e.target.value)}
-        />
-
-        <InputError message={errors.email} className="mt-2" />
+      <form onSubmit={submit} noValidate>
+        <FormField id="email" label="Email" error={errors.email} required>
+          {field => (
+            <Input
+              {...field}
+              type="email"
+              name="email"
+              value={data.email}
+              className="mt-1 block w-full"
+              autoFocus
+              onChange={e => setData('email', e.target.value)}
+            />
+          )}
+        </FormField>
 
         <div className="mt-4 flex items-center justify-end">
           <PrimaryButton className="ms-4" disabled={processing}>
@@ -52,6 +53,6 @@ export default function ForgotPassword({ status }: ForgotPasswordProps) {
           </PrimaryButton>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
 }

@@ -1,26 +1,15 @@
 import { Head } from '@inertiajs/react';
 
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-
 import DeleteUserForm from './Partials/DeleteUserForm';
 import UpdatePasswordForm from './Partials/UpdatePasswordForm';
 import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm';
 
 export default function Edit({
-  auth = undefined,
   mustVerifyEmail = undefined,
   status = undefined,
 }: any) {
   return (
-    <AuthenticatedLayout
-      user={auth.user}
-      // @ts-ignore allowlist-migration
-      header={
-        <h2 className="text-xl leading-tight font-semibold text-gray-800">
-          Profile
-        </h2>
-      }
-    >
+    <>
       <Head title="Profile" />
 
       <div className="py-12">
@@ -42,6 +31,6 @@ export default function Edit({
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
 }

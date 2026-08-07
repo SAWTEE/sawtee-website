@@ -1,27 +1,32 @@
-import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
+import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
+import type { ComponentType, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
+import { resolveDefaultLayout } from '@/lib/resolve-layout';
 import { route as ziggyRoute } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
 createServer(page =>
+  // `pages` is transformed by @inertiajs/vite; cast keeps TS happy with SSR overloads.
   createInertiaApp({
     page,
     render: ReactDOMServer.renderToString,
-    title: title => `${title} - ${appName}`,
-    resolve: name => {
-      const pages = import.meta.glob<ResolvedComponent>('./Pages/**/*.tsx');
-      const importPage = pages[`./Pages/${name}.tsx`];
-
-      if (!importPage) {
-        throw new Error(`Page not found: ./Pages/${name}.tsx`);
-      }
-
-      return importPage();
+    pages: {
+      path: './Pages',
+      extension: '.tsx',
+      lazy: true,
     },
-    setup: ({ App, props }) => {
+    layout: (name: string) => resolveDefaultLayout(name),
+    title: (title: string) => `${title} - ${appName}`,
+    setup({
+      App,
+      props,
+    }: {
+      App: ComponentType<Record<string, unknown>>;
+      props: Record<string, unknown>;
+    }): ReactElement {
       const ziggy =
         (page.props as { ziggy?: Record<string, unknown> }).ziggy ?? {};
 
@@ -34,5 +39,5 @@ createServer(page =>
 
       return <App {...props} />;
     },
-  })
+  } as never)
 );

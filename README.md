@@ -47,6 +47,69 @@ A separate public API would only be justified for mobile apps or third-party con
 
 TypeScript runs with `strict: true`. Shared/core files are fully checked; remaining legacy pages/components are listed in `resources/js/types/TYPECHECK_ALLOWLIST.md` (`// @ts-nocheck`) and should be migrated over time.
 
+## Inertia layouts
+
+`createInertiaApp` (client + SSR) sets a default layout from `resources/js/lib/resolve-layout.ts` by page name:
+
+| Page prefix | Default layout |
+| --- | --- |
+| `Backend/Auth/*` | `GuestLayout` |
+| `Backend/*` | `AuthenticatedLayout` |
+| `Frontend/*` | `MainLayout` |
+| `Errors/*` | none (page chooses) |
+
+Nested public chrome uses helpers in `resources/js/lib/page-layouts.ts`:
+
+- `mainWithPageLayout` → `MainLayout` + `PageLayout` (pages/archives)
+- `mainWithPostLayout` → `MainLayout` + `PostLayout` (post singles)
+
+Pages that set `Component.layout` override the default. The branded error page sets `ErrorPage.layout` to `GuestLayout` for admin URLs and `MainLayout` for the public site.
+
+Page resolution uses Inertia’s `pages: { path, extension, lazy }` shorthand in `resources/js/app.tsx` / `ssr.tsx` (code-split per page via `@inertiajs/vite`).
+
+## Branded error pages
+
+HTTP errors that have visitor copy (403, 404, 500, 503 — and 419 via redirect/flash) can render the Inertia page `Errors/Error`, wired from `app/Exceptions/Handler.php`.
+
+**Local preview:** branded pages are **skipped** when `APP_DEBUG=true` **and** the app environment is `local` or `development` (`shouldRenderBrandedError`). That keeps Ignition / detailed exceptions for day-to-day debugging.
+
+To preview the branded page locally, temporarily set `APP_DEBUG=false` (or use a non-`local`/`development` env), then hit an unknown URL. JSON clients (non-Inertia) still get framework JSON payloads.
+
+Covered by `tests/Feature/ErrorPagesTest.php`.
+
+## Inertia v3 performance / UX
+
+Notable patterns already in the app:
+
+- **History encryption (admin):** admin routes use the `inertia.encrypt` middleware (`routes/web.php`). Logout calls `Inertia::clearHistory()` so the browser back button cannot surface admin page JSON.
+- **Slim shared auth:** `HandleInertiaRequests` shares only `id`, `name`, `email`, `email_verified_at` for `auth.user`.
+- **Ziggy trimming:** full Ziggy is shared on full document / SSR requests; Inertia XHR navigations get `{ location }` only.
+- **Menus `shareOnce`:** `primaryMenu` / `footerMenu` are once-props on the public site (not shared on `/admin`).
+- **Deferred props:** dashboard `analytics` (`Inertia::defer`); home “below the fold” blocks (events, publications, media, newsletters, webinars).
+- **Prefetch:** admin sidebar / nav links prefetch on hover/mount.
+- **Partial reloads:** Posts index filters reload only `posts`, `categories`, and `categoryID`.
+
+## First-party page analytics
+
+Lightweight DB-backed page views for the public site (shared-hosting friendly):
+
+- Middleware: `RecordPageView` (web stack) → `App\Support\Analytics`
+- Model: `PageView` (IP / user-agent stored as hashes)
+- Config: `config/analytics.php` — env keys `ANALYTICS_ENABLED`, `ANALYTICS_DEDUPE_MINUTES`, `ANALYTICS_HASH_SALT` (also listed in `.env.staging.example`)
+- Admin **Dashboard** shows month-over-month content counts (`TrendBadge`) plus deferred analytics (views / top pages)
+
+Admin / tooling paths are ignored (`admin`, `api`, `_debugbar`, …). Session/path views are deduped for `ANALYTICS_DEDUPE_MINUTES` (default 30).
+
+Tests: `tests/Feature/AnalyticsTest.php`, `tests/Feature/DashboardStatsTest.php`.
+
+## Admin maintenance tools
+
+Under `/admin` (authenticated):
+
+- **Maintenance** — scan/delete orphaned uploads; can also run Spatie `media-library:clean` (dry-run or delete)
+- **Link Checker** — crawl the public site for broken links (optional external checks; capped page/link limits)
+- **Posts trash** — soft-delete, restore, and permanent delete (`SoftDeletes` on `Post`)
+
 You can find more details on the [Laravel documentation website](https://laravel.com/docs/13.x/installation).
 
 Here are the steps that we suggest you to follow:

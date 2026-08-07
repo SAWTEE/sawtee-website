@@ -1,4 +1,4 @@
-import { Link } from '@inertiajs/react';
+import { Deferred, Link } from '@inertiajs/react';
 import { lazy, type ReactNode, Suspense } from 'react';
 
 import ExploreButton from '@/components/Frontend/ExploreButton';
@@ -9,7 +9,6 @@ import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
 import Title from '@/components/Frontend/title';
-import MainLayout from '@/layouts/MainLayout';
 import { features } from '@/lib/data';
 import { formatDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -69,7 +68,7 @@ const Home = ({
   const lcpSrcSet = slidesResponsiveImages?.[0] || undefined;
 
   return (
-    <MainLayout>
+    <>
       <WebsiteHead
         title={
           seo?.title ?? 'South Asia Watch on Trade, Economics and Environment'
@@ -163,17 +162,59 @@ const Home = ({
         <InfocusSection infocus={infocus} />
       )}
 
-      {/* Events Section */}
-      {events &&
-        homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (
-          <PolicyOutreachSection events={events} />
-        )}
+      {/* Below-the-fold sections (deferred props) */}
+      <Deferred
+        data={[
+          'events',
+          'publications',
+          'sawteeInMedia',
+          'newsletters',
+          'webinars',
+        ]}
+        fallback={
+          <div className="text-muted-foreground px-4 py-8 text-sm md:px-8 lg:px-12">
+            Loading more content…
+          </div>
+        }
+      >
+        <>
+          {events &&
+            homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (
+              <PolicyOutreachSection events={events} />
+            )}
 
-      {/* Add publication section here  */}
-      {publications &&
-        homePageSections?.find(h => h.name === 'Latest Publications')?.show && (
-          <LatestPublicationSection publications={publications} />
-        )}
+          {publications &&
+            homePageSections?.find(h => h.name === 'Latest Publications')
+              ?.show && (
+              <LatestPublicationSection publications={publications} />
+            )}
+
+          <Section className="outreach-section">
+            <div className="mx-auto max-w-5xl">
+              <Title
+                title={
+                  sawteeInMedia && newsletters
+                    ? 'Media and Newsletter'
+                    : sawteeInMedia && !newsletters
+                      ? 'Media'
+                      : 'Newsletters'
+                }
+              />
+              <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
+                {homePageSections?.find(h => h.name === 'Sawtee in Media')
+                  ?.show && <MediaSection sawteeInMedia={sawteeInMedia} />}
+
+                {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
+                  <NewsletterSection newsletters={newsletters} />
+                )}
+              </div>
+            </div>
+          </Section>
+          {homePageSections?.find(h => h.name === 'Webinar')?.show && (
+            <WebinarSection webinars={webinars} />
+          )}
+        </>
+      </Deferred>
 
       {features && (
         <Section className="reform-section relative overflow-hidden">
@@ -186,34 +227,10 @@ const Home = ({
           </div>
         </Section>
       )}
-      <Section className="outreach-section">
-        <div className="mx-auto max-w-5xl">
-          <Title
-            title={
-              sawteeInMedia && newsletters
-                ? 'Media and Newsletter'
-                : sawteeInMedia && !newsletters
-                  ? 'Media'
-                  : 'Newsletters'
-            }
-          />
-          <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-            {homePageSections?.find(h => h.name === 'Sawtee in Media')
-              ?.show && <MediaSection sawteeInMedia={sawteeInMedia} />}
-
-            {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
-              <NewsletterSection newsletters={newsletters} />
-            )}
-          </div>
-        </div>
-      </Section>
-      {homePageSections?.find(h => h.name === 'Webinar')?.show && (
-        <WebinarSection webinars={webinars} />
-      )}
       {homePageSections?.find(h => h.name === 'Newsletter Callout')?.show && (
         <NewsletterCalloutSection />
       )}
-    </MainLayout>
+    </>
   );
 };
 

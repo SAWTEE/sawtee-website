@@ -1,7 +1,5 @@
 import { Head } from '@inertiajs/react';
 
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-
 import EditPostForm from './Partials/EditPostForm';
 
 export default function Edit({
@@ -13,7 +11,7 @@ export default function Edit({
   categoryID = undefined,
 }: any) {
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Edit Post" />
 
       <EditPostForm
@@ -23,6 +21,6 @@ export default function Edit({
         themes={themes}
         categoryID={categoryID}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

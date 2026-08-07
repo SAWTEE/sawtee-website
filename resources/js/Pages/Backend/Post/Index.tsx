@@ -7,7 +7,6 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({
   auth = undefined,
@@ -146,7 +145,7 @@ export default function Index({
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Posts" />
 
       <Link href={route('admin.posts.create')}>
@@ -162,6 +161,6 @@ export default function Index({
           route: '/admin/posts',
         }}
       />
-    </AuthenticatedLayout>
+    </>
   );
 }

@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 
 import WebsiteHead from '@/components/Frontend/Head';
-import MainLayout from '@/layouts/MainLayout';
-import PageLayout from '@/layouts/PageLayout';
+import { mainWithPageLayout } from '@/lib/page-layouts';
 import type {
   FrontendPageProps,
   Page as CmsPage,
@@ -30,7 +29,7 @@ function featuredImageUrl(
   return featured_image.original_url || '/assets/logo-sawtee.webp';
 }
 
-export default function Page({
+function Page({
   page,
   featured_image,
   srcSet,
@@ -55,26 +54,32 @@ export default function Page({
         jsonLd={head.jsonLd}
       />
 
-      <MainLayout>
-        {page.slug !== 'reform-monitoring-platform' ? (
-          <PageLayout
-            featured_image={
-              typeof featured_image === 'string'
-                ? featured_image
-                : featured_image?.original_url
-            }
-            srcSet={srcSet}
-            title={page.name}
-          >
-            <PageContent page={page} sections={sections} themes={themes} />
-          </PageLayout>
-        ) : (
-          <PageContent page={page} />
-        )}
-      </MainLayout>
+      {page.slug === 'reform-monitoring-platform' ? (
+        <PageContent page={page} />
+      ) : (
+        <PageContent page={page} sections={sections} themes={themes} />
+      )}
     </>
   );
 }
+
+Page.layout = (props: FrontendPageProps) => {
+  // Reform monitor is full-bleed inside MainLayout (default) — no PageLayout hero.
+  if (props.page?.slug === 'reform-monitoring-platform') {
+    return {};
+  }
+
+  return mainWithPageLayout(p => ({
+    title: p.page.name,
+    featured_image:
+      typeof p.featured_image === 'string'
+        ? p.featured_image
+        : p.featured_image?.original_url,
+    srcSet: p.srcSet,
+  }))(props);
+};
+
+export default Page;
 
 type PageContentProps = {
   page: CmsPage;

@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateMemberInstitute from './Partials/CreateMemberInstitute';
 import EditMemberInstitute from './Partials/EditMemberInstitute';
@@ -116,7 +115,7 @@ export default function Index({
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Institutes" />
       <PrimaryButton onClick={() => setCreateFormOpen(!createFormOpen)}>
         Create New Institute
@@ -141,6 +140,6 @@ export default function Index({
           customFilterColumn={'name'}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

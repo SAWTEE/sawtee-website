@@ -13,7 +13,6 @@ import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import MainLayout from '@/layouts/MainLayout';
 import { cn, htmlToText } from '@/lib/utils';
 import type {
   FrontendSearchProps,
@@ -309,8 +308,7 @@ export default function SearchPage({
         jsonLd={seo?.jsonLd}
       />
 
-      <MainLayout>
-        <div className="pb-16 md:pb-24">
+      <div className="pb-16 md:pb-24">
           <header className="relative overflow-hidden border-b border-[#006181]/12 dark:border-[#006181]/25">
             <div
               className="absolute inset-0 -z-[1] bg-[url(/assets/pattern-tile-green.svg)] opacity-40 dark:bg-[url(/assets/pattern-tile-light-fade.svg)] dark:opacity-30"
@@ -531,7 +529,7 @@ export default function SearchPage({
             )}
           </div>
         </div>
-      </MainLayout>
+      
     </>
   );
 }

@@ -11,7 +11,11 @@ vi.mock('@inertiajs/react', () => ({
   ),
   usePage: () => ({
     url: '/admin/dashboard',
-    props: {},
+    props: {
+      auth: {
+        user: { id: 1, name: 'Admin', email: 'a@b.c' },
+      },
+    },
   }),
 }));
 
@@ -38,9 +42,7 @@ vi.mock('@/hooks/use-mobile', () => ({
 describe('AuthenticatedLayout', () => {
   it('renders the sidebar toggle trigger in the admin header', () => {
     render(
-      <AuthenticatedLayout
-        user={{ id: 1, name: 'Admin', email: 'a@b.c' } as any}
-      >
+      <AuthenticatedLayout>
         <div>Admin page content</div>
       </AuthenticatedLayout>
     );

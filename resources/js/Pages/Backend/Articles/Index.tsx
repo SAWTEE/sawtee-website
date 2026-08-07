@@ -7,7 +7,6 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 export default function Index({ auth = undefined, articles = undefined }: any) {
   const { get, delete: destroy } = useForm();
@@ -109,13 +108,13 @@ export default function Index({ auth = undefined, articles = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Articles" />
 
       <Link href={route('admin.articles.create')}>
         <PrimaryButton>Create New Article</PrimaryButton>
       </Link>
       <DataTable defaultColumns={defaultColumns} data={articles} />
-    </AuthenticatedLayout>
+    </>
   );
 }

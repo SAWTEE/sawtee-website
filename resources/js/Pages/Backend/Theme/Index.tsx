@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateTheme from './Partials/CreateTheme';
 import EditTheme from './Partials/EditTheme';
@@ -118,7 +117,7 @@ export default function Index({
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Themes" />
 
       <PrimaryButton onClick={() => setCreateFormOpen(!createFormOpen)}>
@@ -140,6 +139,6 @@ export default function Index({
           setOpen={setEditFormOpen}
         />
       )}
-    </AuthenticatedLayout>
+    </>
   );
 }

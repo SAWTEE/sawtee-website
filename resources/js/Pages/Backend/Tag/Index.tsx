@@ -7,7 +7,6 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useToast } from '@/hooks/use-toast';
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 
 import CreateTag from './Partials/CreateTag';
 import EditTag from './Partials/EditTag';
@@ -109,7 +108,7 @@ export default function Index({ auth = undefined, tags = undefined }: any) {
   ];
 
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Tags" />
 
       <PrimaryButton onClick={() => setCreateTag(!createTag)}>
@@ -124,6 +123,6 @@ export default function Index({ auth = undefined, tags = undefined }: any) {
       )}
       {createTag && <CreateTag open={createTag} setOpen={setCreateTag} />}
       {editTag && <EditTag tag={tag} open={editTag} setOpen={setEditTag} />}
-    </AuthenticatedLayout>
+    </>
   );
 }

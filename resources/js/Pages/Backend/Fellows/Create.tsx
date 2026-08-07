@@ -1,7 +1,5 @@
 import { Head } from '@inertiajs/react';
 
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-
 import CreateFellow from './Partials/CreateFellow';
 
 export default function Create({
@@ -9,9 +7,9 @@ export default function Create({
   fellowships = undefined,
 }: any) {
   return (
-    <AuthenticatedLayout user={auth.user}>
+    <>
       <Head title="Add New Fellow" />
       <CreateFellow fellowships={fellowships} />
-    </AuthenticatedLayout>
+    </>
   );
 }

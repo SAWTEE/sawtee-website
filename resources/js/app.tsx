@@ -1,23 +1,29 @@
 import '../css/index.css';
 
-import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react';
+import { createInertiaApp } from '@inertiajs/react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
+
+import { registerInertiaErrorHandlers } from '@/lib/inertia-errors';
+import { resolveDefaultLayout } from '@/lib/resolve-layout';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
-createInertiaApp({
-  title: title => `${appName}  | ${title}`,
-  resolve: name => {
-    const pages = import.meta.glob<ResolvedComponent>('./Pages/**/*.tsx');
-    const importPage = pages[`./Pages/${name}.tsx`];
+registerInertiaErrorHandlers();
 
-    if (!importPage) {
-      throw new Error(`Page not found: ./Pages/${name}.tsx`);
+createInertiaApp({
+  // Resolved by @inertiajs/vite into a lazy import.meta.glob (code-split per page).
+  pages: {
+    path: './Pages',
+    extension: '.tsx',
+    lazy: true,
+  },
+  layout: name => resolveDefaultLayout(name),
+  title: title => `${appName}  | ${title}`,
+  setup({ el, App, props }) {
+    if (!el) {
+      throw new Error('Inertia root element not found');
     }
 
-    return importPage();
-  },
-  setup({ el, App, props }) {
     if (el.hasChildNodes()) {
       hydrateRoot(el, <App {...props} />);
       return;

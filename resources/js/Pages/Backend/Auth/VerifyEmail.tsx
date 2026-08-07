@@ -2,7 +2,6 @@ import { Head, Link, useForm } from '@inertiajs/react';
 import type { FormEvent } from 'react';
 
 import PrimaryButton from '@/components/Backend/PrimaryButton';
-import GuestLayout from '@/layouts/GuestLayout';
 
 type VerifyEmailProps = { status?: string };
 
@@ -16,7 +15,7 @@ export default function VerifyEmail({ status }: VerifyEmailProps) {
   };
 
   return (
-    <GuestLayout>
+    <>
       <Head title="Email Verification" />
 
       <div className="mb-4 text-sm text-gray-600">
@@ -32,7 +31,7 @@ export default function VerifyEmail({ status }: VerifyEmailProps) {
         </div>
       )}
 
-      <form onSubmit={submit}>
+      <form onSubmit={submit} noValidate>
         <div className="mt-4 flex items-center justify-between">
           <PrimaryButton disabled={processing}>
             Resend Verification Email
@@ -48,6 +47,6 @@ export default function VerifyEmail({ status }: VerifyEmailProps) {
           </Link>
         </div>
       </form>
-    </GuestLayout>
+    </>
   );
 }

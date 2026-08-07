@@ -104,11 +104,14 @@ test('dashboard page includes analytics summary props', function () {
         ->assertOk()
         ->assertInertia(fn (Assert $page) => $page
             ->component('Backend/Dashboard')
-            ->has('analytics.views_today')
-            ->has('analytics.views_this_week')
-            ->has('analytics.views_this_month')
-            ->has('analytics.top_pages')
-            ->where('analytics.views_today', 1)
+            ->missing('analytics')
+            ->loadDeferredProps('default', fn (Assert $reload) => $reload
+                ->has('analytics.views_today')
+                ->has('analytics.views_this_week')
+                ->has('analytics.views_this_month')
+                ->has('analytics.top_pages')
+                ->where('analytics.views_today', 1)
+            )
         );
 });
 
