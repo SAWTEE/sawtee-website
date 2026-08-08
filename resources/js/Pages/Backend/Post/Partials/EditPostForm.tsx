@@ -4,7 +4,9 @@ import React from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
-import FileUpload from '@/components/Backend/FileUpload';
+import FileUpload, {
+  type ExistingFile,
+} from '@/components/Backend/FileUpload';
 import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
@@ -89,7 +91,9 @@ export default function EditPostForm({
   const [existingFileUrl, setExistingFileUrl] = React.useState(
     existingPostFile?.original_url ?? existingPostFile?.url ?? null
   );
-  const [existingContentFiles, setExistingContentFiles] = React.useState(
+  const [existingContentFiles, setExistingContentFiles] = React.useState<
+    ExistingFile[]
+  >(
     (postData.post_content_files ?? []).map((file: any) => ({
       id: file.id,
       name: file.name ?? file.file_name ?? 'File',
@@ -273,19 +277,23 @@ export default function EditPostForm({
                 </PopoverTrigger>
                 <PopoverContent className="w-auto p-0" align="start">
                   <Calendar
-                    name="published_at"
                     className="mt-1 block"
-                    id="published_at"
                     mode="single"
-                    selected={data.published_at}
-                    // @ts-ignore allowlist-migration
+                    selected={
+                      data.published_at
+                        ? new Date(data.published_at)
+                        : undefined
+                    }
                     onSelect={value => {
-                      const formatedDate = formatDateTimeForInput(
-                        new Date(value)
+                      if (!value) {
+                        return;
+                      }
+
+                      setData(
+                        'published_at',
+                        formatDateTimeForInput(value)
                       );
-                      setData('published_at', formatedDate);
                     }}
-                    // @ts-ignore allowlist-migration
                     disabled={date =>
                       date > new Date() || date < new Date('1900-01-01')
                     }

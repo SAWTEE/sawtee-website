@@ -16,7 +16,7 @@ export type UploadProgress = {
   percentage?: number | null;
 } | null | undefined;
 
-type ExistingFile = {
+export type ExistingFile = {
   id?: number | string;
   name: string;
   url?: string | null;
