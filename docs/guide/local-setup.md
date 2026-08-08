@@ -24,6 +24,8 @@ npm run build   # or npm run dev
 
 Open the site at your local URL (e.g. `https://sawtee.test`) and the CMS at `/admin`.
 
+For PWA install / offline testing, use a **production** asset build (`npm run build`) over HTTPS, then DevTools → Application. `npm run dev` does not register the service worker.
+
 ## Staging env file (optional locally)
 
 ```bash

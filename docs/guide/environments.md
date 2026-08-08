@@ -46,3 +46,11 @@ Admin paths are never recorded. Dashboard analytics load as a deferred Inertia p
 ## Branded errors vs debug
 
 With `APP_DEBUG=true` in `local` or `development`, Laravel’s detailed exception UI is kept (branded Inertia error pages are skipped). Staging/production should run `APP_DEBUG=false` so visitors see the branded `Errors/Error` page for common statuses (403, 404, 500, 503).
+
+## Session cookies on HTTPS
+
+Set `SESSION_SECURE_COOKIE=true` on Herd, staging, and production so the session cookie is only sent over HTTPS (required for a trustworthy PWA install surface). Leave unset only if you deliberately run plain HTTP locally.
+
+## Progressive Web App
+
+Production client builds emit a service worker and web manifest (`npm run build`). Deploy health checks should confirm `public/sw.js` and `public/manifest.webmanifest` exist after build. The PWA is public-site only — it does not extend admin sessions or cache `/admin`.

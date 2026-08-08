@@ -53,6 +53,16 @@ Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
 
 Route::get('/search', SearchController::class)->name('search');
 Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
+Route::get('/offline.html', function () {
+    $path = public_path('offline.html');
+
+    abort_unless(is_file($path), 404);
+
+    return response(file_get_contents($path), 200, [
+        'Content-Type' => 'text/html; charset=UTF-8',
+        'Cache-Control' => 'no-cache',
+    ]);
+})->name('pwa.offline');
 
 Route::get('/', [FrontendController::class, 'index'])->name('home');
 Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags']);

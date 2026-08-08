@@ -4,11 +4,13 @@ import { createInertiaApp } from '@inertiajs/react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
 import { registerInertiaErrorHandlers } from '@/lib/inertia-errors';
+import { registerPwa } from '@/lib/register-pwa';
 import { resolveDefaultLayout } from '@/lib/resolve-layout';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
 registerInertiaErrorHandlers();
+registerPwa();
 
 createInertiaApp({
   // Resolved by @inertiajs/vite into a lazy import.meta.glob (code-split per page).

@@ -37,6 +37,10 @@ return [
         'telescope',
         'horizon',
         'livewire',
+        'offline.html',
+        'sw.js',
+        'manifest.webmanifest',
+        'workbox-',
     ],
 
 ];

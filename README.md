@@ -102,6 +102,23 @@ Admin / tooling paths are ignored (`admin`, `api`, `_debugbar`, …). Session/pa
 
 Tests: `tests/Feature/AnalyticsTest.php`, `tests/Feature/DashboardStatsTest.php`.
 
+## Progressive Web App (public site)
+
+Installable shell for the **public** website only (`vite-plugin-pwa` + Workbox).
+
+| Piece | Behavior |
+| --- | --- |
+| Manifest | `/manifest.webmanifest` — `start_url` `/`, theme `#006181` |
+| Service worker | `/sw.js` (copied to `public/` after client build; scope `/`) |
+| Offline | `/offline.html` for failed **public** navigations |
+| Cached | Hashed `/build/assets/*` + PWA icons — **not** Inertia HTML, `/admin`, or auth |
+
+**Security:** admin routes, login, Sanctum, and `X-Inertia` requests are excluded from caching. Session lifetime / remember-me are unchanged.
+
+**Local:** SW registers only in production builds (`import.meta.env.PROD`). Use `npm run build` + HTTPS (`https://sawtee.test`) to test install/offline. Unregister the worker in DevTools → Application when debugging.
+
+**HTTPS cookies:** set `SESSION_SECURE_COOKIE=true` on Herd / staging / production (see `.env.example`).
+
 ## Admin maintenance tools
 
 Under `/admin` (authenticated):

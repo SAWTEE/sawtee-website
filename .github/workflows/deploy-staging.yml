@@ -280,6 +280,8 @@ jobs:
             test -w storage && echo "✅ storage writable" || (echo "❌ storage not writable" && exit 1)
             test -d vendor && echo "✅ vendor exists" || (echo "❌ vendor missing" && exit 1)
             test -f public/build/manifest.json && echo "✅ Vite client manifest present" || echo "⚠️  client build missing"
+            test -f public/sw.js && echo "✅ PWA service worker present" || echo "⚠️  PWA sw.js missing"
+            test -f public/manifest.webmanifest && echo "✅ PWA webmanifest present" || echo "⚠️  PWA manifest missing"
             test -d bootstrap/ssr && echo "✅ SSR bundle directory present" || echo "⚠️  SSR bundle missing"
             # Optional: check SSR port is listening
             if command -v curl >/dev/null 2>&1; then

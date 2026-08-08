@@ -326,4 +326,6 @@ jobs:
             test -w storage && echo "✅ storage writable" || (echo "❌ storage not writable" && exit 1)
             test -d vendor && echo "✅ vendor exists" || (echo "❌ vendor missing" && exit 1)
             test -f public/build/manifest.json && echo "✅ Vite manifest present" || echo "⚠️  Vite manifest missing"
+            test -f public/sw.js && echo "✅ PWA service worker present" || echo "⚠️  PWA sw.js missing"
+            test -f public/manifest.webmanifest && echo "✅ PWA webmanifest present" || echo "⚠️  PWA manifest missing"
             echo "Health check completed!"
