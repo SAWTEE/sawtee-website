@@ -172,8 +172,8 @@ Laravel 13 can run on shared hosting when the host provides:
 
 Recommended deploy flow:
 
-1. Build assets locally/CI: `npm ci && npm run build` (client-only; do **not** rely on Node SSR on production shared hosting until staging proves it)
-2. Keep `INERTIA_SSR_ENABLED=false` on production (default in `config/inertia.php`)
+1. Build assets locally/CI: `npm ci && npm run build` (client-only — no Node SSR on cPanel)
+2. Keep `INERTIA_SSR_ENABLED=false` on staging and production (default in `config/inertia.php`)
 3. Upload/deploy code + `vendor/` (or run `composer install --no-dev` via SSH) and the built `public/build` directory
 4. Set `.env` for production (`APP_ENV=production`, `APP_DEBUG=false`, correct `APP_URL` / DB credentials)
 5. Run `php artisan migrate --force`, `php artisan storage:link`, `php artisan config:cache`, `php artisan route:cache`, `php artisan view:cache`
@@ -181,35 +181,24 @@ Recommended deploy flow:
 
 Do not set `ASSET_URL=public` — leave `ASSET_URL` empty unless you use a CDN with a full absolute URL.
 
-## Inertia SSR (v3)
+## Inertia rendering (cPanel)
 
 | Context | What you run | Separate Node SSR process? |
 | --- | --- | --- |
-| **Local dev** | `npm run dev` | **No** — `@inertiajs/vite` exposes SSR on the Vite dev server |
-| **Staging / production** (SSR on) | `npm run build:ssr` then `php artisan inertia:start-ssr` | **Yes** — Node.js **22+** background process (Supervisor, cPanel Node App, or `scripts/ssr-restart.sh`) |
-| **Production** (current) | `npm run build` only | N/A — `INERTIA_SSR_ENABLED=false` (client-only) |
+| **Local dev** | `npm run dev` | Optional via `@inertiajs/vite` on the Vite dev server only |
+| **Staging / production** | `npm run build` | **No** — client-only Inertia on cPanel (`INERTIA_SSR_ENABLED=false`) |
 
-Do **not** confuse “no separate SSR server in Vite dev” with staging/production: those still need a persistent Node process when SSR is enabled.
+Optional `npm run build:ssr` + `scripts/ssr-restart.sh` remain for a future host that can run a persistent Node process; they are **not** used by deploy workflows.
 
-## Staging + Inertia SSR
+## Staging (cPanel subdomain)
 
 Branch: **`staging`**. Workflow: `.github/workflows/deploy-staging.yml` (CI on PR/push; deploy on push to `staging`).
 
-Staging enables **`INERTIA_SSR_ENABLED=true`** and uploads the Vite SSR bundle (`npm run build:ssr` → `bootstrap/ssr`). After deploy, `scripts/ssr-restart.sh` starts `php artisan inertia:start-ssr` (required for staging SSR).
-
-### cPanel shared hosting (staging subdomain)
-
 1. Create subdomain e.g. `staging.sawtee.org` → document root `…/staging.sawtee.org/public` (or symlink `public` as the docroot).
 2. Create a **separate MySQL database** for staging (never point staging at production DB).
-3. Add GitHub Actions `STAGING_*` secrets for app/DB (except password)/drivers/`SSH_TARGET_DIR` (and optional `STAGING_INERTIA_SSR_URL`, default `http://127.0.0.1:13714`). Reuse production secrets for SSH (`SSH_HOST`/`USERNAME`/`KEY`/`PORT`), mail (`MAIL_*`), and `DB_PASSWORD`. Use [`.env.staging.example`](./.env.staging.example) as the checklist of values (never commit a real `.env.staging`).
+3. Add GitHub Actions `STAGING_*` secrets for app/DB (except password)/drivers/`SSH_TARGET_DIR`. Reuse production secrets for SSH (`SSH_HOST`/`USERNAME`/`KEY`/`PORT`), mail (`MAIL_*`), and `DB_PASSWORD`. Use [`.env.staging.example`](./.env.staging.example) as the checklist of values (never commit a real `.env.staging`).
 4. Create a GitHub **Environment** named `staging` (optional protection rules).
-5. **Node for SSR (required on staging):** classic shared PHP hosting cannot keep Inertia SSR alive. You need one of:
-   - cPanel **Setup Node.js App** (Application root = Laravel root, startup via `php artisan inertia:start-ssr` or a wrapper), or
-   - SSH + Node **22+** binary + `bash scripts/ssr-restart.sh` after each deploy, or
-   - A small VPS / Cloudways / Forge staging box (recommended if Node App is unavailable).
-6. Push to `staging` to deploy. Confirm View Source shows server-rendered markup (not an empty `#app` only). If SSR fails, Inertia falls back to client render unless `INERTIA_SSR_THROW_ON_ERROR=true`.
-
-Production (`main`) stays client-rendered (`npm run build`, `INERTIA_SSR_ENABLED=false`) until staging SSR is verified.
+5. Push to `staging` to deploy. No cPanel Node.js App is required for Inertia.
 
 
 

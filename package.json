@@ -4,7 +4,8 @@
   "scripts": {
     "commit": "cz",
     "dev": "vite",
-    "build": "vite build && node scripts/copy-pwa-to-public.mjs && vite build --ssr",
+    "build": "vite build && node scripts/copy-pwa-to-public.mjs",
+    "build:ssr": "npm run build && vite build --ssr",
     "lint": "eslint --fix .",
     "lint:imports": "eslint --fix --rule 'simple-import-sort/imports: error' --rule 'simple-import-sort/exports: error' 'resources/js/**/*.{ts,tsx}'",
     "format": "prettier 'resources/js/**/*.{js,jsx,ts,tsx}' --write",
@@ -16,8 +17,7 @@
     "knip": "knip",
     "docs:dev": "npm --prefix docs run docs:dev",
     "docs:build": "npm --prefix docs run docs:build",
-    "docs:preview": "npm --prefix docs run docs:preview",
-    "build:ssr": "npm run build"
+    "docs:preview": "npm --prefix docs run docs:preview"
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",

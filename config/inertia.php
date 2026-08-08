@@ -13,17 +13,18 @@ return [
     | You can specify a custom SSR bundle path, or omit it to let Inertia
     | try and automatically detect it for you.
     |
-    | Production/staging: enable SSR only when a Node.js 22+ process can run
-    | `php artisan inertia:start-ssr` (see scripts/ssr-restart.sh).
-    | Local Vite dev: `@inertiajs/vite` serves SSR via `npm run dev` — no
-    | separate `inertia:start-ssr` process is required in development.
+    | Staging/production on cPanel stay client-only (`INERTIA_SSR_ENABLED=false`).
+    | Optional SSR on a host with a persistent Node process: `npm run build:ssr`
+    | then `php artisan inertia:start-ssr` (see scripts/ssr-restart.sh).
+    | Local Vite: `@inertiajs/vite` can serve SSR via `npm run dev` without a
+    | separate `inertia:start-ssr` process.
     | https://inertiajs.com/docs/v3/advanced/server-side-rendering
     |
     */
 
     'ssr' => [
 
-        // Default off (client-only). Staging sets INERTIA_SSR_ENABLED=true when Node SSR is available.
+        // Default off (client-only). Staging and production deploys keep this false.
         'enabled' => (bool) env('INERTIA_SSR_ENABLED', false),
 
         'runtime' => env('INERTIA_SSR_RUNTIME', 'node'),

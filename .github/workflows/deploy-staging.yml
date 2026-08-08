@@ -66,15 +66,15 @@ jobs:
           node-version: '22'
           cache: npm
 
-      - name: Install npm deps, typecheck, and build client + SSR bundles
+      - name: Install npm deps, typecheck, and build client assets
         run: |
           npm ci
           npm run typecheck
           npm run build
-          test -d bootstrap/ssr && echo "✅ SSR bundle built" || (echo "❌ SSR bundle missing" && exit 1)
+          test -f public/build/manifest.json && echo "✅ Vite client manifest built" || (echo "❌ client build missing" && exit 1)
 
   deploy-staging:
-    name: Deploy staging (cPanel + SSR)
+    name: Deploy staging (cPanel)
     needs: ci
     if: github.event_name == 'push' && github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest
@@ -144,18 +144,10 @@ jobs:
 
           VITE_APP_NAME='${{ secrets.STAGING_APP_NAME }}'
 
-          # Inertia SSR — enabled on staging to validate before production
-          INERTIA_SSR_ENABLED=true
-          INERTIA_SSR_URL=${{ secrets.STAGING_INERTIA_SSR_URL }}
-          INERTIA_SSR_RUNTIME=node
-          INERTIA_SSR_ENSURE_BUNDLE_EXISTS=true
-          INERTIA_SSR_THROW_ON_ERROR=false
+          # Client-only Inertia on cPanel (no persistent Node SSR process).
+          INERTIA_SSR_ENABLED=false
           EOF
           sed -i 's/^[[:space:]]*//' .env
-          # Default SSR URL when secret is empty
-          if ! grep -q '^INERTIA_SSR_URL=.\+' .env; then
-            sed -i 's|^INERTIA_SSR_URL=.*|INERTIA_SSR_URL=http://127.0.0.1:13714|' .env
-          fi
 
       - name: Generate application key if not set
         run: |
@@ -165,18 +157,19 @@ jobs:
         env:
           APP_KEY: ${{ secrets.STAGING_APP_KEY }}
 
-      - name: Build client + SSR bundles
+      - name: Build client assets
         run: |
           npm ci
-          npm run build:ssr
-          ls -la bootstrap/ssr || true
+          npm run build
+          test -f public/build/manifest.json
+          ls -la public/build || true
 
       - name: Remove build-only files before upload
         run: |
-          # Keep bootstrap/ssr — required for Inertia SSR on the server
           rm -rf node_modules
           rm -rf .git
           rm -rf .github
+          rm -rf bootstrap/ssr
           rm -f lighthouse.json lighthouse.html .phpunit.result.cache
 
       - name: Upload staging files via SSH
@@ -191,7 +184,7 @@ jobs:
           overwrite: true
           rm: false
 
-      - name: Post-deploy migrate, optimize, start SSR
+      - name: Post-deploy migrate and optimize
         uses: appleboy/ssh-action@v1.0.0
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -202,7 +195,7 @@ jobs:
             set -e
             cd ${{ secrets.STAGING_SSH_TARGET_DIR }}
 
-            mkdir -p backups storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache bootstrap/ssr
+            mkdir -p backups storage/framework/cache storage/framework/sessions storage/framework/views storage/logs bootstrap/cache
 
             echo "Installing Composer dependencies..."
             # Non-interactive SSH on cPanel often lacks composer on PATH
@@ -261,9 +254,6 @@ jobs:
             php artisan view:cache
             php artisan abuseip:update || true
 
-            echo "Restarting Inertia SSR (requires Node on the host)..."
-            bash scripts/ssr-restart.sh || echo "⚠️  SSR restart failed — see scripts/ssr-restart.sh / cPanel Node app notes"
-
             php artisan about || true
             echo "🎉 Staging deployment completed!"
 
@@ -282,15 +272,4 @@ jobs:
             test -f public/build/manifest.json && echo "✅ Vite client manifest present" || echo "⚠️  client build missing"
             test -f public/sw.js && echo "✅ PWA service worker present" || echo "⚠️  PWA sw.js missing"
             test -f public/manifest.webmanifest && echo "✅ PWA webmanifest present" || echo "⚠️  PWA manifest missing"
-            test -d bootstrap/ssr && echo "✅ SSR bundle directory present" || echo "⚠️  SSR bundle missing"
-            # Optional: check SSR port is listening
-            if command -v curl >/dev/null 2>&1; then
-              SSR_URL=$(grep '^INERTIA_SSR_URL=' .env | cut -d= -f2- | tr -d '"' | tr -d "'")
-              SSR_URL=${SSR_URL:-http://127.0.0.1:13714}
-              if curl -sf --max-time 2 "$SSR_URL" >/dev/null 2>&1 || curl -sf --max-time 2 "${SSR_URL%/}/" >/dev/null 2>&1; then
-                echo "✅ SSR endpoint responded"
-              else
-                echo "⚠️  SSR endpoint not reachable yet (Node process may need cPanel Node.js App / manual start)"
-              fi
-            fi
             echo "Staging health check completed!"

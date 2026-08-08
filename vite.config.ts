@@ -28,7 +28,7 @@ export default defineConfig(({ isSsrBuild }) => ({
     }),
     react(),
     // Dev SSR via Vite `/__inertia_ssr` (no separate Node process).
-    // Production/staging still need `npm run build` (client + SSR) + `php artisan inertia:start-ssr`.
+    // Staging/production on cPanel are client-only (`INERTIA_SSR_ENABLED=false`).
     inertia({
       ssr: {
         entry: 'resources/js/ssr.tsx',
