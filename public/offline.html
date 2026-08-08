@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#006181">
+    <title>Offline | SAWTEE</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <style>
+        :root {
+            --teal: #006181;
+            --ink: #0f172a;
+            --muted: #475569;
+            --bg: #f8fafc;
+        }
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+            color: var(--ink);
+            background:
+                radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 97, 129, 0.18), transparent 55%),
+                var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.25rem;
+        }
+        main {
+            max-width: 28rem;
+            text-align: center;
+        }
+        img {
+            width: min(14rem, 70vw);
+            height: auto;
+            margin-bottom: 1.75rem;
+        }
+        h1 {
+            font-size: clamp(1.75rem, 4vw, 2.25rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin: 0 0 0.75rem;
+            color: var(--teal);
+        }
+        p {
+            margin: 0 0 1.75rem;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 1rem;
+            line-height: 1.55;
+            color: var(--muted);
+        }
+        a {
+            display: inline-block;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #fff;
+            background: var(--teal);
+            text-decoration: none;
+            padding: 0.75rem 1.35rem;
+            border-radius: 0.35rem;
+        }
+        a:focus-visible {
+            outline: 3px solid #7dd3fc;
+            outline-offset: 3px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <img src="/assets/logo-sawtee.svg" width="400" height="100" alt="SAWTEE">
+        <h1>You’re offline</h1>
+        <p>
+            SAWTEE can’t load this page without a network connection.
+            Check your connection, then try again.
+        </p>
+        <a href="/">Back to home</a>
+    </main>
+</body>
+</html>
