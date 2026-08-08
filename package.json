@@ -5,6 +5,7 @@
     "commit": "cz",
     "dev": "vite",
     "build": "vite build && vite build --ssr",
+    "build:ssr": "npm run build",
     "lint": "eslint --fix .",
     "lint:imports": "eslint --fix --rule 'simple-import-sort/imports: error' --rule 'simple-import-sort/exports: error' 'resources/js/**/*.{ts,tsx}'",
     "format": "prettier 'resources/js/**/*.{js,jsx,ts,tsx}' --write",
