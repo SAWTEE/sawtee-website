@@ -1,19 +1,12 @@
 import { ArrowUpRight } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-
-type Feature = {
-  id: string | number;
-  title: string;
-  description?: string;
-  image_src?: string;
-  link?: string;
-};
+import type { HomeFeature } from '@/types';
 
 export default function FeaturedSection({
   features = undefined,
 }: {
-  features?: Feature[];
+  features?: HomeFeature[];
 }) {
   if (!features?.length) {
     return null;
@@ -92,7 +85,7 @@ export default function FeaturedSection({
   );
 }
 
-function FeatureImage({ feature }: { feature: Feature }) {
+function FeatureImage({ feature }: { feature: HomeFeature }) {
   return (
     <>
       {feature.image_src ? (
