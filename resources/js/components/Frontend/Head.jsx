@@ -36,7 +36,9 @@ const WebsiteHead = ({ title, description, image, url, children }) => {
       />
       <meta property="fb:app_id" content="SAWTEENP" />
       <meta name="twitter:site" content="@sawteebnp" />
-      <meta property="og:image" content="{{asset('images/logo.png')}}" />
+     {/* 
+     <meta property="og:image" content="{{asset('images/logo.png')}}" />
+*/}
       {children}
     </Head>
   );
