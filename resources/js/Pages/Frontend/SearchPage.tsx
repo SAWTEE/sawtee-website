@@ -13,6 +13,13 @@ import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import {
+  sanitizeSearchCategory,
+  sanitizeSearchQuery,
+  sanitizeSearchTheme,
+  sanitizeSearchYear,
+  SEARCH_QUERY_MAX_LENGTH,
+} from '@/lib/search-params';
 import { cn, htmlToText } from '@/lib/utils';
 import type {
   FrontendSearchProps,
@@ -229,15 +236,20 @@ export default function SearchPage({
   }) {
     setIsSearching(true);
     const data: Record<string, string | number> = { page: 1 };
-    const nextQuery = (next.query ?? searchQuery).trim();
+    const nextQuery = sanitizeSearchQuery(next.query ?? searchQuery);
     if (nextQuery) {
       data.query = nextQuery;
     }
 
-    const category =
-      next.category !== undefined ? next.category : filters.category;
-    const year = next.year !== undefined ? next.year : filters.year;
-    const theme = next.theme !== undefined ? next.theme : filters.theme;
+    const category = sanitizeSearchCategory(
+      next.category !== undefined ? next.category : filters.category
+    );
+    const year = sanitizeSearchYear(
+      next.year !== undefined ? next.year : filters.year
+    );
+    const theme = sanitizeSearchTheme(
+      next.theme !== undefined ? next.theme : filters.theme
+    );
 
     if (category) {
       data.category = category;
@@ -312,7 +324,7 @@ export default function SearchPage({
       <div className="pb-16 md:pb-24">
         <header className="relative overflow-hidden border-b border-[#006181]/12 dark:border-[#006181]/25">
           <div
-            className="absolute inset-0 -z-[1] bg-[url(/assets/pattern-tile-green.svg)] opacity-40 dark:bg-[url(/assets/pattern-tile-light-fade.svg)] dark:opacity-30"
+            className="absolute inset-0 -z-[1] bg-pattern-tile opacity-40 dark:bg-pattern-tile-fade dark:opacity-30"
             style={{
               backgroundSize: '900px',
               backgroundPosition: 'top center',
@@ -349,6 +361,7 @@ export default function SearchPage({
                   id={inputId}
                   type="search"
                   autoComplete="off"
+                  maxLength={SEARCH_QUERY_MAX_LENGTH}
                   placeholder="Search the site…"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}

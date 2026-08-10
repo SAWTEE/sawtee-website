@@ -46,7 +46,7 @@
         })();
     </script>
 
-    @routes
+    @routes(\App\Support\ZiggyConfig::groupFor(request()))
     @viteReactRefresh
     @vite(['resources/js/app.tsx'])
     @inertiaHead

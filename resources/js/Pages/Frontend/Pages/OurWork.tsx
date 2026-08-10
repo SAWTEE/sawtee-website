@@ -26,7 +26,7 @@ function sectorImageSrc(section: PageSection): string {
   }
 
   return (
-    section.media?.[0]?.original_url ?? '/assets/SM-placeholder-1024x512.png'
+    section.media?.[0]?.original_url ?? '/assets/SM-placeholder-1024x512.webp'
   );
 }
 

@@ -7,6 +7,7 @@ use App\Models\Section;
 use App\Models\Theme;
 use App\Support\HomePageDataAssembler;
 use App\Support\MediaConversionUrl;
+use App\Support\MediaFellowshipAssembler;
 use App\Support\ResolvesSeoMeta;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,7 +33,7 @@ class ResolvePageBySlug
         $themes = $slug === 'our-work' ? Theme::all() : null;
         $featuredImage = $page->getFirstMediaUrl('page-media');
 
-        return Inertia::render('Frontend/Page', [
+        $props = [
             'page' => $page,
             'sections' => $sections,
             'themes' => $themes,
@@ -42,6 +43,12 @@ class ResolvePageBySlug
                 model: $page,
                 image: $featuredImage ?: '/assets/logo-sawtee.webp',
             ),
-        ]);
+        ];
+
+        if ($page->page_template === 'MediaFellows') {
+            $props['fellowships'] = app(MediaFellowshipAssembler::class)->assemble();
+        }
+
+        return Inertia::render('Frontend/Page', $props);
     }
 }

@@ -14,9 +14,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { mobileMenu, socialMenu } from '@/lib/data';
+import { mobileMenu } from '@/lib/data';
 import { cn } from '@/lib/utils';
-import type { MenuItem, SharedProps } from '@/types';
+import type { MenuItem, SharedProps, SocialMenuLink } from '@/types';
 
 type MainLayoutProps = {
   children?: ReactNode;
@@ -29,6 +29,7 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
   const page = usePage<SharedProps>();
   const primaryMenu = page.props.primaryMenu ?? [];
   const footerMenu = page.props.footerMenu ?? [];
+  const socialMenu: SocialMenuLink[] = page.props.socialMenu ?? [];
   const navMenu: MenuItem[] =
     primaryMenu.length > 0 ? primaryMenu : (mobileMenu as MenuItem[]);
 

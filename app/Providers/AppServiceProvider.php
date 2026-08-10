@@ -6,6 +6,7 @@ use App\MediaLibrary\FileManipulator;
 use App\MediaLibrary\ResponsiveImageGenerator;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Feature;
 use App\Models\HomePageSection;
 use App\Models\Menu;
 use App\Models\MenuItem;
@@ -58,6 +59,7 @@ class AppServiceProvider extends ServiceProvider
             Menu::class,
             MenuItem::class,
             HomePageSection::class,
+            Feature::class,
         ] as $model) {
             $model::observe($observer);
         }

@@ -36,6 +36,7 @@ test('assembles home page payload with expected keys', function () {
         'webinars',
         'slidesResponsiveImages',
         'homePageSections',
+        'features',
     ]);
 });
 
@@ -68,6 +69,7 @@ test('assemble returns plain arrays after serialized cache round-trip', function
         'newsletters',
         'webinars',
         'homePageSections',
+        'features',
     ] as $key) {
         expect($fromCache[$key])->toBeArray();
 

@@ -36,6 +36,7 @@ function Page({
   themes,
   sections,
   seo,
+  fellowships,
 }: FrontendPageProps) {
   const head: SeoMeta = seo ?? {
     title: page.meta_title || page.name,
@@ -57,7 +58,12 @@ function Page({
       {page.slug === 'reform-monitoring-platform' ? (
         <PageContent page={page} />
       ) : (
-        <PageContent page={page} sections={sections} themes={themes} />
+        <PageContent
+          page={page}
+          sections={sections}
+          themes={themes}
+          fellowships={fellowships}
+        />
       )}
     </>
   );
@@ -85,12 +91,14 @@ type PageContentProps = {
   page: CmsPage;
   sections?: PageSection[];
   themes?: Theme[] | null;
+  fellowships?: FrontendPageProps['fellowships'];
 };
 
 const PageContent = ({
   page,
   sections,
   themes,
+  fellowships,
 }: PageContentProps): ReactNode => {
   const { content, pageData } = page;
   switch (page.page_template) {
@@ -111,7 +119,7 @@ const PageContent = ({
       return <Contact content={content ?? undefined} pageData={pageData} />;
 
     case 'MediaFellows':
-      return <MediaFellows />;
+      return <MediaFellows fellowships={fellowships} />;
 
     case 'ReformMonitor':
       return <ReformMonitor content={content ?? undefined} />;

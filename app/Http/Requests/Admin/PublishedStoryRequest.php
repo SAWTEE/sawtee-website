@@ -15,6 +15,7 @@ class PublishedStoryRequest extends AdminFormRequest
             'title' => ['required', 'string', 'max:255'],
             'link' => ['required', 'url', 'max:255'],
             'fellow_id' => ['required', 'numeric', 'exists:fellows,id'],
+            'media_src' => ['nullable', 'string', 'max:2048'],
             'images' => ['nullable', 'array'],
             'images.*' => $this->whenUploaded('images', ['image', 'mimes:jpeg,png,jpg,webp', 'max:2048']),
         ];

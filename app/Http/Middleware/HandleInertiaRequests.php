@@ -2,10 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Feature;
+use App\Models\SiteSetting;
+use App\Support\MemberInstituteAssembler;
 use App\Support\MenuTreeBuilder;
+use App\Support\ZiggyConfig;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Tighten\Ziggy\Ziggy;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -44,14 +47,27 @@ class HandleInertiaRequests extends Middleware
             ],
             // Ziggy is already injected via Blade @routes on the first visit.
             // Only share on full document / SSR requests so XHR navigations stay lean.
+            // Public guests get a whitelist; admin/auth groups avoid leaking the CMS map.
             'ziggy' => fn () => $request->header('X-Inertia')
                 ? [
                     'location' => $request->url(),
                 ]
                 : [
-                    ...(new Ziggy)->toArray(),
+                    ...ZiggyConfig::forRequest($request),
                     'location' => $request->url(),
                 ],
+            ...($request->is('admin', 'admin/*') ? [] : [
+                'features' => fn () => Feature::query()
+                    ->active()
+                    ->orderBy('sort_order')
+                    ->get()
+                    ->map->toFrontendArray()
+                    ->values()
+                    ->all(),
+                'socialMenu' => fn () => SiteSetting::getValue('social_menu', []),
+                'aboutIntro' => fn () => SiteSetting::getValue('about_intro'),
+                'memberInstitutes' => fn () => app(MemberInstituteAssembler::class)->forMarquee(),
+            ]),
         ]);
     }
 

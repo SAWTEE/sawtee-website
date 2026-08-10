@@ -19,6 +19,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
+import { sanitizeSearchQuery, SEARCH_QUERY_MAX_LENGTH } from '@/lib/search-params';
 import { cn } from '@/lib/utils';
 
 export default function SearchModal() {
@@ -26,10 +27,10 @@ export default function SearchModal() {
   const [searchQuery, setSearchQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const inputId = useId();
-  const trimmedQuery = searchQuery.trim();
+  const trimmedQuery = sanitizeSearchQuery(searchQuery);
 
   function goToSearch(query: string) {
-    const term = query.trim();
+    const term = sanitizeSearchQuery(query);
     if (!term) {
       inputRef.current?.focus();
       return;
@@ -146,6 +147,7 @@ export default function SearchModal() {
               id={inputId}
               type="search"
               autoComplete="off"
+              maxLength={SEARCH_QUERY_MAX_LENGTH}
               placeholder="Search the site…"
               value={searchQuery}
               onChange={e => setSearchQuery(e.target.value)}

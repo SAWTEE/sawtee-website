@@ -199,7 +199,7 @@ export type MemberCountry = {
   institutes: MemberInstitute[];
 };
 
-/** Static media-fellowship UI data (`resources/js/lib/media-fellowship`). */
+/** Media fellowship cohort payload assembled from CMS models. */
 export type MediaFellowPublishedStory = {
   title: string;
   link: string;
@@ -346,6 +346,27 @@ export type AnalyticsSummary = {
   top_pages: AnalyticsTopPage[];
 };
 
+export type HomeFeature = {
+  id: number | string;
+  title: string;
+  description?: string | null;
+  image_src?: string | null;
+  link?: string | null;
+};
+
+export type MemberInstituteLogo = {
+  slug: string;
+  member_name: string;
+  member_website_link: string;
+  short_label: string;
+  logo: string | null;
+};
+
+export type SocialMenuLink = {
+  name: string;
+  link: string;
+};
+
 export type SharedProps = {
   auth: {
     user: User | null;
@@ -361,6 +382,10 @@ export type SharedProps = {
   ziggy?: ZiggyConfig | { location: string };
   errors?: Record<string, string>;
   experts?: unknown[];
+  features?: HomeFeature[];
+  socialMenu?: SocialMenuLink[];
+  aboutIntro?: string | null;
+  memberInstitutes?: MemberInstituteLogo[];
 };
 
 export type PageProps<
@@ -399,6 +424,7 @@ export type HomePageProps = PageProps<{
   webinars?: Post[];
   slidesResponsiveImages?: string[];
   homePageSections?: HomePageSection[];
+  features?: HomeFeature[];
   seo?: SeoMeta;
 }>;
 
@@ -409,6 +435,7 @@ export type FrontendPageProps = PageProps<{
   featured_image?: string | MediaItem | null;
   srcSet?: string | null;
   seo?: SeoMeta;
+  fellowships?: MediaFellowshipYear[];
 }>;
 
 export type FrontendPostProps = PageProps<{
@@ -552,6 +579,10 @@ export function emptySharedProps(
     primaryMenu: [],
     footerMenu: [],
     ziggy: { location: '/' },
+    features: [],
+    socialMenu: [],
+    aboutIntro: null,
+    memberInstitutes: [],
     ...overrides,
   };
 }

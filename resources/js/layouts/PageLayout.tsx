@@ -32,7 +32,7 @@ export default function PageLayout({
           />
         ) : (
           <div
-            className="absolute inset-0 -z-[1] h-full w-full bg-[url(/assets/pattern-tile-green.svg)] dark:bg-[url(/assets/pattern-tile-light-fade.svg)]"
+            className="absolute inset-0 -z-[1] h-full w-full bg-pattern-tile dark:bg-pattern-tile-fade"
             style={{
               backgroundSize: '1018px',
               backgroundPosition: 'top center',

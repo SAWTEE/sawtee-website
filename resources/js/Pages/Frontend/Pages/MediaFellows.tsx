@@ -6,13 +6,26 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { mediaFellowshipData } from '@/lib/media-fellowship';
 import type { MediaFellow, MediaFellowshipYear } from '@/types';
 
-export default function MediaFellows() {
-  const sortByYear: MediaFellowshipYear[] = [...mediaFellowshipData].sort(
+type MediaFellowsProps = {
+  fellowships?: MediaFellowshipYear[];
+};
+
+export default function MediaFellows({ fellowships = [] }: MediaFellowsProps) {
+  const sortByYear: MediaFellowshipYear[] = [...fellowships].sort(
     (a, b) => Number(b.year) - Number(a.year)
   );
+
+  if (sortByYear.length === 0) {
+    return (
+      <div className="page-content relative mx-auto max-w-5xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
+        <p className="text-muted-foreground text-sm md:text-base">
+          Media fellowship cohorts will appear here once published.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="page-content relative mx-auto max-w-5xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
@@ -70,6 +83,11 @@ export const Fellow = ({ mediaFellow }: FellowProps) => {
     mediaFellow;
 
   const nameParts = name.split(' ');
+  const experienceItems = Array.isArray(experience)
+    ? experience
+    : experience
+      ? [experience]
+      : [];
 
   return (
     <article
@@ -150,7 +168,7 @@ export const Fellow = ({ mediaFellow }: FellowProps) => {
           </AccordionTrigger>
           <AccordionContent>
             <div className="space-y-3">
-              {experience.map((exp, i) => {
+              {experienceItems.map((exp, i) => {
                 return (
                   <p
                     key={i}

@@ -51,25 +51,59 @@ Route::get('/admin/login', [AuthenticatedSessionController::class, 'create'])
 
 Route::post('/admin/login', [AuthenticatedSessionController::class, 'store']);
 
-Route::get('/search', SearchController::class)->name('search');
-Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
-Route::get('/offline.html', function () {
-    $path = public_path('offline.html');
+$publicSlug = '[A-Za-z0-9][A-Za-z0-9\-]*';
 
-    abort_unless(is_file($path), 404);
+Route::middleware('throttle:public')->group(function () use ($publicSlug) {
+    Route::get('/search', SearchController::class)
+        ->middleware('throttle:search')
+        ->name('search');
 
-    return response(file_get_contents($path), 200, [
-        'Content-Type' => 'text/html; charset=UTF-8',
-        'Cache-Control' => 'no-cache',
-    ]);
-})->name('pwa.offline');
+    Route::get('/sitemap.xml', SitemapController::class)->name('sitemap');
 
-Route::get('/', [FrontendController::class, 'index'])->name('home');
-Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags']);
-Route::get('/themes/{themes:slug}/{subcategory?}/{post?}', [FrontendController::class, 'themes']);
-Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)->name('article.redirect');
-Route::get('/category/{categories:slug}/{subcategory?}/{post?}/{article?}', [FrontendController::class, 'category'])->name('category.show');
-Route::get('/{pages:slug?}', [FrontendController::class, 'page'])->name('page.show');
+    Route::get('/offline.html', function () {
+        $path = public_path('offline.html');
+
+        abort_unless(is_file($path), 404);
+
+        return response(file_get_contents($path), 200, [
+            'Content-Type' => 'text/html; charset=UTF-8',
+            'Cache-Control' => 'no-cache',
+        ]);
+    })->name('pwa.offline');
+
+    Route::get('/', [FrontendController::class, 'index'])->name('home');
+
+    Route::get('/tags/{tags:slug}/{subcategory?}/{post?}', [FrontendController::class, 'tags'])
+        ->where([
+            'tags' => $publicSlug,
+            'subcategory' => $publicSlug,
+            'post' => $publicSlug,
+        ]);
+
+    Route::get('/themes/{themes:slug}/{subcategory?}/{post?}', [FrontendController::class, 'themes'])
+        ->where([
+            'themes' => $publicSlug,
+            'subcategory' => $publicSlug,
+            'post' => $publicSlug,
+        ]);
+
+    Route::redirect('/article/{post}', '/category/opinion-in-lead/{post}', 301)
+        ->where('post', $publicSlug)
+        ->name('article.redirect');
+
+    Route::get('/category/{categories:slug}/{subcategory?}/{post?}/{article?}', [FrontendController::class, 'category'])
+        ->where([
+            'categories' => $publicSlug,
+            'subcategory' => $publicSlug,
+            'post' => $publicSlug,
+            'article' => $publicSlug,
+        ])
+        ->name('category.show');
+
+    Route::get('/{pages:slug?}', [FrontendController::class, 'page'])
+        ->where('pages', $publicSlug)
+        ->name('page.show');
+});
 
 Route::middleware(['auth', 'verified', 'inertia.encrypt'])->prefix('admin')->as('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');

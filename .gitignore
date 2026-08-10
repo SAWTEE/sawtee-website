@@ -7,6 +7,8 @@
 /docs/.vitepress/dist
 /docs/.vitepress/cache
 /public/hot
+# Entire public/ tree is deploy-built (Vite, synced site assets). Do not commit it.
+# Tracked source for /assets/* URLs: resources/site-assets (synced by npm run build).
 /public/
 /publications
 /public/storage

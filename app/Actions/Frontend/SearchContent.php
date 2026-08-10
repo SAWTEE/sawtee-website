@@ -7,7 +7,6 @@ use App\Models\Post;
 use App\Models\Theme;
 use App\Support\ResolvesSeoMeta;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -16,12 +15,15 @@ class SearchContent
 {
     public function __construct(protected ResolvesSeoMeta $seo) {}
 
-    public function handle(Request $request): Response
+    /**
+     * @param  array{query: string, category: string, year: int|null, theme: int|null, page: int|null}  $filters
+     */
+    public function handle(array $filters): Response
     {
-        $term = trim((string) $request->get('query', ''));
-        $categorySlug = trim((string) $request->get('category', ''));
-        $year = $this->resolveYear($request->get('year'));
-        $themeId = $this->resolveThemeId($request->get('theme'));
+        $term = $filters['query'];
+        $categorySlug = $filters['category'];
+        $year = $filters['year'];
+        $themeId = $filters['theme'];
 
         $categoryIds = $this->resolveCategoryIds($categorySlug);
 
@@ -53,10 +55,16 @@ class SearchContent
                     $query->where('posts.theme_id', $themeId);
                 }
             })
-            ->paginate()
-            ->withQueryString();
+            ->paginate();
 
-        $filters = [
+        $posts->appends(array_filter([
+            'query' => $term !== '' ? $term : null,
+            'category' => $categorySlug !== '' ? $categorySlug : null,
+            'year' => $year,
+            'theme' => $themeId,
+        ], fn ($value) => $value !== null && $value !== ''));
+
+        $activeFilters = [
             'category' => $categorySlug !== '' ? $categorySlug : null,
             'year' => $year,
             'theme' => $themeId,
@@ -65,7 +73,7 @@ class SearchContent
         return Inertia::render('Frontend/SearchPage', [
             'posts' => $posts,
             'query' => $term,
-            'filters' => $filters,
+            'filters' => $activeFilters,
             'filterOptions' => [
                 'categories' => $this->categoryOptions(),
                 'years' => $this->yearOptions(),
@@ -99,40 +107,6 @@ class SearchContent
         $ids = $category->getCategoriesIds($category);
 
         return is_array($ids) && $ids !== [] ? array_values(array_map('intval', $ids)) : [-1];
-    }
-
-    private function resolveYear(mixed $year): ?int
-    {
-        if ($year === null || $year === '') {
-            return null;
-        }
-
-        if (! is_numeric($year)) {
-            return null;
-        }
-
-        $value = (int) $year;
-
-        if ($value < 1900 || $value > ((int) date('Y') + 1)) {
-            return null;
-        }
-
-        return $value;
-    }
-
-    private function resolveThemeId(mixed $theme): ?int
-    {
-        if ($theme === null || $theme === '') {
-            return null;
-        }
-
-        if (! is_numeric($theme)) {
-            return null;
-        }
-
-        $id = (int) $theme;
-
-        return $id > 0 ? $id : null;
     }
 
     /**

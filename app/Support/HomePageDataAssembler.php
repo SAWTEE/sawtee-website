@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use App\Models\Feature;
 use App\Models\HomePageSection;
 use App\Models\Page;
 use App\Models\Post;
@@ -115,6 +116,13 @@ class HomePageDataAssembler
             ),
             'slidesResponsiveImages' => $slidesResponsiveImages,
             'homePageSections' => HomePageSection::all()->toArray(),
+            'features' => Feature::query()
+                ->active()
+                ->orderBy('sort_order')
+                ->get()
+                ->map->toFrontendArray()
+                ->values()
+                ->all(),
         ];
     }
 
@@ -282,6 +290,7 @@ class HomePageDataAssembler
             'newsletters',
             'webinars',
             'homePageSections',
+            'features',
         ] as $key) {
             if (! array_key_exists($key, $value) || ! is_array($value[$key])) {
                 return true;

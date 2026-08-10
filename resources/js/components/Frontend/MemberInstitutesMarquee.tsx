@@ -1,8 +1,11 @@
-import { memberInstituteLogos } from '@/lib/member-institute-logos';
+import { usePage } from '@inertiajs/react';
+
 import { cn } from '@/lib/utils';
+import type { MemberInstituteLogo, SharedProps } from '@/types';
 
 type MemberInstitutesMarqueeProps = {
   className?: string;
+  institutes?: MemberInstituteLogo[];
 };
 
 function InstituteMark({
@@ -11,7 +14,7 @@ function InstituteMark({
   member_website_link,
   logo,
   decorative = false,
-}: (typeof memberInstituteLogos)[number] & { decorative?: boolean }) {
+}: MemberInstituteLogo & { decorative?: boolean }) {
   return (
     <a
       href={member_website_link}
@@ -46,7 +49,15 @@ function InstituteMark({
  */
 export default function MemberInstitutesMarquee({
   className,
+  institutes,
 }: MemberInstitutesMarqueeProps) {
+  const pageInstitutes = usePage<SharedProps>().props.memberInstitutes ?? [];
+  const items = institutes ?? pageInstitutes;
+
+  if (items.length === 0) {
+    return null;
+  }
+
   return (
     <div
       className={cn(
@@ -69,12 +80,12 @@ export default function MemberInstitutesMarquee({
         style={{ ['--duration' as string]: '45s' }}
       >
         <div className="flex items-center">
-          {memberInstituteLogos.map(inst => (
+          {items.map(inst => (
             <InstituteMark key={inst.slug} {...inst} />
           ))}
         </div>
         <div className="flex items-center" aria-hidden>
-          {memberInstituteLogos.map(inst => (
+          {items.map(inst => (
             <InstituteMark key={`${inst.slug}-dup`} {...inst} decorative />
           ))}
         </div>

@@ -38,14 +38,14 @@ function featuredMedia(post: VideoPost): VideoMedia | null {
 }
 
 function mainImageUrl(media: VideoMedia | null): string {
-  return media?.original_url || '/assets/SM-placeholder-1024x512.png';
+  return media?.original_url || '/assets/SM-placeholder-1024x512.webp';
 }
 
 function thumbImageUrl(media: VideoMedia | null): string {
   return (
     media?.preview_url ||
     media?.original_url ||
-    '/assets/SM-placeholder-300x150.png'
+    '/assets/SM-placeholder-300x150.webp'
   );
 }
 

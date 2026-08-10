@@ -3,8 +3,9 @@
   "type": "module",
   "scripts": {
     "commit": "cz",
-    "dev": "vite",
-    "build": "vite build && node scripts/copy-pwa-to-public.mjs",
+    "dev": "node scripts/sync-site-assets.mjs && vite",
+    "build": "node scripts/sync-site-assets.mjs && vite build && node scripts/copy-pwa-to-public.mjs",
+    "sync:assets": "node scripts/sync-site-assets.mjs",
     "build:ssr": "npm run build && vite build --ssr",
     "lint": "eslint --fix .",
     "lint:imports": "eslint --fix --rule 'simple-import-sort/imports: error' --rule 'simple-import-sort/exports: error' 'resources/js/**/*.{ts,tsx}'",

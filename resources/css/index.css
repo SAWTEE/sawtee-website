@@ -532,3 +532,15 @@ pre {
   }
 }
 
+/*
+  Pattern tiles: relative urls so Vite resolves them at build time
+  (avoids "didn't resolve at build time" for /assets/... absolute paths).
+*/
+@utility bg-pattern-tile {
+  background-image: url('../images/pattern-tile-green.svg');
+}
+
+@utility bg-pattern-tile-fade {
+  background-image: url('../images/pattern-tile-light-fade.svg');
+}
+

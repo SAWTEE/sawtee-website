@@ -31,7 +31,7 @@ const MultiPostsCarousel = ({ data = [] }: MultiPostsCarouselProps) => {
             media => media.collection_name === 'publication_featured_image'
           );
           const media =
-            featured?.original_url ?? '/assets/SM-placeholder-150x150.png';
+            featured?.original_url ?? '/assets/SM-placeholder-150x150.webp';
           const href = publication.file?.name
             ? `/publications/${publication.file.name}`
             : null;

@@ -294,6 +294,9 @@ jobs:
             echo "Running migrations..."
             php artisan migrate --force
 
+            echo "Seeding CMS content fixtures (idempotent)..."
+            php artisan sawtee:seed-content --skip-assets || echo "⚠️  sawtee:seed-content failed; continuing"
+
             if [ ! -e public/storage ]; then
               php artisan storage:link
             elif [ -L public/storage ]; then
@@ -327,5 +330,6 @@ jobs:
             test -d vendor && echo "✅ vendor exists" || (echo "❌ vendor missing" && exit 1)
             test -f public/build/manifest.json && echo "✅ Vite manifest present" || echo "⚠️  Vite manifest missing"
             test -f public/sw.js && echo "✅ PWA service worker present" || echo "⚠️  PWA sw.js missing"
+            test -f public/assets/logo-sawtee.webp && echo "✅ site assets synced" || echo "⚠️  public/assets missing (sync-site-assets)"
             test -f public/manifest.webmanifest && echo "✅ PWA webmanifest present" || echo "⚠️  PWA manifest missing"
             echo "Health check completed!"

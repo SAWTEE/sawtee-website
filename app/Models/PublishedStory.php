@@ -19,6 +19,7 @@ class PublishedStory extends Model implements HasMedia
         'title',
         'link',
         'fellow_id',
+        'media_src',
     ];
 
     public function registerMediaConversions(?Media $media = null): void

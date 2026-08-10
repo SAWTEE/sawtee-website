@@ -27,6 +27,7 @@ class FrontendController extends Controller
             'featuredPublications' => $home['featuredPublications'] ?? null,
             'featuredBlogPosts' => $home['featuredBlogPosts'] ?? null,
             'homePageSections' => $home['homePageSections'] ?? null,
+            'features' => $home['features'] ?? null,
         ];
 
         return Inertia::render('Frontend/Pages/Home', array_merge(

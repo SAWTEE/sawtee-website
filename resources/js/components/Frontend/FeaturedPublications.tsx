@@ -262,7 +262,7 @@ function resolveMedia(
   kind: ListKind
 ): string | null {
   if (!item.media?.length) {
-    return `https://placehold.co/120x150/eee/000/webp?text=No+image`;
+    return `/assets/SM-placeholder-150x150.webp`;
   }
 
   const collection =
@@ -275,7 +275,7 @@ function resolveMedia(
       ?.preview_url ??
     item.media.find(media => media.collection_name === collection)
       ?.original_url ??
-    `https://placehold.co/120x150/eee/000/webp?text=No+image`
+    `/assets/SM-placeholder-150x150.webp`
   );
 }
 

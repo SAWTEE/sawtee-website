@@ -16,7 +16,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
+            SiteSettingsSeeder::class,
+            HomeFeaturesSeeder::class,
+            MemberInstitutesSeeder::class,
+            MediaFellowshipsSeeder::class,
         ]);
-
     }
 }

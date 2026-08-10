@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { lazy, Suspense } from 'react';
+import { usePage } from '@inertiajs/react';
 
 import Glassbox from '@/components/Frontend/Glassbox';
 import InertiaLink from '@/components/shared/InertiaLink';
 import { useTheme } from '@/components/shared/theme-provider';
-import { aboutMenuData } from '@/lib/data';
-import type { MenuItem } from '@/types';
+import type { MenuItem, SharedProps } from '@/types';
 
 const SawteeGlobe = lazy(() => import('../globe'));
 
@@ -138,8 +138,18 @@ const MegaMenu = ({
   item: MenuItem;
   experts?: unknown[];
 }) => {
+  const aboutIntro = usePage<SharedProps>().props.aboutIntro;
+
   if (item.name === 'Know Us') {
-    return <AboutMegaMenu item={item} introText={aboutMenuData.introText} />;
+    return (
+      <AboutMegaMenu
+        item={item}
+        introText={
+          aboutIntro ||
+          'South Asia Watch on Trade, Economics and Environment (SAWTEE) works for fair trade and sustainable development across the region.'
+        }
+      />
+    );
   }
   if (item.name === 'Our Work') {
     return <OurWorkMegaMenu item={item} />;

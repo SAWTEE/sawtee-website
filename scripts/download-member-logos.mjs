@@ -149,10 +149,34 @@ async function downloadImage(url, destBase) {
   if (ct.includes('text/html')) throw new Error('Got HTML, not image');
   const buf = Buffer.from(await res.arrayBuffer());
   if (buf.length < 200) throw new Error(`Too small (${buf.length}b)`);
-  const ext = pickExt(res.url || url, ct);
-  const file = `${destBase}${ext}`;
-  writeFileSync(join(outDir, file), buf);
-  return file;
+
+  const { spawnSync } = await import('node:child_process');
+  const { unlinkSync } = await import('node:fs');
+  const tmp = join(outDir, `${destBase}.download`);
+  const webpFile = `${destBase}.webp`;
+  const webpPath = join(outDir, webpFile);
+
+  writeFileSync(tmp, buf);
+  try {
+    const result = spawnSync('cwebp', ['-quiet', '-q', '90', tmp, '-o', webpPath], {
+      encoding: 'utf8',
+    });
+    if (result.status === 0) {
+      return webpFile;
+    }
+
+    const ext = pickExt(res.url || url, ct);
+    const file = `${destBase}${ext}`;
+    writeFileSync(join(outDir, file), buf);
+
+    return file;
+  } finally {
+    try {
+      unlinkSync(tmp);
+    } catch {
+      // ignore
+    }
+  }
 }
 
 const results = [];

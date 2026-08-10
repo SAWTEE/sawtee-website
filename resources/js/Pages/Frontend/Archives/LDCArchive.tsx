@@ -1,17 +1,14 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { ArrowUpRight, ExternalLink } from 'lucide-react';
 import type { ReactNode } from 'react';
 
-import { features } from '@/lib/data';
 import { DateFormat } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
-import type { Post } from '@/types';
+import type { HomeFeature, Post, SharedProps } from '@/types';
 
 type LDCArchiveProps = {
   posts?: Post[] | null;
 };
-
-const ldcFeature = features.find(f => f.link.includes('LDCs-Interests'));
 
 function postHref(post: Post): string {
   if (post.link) {
@@ -83,6 +80,10 @@ function slugify(value: string): string {
 }
 
 const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
+  const features = usePage<SharedProps>().props.features ?? [];
+  const ldcFeature: HomeFeature | undefined = features.find(f =>
+    (f.link ?? '').includes('LDCs-Interests')
+  );
   const items = posts ?? [];
 
   if (!items.length) {

@@ -141,7 +141,7 @@ const ItemComponent = ({
                     className="aspect-3/4 h-full w-full rounded-md object-cover"
                     src={
                       `${publication.media?.[0]?.original_url ?? ''}` ||
-                      '/assets/SM-placeholder-150x150.png'
+                      '/assets/SM-placeholder-150x150.webp'
                     }
                     alt={publication.title}
                     title={publication.title}

@@ -9,7 +9,6 @@ import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
 import Title from '@/components/Frontend/title';
-import { features } from '@/lib/data';
 import { formatDate } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import type {
@@ -56,6 +55,7 @@ const Home = ({
   webinars,
   slidesResponsiveImages,
   homePageSections,
+  features,
   seo,
 }: HomePageProps) => {
   // const [open, setOpen] = useState(true);
@@ -278,7 +278,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
             <img
               src={featuredImageUrl(
                 lead.media,
-                'https://placehold.co/600x400/eee/000/webp?text=No+Image'
+                '/assets/SM-placeholder-1024x512.webp'
               )}
               alt={lead.title}
               width={600}
@@ -321,7 +321,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
 
           const featured_image = featuredImageUrl(
             event.media,
-            'https://placehold.co/300x160/eee/000/webp?text=No+Image'
+            '/assets/SM-placeholder-300x150.webp'
           );
 
           return (

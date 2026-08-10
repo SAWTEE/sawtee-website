@@ -244,6 +244,7 @@ jobs:
 
             php artisan optimize:clear || true
             php artisan migrate --force
+            php artisan sawtee:seed-content --skip-assets || echo "⚠️  sawtee:seed-content failed; continuing"
 
             if [ ! -e public/storage ]; then
               php artisan storage:link
@@ -272,4 +273,5 @@ jobs:
             test -f public/build/manifest.json && echo "✅ Vite client manifest present" || echo "⚠️  client build missing"
             test -f public/sw.js && echo "✅ PWA service worker present" || echo "⚠️  PWA sw.js missing"
             test -f public/manifest.webmanifest && echo "✅ PWA webmanifest present" || echo "⚠️  PWA manifest missing"
+            test -f public/assets/logo-sawtee.webp && echo "✅ site assets synced" || echo "⚠️  public/assets missing"
             echo "Staging health check completed!"
