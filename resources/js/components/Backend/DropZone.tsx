@@ -15,9 +15,12 @@ import { cn } from '@/lib/utils';
 
 const DEFAULT_ACCEPT = 'image/png,image/jpeg,image/webp,.png,.jpg,.jpeg,.webp';
 
-type UploadProgress = {
-  percentage?: number | null;
-} | null | undefined;
+type UploadProgress =
+  | {
+      percentage?: number | null;
+    }
+  | null
+  | undefined;
 
 type DropZoneProps = {
   id?: string;
@@ -78,12 +81,10 @@ export default function DropZone({
 
   const percentage = progress?.percentage ?? null;
   const hasPendingUpload = selectedFile != null;
-  const showProgress =
-    percentage != null || (uploading && hasPendingUpload);
+  const showProgress = percentage != null || (uploading && hasPendingUpload);
   const displayPercentage = percentage ?? 0;
   const isUploading =
-    (uploading && hasPendingUpload) ||
-    (percentage != null && percentage < 100);
+    (uploading && hasPendingUpload) || (percentage != null && percentage < 100);
   const hasPreview = Boolean(defaultValue);
   const displayError = error || localError || undefined;
 
@@ -179,18 +180,18 @@ export default function DropZone({
             )}
           >
             <div className="flex flex-col items-center justify-center gap-2 px-4 py-8 text-center">
-              <div className="rounded-full bg-background p-2.5 shadow-sm ring-1 ring-border">
-                <UploadIcon className="h-4 w-4 text-muted-foreground" />
+              <div className="bg-background ring-border rounded-full p-2.5 shadow-sm ring-1">
+                <UploadIcon className="text-muted-foreground h-4 w-4" />
               </div>
               <div className="space-y-1">
-                <p className="text-sm text-muted-foreground">
-                  <span className="font-medium text-foreground">
+                <p className="text-muted-foreground text-sm">
+                  <span className="text-foreground font-medium">
                     Click to upload
                   </span>{' '}
                   or drag and drop
                 </p>
-                <p className="text-xs text-muted-foreground">{placeholder}</p>
-                <p className="text-xs text-muted-foreground/80">
+                <p className="text-muted-foreground text-xs">{placeholder}</p>
+                <p className="text-muted-foreground/80 text-xs">
                   {acceptHint(accept)} · max {maxSizeMB}MB
                 </p>
               </div>
@@ -235,7 +236,7 @@ export default function DropZone({
                 type="button"
                 variant="secondary"
                 size="sm"
-                className="h-8 bg-background/90 shadow-sm"
+                className="bg-background/90 h-8 shadow-sm"
                 onClick={() => inputRef.current?.click()}
                 disabled={disabled || isUploading}
               >
@@ -246,7 +247,7 @@ export default function DropZone({
                 type="button"
                 variant="ghost"
                 size="sm"
-                className="h-8 bg-background/80 text-destructive hover:text-destructive"
+                className="bg-background/80 text-destructive hover:text-destructive h-8"
                 onClick={handleRemove}
                 disabled={disabled || isUploading}
               >
@@ -271,7 +272,7 @@ export default function DropZone({
 
       {showProgress ? (
         <div className="space-y-1">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>{isUploading ? 'Uploading…' : 'Upload complete'}</span>
             <span>{Math.round(displayPercentage)}%</span>
           </div>

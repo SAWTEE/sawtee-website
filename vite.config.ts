@@ -88,9 +88,10 @@ export default defineConfig(({ isSsrBuild }) => ({
               ],
             },
             workbox: {
-              // App shell + static media only. Other /build/assets/* use runtime CacheFirst.
-              // Avoids precaching large admin-only chunks (e.g. ContentEditor).
-              globPatterns: ['**/app-*.{js,css}', '**/*.{ico,png,svg,webp,woff2}'],
+              // Precache only the Vite app shell under public/build.
+              // Icons/offline live in public/ and are listed in additionalManifestEntries.
+              // Other /build/assets/* use runtime CacheFirst (avoids admin chunks like ContentEditor).
+              globPatterns: ['**/app-*.{js,css}'],
               globIgnores: ['**/*.{test,spec}-*.js', '**/Error.test-*.js'],
               // Avoid Workbox's terser pass (flaky under some CI/sandbox environments).
               mode: 'development',
@@ -166,6 +167,11 @@ export default defineConfig(({ isSsrBuild }) => ({
     alias: {
       '@': resolve(__dirname, 'resources/js'),
     },
+  },
+  build: {
+    // Admin TinyMCE (ContentEditor) is already a separate lazy chunk (~2MB).
+    // Raise the Rollup advisory so the expected large chunks do not look like a build failure.
+    chunkSizeWarningLimit: 2500,
   },
   optimizeDeps: {
     // Prebundle cobe (and framer-motion) so lazy MegaMenu → globe chunks

@@ -1,10 +1,10 @@
 import '../../../../css/our-team.css';
-import { mainWithPageLayout } from '@/lib/page-layouts';
 
 import { Fragment } from 'react';
 
 import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
+import { mainWithPageLayout } from '@/lib/page-layouts';
 import type { FrontendTeamsArchiveProps, Team } from '@/types';
 
 import TeamMember from '../TeamMember';
@@ -13,7 +13,7 @@ function TeamsArchive({
   category,
   teams,
   featured_image = null,
-  srcSet = null,
+  // srcSet = null,
   seo,
 }: FrontendTeamsArchiveProps) {
   const image =

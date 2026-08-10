@@ -64,7 +64,7 @@ export default function DatePicker({
           aria-describedby={ariaDescribedBy}
           data-empty={!selected}
           className={cn(
-            'w-full justify-start text-left font-normal data-[empty=true]:text-muted-foreground',
+            'data-[empty=true]:text-muted-foreground w-full justify-start text-left font-normal',
             'aria-invalid:border-destructive aria-invalid:ring-destructive/20',
             className
           )}

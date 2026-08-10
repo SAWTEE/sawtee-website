@@ -53,7 +53,12 @@ export default function CreateMenu({
         <DialogClose />
         <form onSubmit={submit} noValidate>
           <div className="space-y-4">
-            <FormField id="title" label="Menu Name" error={errors.title} required>
+            <FormField
+              id="title"
+              label="Menu Name"
+              error={errors.title}
+              required
+            >
               {field => (
                 <Input
                   {...field}

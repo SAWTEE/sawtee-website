@@ -66,7 +66,7 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
             <div className="mb-6 flex items-center gap-4 md:mb-8">
               <time
                 dateTime={year}
-                className="text-primary inline-flex min-w-18 items-center justify-center border border-[#006181]/25 bg-[#006181]/8 px-3 py-1.5 font-serif text-lg font-semibold tracking-tight text-[#006181] md:min-w-22 md:text-xl dark:border-[#006181]/40 dark:bg-[#006181]/15 dark:text-[#4da3c0]"
+                className="text-primary inline-flex min-w-18 items-center justify-center border border-[#006181]/25 bg-[#006181]/8 px-3 py-1.5 font-serif text-lg font-semibold tracking-tight md:min-w-22 md:text-xl dark:border-[#006181]/40 dark:bg-[#006181]/15 dark:text-[#4da3c0]"
               >
                 {year}
               </time>

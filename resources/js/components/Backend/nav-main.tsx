@@ -1,8 +1,9 @@
 'use client';
 
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 import type { DashboardMenuItem } from '@/components/Backend/app-sidebar';
+import InertiaLink from '@/components/shared/InertiaLink';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -22,7 +23,7 @@ export function NavMain({ menu }: { menu?: DashboardMenuItem[] }) {
           const active = routeLink.includes(url);
           const Icon = menuItem.icon;
           return (
-            <Link
+            <InertiaLink
               key={menuItem.name}
               href={route(menuItem.route)}
               preserveState
@@ -37,7 +38,7 @@ export function NavMain({ menu }: { menu?: DashboardMenuItem[] }) {
                   <span>{menuItem.name}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
-            </Link>
+            </InertiaLink>
           );
         })}
       </SidebarMenu>

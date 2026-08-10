@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react';
+import { Head, usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
 import type { SeoMeta } from '@/types';
@@ -12,20 +12,32 @@ const DEFAULT_DESCRIPTION =
 
 const DEFAULT_IMAGE = '/assets/logo-sawtee.webp';
 
-function toAbsoluteUrl(path: string | null | undefined): string {
+function toAbsoluteUrl(
+  path: string | null | undefined,
+  appUrl: string
+): string {
   if (!path) {
-    return toAbsoluteUrl(DEFAULT_IMAGE);
+    return toAbsoluteUrl(DEFAULT_IMAGE, appUrl);
   }
 
   if (/^https?:\/\//i.test(path)) {
     return path;
   }
 
-  if (typeof window !== 'undefined' && window.location?.origin) {
-    return new URL(path, window.location.origin).href;
+  const base =
+    appUrl ||
+    (typeof window !== 'undefined' ? window.location.origin : '') ||
+    '';
+
+  if (!base) {
+    return path;
   }
 
-  return path;
+  try {
+    return new URL(path, base.endsWith('/') ? base : `${base}/`).href;
+  } catch {
+    return path;
+  }
 }
 
 function withBrandTitle(title: string): string {
@@ -48,10 +60,12 @@ const WebsiteHead = ({
   jsonLd,
   children,
 }: WebsiteHeadProps) => {
+  const { app_url: appUrl = '' } = usePage().props as { app_url?: string };
+
   const resolvedTitle = title?.trim() || 'SAWTEE';
   const resolvedDescription = description?.trim() || DEFAULT_DESCRIPTION;
-  const resolvedImage = toAbsoluteUrl(image ?? DEFAULT_IMAGE);
-  const resolvedUrl = toAbsoluteUrl(url ?? '/');
+  const resolvedImage = toAbsoluteUrl(image ?? DEFAULT_IMAGE, appUrl);
+  const resolvedUrl = toAbsoluteUrl(url ?? '/', appUrl);
   const brandedTitle = withBrandTitle(resolvedTitle);
 
   return (
@@ -62,6 +76,8 @@ const WebsiteHead = ({
         name="description"
         content={resolvedDescription}
       />
+      <link head-key="canonical" rel="canonical" href={resolvedUrl} />
+
       <meta head-key="og:title" property="og:title" content={brandedTitle} />
       <meta head-key="og:type" property="og:type" content={type} />
       <meta
@@ -70,12 +86,34 @@ const WebsiteHead = ({
         content={resolvedDescription}
       />
       <meta head-key="og:image" property="og:image" content={resolvedImage} />
+      <meta
+        head-key="og:image:secure_url"
+        property="og:image:secure_url"
+        content={resolvedImage}
+      />
+      <meta
+        head-key="og:image:alt"
+        property="og:image:alt"
+        content={brandedTitle}
+      />
+      <meta
+        head-key="og:image:width"
+        property="og:image:width"
+        content="1200"
+      />
+      <meta
+        head-key="og:image:height"
+        property="og:image:height"
+        content="630"
+      />
       <meta head-key="og:url" property="og:url" content={resolvedUrl} />
       <meta
         head-key="og:site_name"
         property="og:site_name"
         content="SOUTH ASIA WATCH ON TRADE, ECONOMICS AND ENVIRONMENT"
       />
+      <meta head-key="og:locale" property="og:locale" content="en_US" />
+
       <meta
         head-key="twitter:card"
         name="twitter:card"
@@ -96,7 +134,13 @@ const WebsiteHead = ({
         name="twitter:image"
         content={resolvedImage}
       />
-      <meta name="twitter:site" content="@sawteebnp" />
+      <meta
+        head-key="twitter:image:alt"
+        name="twitter:image:alt"
+        content={brandedTitle}
+      />
+      <meta head-key="twitter:site" name="twitter:site" content="@sawteenp" />
+
       {jsonLd ? (
         <script type="application/ld+json">{JSON.stringify(jsonLd)}</script>
       ) : null}

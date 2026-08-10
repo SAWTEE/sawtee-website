@@ -21,6 +21,11 @@ createInertiaApp({
   },
   layout: name => resolveDefaultLayout(name),
   title: title => `${appName}  | ${title}`,
+  defaults: {
+    visitOptions: (_href, _options) => ({
+      viewTransition: true,
+    }),
+  },
   setup({ el, App, props }) {
     if (!el) {
       throw new Error('Inertia root element not found');

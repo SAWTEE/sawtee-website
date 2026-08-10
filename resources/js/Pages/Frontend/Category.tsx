@@ -1,11 +1,13 @@
 import type { ReactNode } from 'react';
-import { mainWithPageLayout } from '@/lib/page-layouts';
 
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
+import { SubscribeForm } from '@/components/Frontend/NewsletterCallout';
 import Pagination from '@/components/Frontend/Pagination';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
+import SubstackFeedWidget from '@/components/Frontend/SubstackFeedWidget';
+import { mainWithPageLayout } from '@/lib/page-layouts';
 import type {
   FrontendCategoryProps,
   Paginated,
@@ -51,8 +53,9 @@ function Category({
   infocus,
   sawteeInMedia,
   events,
+  substackFeed,
   featured_image,
-  srcSet,
+  // srcSet,
   seo,
   showSubscriptionBox = true,
 }: Props) {
@@ -60,6 +63,7 @@ function Category({
     category.slug.includes('infocus') || category.slug.includes('in-focus');
   const isMedia = category.slug.includes('sawtee-in-media');
   const isEvents = category.slug.includes('featured-events');
+  const isNewsletters = category.slug.includes('newsletters');
   const paginated = isPaginatedPosts(posts) ? posts : null;
 
   const renderArchiveComponent = (): ReactNode => {
@@ -72,7 +76,7 @@ function Category({
         return (
           <ResearchArchive posts={isResearchByYear(posts) ? posts : null} />
         );
-      case category.slug.includes('newsletters'):
+      case isNewsletters:
         return <NewsletterArchive posts={paginated?.data} />;
       case category.slug.includes('featured-events'):
         return <EventsArchive posts={paginated?.data} />;
@@ -117,10 +121,14 @@ function Category({
         </section>
         <aside className="sidebar col-span-1 lg:col-span-2">
           <div className="flex flex-col gap-12">
-            {showSubscriptionBox && (
-              <Glassbox className={'w-full p-0'}>
-                <SubscriptionCard />
-              </Glassbox>
+            {isNewsletters ? (
+              <SubstackFeedWidget posts={substackFeed} />
+            ) : (
+              showSubscriptionBox && (
+                <Glassbox className={'w-full p-0'}>
+                  <SubscriptionCard />
+                </Glassbox>
+              )
             )}
             {!isMedia && sawteeInMedia && (
               <SidebarWidget
@@ -145,6 +153,26 @@ function Category({
             )}
           </div>
         </aside>
+
+        {isNewsletters && (
+          <div className="col-span-full">
+            <div className="rounded-xl border border-[#006181]/12 bg-[linear-gradient(135deg,rgba(0,97,129,0.07),transparent_50%)] px-5 py-6 md:px-8 md:py-8 dark:border-[#006181]/25 dark:bg-[linear-gradient(135deg,rgba(0,97,129,0.16),transparent_50%)]">
+              <div className="mb-5 max-w-3xl">
+                <p className="text-primary mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
+                  Subscribe
+                </p>
+                <h3 className="text-secondary-foreground font-serif text-xl font-semibold tracking-tight md:text-2xl">
+                  Get the Monitor in your inbox
+                </h3>
+                <p className="text-secondary-foreground/75 mt-2 text-sm leading-relaxed">
+                  Join SAWTEE on Substack for new issues, commentary, and
+                  regional trade updates.
+                </p>
+              </div>
+              <SubscribeForm />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

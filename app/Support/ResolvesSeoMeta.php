@@ -35,12 +35,17 @@ class ResolvesSeoMeta
             ?? (is_object($model) && isset($model->resolved_meta_description) ? (string) $model->resolved_meta_description : null)
             ?? '';
 
+        $resolvedImage = $this->absoluteUrl($image);
+        if ($resolvedImage === null) {
+            $resolvedImage = $this->absoluteUrl('/assets/logo-sawtee.webp');
+        }
+
         return [
             'title' => $resolvedTitle,
             'description' => $resolvedDescription !== ''
                 ? $resolvedDescription
                 : 'South Asia Watch on Trade, Economics and Environment (SAWTEE) — research, dialogue, and advocacy on trade and development.',
-            'image' => $this->absoluteUrl($image ?? '/assets/logo-sawtee.webp'),
+            'image' => $resolvedImage,
             'url' => $url ?? url()->current(),
             'type' => $type,
             'jsonLd' => $jsonLd,

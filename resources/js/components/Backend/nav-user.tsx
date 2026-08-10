@@ -1,9 +1,9 @@
 'use client';
 
-import { Link } from '@inertiajs/react';
 import { CaretSortIcon } from '@radix-ui/react-icons';
 import { BadgeCheck, LogOut } from 'lucide-react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
@@ -80,13 +80,15 @@ export function NavUser({ user }: { user?: User }) {
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <BadgeCheck className="mr-2" />
-                <Link href={'/admin/profile'}>Profile</Link>
+                <InertiaLink href={'/admin/profile'} preserveState>
+                  Profile
+                </InertiaLink>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <LogOut className="mr-2" />
-                <Link href={route('admin.logout')} method="post">
+                <InertiaLink href={route('admin.logout')} method="post">
                   Log out
-                </Link>
+                </InertiaLink>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />

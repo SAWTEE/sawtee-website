@@ -1,8 +1,8 @@
-import { Link } from '@inertiajs/react';
 import { ChevronDownIcon } from 'lucide-react';
 import React from 'react';
 
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
+import InertiaLink from '@/components/shared/InertiaLink';
 import {
   Collapsible,
   CollapsibleContent,
@@ -27,7 +27,7 @@ const MenuLink = ({
   ...rest
 }: MenuLinkProps) => {
   return (
-    <Link
+    <InertiaLink
       href={url}
       className={cn(
         'text-foreground flex p-4 no-underline hover:underline',
@@ -39,7 +39,7 @@ const MenuLink = ({
         <span className="pr-2">{index ? `${index} |` : null}</span>
         {title}
       </p>
-    </Link>
+    </InertiaLink>
   );
 };
 

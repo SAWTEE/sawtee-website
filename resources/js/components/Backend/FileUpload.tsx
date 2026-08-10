@@ -1,10 +1,5 @@
 import { FileIcon, Trash2Icon, UploadIcon, XIcon } from 'lucide-react';
-import {
-  type ChangeEvent,
-  useId,
-  useRef,
-  useState,
-} from 'react';
+import { type ChangeEvent, useId, useRef, useState } from 'react';
 
 import InputError from '@/components/Backend/InputError';
 import { Button } from '@/components/ui/button';
@@ -12,9 +7,12 @@ import { Progress } from '@/components/ui/progress';
 import { humanFileSize } from '@/lib/form-errors';
 import { cn } from '@/lib/utils';
 
-export type UploadProgress = {
-  percentage?: number | null;
-} | null | undefined;
+export type UploadProgress =
+  | {
+      percentage?: number | null;
+    }
+  | null
+  | undefined;
 
 export type ExistingFile = {
   id?: number | string;
@@ -102,8 +100,7 @@ export default function FileUpload({
   const showProgress = percentage != null || (uploading && hasSelection);
   const displayPercentage = percentage ?? 0;
   const isUploading =
-    (uploading && hasSelection) ||
-    (percentage != null && percentage < 100);
+    (uploading && hasSelection) || (percentage != null && percentage < 100);
   const displayError = error || localError || undefined;
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -190,14 +187,14 @@ export default function FileUpload({
   return (
     <div className={cn('flex w-full flex-col gap-2', className)}>
       {label ? (
-        <label htmlFor={inputId} className="text-sm font-medium leading-none">
+        <label htmlFor={inputId} className="text-sm leading-none font-medium">
           {label}
         </label>
       ) : null}
 
       <div
         className={cn(
-          'rounded-lg border border-dashed border-border bg-muted/30 p-3 transition-colors',
+          'border-border bg-muted/30 rounded-lg border border-dashed p-3 transition-colors',
           'hover:bg-muted/50 dark:bg-muted/10',
           error && 'border-destructive',
           disabled && 'pointer-events-none opacity-60'
@@ -208,18 +205,18 @@ export default function FileUpload({
             htmlFor={inputId}
             className="flex cursor-pointer flex-col items-center justify-center gap-2 py-6 text-center"
           >
-            <div className="rounded-full bg-background p-2.5 shadow-sm ring-1 ring-border">
-              <UploadIcon className="h-4 w-4 text-muted-foreground" />
+            <div className="bg-background ring-border rounded-full p-2.5 shadow-sm ring-1">
+              <UploadIcon className="text-muted-foreground h-4 w-4" />
             </div>
             <div className="space-y-1">
-              <p className="text-sm text-muted-foreground">
-                <span className="font-medium text-foreground">Choose file</span>
+              <p className="text-muted-foreground text-sm">
+                <span className="text-foreground font-medium">Choose file</span>
                 {multiple ? 's' : ''} or drop here
               </p>
               {hint ? (
-                <p className="text-xs text-muted-foreground">{hint}</p>
+                <p className="text-muted-foreground text-xs">{hint}</p>
               ) : (
-                <p className="text-xs text-muted-foreground">{accept}</p>
+                <p className="text-muted-foreground text-xs">{accept}</p>
               )}
             </div>
           </label>
@@ -239,26 +236,28 @@ export default function FileUpload({
               return (
                 <li
                   key={`${nameLabel}-${index}`}
-                  className="flex items-center gap-3 rounded-md border border-border bg-background px-3 py-2"
+                  className="border-border bg-background flex items-center gap-3 rounded-md border px-3 py-2"
                 >
-                  <FileIcon className="h-4 w-4 shrink-0 text-muted-foreground" />
+                  <FileIcon className="text-muted-foreground h-4 w-4 shrink-0" />
                   <div className="min-w-0 flex-1">
                     {href ? (
                       <a
                         href={href}
                         target="_blank"
                         rel="noreferrer"
-                        className="block truncate text-sm font-medium text-primary hover:underline"
+                        className="text-primary block truncate text-sm font-medium hover:underline"
                       >
                         {nameLabel}
                       </a>
                     ) : (
-                      <p className="truncate text-sm font-medium">{nameLabel}</p>
+                      <p className="truncate text-sm font-medium">
+                        {nameLabel}
+                      </p>
                     )}
                     {size ? (
-                      <p className="text-xs text-muted-foreground">{size}</p>
+                      <p className="text-muted-foreground text-xs">{size}</p>
                     ) : hasExisting ? (
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-muted-foreground text-xs">
                         Currently uploaded
                       </p>
                     ) : null}
@@ -267,7 +266,7 @@ export default function FileUpload({
                     type="button"
                     variant="ghost"
                     size="icon"
-                    className="h-8 w-8 shrink-0 text-muted-foreground hover:text-destructive"
+                    className="text-muted-foreground hover:text-destructive h-8 w-8 shrink-0"
                     onClick={() => handleRemoveOne(index)}
                     aria-label={`Remove ${nameLabel}`}
                     disabled={disabled || isUploading}
@@ -321,7 +320,7 @@ export default function FileUpload({
 
       {showProgress ? (
         <div className="space-y-1">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="text-muted-foreground flex items-center justify-between text-xs">
             <span>{isUploading ? 'Uploading…' : 'Upload complete'}</span>
             <span>{Math.round(displayPercentage)}%</span>
           </div>

@@ -4,8 +4,8 @@ import Pagination from '@/components/Frontend/Pagination';
 import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
-import type { FrontendPublicationCategoryProps } from '@/types';
 import { mainWithPageLayout } from '@/lib/page-layouts';
+import type { FrontendPublicationCategoryProps } from '@/types';
 
 function PublicationCategory({
   category,

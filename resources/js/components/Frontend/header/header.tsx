@@ -1,6 +1,6 @@
-import { Link } from '@inertiajs/react';
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types';
 
@@ -69,9 +69,9 @@ export const SiteLogo = ({
 }) => {
   return (
     <div className="block shrink-0 text-center">
-      <Link href="/" aria-label="SAWTEE home">
+      <InertiaLink href="/" aria-label="SAWTEE home">
         <Logo src={src} />
-      </Link>
+      </InertiaLink>
       {established ? (
         <p className="text-xs font-semibold">Estd: {established}</p>
       ) : null}

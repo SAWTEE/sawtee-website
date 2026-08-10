@@ -1,4 +1,3 @@
-import { Link } from '@inertiajs/react';
 import { ChevronDown } from 'lucide-react';
 import {
   type ComponentPropsWithoutRef,
@@ -10,6 +9,7 @@ import {
   useState,
 } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -64,14 +64,14 @@ const MenuLink = forwardRef<HTMLAnchorElement, MenuLinkProps>(function MenuLink(
   }
 
   return (
-    <Link
+    <InertiaLink
       ref={ref}
       href={item.url}
       className={linkClass}
-      {...(slotProps as ComponentPropsWithoutRef<typeof Link>)}
+      {...(slotProps as ComponentPropsWithoutRef<typeof InertiaLink>)}
     >
       {item.title}
-    </Link>
+    </InertiaLink>
   );
 });
 MenuLink.displayName = 'MenuLink';

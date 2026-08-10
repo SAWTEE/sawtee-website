@@ -97,7 +97,10 @@ function CreateSlideForm({
               )}
             </FormField>
 
-            <Field data-invalid={(errors as any).image || undefined} className="gap-2">
+            <Field
+              data-invalid={(errors as any).image || undefined}
+              className="gap-2"
+            >
               <FieldLabel htmlFor="image">Slide Image</FieldLabel>
               <DropZone
                 htmlFor={'image'}

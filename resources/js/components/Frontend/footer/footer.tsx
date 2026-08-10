@@ -1,4 +1,3 @@
-import { Link } from '@inertiajs/react';
 import {
   ChevronsRight,
   Mailbox,
@@ -9,6 +8,7 @@ import {
 } from 'lucide-react';
 import { useState } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import {
   Tooltip,
   TooltipContent,
@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 
 import { SocialMenu } from '../header/social-menu';
 import { MapModel } from '../MapModal';
-import { SubscribeForm } from '../NewsletterCallout';
+// import { SubscribeForm } from '../NewsletterCallout';
 
 export default function Footer({
   menu = [],
@@ -35,7 +35,7 @@ export default function Footer({
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 py-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-8">
           <div className="col-span-full flex w-full min-w-0 flex-col gap-5 sm:col-span-2 md:col-span-3 lg:col-span-2 lg:mb-0">
-            <Link
+            <InertiaLink
               href="/"
               className="mx-auto flex w-full justify-center lg:mx-0 lg:justify-start"
             >
@@ -46,10 +46,37 @@ export default function Footer({
                 height={32}
                 className="h-8 w-32 object-contain"
               />
-            </Link>
+            </InertiaLink>
 
-            <div className="mx-auto flex w-full max-w-md flex-col items-center justify-center gap-3 lg:mx-0 lg:max-w-none lg:items-start">
-              <SubscribeForm />
+            {/* SubscribeForm removed — home callout + archive sidebars already cover signup. */}
+            <div className="mx-auto flex w-full max-w-md flex-col items-center gap-3 text-center lg:mx-0 lg:max-w-none lg:items-start lg:text-left">
+              <p className="text-secondary-foreground/85 text-sm leading-relaxed">
+                Research, advocacy, and capacity building on trade, economics,
+                and environment across South Asia.
+              </p>
+              <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm lg:justify-start">
+                <InertiaLink
+                  href="/about"
+                  className="text-primary font-medium underline-offset-2 hover:underline"
+                >
+                  About SAWTEE
+                </InertiaLink>
+                <InertiaLink
+                  href="/contact"
+                  className="text-primary font-medium underline-offset-2 hover:underline"
+                >
+                  Contact
+                </InertiaLink>
+                <a
+                  href="https://sawteenp.substack.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary font-medium underline-offset-2 hover:underline"
+                >
+                  Substack
+                </a>
+              </div>
+              {/* <SubscribeForm /> */}
             </div>
           </div>
           {Object.entries(menu ?? []).map(([key, item]) => {
@@ -74,7 +101,7 @@ export default function Footer({
                                   >
                                     <button
                                       type="button"
-                                      className="min-w-0 cursor-pointer text-left break-words hyphens-auto"
+                                      className="wrap-break-words min-w-0 cursor-pointer text-left hyphens-auto"
                                       onClick={() => setMapModal(!mapModal)}
                                     >
                                       {title}
@@ -97,7 +124,7 @@ export default function Footer({
                             <MenuItem key={title}>
                               <MailOpen className="h-4 w-4 shrink-0" />
                               <a
-                                className="min-w-0 break-words"
+                                className="wrap-break-words min-w-0"
                                 href={`mailto:${url}`}
                               >
                                 {title}
@@ -110,7 +137,7 @@ export default function Footer({
                             <MenuItem key={title}>
                               <PhoneIncoming className="h-4 w-4 shrink-0" />
                               <a
-                                className="min-w-0 break-words"
+                                className="wrap-break-words min-w-0"
                                 href={`tel:${url}`}
                               >
                                 {title}
@@ -123,7 +150,7 @@ export default function Footer({
                             <MenuItem key={title}>
                               <PhoneOff className="h-4 w-4 shrink-0" />
                               <a
-                                className="min-w-0 break-words"
+                                className="wrap-break-words min-w-0"
                                 href={`tel:${url}`}
                               >
                                 {title}
@@ -135,7 +162,7 @@ export default function Footer({
                           return (
                             <MenuItem key={title}>
                               <Mailbox className="h-4 w-4 shrink-0" />
-                              <span className="min-w-0 break-words">
+                              <span className="wrap-break-words min-w-0">
                                 {title}
                               </span>
                             </MenuItem>
@@ -153,14 +180,17 @@ export default function Footer({
                                 target="_blank"
                                 referrerPolicy="no-referrer"
                                 rel="noopener noreferrer"
-                                className="min-w-0 break-words"
+                                className="wrap-break-words min-w-0"
                               >
                                 {title}
                               </a>
                             ) : (
-                              <Link href={url} className="min-w-0 break-words">
+                              <InertiaLink
+                                className="wrap-break-words min-w-0"
+                                href={url}
+                              >
                                 {title}
-                              </Link>
+                              </InertiaLink>
                             )}
                           </MenuItem>
                         );
@@ -173,7 +203,7 @@ export default function Footer({
         <div className="border-t border-gray-200/80 py-6 sm:py-7">
           <div className="flex flex-col items-center justify-center gap-4 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
             <span className="text-secondary-foreground text-sm leading-relaxed">
-              ©<Link href="/">{' SAWTEE'}</Link>{' '}
+              ©<InertiaLink href="/">{' SAWTEE'}</InertiaLink>{' '}
               {new Date().getFullYear() + ' All rights reserved. '}
             </span>
             <SocialMenu

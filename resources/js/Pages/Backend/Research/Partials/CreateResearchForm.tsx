@@ -195,7 +195,12 @@ export default function CreateResearchForm() {
             </AccordionItem>
           </Accordion>
 
-          <FormField id="year" label="Year" error={errors.year} className="mx-2">
+          <FormField
+            id="year"
+            label="Year"
+            error={errors.year}
+            className="mx-2"
+          >
             {field => (
               <Input
                 {...field}

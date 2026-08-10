@@ -138,7 +138,12 @@ export default function CreatePostForm({
             <FieldError>{errors.content}</FieldError>
           </Field>
 
-          <FormField id="excerpt" label="Excerpt" error={errors.excerpt} required>
+          <FormField
+            id="excerpt"
+            label="Excerpt"
+            error={errors.excerpt}
+            required
+          >
             {field => (
               <Textarea
                 {...field}

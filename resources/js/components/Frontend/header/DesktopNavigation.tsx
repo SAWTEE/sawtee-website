@@ -1,7 +1,8 @@
-import { Link, usePage } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -101,7 +102,7 @@ export default function DesktopNavigation({
                   onPointerEnter={() => activate(key)}
                   onFocus={() => activate(key)}
                 >
-                  <Link href={menuItem.url}>
+                  <InertiaLink href={menuItem.url}>
                     <NavigationMenuTrigger
                       className={cn(topLevelNavItemClassName)}
                       hasChildren={nested}
@@ -109,7 +110,7 @@ export default function DesktopNavigation({
                       {menuItem.title}
                       <FocusHighlight active={highlighted} />
                     </NavigationMenuTrigger>
-                  </Link>
+                  </InertiaLink>
                 </NavigationMenuLink>
                 <NavigationMenuContent className="z-40">
                   <MegaMenu item={menuItem} experts={experts} />
@@ -154,13 +155,13 @@ export default function DesktopNavigation({
                 onPointerEnter={() => activate(key)}
                 onFocus={() => activate(key)}
               >
-                <Link
+                <InertiaLink
                   href={menuItem.url}
                   className={cn(topLevelNavItemClassName)}
                 >
                   {menuItem.title}
                   <FocusHighlight active={highlighted} />
-                </Link>
+                </InertiaLink>
               </NavigationMenuLink>
             </NavigationMenuItem>
           );

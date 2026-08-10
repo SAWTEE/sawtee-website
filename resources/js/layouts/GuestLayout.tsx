@@ -1,8 +1,8 @@
-import { Link } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
 import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
 import ApplicationLogo from '@/components/shared/ApplicationLogo';
+import InertiaLink from '@/components/shared/InertiaLink';
 
 type GuestLayoutProps = { children?: ReactNode };
 
@@ -13,9 +13,9 @@ export default function Guest({ children }: GuestLayoutProps) {
         <ModeToggle />
       </div>
       <div>
-        <Link href="/">
+        <InertiaLink href="/">
           <ApplicationLogo className="h-20 w-20" />
-        </Link>
+        </InertiaLink>
       </div>
 
       <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-gray-800">

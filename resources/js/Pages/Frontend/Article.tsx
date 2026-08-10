@@ -6,6 +6,7 @@ import WebsiteHead from '@/components/Frontend/Head';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostMeta from '@/components/Frontend/post/post-meta';
 import SimpleList from '@/components/Frontend/SimpleList';
+import SocialShare from '@/components/Frontend/SocialShare';
 import { Button } from '@/components/ui/button';
 import { formatDate } from '@/lib/helpers';
 import type { FrontendArticleProps } from '@/types';
@@ -143,7 +144,11 @@ export default function Article({
                   }}
                 />
               </div>
-              <div className="sharethis-sticky-share-buttons"></div>
+              <SocialShare
+                className="mt-8"
+                title={title}
+                summary={article.excerpt ?? subtitle ?? ''}
+              />
             </div>
 
             {hasRelated && (

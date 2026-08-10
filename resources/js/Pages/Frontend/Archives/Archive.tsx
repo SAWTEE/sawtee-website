@@ -3,9 +3,9 @@ import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
+import { mainWithPageLayout } from '@/lib/page-layouts';
 import DefaultArchive from '@/Pages/Frontend/Archives/DefaultArchive';
 import type { FrontendArchiveProps } from '@/types';
-import { mainWithPageLayout } from '@/lib/page-layouts';
 
 type Props = FrontendArchiveProps & { showSubscriptionBox?: boolean };
 

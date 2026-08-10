@@ -34,7 +34,7 @@ export const features = [
 export const socialMenu = [
   {
     name: 'twitter',
-    link: 'https://www.twitter.com/SAWTEENP/',
+    link: 'https://x.com/sawteenp',
   },
   {
     name: 'facebook',

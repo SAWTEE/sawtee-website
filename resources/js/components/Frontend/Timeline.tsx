@@ -1,49 +1,95 @@
-import { formatShortMonthDay } from '@/lib/helpers';
-import type { Post } from '@/types';
+import { FileText } from 'lucide-react';
 
-import ListItem from '../shared/ListItem';
+import { formatShortMonthDay } from '@/lib/helpers';
+import { cn, htmlToText } from '@/lib/utils';
+import type { Post } from '@/types';
 
 type VerticalTimelineProps = {
   items?: Post[] | null;
+  className?: string;
+  emptyMessage?: string;
 };
 
 export default function VerticalTimeline({
   items = null,
+  className = '',
+  emptyMessage = 'No items found.',
 }: VerticalTimelineProps) {
-  if (!items) {
-    return null;
+  if (!items?.length) {
+    return (
+      <p className="text-muted-foreground py-8 text-center text-sm">
+        {emptyMessage}
+      </p>
+    );
   }
 
   return (
-    <div className={'-my-6'}>
-      {items.map(item => {
-        const file = (item.media ?? []).filter(
+    <ol className={cn('relative -my-2', className)}>
+      {items.map((item, index) => {
+        const file = (item.media ?? []).find(
           m => m.collection_name === 'post-files'
-        )[0];
+        );
+        const href = file?.original_url || null;
+        const excerpt =
+          htmlToText(item.excerpt)?.replace(/\s+/g, ' ').trim() ?? '';
+        const showExcerpt = excerpt.length > 0 && !/^[.\u2026]+$/.test(excerpt);
+        const isLast = index === items.length - 1;
+
         return (
-          <div key={item.id} className="group relative py-6 pl-8 sm:pl-32">
-            <div className="before:bg-theme-200 after:border-theme-50 after:bg-theme-600 dark:before:bg-theme-700 dark:after:border-theme-900 dark:after:bg-theme-400 mb-1 flex flex-col items-center before:absolute before:left-2 before:h-full before:-translate-x-1/2 before:translate-y-3 before:self-start before:px-px group-last:before:hidden after:absolute after:left-2 after:box-content after:h-3 after:w-3 after:-translate-x-1/2 after:translate-y-1.5 after:rounded-full after:border-4 sm:flex-row sm:before:left-0 sm:before:ml-[6.5rem] sm:after:left-0 sm:after:ml-[6.5rem]">
-              <time className="bg-theme-100 text-theme-700 dark:bg-theme-800 dark:text-theme-200 left-0 mb-3 inline-flex h-6 w-20 translate-y-0.5 items-center justify-center rounded-full px-2 text-xs font-semibold uppercase sm:absolute sm:mb-0">
-                {formatShortMonthDay(
-                  item.published_at ? new Date(item.published_at) : new Date()
-                )}
-              </time>
-              <ListItem className="mx-0 max-w-md">
+          <li key={item.id} className="group relative py-6 pl-8 sm:pl-32">
+            {!isLast ? (
+              <span
+                aria-hidden
+                className="bg-theme-200 dark:bg-theme-700 absolute top-10 left-[0.45rem] h-[calc(100%-0.5rem)] w-px sm:left-[6.85rem]"
+              />
+            ) : null}
+
+            <span
+              aria-hidden
+              className="border-theme-50 bg-theme-600 dark:border-theme-900 dark:bg-theme-400 absolute top-8 left-0 box-content h-3 w-3 -translate-x-1/2 rounded-full border-4 sm:left-[6.5rem] sm:ml-0"
+            />
+
+            <time className="bg-theme-100 text-theme-700 dark:bg-theme-800 dark:text-theme-200 left-0 mb-3 inline-flex h-6 min-w-20 translate-y-0.5 items-center justify-center rounded-full px-2.5 text-[0.7rem] font-semibold tracking-wide uppercase sm:absolute sm:mb-0">
+              {formatShortMonthDay(
+                item.published_at ? new Date(item.published_at) : new Date()
+              )}
+            </time>
+
+            <div className="bg-bgDarker/80 dark:bg-card/40 rounded-xl border border-[#006181]/10 p-4 shadow-sm transition duration-200 group-hover:border-[#006181]/25 group-hover:shadow-md dark:border-[#006181]/20">
+              {href ? (
                 <a
+                  href={href}
                   target="_blank"
-                  href={file ? file.original_url : ''}
                   rel="noopener noreferrer"
+                  className="block"
                 >
-                  <h3 className="md:text-md text-secondary-foreground group-hover:text-primary/80 dark:group-hover:text-secondary-foreground/80 font-serif text-sm leading-5 underline underline-offset-2 group-hover:underline-offset-4 lg:text-lg">
+                  <h3 className="text-secondary-foreground group-hover:text-primary font-serif text-sm leading-snug font-semibold tracking-tight underline-offset-4 transition group-hover:underline md:text-base lg:text-lg">
                     {item.title}
                   </h3>
                 </a>
-              </ListItem>
+              ) : (
+                <h3 className="text-secondary-foreground font-serif text-sm leading-snug font-semibold tracking-tight md:text-base lg:text-lg">
+                  {item.title}
+                </h3>
+              )}
+
+              {showExcerpt ? (
+                <p className="text-secondary-foreground/70 mt-2 line-clamp-3 text-sm leading-relaxed">
+                  {excerpt}
+                </p>
+              ) : null}
+
+              {href ? (
+                <p className="text-primary mt-3 inline-flex items-center gap-1.5 text-xs font-medium">
+                  <FileText className="h-3.5 w-3.5" aria-hidden />
+                  Open PDF
+                  <span className="sr-only"> (opens in a new tab)</span>
+                </p>
+              ) : null}
             </div>
-            <div className="text-slate-500">{item.excerpt}</div>
-          </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }

@@ -2,8 +2,8 @@ import WebsiteHead from '@/components/Frontend/Head';
 import Section from '@/components/Frontend/section';
 import { TableOfContents } from '@/components/Frontend/TableOfContents';
 import { Button } from '@/components/ui/button';
-import type { FrontendTradeInsightProps } from '@/types';
 import { mainWithPageLayout } from '@/lib/page-layouts';
+import type { FrontendTradeInsightProps } from '@/types';
 
 function SingleTradeInsight({
   tradeInsightVolume,

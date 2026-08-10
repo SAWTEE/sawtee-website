@@ -17,14 +17,14 @@ function Progress({ className, value = 0, ...props }: ProgressProps) {
       aria-valuenow={Math.round(percentage)}
       data-slot="progress"
       className={cn(
-        'relative h-2 w-full overflow-hidden rounded-full bg-primary/15',
+        'bg-primary/15 relative h-2 w-full overflow-hidden rounded-full',
         className
       )}
       {...props}
     >
       <div
         data-slot="progress-indicator"
-        className="h-full w-full flex-1 bg-primary transition-transform duration-300 ease-out"
+        className="bg-primary h-full w-full flex-1 transition-transform duration-300 ease-out"
         style={{ transform: `translateX(-${100 - percentage}%)` }}
       />
     </div>

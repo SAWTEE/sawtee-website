@@ -4,6 +4,7 @@ import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
+import SocialShare from '@/components/Frontend/SocialShare';
 import type { Post } from '@/types';
 
 const calculateReadingTime = (
@@ -116,7 +117,11 @@ export default function PostLayout({
             >
               {children}
             </div>
-            <div className="sharethis-sticky-share-buttons"></div>
+            <SocialShare
+              className="mt-8"
+              title={post.title}
+              summary={post.excerpt ?? ''}
+            />
           </div>
 
           {hasRelated && (

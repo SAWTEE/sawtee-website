@@ -21,7 +21,7 @@ export default function InputError({
     <p
       {...props}
       role="alert"
-      className={`text-sm text-destructive ${className}`}
+      className={`text-destructive text-sm ${className}`}
     >
       {content}
     </p>

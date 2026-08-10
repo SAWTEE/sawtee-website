@@ -1,9 +1,9 @@
-import { Link } from '@inertiajs/react';
 import type { ComponentProps, ComponentType } from 'react';
 
 import { NavMain } from '@/components/Backend/nav-main';
 import { NavUser } from '@/components/Backend/nav-user';
 import ApplicationLogo from '@/components/shared/ApplicationLogo';
+import InertiaLink from '@/components/shared/InertiaLink';
 import {
   Sidebar,
   SidebarContent,
@@ -37,15 +37,16 @@ export function AppSidebar({ user, menu, ...props }: AppSidebarProps) {
               asChild
               className="data-[slot=sidebar-menu-button]:p-1.5!"
             >
-              <Link
+              <InertiaLink
                 href="/admin/dashboard"
                 prefetch="mount"
+                preserveState
                 cacheTags={['admin-nav', 'dashboard']}
                 className="flex items-center gap-2"
               >
                 <ApplicationLogo className="size-5" />
                 <span className="text-base font-semibold">SAWTEE CMS</span>
-              </Link>
+              </InertiaLink>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -1,7 +1,8 @@
+import '@/lib/tinymce-bundle';
+
 import { Editor } from '@tinymce/tinymce-react';
 import { useRef, useState } from 'react';
 
-import '@/lib/tinymce-bundle';
 import { useTheme } from '../shared/theme-provider';
 
 const FONT_STACK =

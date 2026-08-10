@@ -1,8 +1,8 @@
-import { Link } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { lazy, Suspense } from 'react';
 
 import Glassbox from '@/components/Frontend/Glassbox';
+import InertiaLink from '@/components/shared/InertiaLink';
 import { useTheme } from '@/components/shared/theme-provider';
 import { aboutMenuData } from '@/lib/data';
 import type { MenuItem } from '@/types';
@@ -60,12 +60,12 @@ const AboutMegaMenu = ({ item, introText, ...rest }: MegaSectionProps) => {
                 variants={ListVariants}
                 className="lg:text-md relative cursor-pointer pb-4 text-left text-sm font-medium"
               >
-                <Link
+                <InertiaLink
                   className="text-secondary-foreground font-sans"
                   href={child.url}
                 >
                   {child.title}
-                </Link>
+                </InertiaLink>
               </motion.li>
             );
           })}
@@ -95,12 +95,12 @@ const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
     >
       {children.map(section => (
         <li key={section.title} className="min-w-0 space-y-4 text-left">
-          <Link
+          <InertiaLink
             href={section.url}
             className="text-secondary-foreground font-serif text-xl no-underline md:text-2xl"
           >
             {section.title}
-          </Link>
+          </InertiaLink>
 
           {(section.children ?? []).length > 0 ? (
             <motion.ul
@@ -115,12 +115,12 @@ const OurWorkMegaMenu = ({ item, ...rest }: MegaSectionProps) => {
                   variants={ListVariants}
                   className="md:text-md relative cursor-pointer py-1.5 text-sm"
                 >
-                  <Link
+                  <InertiaLink
                     href={child.url}
                     className="text-secondary-foreground no-underline"
                   >
                     {child.title}
-                  </Link>
+                  </InertiaLink>
                 </motion.li>
               ))}
             </motion.ul>

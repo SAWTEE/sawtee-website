@@ -4,6 +4,7 @@ import type { ComponentType, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 import { resolveDefaultLayout } from '@/lib/resolve-layout';
+
 import { route as ziggyRoute } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';

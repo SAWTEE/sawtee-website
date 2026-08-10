@@ -1,6 +1,6 @@
-import { Link } from '@inertiajs/react';
 import type { ComponentPropsWithoutRef } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import type { Category } from '@/types';
@@ -36,9 +36,9 @@ export const PostCategories = ({
       )}
       {...props}
     >
-      <Link href={`/category/${category.slug}`}>
+      <InertiaLink href={`/category/${category.slug}`}>
         <PostCategory>{category.name}</PostCategory>
-      </Link>
+      </InertiaLink>
     </div>
   );
 };

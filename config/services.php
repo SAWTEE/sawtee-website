@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'substack' => [
+        'publication_url' => env('SUBSTACK_PUBLICATION_URL', 'https://sawteenp.substack.com'),
+        'archive_url' => env('SUBSTACK_ARCHIVE_URL'),
+        'embed_url' => env('SUBSTACK_EMBED_URL'),
+    ],
+
 ];

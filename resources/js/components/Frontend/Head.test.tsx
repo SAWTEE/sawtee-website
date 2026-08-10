@@ -12,6 +12,11 @@ vi.mock('@inertiajs/react', () => ({
     latestHeadChildren = children;
     return <div data-testid="inertia-head" />;
   },
+  usePage: () => ({
+    props: {
+      app_url: 'https://example.test',
+    },
+  }),
 }));
 
 function collectText(node: ReactNode, into: string[] = []): string[] {
@@ -63,7 +68,8 @@ describe('WebsiteHead', () => {
     expect(text).toContain('Trade Insight');
     expect(text).toContain('A short summary');
     expect(text).toContain('og:title');
-    expect(text).toContain('/assets/logo-sawtee.webp');
+    expect(text).toContain('https://example.test/assets/logo-sawtee.webp');
+    expect(text).toContain('@sawteenp');
   });
 
   it('embeds JSON-LD when provided', () => {

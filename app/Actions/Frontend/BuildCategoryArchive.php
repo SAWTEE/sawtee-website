@@ -10,13 +10,17 @@ use App\Models\Research;
 use App\Models\Team;
 use App\Support\MediaConversionUrl;
 use App\Support\ResolvesSeoMeta;
+use App\Support\SubstackFeed;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class BuildCategoryArchive
 {
-    public function __construct(protected ResolvesSeoMeta $seo) {}
+    public function __construct(
+        protected ResolvesSeoMeta $seo,
+        protected SubstackFeed $substackFeed,
+    ) {}
 
     public function handle(
         Request $request,
@@ -311,7 +315,7 @@ class BuildCategoryArchive
             ->orderByDesc('id')
             ->paginate(10);
 
-        return Inertia::render('Frontend/Category', [
+        $payload = [
             'category' => $category,
             'posts' => $posts,
             'infocus' => $infocus,
@@ -320,7 +324,13 @@ class BuildCategoryArchive
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
-        ]);
+        ];
+
+        if (str_contains((string) $category->slug, 'newsletters')) {
+            $payload['substackFeed'] = $this->substackFeed->recent(6);
+        }
+
+        return Inertia::render('Frontend/Category', $payload);
     }
 
     protected function renderPost($category, $segments): Response

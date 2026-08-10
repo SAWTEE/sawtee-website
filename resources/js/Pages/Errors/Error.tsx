@@ -228,9 +228,7 @@ function PublicErrorContent({
   isReload,
   enter,
 }: ContentProps & {
-  enter: (
-    delay?: number
-  ) =>
+  enter: (delay?: number) =>
     | {
         initial: { opacity: number; y: number };
         animate: { opacity: number; y: number };
@@ -344,7 +342,7 @@ function PublicErrorContent({
             <Button
               asChild
               variant="outline"
-              className="h-11 rounded-md border-[#006181]/25 bg-background/70 hover:bg-[#006181]/6 dark:border-[#006181]/40 dark:bg-black/30 dark:hover:bg-[#006181]/15"
+              className="bg-background/70 h-11 rounded-md border-[#006181]/25 hover:bg-[#006181]/6 dark:border-[#006181]/40 dark:bg-black/30 dark:hover:bg-[#006181]/15"
             >
               <Link href="/search">Search the site</Link>
             </Button>

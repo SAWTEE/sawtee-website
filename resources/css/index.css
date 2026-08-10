@@ -487,3 +487,48 @@ pre {
     animation-play-state: paused;
   }
 }
+
+/*
+  Inertia View Transitions (enabled via createInertiaApp defaults.visitOptions).
+  Browsers without the API fall back to a normal Instant visit swap.
+*/
+@keyframes inertia-vt-fade-out {
+  to {
+    opacity: 0;
+  }
+}
+@keyframes inertia-vt-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes inertia-vt-slide-out {
+  to {
+    transform: translateX(-12px);
+  }
+}
+@keyframes inertia-vt-slide-in {
+  from {
+    transform: translateX(12px);
+  }
+}
+
+::view-transition-old(root) {
+  animation:
+    90ms cubic-bezier(0.4, 0, 1, 1) both inertia-vt-fade-out,
+    220ms cubic-bezier(0.4, 0, 0.2, 1) both inertia-vt-slide-out;
+}
+
+::view-transition-new(root) {
+  animation:
+    180ms cubic-bezier(0, 0, 0.2, 1) 70ms both inertia-vt-fade-in,
+    220ms cubic-bezier(0.4, 0, 0.2, 1) both inertia-vt-slide-in;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+

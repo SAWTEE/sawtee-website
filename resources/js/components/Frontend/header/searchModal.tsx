@@ -37,6 +37,7 @@ export default function SearchModal() {
 
     router.visit(`/search`, {
       data: { query: term, page: 1 },
+      viewTransition: true,
     });
     setIsOpen(false);
   }

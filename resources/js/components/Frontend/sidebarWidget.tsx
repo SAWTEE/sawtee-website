@@ -1,11 +1,9 @@
-import { Link } from '@inertiajs/react';
-
+import ExploreButton from '@/components/Frontend/ExploreButton';
+import Glassbox from '@/components/Frontend/Glassbox';
+import SimpleList from '@/components/Frontend/SimpleList';
+import InertiaLink from '@/components/shared/InertiaLink';
 import { formatDate } from '@/lib/helpers';
 import type { Post } from '@/types';
-
-import ExploreButton from './ExploreButton';
-import Glassbox from './Glassbox';
-import SimpleList from './SimpleList';
 
 type SidebarWidgetProps = {
   array?: Post[] | null;
@@ -28,14 +26,14 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
         {array.map(post => {
           return (
             <li className="group mb-5 last:mb-3" key={post.id}>
-              <Link
+              <InertiaLink
                 className="text-secondary-foreground no-underline group-hover:text-[#006181] dark:group-hover:text-[#4da3c0]"
                 href={`/category/${post.category?.slug}/${post.slug}`}
               >
                 <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">
                   {post.title}
                 </p>
-              </Link>
+              </InertiaLink>
               {post.published_at && (
                 <p className="text-muted-foreground mt-1.5 text-xs">
                   {formatDate(post.published_at)}

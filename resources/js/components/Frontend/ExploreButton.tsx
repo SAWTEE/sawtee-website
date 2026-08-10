@@ -1,7 +1,7 @@
-import { Link } from '@inertiajs/react';
 import { ArrowRightIcon, ChevronRightIcon } from 'lucide-react';
 import { type ComponentProps, useState } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import { cn } from '@/lib/utils';
 
 type ExploreButtonProps = {
@@ -11,7 +11,7 @@ type ExploreButtonProps = {
   className?: string;
   /** Native HTML title/tooltip (e.g. full label when truncated). */
   title?: string;
-} & Omit<ComponentProps<typeof Link>, 'href' | 'className' | 'children'>;
+} & Omit<ComponentProps<typeof InertiaLink>, 'href' | 'className' | 'children'>;
 
 const ExploreButton = ({
   text = 'Explore All',
@@ -24,7 +24,7 @@ const ExploreButton = ({
   const target = link ?? href ?? '#';
 
   return (
-    <Link
+    <InertiaLink
       href={target}
       className={cn(
         'inline-flex max-w-full min-w-0 items-center gap-1 rounded-md py-2 text-sm font-medium text-[#006181] underline underline-offset-2 hover:text-[#006181]/80 hover:underline-offset-4 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80',
@@ -40,7 +40,7 @@ const ExploreButton = ({
       ) : (
         <ChevronRightIcon className="h-4 w-4 shrink-0" aria-hidden />
       )}
-    </Link>
+    </InertiaLink>
   );
 };
 

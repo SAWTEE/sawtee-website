@@ -253,6 +253,7 @@ export default function SearchPage({
       data,
       preserveState: true,
       preserveScroll: true,
+      viewTransition: true,
       onFinish: () => setIsSearching(false),
     });
   }
@@ -309,227 +310,224 @@ export default function SearchPage({
       />
 
       <div className="pb-16 md:pb-24">
-          <header className="relative overflow-hidden border-b border-[#006181]/12 dark:border-[#006181]/25">
-            <div
-              className="absolute inset-0 -z-[1] bg-[url(/assets/pattern-tile-green.svg)] opacity-40 dark:bg-[url(/assets/pattern-tile-light-fade.svg)] dark:opacity-30"
-              style={{
-                backgroundSize: '900px',
-                backgroundPosition: 'top center',
-              }}
-              aria-hidden
-            />
-            <div className="from-background via-background/90 absolute inset-0 -z-[1] bg-linear-to-b to-transparent dark:from-black/80 dark:via-black/70" />
+        <header className="relative overflow-hidden border-b border-[#006181]/12 dark:border-[#006181]/25">
+          <div
+            className="absolute inset-0 -z-[1] bg-[url(/assets/pattern-tile-green.svg)] opacity-40 dark:bg-[url(/assets/pattern-tile-light-fade.svg)] dark:opacity-30"
+            style={{
+              backgroundSize: '900px',
+              backgroundPosition: 'top center',
+            }}
+            aria-hidden
+          />
+          <div className="from-background via-background/90 absolute inset-0 -z-[1] bg-linear-to-b to-transparent dark:from-black/80 dark:via-black/70" />
 
-            <div className="relative mx-auto max-w-3xl px-4 pt-14 pb-10 md:px-6 md:pt-20 md:pb-14">
-              <p className="mb-3 text-xs font-medium tracking-[0.18em] text-[#006181] uppercase dark:text-[#4da3c0]">
-                Search
-              </p>
-              <h1 className="text-primary font-serif text-3xl font-semibold tracking-tight md:text-4xl xl:text-5xl dark:text-zinc-100">
-                {heading}
-              </h1>
-              <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-relaxed md:text-base">
-                {subheading}
-              </p>
+          <div className="relative mx-auto max-w-3xl px-4 pt-14 pb-10 md:px-6 md:pt-20 md:pb-14">
+            <p className="mb-3 text-xs font-medium tracking-[0.18em] text-[#006181] uppercase dark:text-[#4da3c0]">
+              Search
+            </p>
+            <h1 className="text-primary font-serif text-3xl font-semibold tracking-tight md:text-4xl xl:text-5xl dark:text-zinc-100">
+              {heading}
+            </h1>
+            <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-relaxed md:text-base">
+              {subheading}
+            </p>
 
-              <form
-                onSubmit={handleSubmit}
-                className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-stretch"
-                role="search"
+            <form
+              onSubmit={handleSubmit}
+              className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-stretch"
+              role="search"
+            >
+              <label htmlFor={inputId} className="sr-only">
+                Search query
+              </label>
+              <div className="relative min-w-0 flex-1">
+                <SearchIcon
+                  className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#006181] dark:text-[#4da3c0]"
+                  aria-hidden
+                />
+                <Input
+                  id={inputId}
+                  type="search"
+                  autoComplete="off"
+                  placeholder="Search the site…"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  className={cn(
+                    '[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
+                    'bg-background/80 h-12 w-full appearance-none rounded-md border border-[#006181]/20 py-3 pr-4 pl-10 text-base shadow-none backdrop-blur-sm',
+                    'placeholder:text-muted-foreground/80',
+                    'focus-visible:border-[#006181]/45 focus-visible:ring-[#006181]/30',
+                    'dark:border-[#006181]/35 dark:bg-black/40 dark:focus-visible:border-[#006181]/55'
+                  )}
+                />
+              </div>
+              <Button
+                type="submit"
+                disabled={isSearching}
+                className="h-12 shrink-0 rounded-md bg-[#006181] px-6 text-sm font-medium text-white hover:bg-[#004d66] disabled:opacity-70 dark:bg-[#006181] dark:hover:bg-[#0a7a9c]"
               >
-                <label htmlFor={inputId} className="sr-only">
-                  Search query
-                </label>
-                <div className="relative min-w-0 flex-1">
-                  <SearchIcon
-                    className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#006181] dark:text-[#4da3c0]"
-                    aria-hidden
-                  />
-                  <Input
-                    id={inputId}
-                    type="search"
-                    autoComplete="off"
-                    placeholder="Search the site…"
-                    value={searchQuery}
-                    onChange={e => setSearchQuery(e.target.value)}
-                    className={cn(
-                      '[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
-                      'bg-background/80 h-12 w-full appearance-none rounded-md border border-[#006181]/20 py-3 pr-4 pl-10 text-base shadow-none backdrop-blur-sm',
-                      'placeholder:text-muted-foreground/80',
-                      'focus-visible:border-[#006181]/45 focus-visible:ring-[#006181]/30',
-                      'dark:border-[#006181]/35 dark:bg-black/40 dark:focus-visible:border-[#006181]/55'
-                    )}
-                  />
+                {isSearching ? 'Searching…' : 'Search'}
+              </Button>
+            </form>
+
+            {showFilters && (
+              <div className="mt-6 border-t border-[#006181]/12 pt-6 dark:border-[#006181]/25">
+                <div className="mb-3 flex items-center justify-between gap-3">
+                  <p className="text-muted-foreground text-xs font-medium tracking-[0.14em] uppercase">
+                    Refine results
+                  </p>
+                  {filtersActive ? (
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      disabled={isSearching}
+                      className="inline-flex items-center gap-1 text-xs font-medium text-[#006181] transition-colors hover:text-[#004d66] disabled:opacity-60 dark:text-[#4da3c0] dark:hover:text-[#7ec4d8]"
+                    >
+                      <XIcon className="h-3.5 w-3.5" aria-hidden />
+                      Clear filters
+                    </button>
+                  ) : null}
                 </div>
-                <Button
-                  type="submit"
-                  disabled={isSearching}
-                  className="h-12 shrink-0 rounded-md bg-[#006181] px-6 text-sm font-medium text-white hover:bg-[#004d66] disabled:opacity-70 dark:bg-[#006181] dark:hover:bg-[#0a7a9c]"
-                >
-                  {isSearching ? 'Searching…' : 'Search'}
-                </Button>
-              </form>
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
+                  {filterOptions.categories.length > 0 && (
+                    <FilterSelect
+                      id={categoryFilterId}
+                      label="Category"
+                      value={filters.category ?? ''}
+                      disabled={isSearching}
+                      onChange={value =>
+                        visitSearch({ category: value || null })
+                      }
+                    >
+                      <option value="">All categories</option>
+                      {filterOptions.categories.map(category => (
+                        <option key={category.slug} value={category.slug}>
+                          {category.name}
+                        </option>
+                      ))}
+                    </FilterSelect>
+                  )}
 
-              {showFilters && (
-                <div className="mt-6 border-t border-[#006181]/12 pt-6 dark:border-[#006181]/25">
-                  <div className="mb-3 flex items-center justify-between gap-3">
-                    <p className="text-muted-foreground text-xs font-medium tracking-[0.14em] uppercase">
-                      Refine results
-                    </p>
-                    {filtersActive ? (
-                      <button
-                        type="button"
-                        onClick={clearFilters}
-                        disabled={isSearching}
-                        className="inline-flex items-center gap-1 text-xs font-medium text-[#006181] transition-colors hover:text-[#004d66] disabled:opacity-60 dark:text-[#4da3c0] dark:hover:text-[#7ec4d8]"
-                      >
-                        <XIcon className="h-3.5 w-3.5" aria-hidden />
-                        Clear filters
-                      </button>
-                    ) : null}
-                  </div>
-                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end">
-                    {filterOptions.categories.length > 0 && (
-                      <FilterSelect
-                        id={categoryFilterId}
-                        label="Category"
-                        value={filters.category ?? ''}
-                        disabled={isSearching}
-                        onChange={value =>
-                          visitSearch({ category: value || null })
-                        }
-                      >
-                        <option value="">All categories</option>
-                        {filterOptions.categories.map(category => (
-                          <option key={category.slug} value={category.slug}>
-                            {category.name}
-                          </option>
-                        ))}
-                      </FilterSelect>
-                    )}
+                  {filterOptions.years.length > 0 && (
+                    <FilterSelect
+                      id={yearFilterId}
+                      label="Year"
+                      value={filters.year ? String(filters.year) : ''}
+                      disabled={isSearching}
+                      onChange={value =>
+                        visitSearch({
+                          year: value ? Number(value) : null,
+                        })
+                      }
+                    >
+                      <option value="">All years</option>
+                      {filterOptions.years.map(year => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </FilterSelect>
+                  )}
 
-                    {filterOptions.years.length > 0 && (
-                      <FilterSelect
-                        id={yearFilterId}
-                        label="Year"
-                        value={filters.year ? String(filters.year) : ''}
-                        disabled={isSearching}
-                        onChange={value =>
-                          visitSearch({
-                            year: value ? Number(value) : null,
-                          })
-                        }
-                      >
-                        <option value="">All years</option>
-                        {filterOptions.years.map(year => (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        ))}
-                      </FilterSelect>
-                    )}
-
-                    {filterOptions.themes.length > 0 && (
-                      <FilterSelect
-                        id={themeFilterId}
-                        label="Theme"
-                        value={filters.theme ? String(filters.theme) : ''}
-                        disabled={isSearching}
-                        onChange={value =>
-                          visitSearch({
-                            theme: value ? Number(value) : null,
-                          })
-                        }
-                      >
-                        <option value="">All themes</option>
-                        {filterOptions.themes.map(theme => (
-                          <option key={theme.id} value={theme.id}>
-                            {theme.title}
-                          </option>
-                        ))}
-                      </FilterSelect>
-                    )}
-                  </div>
+                  {filterOptions.themes.length > 0 && (
+                    <FilterSelect
+                      id={themeFilterId}
+                      label="Theme"
+                      value={filters.theme ? String(filters.theme) : ''}
+                      disabled={isSearching}
+                      onChange={value =>
+                        visitSearch({
+                          theme: value ? Number(value) : null,
+                        })
+                      }
+                    >
+                      <option value="">All themes</option>
+                      {filterOptions.themes.map(theme => (
+                        <option key={theme.id} value={theme.id}>
+                          {theme.title}
+                        </option>
+                      ))}
+                    </FilterSelect>
+                  )}
                 </div>
-              )}
-            </div>
-          </header>
-
-          <div className="mx-auto max-w-3xl px-4 pt-4 md:px-6 md:pt-6">
-            {isSearching && (
-              <div
-                className="flex items-center gap-3 py-10"
-                role="status"
-                aria-live="polite"
-              >
-                <span className="sr-only">Loading search results</span>
-                <span className="inline-flex gap-1.5" aria-hidden>
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70 [animation-delay:-0.3s]" />
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70 [animation-delay:-0.15s]" />
-                  <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70" />
-                </span>
-                <span className="text-muted-foreground text-sm">
-                  Searching…
-                </span>
               </div>
-            )}
-
-            {!isSearching && !hasQuery && !filtersActive && (
-              <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
-                <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
-                  Start with a keyword
-                </p>
-                <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
-                  Enter a term above to browse research, dialogue, and policy
-                  content from across the site.
-                </p>
-              </div>
-            )}
-
-            {!isSearching && (hasQuery || filtersActive) && !hasResults && (
-              <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
-                <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
-                  No matches found
-                </p>
-                <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
-                  {filtersActive
-                    ? 'Try clearing filters, using fewer words, or a related theme — then search again.'
-                    : 'Try fewer words, a related theme, or check the spelling — then search again.'}
-                </p>
-                {filtersActive ? (
-                  <button
-                    type="button"
-                    onClick={clearFilters}
-                    className="mt-5 text-sm font-medium text-[#006181] underline-offset-4 hover:underline dark:text-[#4da3c0]"
-                  >
-                    Clear filters
-                  </button>
-                ) : null}
-              </div>
-            )}
-
-            {!isSearching && hasResults && (
-              <section aria-label="Search results" className="mt-2 md:mt-4">
-                {results!.map(post => (
-                  <SearchResultRow key={post.id} post={post} />
-                ))}
-              </section>
-            )}
-
-            {!isSearching && hasResults && posts && posts.last_page > 1 && (
-              <Pagination
-                links={posts.links}
-                currentPage={posts.current_page}
-                totalPages={posts.last_page}
-                nextPage={posts.next_page_url}
-                prevPage={posts.prev_page_url}
-                className="mt-10"
-                nextButtonLabel="Next"
-                prevButtonLabel="Previous"
-              />
             )}
           </div>
+        </header>
+
+        <div className="mx-auto max-w-3xl px-4 pt-4 md:px-6 md:pt-6">
+          {isSearching && (
+            <div
+              className="flex items-center gap-3 py-10"
+              role="status"
+              aria-live="polite"
+            >
+              <span className="sr-only">Loading search results</span>
+              <span className="inline-flex gap-1.5" aria-hidden>
+                <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70 [animation-delay:-0.3s]" />
+                <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70 [animation-delay:-0.15s]" />
+                <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70" />
+              </span>
+              <span className="text-muted-foreground text-sm">Searching…</span>
+            </div>
+          )}
+
+          {!isSearching && !hasQuery && !filtersActive && (
+            <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
+              <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
+                Start with a keyword
+              </p>
+              <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
+                Enter a term above to browse research, dialogue, and policy
+                content from across the site.
+              </p>
+            </div>
+          )}
+
+          {!isSearching && (hasQuery || filtersActive) && !hasResults && (
+            <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
+              <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
+                No matches found
+              </p>
+              <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
+                {filtersActive
+                  ? 'Try clearing filters, using fewer words, or a related theme — then search again.'
+                  : 'Try fewer words, a related theme, or check the spelling — then search again.'}
+              </p>
+              {filtersActive ? (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="mt-5 text-sm font-medium text-[#006181] underline-offset-4 hover:underline dark:text-[#4da3c0]"
+                >
+                  Clear filters
+                </button>
+              ) : null}
+            </div>
+          )}
+
+          {!isSearching && hasResults && (
+            <section aria-label="Search results" className="mt-2 md:mt-4">
+              {results!.map(post => (
+                <SearchResultRow key={post.id} post={post} />
+              ))}
+            </section>
+          )}
+
+          {!isSearching && hasResults && posts && posts.last_page > 1 && (
+            <Pagination
+              links={posts.links}
+              currentPage={posts.current_page}
+              totalPages={posts.last_page}
+              nextPage={posts.next_page_url}
+              prevPage={posts.prev_page_url}
+              className="mt-10"
+              nextButtonLabel="Next"
+              prevButtonLabel="Previous"
+            />
+          )}
         </div>
-      
+      </div>
     </>
   );
 }

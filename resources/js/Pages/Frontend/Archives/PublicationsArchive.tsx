@@ -1,5 +1,4 @@
 import { Link } from '@inertiajs/react';
-import { mainWithPageLayout } from '@/lib/page-layouts';
 
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
@@ -7,6 +6,7 @@ import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { Separator } from '@/components/ui/separator';
+import { mainWithPageLayout } from '@/lib/page-layouts';
 import { cn } from '@/lib/utils';
 import type {
   Category,

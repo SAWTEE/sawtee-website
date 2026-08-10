@@ -133,10 +133,9 @@ describe('ErrorPage', () => {
     renderWithPageLayout({ status: 404 });
 
     expect(screen.getByRole('navigation', { name: /helpful links/i }));
-    expect(screen.getByRole('link', { name: /^publications$/i })).toHaveAttribute(
-      'href',
-      '/category/publications'
-    );
+    expect(
+      screen.getByRole('link', { name: /^publications$/i })
+    ).toHaveAttribute('href', '/category/publications');
     expect(screen.getByRole('link', { name: /^contact$/i })).toHaveAttribute(
       'href',
       '/contact'

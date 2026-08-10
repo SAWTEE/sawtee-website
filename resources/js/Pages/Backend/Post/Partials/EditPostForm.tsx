@@ -4,9 +4,7 @@ import React from 'react';
 
 import ContentEditor from '@/components/Backend/ContentEditor';
 import DropZone from '@/components/Backend/DropZone';
-import FileUpload, {
-  type ExistingFile,
-} from '@/components/Backend/FileUpload';
+import FileUpload, { type ExistingFile } from '@/components/Backend/FileUpload';
 import FormField from '@/components/Backend/FormField';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import {
@@ -289,10 +287,7 @@ export default function EditPostForm({
                         return;
                       }
 
-                      setData(
-                        'published_at',
-                        formatDateTimeForInput(value)
-                      );
+                      setData('published_at', formatDateTimeForInput(value));
                     }}
                     disabled={date =>
                       date > new Date() || date < new Date('1900-01-01')

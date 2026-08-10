@@ -150,7 +150,7 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
         </div>
 
         <div
-          className="mt-10 h-px w-full bg-gradient-to-r from-[#006181]/35 via-[#006181]/12 to-transparent dark:from-[#006181]/50 dark:via-[#006181]/20"
+          className="mt-10 h-px w-full bg-linear-to-r from-[#006181]/35 via-[#006181]/12 to-transparent dark:from-[#006181]/50 dark:via-[#006181]/20"
           aria-hidden
         />
       </section>
@@ -208,7 +208,7 @@ function LeadResource({ post }: { post: Post }) {
   const external = Boolean(post.link && !useInertiaLink(post.link));
 
   return (
-    <article className="group relative overflow-hidden rounded-lg border border-[#006181]/12 bg-[#006181]/[0.04] dark:border-[#006181]/25 dark:bg-[#006181]/10">
+    <article className="group relative overflow-hidden rounded-lg border border-[#006181]/12 bg-[#006181]/4 dark:border-[#006181]/25 dark:bg-[#006181]/10">
       <div
         className="absolute inset-y-0 left-0 w-1 bg-[#006181] dark:bg-[#4da3c0]"
         aria-hidden
@@ -283,7 +283,7 @@ function ResourceCard({
     <article
       className={cn(
         'group bg-bgDarker/60 relative flex h-full flex-col border border-transparent transition-colors',
-        'hover:border-[#006181]/18 hover:bg-[#006181]/[0.03]',
+        'hover:border-[#006181]/18 hover:bg-[#006181]/3',
         'dark:bg-black/30 dark:hover:border-[#006181]/30 dark:hover:bg-[#006181]/10',
         featured ? 'p-6 md:p-7' : 'p-5 md:p-6'
       )}

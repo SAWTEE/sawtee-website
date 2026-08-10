@@ -1,7 +1,7 @@
-import { Link } from '@inertiajs/react';
 import { MoveLeft, MoveRight } from 'lucide-react';
 import type { ReactNode } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import { cn } from '@/lib/utils';
 import type { PaginationLink } from '@/types';
 
@@ -43,10 +43,11 @@ const PaginationButton = ({
       </Button>
     </div>
   ) : (
-    <Link
+    <InertiaLink
       className="group w-full"
       href={link ?? '#'}
       aria-disabled={isDisabled}
+      preserveState
       {...rest}
     >
       <Button
@@ -60,7 +61,7 @@ const PaginationButton = ({
         <span>{label}</span>
         {slot === 'after' && children}
       </Button>
-    </Link>
+    </InertiaLink>
   );
 };
 

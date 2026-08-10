@@ -62,7 +62,7 @@ export function DataTable({
     onGlobalFilterChange: setGlobalFilter,
     onRowSelectionChange: setRowSelection,
     getRowId: (row: any) => String(row.id),
-    enableRowSelection: true,
+    enableRowSelection: typeof bulkActions === 'function',
     state: {
       sorting,
       columnFilters,

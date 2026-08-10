@@ -425,12 +425,23 @@ export type FrontendPostProps = PageProps<{
 export type CategoryArchivePosts =
   Paginated<Post> | ResearchByYear | Team[] | Post[] | null;
 
+export type SubstackFeedItem = {
+  id: number | string;
+  title: string;
+  subtitle?: string | null;
+  url: string;
+  published_at?: string | null;
+  cover_image?: string | null;
+  reaction_count?: number;
+};
+
 export type FrontendCategoryProps = PageProps<{
   category: Category;
   posts?: CategoryArchivePosts;
   infocus?: Post[] | null;
   sawteeInMedia?: Post[] | null;
   events?: Post[] | null;
+  substackFeed?: SubstackFeedItem[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
   seo?: SeoMeta;
