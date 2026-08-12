@@ -4,21 +4,17 @@ import type { ComponentType, ReactElement } from 'react';
 import ReactDOMServer from 'react-dom/server';
 
 import { resolveDefaultLayout } from '@/lib/resolve-layout';
+import { resolvePage } from '@/lib/resolve-page';
 
 import { route as ziggyRoute } from '../../vendor/tightenco/ziggy';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
 createServer(page =>
-  // `pages` is transformed by @inertiajs/vite; cast keeps TS happy with SSR overloads.
   createInertiaApp({
     page,
     render: ReactDOMServer.renderToString,
-    pages: {
-      path: './Pages',
-      extension: '.tsx',
-      lazy: true,
-    },
+    resolve: (name: string) => resolvePage(name),
     layout: (name: string) => resolveDefaultLayout(name),
     title: (title: string) => `${title} - ${appName}`,
     setup({

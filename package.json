@@ -4,7 +4,7 @@
   "scripts": {
     "commit": "cz",
     "dev": "node scripts/sync-site-assets.mjs && vite",
-    "build": "node scripts/sync-site-assets.mjs && vite build && node scripts/copy-pwa-to-public.mjs",
+    "build": "node scripts/sync-site-assets.mjs && vite build && vite build --ssr && node scripts/copy-pwa-to-public.mjs",
     "sync:assets": "node scripts/sync-site-assets.mjs",
     "build:ssr": "npm run build && vite build --ssr",
     "lint": "eslint --fix .",

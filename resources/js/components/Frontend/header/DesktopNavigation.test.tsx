@@ -146,6 +146,38 @@ describe('DesktopNavigation', () => {
     );
   });
 
+  it('shows a shared hover highlight on the active top-level item', () => {
+    const { container } = render(
+      <DesktopNavigation
+        menu={[
+          {
+            id: 10,
+            title: 'Home',
+            name: 'Home',
+            url: '/',
+            children: [],
+          },
+          {
+            id: 11,
+            title: 'Events',
+            name: 'Events',
+            url: '/category/events',
+            children: [],
+          },
+        ]}
+      />
+    );
+
+    expect(container.querySelector('.bg-accent')).toBeNull();
+
+    fireEvent.pointerEnter(screen.getByRole('link', { name: 'Home' }));
+    expect(container.querySelector('.bg-accent')).not.toBeNull();
+
+    fireEvent.pointerEnter(screen.getByRole('link', { name: 'Events' }));
+    // AnimatePresence may keep the exiting highlight briefly while layoutId morphs.
+    expect(container.querySelectorAll('.bg-accent').length).toBeGreaterThan(0);
+  });
+
   it('applies the same top-level typography to links, mega, and multilevel triggers', () => {
     render(
       <DesktopNavigation

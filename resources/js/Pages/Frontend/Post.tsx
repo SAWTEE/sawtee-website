@@ -1,5 +1,4 @@
 import WebsiteHead from '@/components/Frontend/Head';
-import ReadingProgress from '@/components/Frontend/ReadingProgress';
 import { mainWithPostLayout } from '@/lib/page-layouts';
 import type { FrontendPostProps } from '@/types';
 
@@ -33,7 +32,6 @@ function Post({
         type={seo?.type ?? 'article'}
         jsonLd={seo?.jsonLd}
       />
-      <ReadingProgress />
 
       {isWebinarSeries && <WebinarPost post={post} />}
       {isDefault && (

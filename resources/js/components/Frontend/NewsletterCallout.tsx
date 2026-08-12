@@ -1,4 +1,30 @@
 import { useTheme } from '@/components/shared/theme-provider';
+import { useEffect, useState } from 'react';
+
+function useDeferUntilPageLoaded(): boolean {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const activate = () => {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => setReady(true), { timeout: 2000 });
+      } else {
+        setReady(true);
+      }
+    };
+
+    if (document.readyState === 'complete') {
+      activate();
+      return;
+    }
+
+    window.addEventListener('load', activate, { once: true });
+
+    return () => window.removeEventListener('load', activate);
+  }, []);
+
+  return ready;
+}
 
 export default function NewsletterCallout() {
   return (
@@ -27,6 +53,7 @@ const SUBSTACK_EMBED_SRC = 'https://sawteenp.substack.com/embed';
 
 export const SubscribeForm = () => {
   const { resolvedTheme, theme } = useTheme();
+  const embedReady = useDeferUntilPageLoaded();
   const isDark =
     resolvedTheme === 'dark' || (resolvedTheme == null && theme === 'dark');
 
@@ -38,23 +65,32 @@ export const SubscribeForm = () => {
           : 'border-theme-200 overflow-hidden rounded border bg-white'
       }
     >
-      <iframe
-        key={isDark ? 'dark' : 'light'}
-        src={SUBSTACK_EMBED_SRC}
-        width="100%"
-        height="220"
-        title="Subscribe to the SAWTEE newsletter on Substack"
-        // Substack's native embed has no theme API; invert the locked light
-        // iframe in dark mode and remount when the site theme changes.
-        style={{
-          border: 'none',
-          background: 'white',
-          display: 'block',
-          filter: isDark ? 'invert(1) hue-rotate(180deg)' : undefined,
-        }}
-        frameBorder="0"
-        scrolling="no"
-      />
+      {embedReady ? (
+        <iframe
+          key={isDark ? 'dark' : 'light'}
+          src={SUBSTACK_EMBED_SRC}
+          width="100%"
+          height="220"
+          title="Subscribe to the SAWTEE newsletter on Substack"
+          loading="lazy"
+          // Substack's native embed has no theme API; invert the locked light
+          // iframe in dark mode and remount when the site theme changes.
+          style={{
+            border: 'none',
+            background: 'white',
+            display: 'block',
+            filter: isDark ? 'invert(1) hue-rotate(180deg)' : undefined,
+          }}
+          frameBorder="0"
+          scrolling="no"
+        />
+      ) : (
+        <div
+          className="bg-theme-100 dark:bg-theme-800 h-[220px] w-full animate-pulse"
+          role="status"
+          aria-label="Loading newsletter signup form"
+        />
+      )}
     </div>
   );
 };

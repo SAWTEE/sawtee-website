@@ -76,7 +76,7 @@ export default function Article({
           seo?.image ??
           (featured_image ? featured_image : '/assets/logo-sawtee.webp')
         }
-        url={seo?.url}
+        url={seo?.url ?? undefined}
         type={seo?.type ?? 'article'}
         jsonLd={seo?.jsonLd}
       />
@@ -146,7 +146,7 @@ export default function Article({
               </div>
               <SocialShare
                 className="mt-8"
-                url={seo?.url}
+                url={seo?.url ?? undefined}
                 title={title}
                 summary={article.excerpt ?? subtitle ?? ''}
               />

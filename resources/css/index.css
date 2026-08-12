@@ -242,20 +242,157 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
     border-radius: 6px;
 }
 
-.progress {
-    height: 0.25rem;
-    background-color: #006181;
+/* Floating go-to-top with brand teal progress ring. */
+@property --scroll-progress {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+}
+
+.scroll-to-top {
+    --scroll-progress: 0;
+    --scroll-brand: #006181;
+    --scroll-brand-soft: #4da3c0;
+    --scroll-track: color-mix(in oklab, var(--scroll-brand) 16%, transparent);
+
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
+    right: 1.25rem;
+    bottom: 1.25rem;
     z-index: 50;
-    transform: scaleX(0);
-    transform-origin: left center;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
+    width: 3rem;
+    height: 3rem;
+    padding: 0;
+    border: 0;
+    border-radius: 9999px;
+    background: transparent;
+    cursor: pointer;
+    isolation: isolate;
+    transition: transform 200ms ease, filter 200ms ease;
+}
+
+@media (min-width: 640px) {
+    .scroll-to-top {
+        right: 1.75rem;
+        bottom: 1.75rem;
+        width: 3.25rem;
+        height: 3.25rem;
+    }
+}
+
+.scroll-to-top:hover {
+    transform: translateY(-2px);
+}
+
+.scroll-to-top:focus-visible {
+    outline: none;
+    transform: translateY(-2px);
+}
+
+.scroll-to-top:focus-visible .scroll-to-top__face {
+    box-shadow:
+        0 0 0 3px color-mix(in oklab, var(--scroll-brand) 35%, transparent),
+        0 10px 28px rgb(0 97 129 / 0.28);
+}
+
+.scroll-to-top__track,
+.scroll-to-top__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
     pointer-events: none;
-    will-change: transform;
+}
+
+.scroll-to-top__track {
+    background: var(--scroll-track);
+    box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--scroll-brand) 22%, transparent);
+}
+
+.scroll-to-top__ring {
+    background: conic-gradient(
+        from -90deg,
+        var(--scroll-brand) calc(var(--scroll-progress) * 1%),
+        transparent 0
+    );
+    transition: --scroll-progress 160ms linear;
+    filter: drop-shadow(0 0 4px color-mix(in oklab, var(--scroll-brand) 40%, transparent));
+}
+
+.scroll-to-top__face {
+    position: absolute;
+    inset: 4px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: linear-gradient(
+        165deg,
+        color-mix(in oklab, white 92%, var(--scroll-brand)) 0%,
+        color-mix(in oklab, white 78%, var(--scroll-brand)) 100%
+    );
+    color: var(--scroll-brand);
+    box-shadow:
+        0 4px 14px rgb(0 97 129 / 0.18),
+        inset 0 1px 0 rgb(255 255 255 / 0.65);
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        box-shadow 180ms ease;
+}
+
+.scroll-to-top__icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    stroke-width: 2.25;
+    transition: transform 180ms ease;
+}
+
+.scroll-to-top:hover .scroll-to-top__face {
+    background: linear-gradient(
+        165deg,
+        var(--scroll-brand) 0%,
+        color-mix(in oklab, var(--scroll-brand) 88%, black) 100%
+    );
+    color: #fff;
+    box-shadow:
+        0 10px 28px rgb(0 97 129 / 0.32),
+        inset 0 1px 0 rgb(255 255 255 / 0.2);
+}
+
+.scroll-to-top:hover .scroll-to-top__icon {
+    transform: translateY(-1px);
+}
+
+.dark .scroll-to-top {
+    --scroll-brand: #4da3c0;
+    --scroll-track: color-mix(in oklab, var(--scroll-brand) 20%, transparent);
+}
+
+.dark .scroll-to-top__face {
+    background: linear-gradient(
+        165deg,
+        color-mix(in oklab, #0b3a48 70%, var(--scroll-brand)) 0%,
+        color-mix(in oklab, #062830 85%, black) 100%
+    );
+    color: var(--scroll-brand-soft);
+    box-shadow:
+        0 8px 24px rgb(0 0 0 / 0.35),
+        inset 0 1px 0 rgb(255 255 255 / 0.08);
+}
+
+.dark .scroll-to-top:hover .scroll-to-top__face {
+    background: linear-gradient(
+        165deg,
+        color-mix(in oklab, var(--scroll-brand) 75%, #0b3a48) 0%,
+        color-mix(in oklab, var(--scroll-brand) 55%, #062830) 100%
+    );
+    color: #e8f6fb;
+}
+
+.dark .scroll-to-top:focus-visible .scroll-to-top__face {
+    box-shadow:
+        0 0 0 3px color-mix(in oklab, var(--scroll-brand) 45%, transparent),
+        0 10px 28px rgb(0 0 0 / 0.4);
 }
 
 body {

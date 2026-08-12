@@ -1,13 +1,12 @@
 import { usePage } from '@inertiajs/react';
 import { ArrowUpToLineIcon } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
+import { type CSSProperties, type ReactNode, useEffect, useState } from 'react';
 
 import Footer from '@/components/Frontend/footer/footer';
 import Header from '@/components/Frontend/header/header';
 import SearchModal from '@/components/Frontend/header/searchModal';
 import MobileMenu from '@/components/Frontend/mobileMenu';
 import { ThemeProvider } from '@/components/shared/theme-provider';
-import { Button } from '@/components/ui/button';
 import {
   Sheet,
   SheetContent,
@@ -24,7 +23,7 @@ type MainLayoutProps = {
 };
 
 export default function MainLayout({ children, className }: MainLayoutProps) {
-  const [visible, setVisible] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const page = usePage<SharedProps>();
   const primaryMenu = page.props.primaryMenu ?? [];
@@ -38,13 +37,24 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
       return;
     }
 
-    const toggleVisibility = () => {
-      setVisible(window.scrollY > 570);
+    const updateScrollProgress = () => {
+      const doc = document.documentElement;
+      const scrollable = doc.scrollHeight - doc.clientHeight;
+      const next =
+        scrollable > 0
+          ? Math.min(100, Math.max(0, (doc.scrollTop / scrollable) * 100))
+          : 0;
+
+      setScrollProgress(next);
     };
 
-    toggleVisibility();
-    window.addEventListener('scroll', toggleVisibility, { passive: true });
-    return () => window.removeEventListener('scroll', toggleVisibility);
+    updateScrollProgress();
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    window.addEventListener('resize', updateScrollProgress);
+    return () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+      window.removeEventListener('resize', updateScrollProgress);
+    };
   }, []);
 
   const scrollToTop = () => {
@@ -93,17 +103,23 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
 
       <Footer menu={footerMenu} socialMenu={socialMenu} />
 
-      <Button
-        className={cn(
-          'scroll-to-top group fixed right-12 bottom-20 z-50 flex h-10 w-10 items-center justify-center rounded-full p-2 backdrop-blur-md transition-all duration-300 ease-in-out',
-          visible ? 'translate-y-0' : 'translate-y-60'
-        )}
-        aria-label="Scroll to top"
+      <button
+        type="button"
+        className="scroll-to-top"
+        style={
+          {
+            '--scroll-progress': scrollProgress,
+          } as CSSProperties
+        }
+        aria-label={`Scroll to top. Reading progress ${Math.round(scrollProgress)} percent.`}
         onClick={scrollToTop}
-        size="icon"
       >
-        <ArrowUpToLineIcon className="scroll-icon h-5 w-5" aria-hidden />
-      </Button>
+        <span className="scroll-to-top__track" aria-hidden />
+        <span className="scroll-to-top__ring" aria-hidden />
+        <span className="scroll-to-top__face">
+          <ArrowUpToLineIcon className="scroll-to-top__icon" aria-hidden />
+        </span>
+      </button>
     </ThemeProvider>
   );
 }

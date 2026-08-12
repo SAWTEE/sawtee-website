@@ -2,7 +2,7 @@ import inertia from '@inertiajs/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
 import tailwindcss from '@tailwindcss/vite';
-import { resolve } from 'node:path';
+import { resolve, sep } from 'node:path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -88,10 +88,13 @@ export default defineConfig(({ isSsrBuild }) => ({
               ],
             },
             workbox: {
-              // Precache only the Vite app shell under public/build.
-              // Icons/offline live in public/ and are listed in additionalManifestEntries.
-              // Other /build/assets/* use runtime CacheFirst (avoids admin chunks like ContentEditor).
-              globPatterns: ['**/app-*.{js,css}'],
+              // Precache the entry + stable framework vendors (always needed).
+              // Route/admin chunks stay on runtime CacheFirst.
+              globPatterns: [
+                '**/app-*.{js,css}',
+                '**/vendor-react-*.js',
+                '**/vendor-inertia-*.js',
+              ],
               globIgnores: ['**/*.{test,spec}-*.js', '**/Error.test-*.js'],
               // Avoid Workbox's terser pass (flaky under some CI/sandbox environments).
               mode: 'development',
@@ -169,8 +172,99 @@ export default defineConfig(({ isSsrBuild }) => ({
     },
   },
   build: {
-    // Admin TinyMCE (ContentEditor) is already a separate lazy chunk (~2MB).
-    // Raise the Rollup advisory so the expected large chunks do not look like a build failure.
+    // Minimal transpile → smaller JS. Native ESM dynamic import is assumed
+    // (see https://vite.dev/config/build-options.html#build-target).
+    target: 'esnext',
+    // Keep async-route CSS out of the first paint stylesheet.
+    cssCodeSplit: true,
+    // Lightning CSS minifies more aggressively than esbuild for CSS.
+    cssMinify: 'lightningcss',
+    // Baseline / esnext browsers already support <link rel=modulepreload>.
+    modulePreload: {
+      polyfill: false,
+    },
+    // Inline tiny assets to avoid extra requests; leave larger ones hashed files.
+    assetsInlineLimit: 4096,
+    // esbuild is default and ~1–2% larger than terser with far faster builds.
+    minify: 'esbuild',
+    sourcemap: false,
+    reportCompressedSize: true,
+    rollupOptions: {
+      onwarn(warning, warn) {
+        // @inertiajs/react re-exports `progress` for the public API; SSR tree-shaking
+        // drops the unused re-export and Rollup emits a noisy false positive.
+        if (
+          warning.code === 'UNUSED_EXTERNAL_IMPORT' &&
+          typeof warning.message === 'string' &&
+          warning.message.includes('"progress"') &&
+          warning.message.includes('@inertiajs/core')
+        ) {
+          return;
+        }
+
+        warn(warning);
+      },
+      output: {
+        /**
+         * Named vendor chunks improve cache hits and keep the entry smaller so
+         * first load only pays for frameworks shared by the public shell.
+         * Heavy admin/media libs stay isolated (loaded only when imported).
+         *
+         * @see https://vite.dev/guide/build.html#chunking-strategy
+         * @see https://rollupjs.org/configuration-options/#output-manualchunks
+         */
+        manualChunks(id) {
+          if (!id.includes('node_modules')) {
+            return;
+          }
+
+          if (id.includes('tinymce') || id.includes('@tinymce')) {
+            return 'vendor-tinymce';
+          }
+
+          if (id.includes('framer-motion')) {
+            return 'vendor-framer-motion';
+          }
+
+          if (id.includes('embla-carousel')) {
+            return 'vendor-embla';
+          }
+
+          if (id.includes('@tanstack')) {
+            return 'vendor-tanstack';
+          }
+
+          if (id.includes('date-fns') || id.includes('react-day-picker')) {
+            return 'vendor-date';
+          }
+
+          if (
+            id.includes('lucide-react') ||
+            id.includes('@radix-ui/react-icons') ||
+            id.includes('react-icons')
+          ) {
+            return 'vendor-icons';
+          }
+
+          if (id.includes('@radix-ui')) {
+            return 'vendor-radix';
+          }
+
+          if (id.includes('@inertiajs')) {
+            return 'vendor-inertia';
+          }
+
+          if (
+            id.includes(`${sep}react-dom${sep}`) ||
+            id.includes(`${sep}react${sep}`) ||
+            id.includes(`${sep}scheduler${sep}`)
+          ) {
+            return 'vendor-react';
+          }
+        },
+      },
+    },
+    // TinyMCE admin editor remains intentionally large when loaded.
     chunkSizeWarningLimit: 2500,
   },
   optimizeDeps: {

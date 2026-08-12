@@ -58,4 +58,22 @@ describe('MainLayout', () => {
     expect(screen.getByTestId('header')).toHaveTextContent('menu:0');
     expect(screen.getByTestId('footer')).toHaveTextContent('menu:0');
   });
+
+  it('renders a floating go-to-top control with progress ring from page load', () => {
+    const { container } = render(
+      <MainLayout>
+        <div>Page content</div>
+      </MainLayout>
+    );
+
+    const button = screen.getByRole('button', {
+      name: /scroll to top\. reading progress/i,
+    });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass('scroll-to-top');
+    expect(button).not.toHaveClass('opacity-0');
+    expect(container.querySelector('.scroll-to-top__track')).not.toBeNull();
+    expect(container.querySelector('.scroll-to-top__ring')).not.toBeNull();
+    expect(container.querySelector('.scroll-to-top__face')).not.toBeNull();
+  });
 });

@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { lazy, Suspense } from 'react';
 
 import InertiaLink from '@/components/shared/InertiaLink';
@@ -174,12 +175,19 @@ export default function DesktopNavigation({
 
 function FocusHighlight({ active }: { active: boolean }) {
   return (
-    <span
-      aria-hidden
-      className={cn(
-        'bg-accent absolute inset-0 -z-10 rounded-md transition-all duration-200 dark:bg-neutral-800',
-        active ? 'scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
-      )}
-    />
+    <AnimatePresence>
+      {active ? (
+        <motion.div
+          aria-hidden
+          className="bg-accent absolute top-0 right-0 bottom-0 left-0 -z-10 rounded-md dark:bg-neutral-800"
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.9 }}
+          transition={{ duration: 0.2 }}
+          layout
+          layoutId="focused-element"
+        />
+      ) : null}
+    </AnimatePresence>
   );
 }
