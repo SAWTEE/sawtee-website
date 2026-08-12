@@ -7,19 +7,27 @@
 /docs/.vitepress/dist
 /docs/.vitepress/cache
 /public/hot
-# Entire public/ tree is deploy-built (Vite, synced site assets). Do not commit it.
-# Tracked source for /assets/* URLs: resources/site-assets (synced by npm run build).
-/public/
-/publications
+/public/build
+/public/assets
 /public/storage
 /public/media-library/*
 /public/publications/*
 /public/Research_Reports/*
 /public/Featured_Events/*
+/public/sw.js
+/public/workbox-*.js
+/public/manifest.webmanifest
+/publications
 /storage/media-library
 /storage/*.key
 /vendor
-/public/robots.txt
+# Generated or environment-specific under public/ (bootstrap files like index.php stay tracked).
+/public/archive
+/public/tmp
+/public/build.zip
+/public/php.ini
+/public/.user.ini
+/public/.DS_Store
 .DS_Store
 .env
 .env.backup

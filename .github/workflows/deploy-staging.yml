@@ -66,6 +66,11 @@ jobs:
           node-version: '22'
           cache: npm
 
+      - name: Verify public bootstrap files
+        run: |
+          test -f public/index.php && echo "✅ public/index.php tracked" || (echo "❌ public/index.php missing" && exit 1)
+          test -f public/.htaccess && echo "✅ public/.htaccess tracked" || (echo "❌ public/.htaccess missing" && exit 1)
+
       - name: Install npm deps, typecheck, and build client assets
         run: |
           npm ci
@@ -105,13 +110,20 @@ jobs:
         run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress
 
       - name: Generate staging .env from GitHub secrets
+        env:
+          STAGING_APP_URL: ${{ secrets.STAGING_APP_URL }}
         run: |
+          APP_URL="${STAGING_APP_URL}"
+          APP_URL="${APP_URL#http://}"
+          APP_URL="${APP_URL#https://}"
+          APP_URL="https://${APP_URL%/}"
+
           cat > .env <<EOF
           APP_NAME='${{ secrets.STAGING_APP_NAME }}'
           APP_ENV=staging
           APP_KEY=${{ secrets.STAGING_APP_KEY }}
           APP_DEBUG=${{ secrets.STAGING_APP_DEBUG }}
-          APP_URL=${{ secrets.STAGING_APP_URL }}
+          APP_URL=${APP_URL}
           DEBUGBAR_ENABLED=false
           ABUSEIP_ENABLED=true
           ABUSEIP_STORAGE_COMPRESS=true
@@ -162,6 +174,8 @@ jobs:
           npm ci
           npm run build
           test -f public/build/manifest.json
+          test -f public/index.php && echo "✅ public/index.php present" || (echo "❌ public/index.php missing" && exit 1)
+          test -f public/.htaccess && echo "✅ public/.htaccess present" || (echo "❌ public/.htaccess missing" && exit 1)
           ls -la public/build || true
 
       - name: Remove build-only files before upload
@@ -270,8 +284,11 @@ jobs:
             test -f .env && echo "✅ .env exists" || (echo "❌ .env missing" && exit 1)
             test -w storage && echo "✅ storage writable" || (echo "❌ storage not writable" && exit 1)
             test -d vendor && echo "✅ vendor exists" || (echo "❌ vendor missing" && exit 1)
+            test -f public/index.php && echo "✅ public/index.php present" || (echo "❌ public/index.php missing" && exit 1)
+            test -f public/.htaccess && echo "✅ public/.htaccess present" || (echo "❌ public/.htaccess missing" && exit 1)
             test -f public/build/manifest.json && echo "✅ Vite client manifest present" || echo "⚠️  client build missing"
             test -f public/sw.js && echo "✅ PWA service worker present" || echo "⚠️  PWA sw.js missing"
             test -f public/manifest.webmanifest && echo "✅ PWA webmanifest present" || echo "⚠️  PWA manifest missing"
             test -f public/assets/logo-sawtee.webp && echo "✅ site assets synced" || echo "⚠️  public/assets missing"
+            grep -q '^APP_URL=https://' .env && echo "✅ APP_URL uses HTTPS" || (echo "❌ APP_URL must use https://" && exit 1)
             echo "Staging health check completed!"

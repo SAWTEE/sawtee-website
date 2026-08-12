@@ -2,7 +2,9 @@
 
 These files are the **source of truth** for URLs under `/assets/...`.
 
-`public/` is gitignored, so assets here are copied into `public/assets` by:
+Build-generated paths under `public/` (`build/`, `assets/`, PWA service worker) are gitignored. **Bootstrap files** (`index.php`, `.htaccess`, favicons, PWA icons, `offline.html`) stay tracked so deploys always include Laravel’s entry point.
+
+Assets here are copied into `public/assets` by:
 
 - `npm run build` / `npm run dev` (via `scripts/sync-site-assets.mjs`)
 - `php artisan sawtee:sync-site-assets`
