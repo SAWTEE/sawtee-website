@@ -21,6 +21,12 @@
 </IfModule>
 
 # Static asset caching (Lighthouse: efficient cache lifetimes)
+# Use SetEnvIf — path-based Location blocks are not allowed in .htaccess on many cPanel hosts.
+<IfModule mod_setenvif.c>
+    SetEnvIf Request_URI "^/build/" BUILD_ASSET=1
+    SetEnvIf Request_URI "^/assets/" SITE_ASSET=1
+    SetEnvIf Request_URI "^/media-library/" MEDIA_ASSET=1
+</IfModule>
 <IfModule mod_headers.c>
     # PWA: keep service worker + manifest fresh after deploys
     <FilesMatch "^(sw\.js|manifest\.webmanifest)$">
@@ -28,17 +34,11 @@
     </FilesMatch>
 
     # Vite build output uses content-hashed filenames — safe to cache for 1 year.
-    <LocationMatch "^/build/">
-        Header set Cache-Control "public, max-age=31536000, immutable"
-    </LocationMatch>
+    Header set Cache-Control "public, max-age=31536000, immutable" env=BUILD_ASSET
 
     # Tracked site assets (synced from resources/site-assets).
-    <LocationMatch "^/assets/">
-        Header set Cache-Control "public, max-age=604800"
-    </LocationMatch>
+    Header set Cache-Control "public, max-age=604800" env=SITE_ASSET
 
     # Media library uploads and conversions change infrequently per URL.
-    <LocationMatch "^/media-library/">
-        Header set Cache-Control "public, max-age=2592000"
-    </LocationMatch>
+    Header set Cache-Control "public, max-age=2592000" env=MEDIA_ASSET
 </IfModule>

@@ -107,7 +107,8 @@ test('public htaccess sets long cache headers for build assets', function () {
     $htaccess = file_get_contents(public_path('.htaccess'));
 
     expect($htaccess)
-        ->toContain('LocationMatch "^/build/"')
+        ->toContain('SetEnvIf Request_URI "^/build/"')
         ->toContain('max-age=31536000')
-        ->toContain('LocationMatch "^/media-library/"');
+        ->toContain('SetEnvIf Request_URI "^/media-library/"')
+        ->not->toContain('LocationMatch');
 });
