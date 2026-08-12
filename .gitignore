@@ -8,6 +8,7 @@
 /docs/.vitepress/cache
 /public/hot
 /public/build
+/public/..build
 /public/assets
 /public/storage
 /public/media-library/*

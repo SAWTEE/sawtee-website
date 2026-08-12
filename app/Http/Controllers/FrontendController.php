@@ -19,13 +19,11 @@ class FrontendController extends Controller
         $lcpImage = data_get($home, 'slides.0.media.0.original_url');
         $lcpSrcSet = data_get($home, 'slidesResponsiveImages.0') ?: null;
 
-        // First paint: slider / LCP / above-the-fold. Below-the-fold sections defer.
+        // First paint: slider / LCP / above-the-fold. Sidebar + below-the-fold defer.
         $critical = [
             'slides' => $home['slides'] ?? null,
             'slidesResponsiveImages' => $home['slidesResponsiveImages'] ?? null,
             'infocus' => $home['infocus'] ?? null,
-            'featuredPublications' => $home['featuredPublications'] ?? null,
-            'featuredBlogPosts' => $home['featuredBlogPosts'] ?? null,
             'homePageSections' => $home['homePageSections'] ?? null,
             'features' => $home['features'] ?? null,
         ];
@@ -33,6 +31,8 @@ class FrontendController extends Controller
         return Inertia::render('Frontend/Pages/Home', array_merge(
             $critical,
             [
+                'featuredPublications' => Inertia::defer(fn () => $home['featuredPublications'] ?? null, 'sidebar'),
+                'featuredBlogPosts' => Inertia::defer(fn () => $home['featuredBlogPosts'] ?? null, 'sidebar'),
                 'events' => Inertia::defer(fn () => $home['events'] ?? null, 'below'),
                 'publications' => Inertia::defer(fn () => $home['publications'] ?? null, 'below'),
                 'sawteeInMedia' => Inertia::defer(fn () => $home['sawteeInMedia'] ?? null, 'below'),

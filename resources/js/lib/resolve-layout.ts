@@ -1,9 +1,15 @@
-import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
-import GuestLayout from '@/layouts/GuestLayout';
-import MainLayout from '@/layouts/MainLayout';
+import { lazy, type ComponentType, type ReactNode } from 'react';
+
+const GuestLayout = lazy(() => import('@/layouts/GuestLayout'));
+const AuthenticatedLayout = lazy(() => import('@/layouts/AuthenticatedLayout'));
+const MainLayout = lazy(() => import('@/layouts/MainLayout'));
+
+type LayoutComponent = ComponentType<{ children?: ReactNode }>;
 
 /**
  * Default persistent layout by Inertia page name.
+ *
+ * Layouts are lazy-loaded so the public home page does not download the admin shell.
  *
  * - Backend/Auth/* → GuestLayout (login, passwords, …)
  * - Backend/*      → AuthenticatedLayout (admin shell)
@@ -13,7 +19,7 @@ import MainLayout from '@/layouts/MainLayout';
  * Pages that need nested chrome (PageLayout / PostLayout) set
  * `Component.layout` explicitly — that overrides this default.
  */
-export function resolveDefaultLayout(name: string) {
+export function resolveDefaultLayout(name: string): LayoutComponent | null {
   if (name.startsWith('Backend/Auth/')) {
     return GuestLayout;
   }

@@ -1,16 +1,23 @@
 import '../css/index.css';
 
 import { createInertiaApp } from '@inertiajs/react';
+import { Suspense } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
 import { registerInertiaErrorHandlers } from '@/lib/inertia-errors';
-import { registerPwa } from '@/lib/register-pwa';
 import { resolveDefaultLayout } from '@/lib/resolve-layout';
 
 const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 
 registerInertiaErrorHandlers();
-registerPwa();
+
+if (import.meta.env.PROD) {
+  void import('@/lib/register-pwa').then(({ registerPwa }) => registerPwa());
+}
+
+function removeStaticLcpFallback(): void {
+  document.getElementById('inertia-lcp-fallback')?.remove();
+}
 
 createInertiaApp({
   // Resolved by @inertiajs/vite into a lazy import.meta.glob (code-split per page).
@@ -31,12 +38,20 @@ createInertiaApp({
       throw new Error('Inertia root element not found');
     }
 
+    const app = (
+      <Suspense fallback={null}>
+        <App {...props} />
+      </Suspense>
+    );
+
     if (el.hasChildNodes()) {
-      hydrateRoot(el, <App {...props} />);
+      hydrateRoot(el, app);
+      removeStaticLcpFallback();
       return;
     }
 
-    createRoot(el).render(<App {...props} />);
+    createRoot(el).render(app);
+    removeStaticLcpFallback();
   },
   progress: {
     delay: 250,

@@ -138,22 +138,36 @@ const Home = ({
               />
             ) : null}
           </div>
-          {featuredPublications && FeaturedPublicationSectionIsVisible && (
-            <aside className="min-w-0 lg:col-span-4">
-              <Suspense
-                fallback={
+          {FeaturedPublicationSectionIsVisible && (
+            <Deferred
+              data={['featuredPublications', 'featuredBlogPosts']}
+              fallback={
+                <aside className="min-w-0 lg:col-span-4">
                   <div
                     className="border-borderColor/80 dark:bg-bgDarker min-h-112 rounded-md border bg-white px-4 py-6 shadow-sm sm:min-h-128 sm:px-5 sm:py-7"
                     aria-hidden
                   />
-                }
-              >
-                <FeaturedPublications
-                  publications={featuredPublications}
-                  blogPosts={featuredBlogPosts}
-                />
-              </Suspense>
-            </aside>
+                </aside>
+              }
+            >
+              {featuredPublications ? (
+                <aside className="min-w-0 lg:col-span-4">
+                  <Suspense
+                    fallback={
+                      <div
+                        className="border-borderColor/80 dark:bg-bgDarker min-h-112 rounded-md border bg-white px-4 py-6 shadow-sm sm:min-h-128 sm:px-5 sm:py-7"
+                        aria-hidden
+                      />
+                    }
+                  >
+                    <FeaturedPublications
+                      publications={featuredPublications}
+                      blogPosts={featuredBlogPosts}
+                    />
+                  </Suspense>
+                </aside>
+              ) : null}
+            </Deferred>
           )}
         </div>
       </Section>
