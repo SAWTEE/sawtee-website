@@ -16,7 +16,7 @@ describe('DropZone', () => {
 
     expect(screen.getByAltText('Upload preview')).toBeInTheDocument();
 
-    fireEvent.click(screen.getByRole('button', { name: 'Remove image' }));
+    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
 
     expect(onValueChange).toHaveBeenCalledWith(null);
   });

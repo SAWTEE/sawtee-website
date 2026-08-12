@@ -26,7 +26,7 @@ const softDeleteDescription =
   'This will move the post to the trash. Associated media is kept until the post is permanently deleted.';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   posts = undefined,
   categories = undefined,
   categoryID = undefined,

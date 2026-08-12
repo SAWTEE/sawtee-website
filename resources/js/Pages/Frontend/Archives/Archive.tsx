@@ -14,7 +14,7 @@ function Archive({
   sawteeInMedia,
   meta_title,
   meta_description,
-  layout_title,
+  layout_title: _layout_title,
   seo,
   showSubscriptionBox = true,
 }: Props) {

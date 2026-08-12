@@ -7,7 +7,10 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { Switch } from '@/components/ui/switch';
 import { useToast } from '@/hooks/use-toast';
 
-export default function Index({ auth = undefined, sections = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  sections = undefined,
+}: any) {
   const { get, delete: destroy } = useForm();
 
   const { toast } = useToast();

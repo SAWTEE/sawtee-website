@@ -4,7 +4,7 @@ import React from 'react';
 import CreateSectionForm from './Partials/CreateSectionForm';
 
 export default function Create({
-  auth = undefined,
+  auth: _auth = undefined,
   sections = undefined,
   pages = undefined,
 }: any) {

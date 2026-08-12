@@ -39,7 +39,13 @@ function formatBytes(bytes: number): string {
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-export default function Index({ auth, report }: { auth: any; report: Report }) {
+export default function Index({
+  auth: _auth,
+  report,
+}: {
+  auth: any;
+  report: Report;
+}) {
   const { toast } = useToast();
   const [processing, setProcessing] = useState(false);
 

@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import CreateArticleForm from './Partials/CreateArticleForm';
 
 export default function Create({
-  auth = undefined,
+  auth: _auth = undefined,
   tags = undefined,
   volumes = undefined,
 }: any) {

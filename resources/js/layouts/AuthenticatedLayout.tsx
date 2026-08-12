@@ -25,7 +25,7 @@ import type { SharedProps, User } from '@/types';
 type AuthenticatedLayoutProps = {
   /** Optional override; defaults to shared Inertia `auth.user`. */
   user?: User | null;
-  children?: ReactNode;
+  children: ReactNode;
 };
 
 export default function Authenticated({

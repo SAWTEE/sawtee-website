@@ -9,7 +9,10 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/hooks/use-toast';
 
 import CreateMenu from './Partials/CreateMenu';
-export default function Index({ auth = undefined, menus = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  menus = undefined,
+}: any) {
   const { get, delete: destroy } = useForm();
   const [createMenu, setCreateMenu] = useState(false);
   const { toast } = useToast();

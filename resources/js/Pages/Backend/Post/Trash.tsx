@@ -36,7 +36,10 @@ import { cn } from '@/lib/utils';
 const forceDeleteDescription =
   'This permanently deletes the post and removes associated media and files. This cannot be undone.';
 
-export default function Trash({ auth = undefined, posts = undefined }: any) {
+export default function Trash({
+  auth: _auth = undefined,
+  posts = undefined,
+}: any) {
   const { toast } = useToast();
   const [pendingBulkIds, setPendingBulkIds] = useState<number[]>([]);
   const [bulkAction, setBulkAction] = useState<'restore' | 'force' | null>(

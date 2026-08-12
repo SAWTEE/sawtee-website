@@ -24,7 +24,7 @@ describe('SubscribeForm', () => {
 
     expect(container.querySelector('iframe')).toBeNull();
     expect(
-      screen.getByRole('status', { name: 'Loading newsletter signup form' }),
+      screen.getByRole('status', { name: 'Loading newsletter signup form' })
     ).toBeInTheDocument();
 
     act(() => {
@@ -37,7 +37,7 @@ describe('SubscribeForm', () => {
 
     expect(container.querySelector('iframe')).not.toBeNull();
     expect(container.querySelector('iframe')?.getAttribute('src')).toBe(
-      'https://sawteenp.substack.com/embed',
+      'https://sawteenp.substack.com/embed'
     );
   });
 

@@ -12,7 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import CreateSliderForm from './Partials/CreateSliderForm';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   sliders = undefined,
   pages = undefined,
 }: any) {

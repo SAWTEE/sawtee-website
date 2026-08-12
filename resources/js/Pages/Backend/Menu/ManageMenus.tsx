@@ -27,7 +27,7 @@ import MenuItemsList from './MenuList';
 import EditMenuForm from './Partials/EditMenu';
 
 export default function ManageMenu({
-  auth = undefined,
+  auth: _auth = undefined,
   categories = undefined,
   sections = undefined,
   menus = undefined,

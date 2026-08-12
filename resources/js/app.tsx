@@ -30,8 +30,14 @@ createInertiaApp({
     // deferred/partial/async reloads can leave `swap()` unresolved and stall
     // sidebar + below-the-fold props on first paint.
     visitOptions: (_href, options) => {
+      // Deferred reloads set an internal `deferredProps` flag that is not on
+      // the public VisitOptions type; they also pass `only`, which we check.
+      const isDeferred =
+        'deferredProps' in options &&
+        Boolean((options as { deferredProps?: boolean }).deferredProps);
+
       if (
-        options.deferredProps ||
+        isDeferred ||
         options.async ||
         (Array.isArray(options.only) && options.only.length > 0) ||
         (Array.isArray(options.except) && options.except.length > 0)

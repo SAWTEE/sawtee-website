@@ -11,7 +11,7 @@ import CreateCategoryForm from './Partials/CreateCategoryForm';
 import EditCategoryForm from './Partials/EditCategoryForm';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   categories = undefined,
 }: any) {
   const { delete: destroy } = useForm();

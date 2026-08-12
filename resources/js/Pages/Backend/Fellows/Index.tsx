@@ -7,7 +7,10 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
 
-export default function Index({ auth = undefined, fellows = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  fellows = undefined,
+}: any) {
   const { delete: destroy, get } = useForm();
   const { toast } = useToast();
   const handleEdit = (e: any, id: any) => {

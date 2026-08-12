@@ -8,7 +8,7 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   publishedStories = undefined,
 }: any) {
   const { delete: destroy, get } = useForm();

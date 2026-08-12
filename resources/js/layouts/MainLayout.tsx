@@ -18,7 +18,7 @@ import { cn } from '@/lib/utils';
 import type { MenuItem, SharedProps, SocialMenuLink } from '@/types';
 
 type MainLayoutProps = {
-  children?: ReactNode;
+  children: ReactNode;
   className?: string;
 };
 

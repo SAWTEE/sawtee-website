@@ -4,7 +4,7 @@ import EditPostForm from './Partials/EditPostForm';
 
 export default function Edit({
   post = undefined,
-  auth = undefined,
+  auth: _auth = undefined,
   categories = undefined,
   tags = undefined,
   themes = undefined,

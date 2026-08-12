@@ -19,7 +19,10 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { sanitizeSearchQuery, SEARCH_QUERY_MAX_LENGTH } from '@/lib/search-params';
+import {
+  sanitizeSearchQuery,
+  SEARCH_QUERY_MAX_LENGTH,
+} from '@/lib/search-params';
 import { cn } from '@/lib/utils';
 
 export default function SearchModal() {

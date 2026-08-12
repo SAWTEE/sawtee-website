@@ -243,7 +243,7 @@ function PublicErrorContent({
   return (
     <div className="relative flex min-h-[min(85vh,52rem)] w-full flex-col justify-center overflow-hidden">
       <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-pattern-tile opacity-35 dark:bg-pattern-tile-fade dark:opacity-25"
+        className="bg-pattern-tile dark:bg-pattern-tile-fade pointer-events-none absolute inset-0 -z-10 opacity-35 dark:opacity-25"
         style={{
           backgroundSize: '960px',
           backgroundPosition: 'top center',

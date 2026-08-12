@@ -4,7 +4,7 @@ import EditFellow from './Partials/EditFellow';
 
 export default function Edit({
   fellow = undefined,
-  auth = undefined,
+  auth: _auth = undefined,
   fellowships = undefined,
 }: any) {
   return (

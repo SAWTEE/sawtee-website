@@ -32,7 +32,7 @@ function featuredImageUrl(
 function Page({
   page,
   featured_image,
-  srcSet,
+  srcSet: _srcSet,
   themes,
   sections,
   seo,

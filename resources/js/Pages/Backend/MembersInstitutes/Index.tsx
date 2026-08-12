@@ -11,7 +11,7 @@ import CreateMemberInstitute from './Partials/CreateMemberInstitute';
 import EditMemberInstitute from './Partials/EditMemberInstitute';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   members = undefined,
   institutes = undefined,
 }: any) {

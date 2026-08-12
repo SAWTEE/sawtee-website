@@ -10,7 +10,10 @@ import { useToast } from '@/hooks/use-toast';
 import CreateTag from './Partials/CreateTag';
 import EditTag from './Partials/EditTag';
 
-export default function Index({ auth = undefined, tags = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  tags = undefined,
+}: any) {
   const [tag, setTag] = React.useState(null);
   const [createTag, setCreateTag] = useState(false);
   const [editTag, setEditTag] = useState(false);

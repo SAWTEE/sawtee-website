@@ -40,7 +40,7 @@ type Report = {
 };
 
 export default function Index({
-  auth,
+  auth: _auth,
   report,
 }: {
   auth: any;

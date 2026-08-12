@@ -1,4 +1,4 @@
-import { ImageIcon, Trash2Icon, UploadIcon, XIcon } from 'lucide-react';
+import { ImageIcon, Trash2Icon, UploadIcon } from 'lucide-react';
 import {
   type ChangeEvent,
   type DragEvent,
@@ -218,18 +218,6 @@ export default function DropZone({
                 </span>
               </div>
             </label>
-
-            {/* <Button
-              type="button"
-              variant="destructive"
-              size="icon"
-              className="absolute top-2 right-2 z-10 h-8 w-8 rounded-full opacity-90 shadow-sm"
-              onClick={handleRemove}
-              aria-label="Remove image"
-              disabled={disabled || isUploading}
-            >
-              <XIcon className="h-4 w-4" />
-            </Button> */}
 
             <div className="absolute bottom-2 left-2 z-10 flex flex-wrap items-center gap-2">
               <Button

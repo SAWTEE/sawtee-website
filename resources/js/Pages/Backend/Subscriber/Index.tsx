@@ -6,7 +6,7 @@ import { DataTable } from '@/components/Backend/FrontDataTable';
 import TWTags from '@/components/shared/TWTags';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   subscribers = undefined,
 }: any) {
   const defaultColumns = [

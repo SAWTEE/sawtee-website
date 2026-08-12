@@ -11,7 +11,7 @@ import CreateTheme from './Partials/CreateTheme';
 import EditTheme from './Partials/EditTheme';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   themes: data = undefined,
 }: any) {
   const [createFormOpen, setCreateFormOpen] = useState(false);

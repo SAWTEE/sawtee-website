@@ -14,7 +14,7 @@ function PublicationCategory({
   sawteeInMedia = null,
   featured_image = null,
   showSubscriptionBox = true,
-  srcSet = null,
+  srcSet: _srcSet = null,
   seo,
 }: FrontendPublicationCategoryProps) {
   const image =

@@ -11,7 +11,7 @@ import CreateFellowshipForm from './Partials/CreateFellowshipForm';
 import EditFellowshipForm from './Partials/EditFellowshipForm';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   fellowships = undefined,
 }: any) {
   const { delete: destroy } = useForm();

@@ -20,7 +20,7 @@ function postHref(post: Post): string {
 }
 
 /** Match prior archive behaviour: sawtee.org + relative paths use Inertia Link. */
-function useInertiaLink(href: string): boolean {
+function isInertiaHref(href: string): boolean {
   return href.startsWith('/') || href.includes('sawtee.org');
 }
 
@@ -35,7 +35,7 @@ function PostLink({
 }) {
   const href = postHref(post);
 
-  if (useInertiaLink(href)) {
+  if (isInertiaHref(href)) {
     return (
       <Link href={href} className={className}>
         {children}
@@ -206,7 +206,7 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
 };
 
 function LeadResource({ post }: { post: Post }) {
-  const external = Boolean(post.link && !useInertiaLink(post.link));
+  const external = Boolean(post.link && !isInertiaHref(post.link));
 
   return (
     <article className="group relative overflow-hidden rounded-lg border border-[#006181]/12 bg-[#006181]/4 dark:border-[#006181]/25 dark:bg-[#006181]/10">
@@ -278,7 +278,7 @@ function ResourceCard({
   post: Post;
   featured?: boolean;
 }) {
-  const external = Boolean(post.link && !useInertiaLink(post.link));
+  const external = Boolean(post.link && !isInertiaHref(post.link));
 
   return (
     <article

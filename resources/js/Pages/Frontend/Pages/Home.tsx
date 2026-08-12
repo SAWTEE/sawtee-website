@@ -188,9 +188,10 @@ const Home = ({
         }
       >
         <>
-          {infocus && homePageSections?.find(h => h.name === 'Infocus')?.show && (
-            <InfocusSection infocus={infocus} />
-          )}
+          {infocus &&
+            homePageSections?.find(h => h.name === 'Infocus')?.show && (
+              <InfocusSection infocus={infocus} />
+            )}
 
           {events &&
             homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (

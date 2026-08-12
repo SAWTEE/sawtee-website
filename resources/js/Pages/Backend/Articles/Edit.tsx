@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import EditArticleForm from './Partials/EditArticleForm';
 
 export default function Edit({
-  auth = undefined,
+  auth: _auth = undefined,
   article = undefined,
   volumes = undefined,
   tags = undefined,

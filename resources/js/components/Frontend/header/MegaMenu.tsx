@@ -1,6 +1,7 @@
 import { usePage } from '@inertiajs/react';
 import { motion } from 'framer-motion';
 import { lazy, Suspense } from 'react';
+
 import Glassbox from '@/components/Frontend/Glassbox';
 import InertiaLink from '@/components/shared/InertiaLink';
 import { useTheme } from '@/components/shared/theme-provider';

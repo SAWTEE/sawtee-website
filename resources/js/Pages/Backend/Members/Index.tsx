@@ -10,7 +10,10 @@ import { useToast } from '@/hooks/use-toast';
 import CreateMember from './Partials/CreateMember';
 import EditMember from './Partials/EditMember';
 
-export default function Index({ auth = undefined, members = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  members = undefined,
+}: any) {
   const { delete: destroy } = useForm();
   const [createFormOpen, setCreateFormOpen] = useState(false);
   const [editFormOpen, setEditFormOpen] = useState(false);

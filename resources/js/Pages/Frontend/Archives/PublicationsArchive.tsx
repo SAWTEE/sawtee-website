@@ -22,7 +22,7 @@ function PublicationsArchive({
   publications = null,
   showSubscriptionBox = true,
   featured_image = null,
-  srcSet = null,
+  srcSet: _srcSet = null,
   seo,
 }: FrontendPublicationsArchiveProps) {
   const image =

@@ -4,7 +4,7 @@ import { ModeToggle } from '@/components/Frontend/header/mode-toggle';
 import ApplicationLogo from '@/components/shared/ApplicationLogo';
 import InertiaLink from '@/components/shared/InertiaLink';
 
-type GuestLayoutProps = { children?: ReactNode };
+type GuestLayoutProps = { children: ReactNode };
 
 export default function Guest({ children }: GuestLayoutProps) {
   return (

@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import CreateHomePageSectionForm from './Partials/CreateHomePageSectionForm';
 
 export default function Create({
-  auth = undefined,
+  auth: _auth = undefined,
   sections = undefined,
 }: any) {
   return (

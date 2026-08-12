@@ -10,8 +10,15 @@ export function sanitizeSearchQuery(value: unknown): string {
     return '';
   }
 
-  let text = String(value)
-    .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g, '')
+  let text = Array.from(String(value))
+    .filter(character => {
+      const code = character.charCodeAt(0);
+      // Keep tab/LF/CR; drop other C0 controls and DEL.
+      return (
+        code === 9 || code === 10 || code === 13 || (code >= 32 && code !== 127)
+      );
+    })
+    .join('')
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim();

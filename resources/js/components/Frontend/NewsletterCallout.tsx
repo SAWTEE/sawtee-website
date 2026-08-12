@@ -1,5 +1,6 @@
-import { useTheme } from '@/components/shared/theme-provider';
 import { useEffect, useState } from 'react';
+
+import { useTheme } from '@/components/shared/theme-provider';
 
 function useDeferUntilPageLoaded(): boolean {
   const [ready, setReady] = useState(false);

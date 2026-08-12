@@ -324,7 +324,7 @@ export default function SearchPage({
       <div className="pb-16 md:pb-24">
         <header className="relative overflow-hidden border-b border-[#006181]/12 dark:border-[#006181]/25">
           <div
-            className="absolute inset-0 -z-[1] bg-pattern-tile opacity-40 dark:bg-pattern-tile-fade dark:opacity-30"
+            className="bg-pattern-tile dark:bg-pattern-tile-fade absolute inset-0 -z-[1] opacity-40 dark:opacity-30"
             style={{
               backgroundSize: '900px',
               backgroundPosition: 'top center',

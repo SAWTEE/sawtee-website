@@ -1,11 +1,7 @@
-import type { ComponentType, ReactNode } from 'react';
+import type { ResolvedComponent } from '@inertiajs/react';
 
 type PageModule = {
-  default: ComponentType<Record<string, unknown>> & {
-    layout?:
-      | ((page: ReactNode) => ReactNode)
-      | ComponentType<{ children?: ReactNode }>;
-  };
+  default: ResolvedComponent;
 };
 
 /**
@@ -20,9 +16,7 @@ const pages = import.meta.glob<PageModule>([
   '!../Pages/**/*.spec.tsx',
 ]);
 
-export async function resolvePage(
-  name: string,
-): Promise<PageModule['default']> {
+export async function resolvePage(name: string): Promise<ResolvedComponent> {
   const path = `../Pages/${name}.tsx`;
   const loader = pages[path];
 

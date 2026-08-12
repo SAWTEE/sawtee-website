@@ -4,7 +4,7 @@ import EditPublicationForm from './Partials/EditPublicationForm';
 
 export default function Edit({
   publication = undefined,
-  auth = undefined,
+  auth: _auth = undefined,
   categories = undefined,
   tags = undefined,
 }: any) {

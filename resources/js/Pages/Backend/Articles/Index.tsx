@@ -7,7 +7,10 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import TWTags from '@/components/shared/TWTags';
 import { useToast } from '@/hooks/use-toast';
 
-export default function Index({ auth = undefined, articles = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  articles = undefined,
+}: any) {
   const { get, delete: destroy } = useForm();
   const { toast } = useToast();
 

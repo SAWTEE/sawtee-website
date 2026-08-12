@@ -3,7 +3,7 @@ import { Head } from '@inertiajs/react';
 import EditPublishedStory from './Partials/EditPublishedStory';
 
 export default function Edit({
-  auth = undefined,
+  auth: _auth = undefined,
   publishedStory = undefined,
   fellows = undefined,
 }: any) {

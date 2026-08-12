@@ -9,7 +9,7 @@ describe('resolvePage', () => {
     expect(page).toBeTypeOf('function');
 
     await expect(resolvePage('Errors/Error.test')).rejects.toThrow(
-      'Page not found: Errors/Error.test',
+      'Page not found: Errors/Error.test'
     );
   });
 });

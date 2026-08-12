@@ -1,9 +1,11 @@
+import type { ComponentType, ReactNode } from 'react';
+
 import AuthenticatedLayout from '@/layouts/AuthenticatedLayout';
 import GuestLayout from '@/layouts/GuestLayout';
 import MainLayout from '@/layouts/MainLayout';
-import type { ComponentType, ReactNode } from 'react';
 
-type LayoutComponent = ComponentType<{ children?: ReactNode }>;
+/** Matches Inertia's LayoutComponent (`children` required). */
+type LayoutComponent = ComponentType<{ children: ReactNode }>;
 
 /**
  * Default persistent layout by Inertia page name.

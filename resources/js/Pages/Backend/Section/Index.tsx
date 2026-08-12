@@ -5,7 +5,10 @@ import { DataTableColumnHeader } from '@/components/Backend/DatatableColumnHelpe
 import { DataTable } from '@/components/Backend/FrontDataTable';
 import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
-export default function Index({ auth = undefined, sections = undefined }: any) {
+export default function Index({
+  auth: _auth = undefined,
+  sections = undefined,
+}: any) {
   const { toast } = useToast();
   const { delete: destroy, get } = useForm();
 

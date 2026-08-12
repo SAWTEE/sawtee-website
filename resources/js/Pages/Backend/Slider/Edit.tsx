@@ -2,7 +2,7 @@ import { Head } from '@inertiajs/react';
 
 import EditSliderForm from './Partials/EditSliderForm';
 export default function Edit({
-  auth = undefined,
+  auth: _auth = undefined,
   slider = undefined,
   slides = undefined,
   pages = undefined,

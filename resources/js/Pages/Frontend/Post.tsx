@@ -7,9 +7,9 @@ import WebinarPost from './Pages/WebinarPost';
 function Post({
   post,
   featured_image,
-  srcSet,
+  srcSet: _srcSet,
   file,
-  relatedPosts,
+  relatedPosts: _relatedPosts,
   seo,
 }: FrontendPostProps) {
   const { category, title, content } = post;

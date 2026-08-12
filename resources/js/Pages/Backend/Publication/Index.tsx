@@ -7,7 +7,7 @@ import PrimaryButton from '@/components/Backend/PrimaryButton';
 import { useToast } from '@/hooks/use-toast';
 
 export default function Index({
-  auth = undefined,
+  auth: _auth = undefined,
   publications: data = undefined,
   categories = undefined,
   categoryID = undefined,
