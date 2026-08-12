@@ -257,11 +257,9 @@ class HomePageDataAssembler
      */
     protected function optimizeMediaArray(array $mediaArray, Media $media, string $conversion): array
     {
-        // Spatie appends preview_url from hasGeneratedConversion alone; overwrite when
-        // the file is missing (stale flags / format mismatch) so the frontend never 404s.
-        $mediaArray['preview_url'] = MediaConversionUrl::isUsable($media, 'preview')
-            ? $media->getUrl('preview')
-            : $media->getUrl();
+        // Use resolve() so legacy on-disk formats (e.g. preview.jpg when preview.webp
+        // is registered but missing) never emit a Spatie URL that 404s.
+        $mediaArray['preview_url'] = MediaConversionUrl::resolve($media, 'preview');
 
         // Frontend components read `original_url`; prefer optimized conversions on disk.
         $mediaArray['original_url'] = MediaConversionUrl::resolve($media, $conversion, 'preview');

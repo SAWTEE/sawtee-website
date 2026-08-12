@@ -87,3 +87,44 @@ test('featured publications fall back when preview webp is missing but flag is s
         ->and($featured['media'][0]['preview_url'] ?? null)->toBe($media->getUrl())
         ->and($featured['media'][0]['preview_url'] ?? null)->not->toContain('-preview.webp');
 });
+
+test('featured publications preview_url uses on-disk preview jpg when preview webp is missing', function () {
+    Cache::forget(ContentCache::homeKey());
+
+    $category = Category::query()->create([
+        'name' => 'Publications',
+        'slug' => 'publications-jpg-fallback-'.uniqid(),
+    ]);
+
+    $publication = Publication::query()->create([
+        'category_id' => $category->id,
+        'title' => 'Featured pub '.uniqid(),
+        'volume' => 'Vol '.uniqid(),
+        'description' => 'Desc',
+    ]);
+
+    $tag = Tag::query()->firstOrCreate(['name' => 'featured']);
+    $publication->tags()->attach($tag);
+
+    $publication->addMedia(UploadedFile::fake()->image('cover.jpg', 400, 560))
+        ->toMediaCollection('publication_featured_image');
+
+    $media = $publication->fresh()->getFirstMedia('publication_featured_image');
+    expect($media)->not->toBeNull();
+
+    File::delete($media->getPath('preview'));
+
+    $legacyJpg = dirname($media->getPath()).'/conversions/'
+        .pathinfo($media->file_name, PATHINFO_FILENAME).'-preview.jpg';
+    File::put($legacyJpg, 'legacy-preview');
+
+    $payload = app(HomePageDataAssembler::class)->assemble();
+    $featured = collect($payload['featuredPublications'])
+        ->firstWhere('id', $publication->id);
+
+    expect($featured)->not->toBeNull()
+        ->and($featured['media'][0]['preview_url'] ?? null)->toContain('-preview.jpg')
+        ->and($featured['media'][0]['preview_url'] ?? null)->not->toContain('-preview.webp');
+
+    File::delete($legacyJpg);
+});
