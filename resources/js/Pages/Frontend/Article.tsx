@@ -146,6 +146,7 @@ export default function Article({
               </div>
               <SocialShare
                 className="mt-8"
+                url={seo?.url}
                 title={title}
                 summary={article.excerpt ?? subtitle ?? ''}
               />

@@ -86,7 +86,7 @@ class ResolvesSeoMeta
                 'name' => $author,
             ] : null,
             'datePublished' => $datePublished,
-            'image' => $image,
+            'image' => $this->absoluteUrl($image) ?? $this->absoluteUrl('/assets/logo-sawtee.webp'),
             'url' => $url ?? url()->current(),
             'publisher' => [
                 '@type' => 'Organization',

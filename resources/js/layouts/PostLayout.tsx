@@ -1,3 +1,4 @@
+import { usePage } from '@inertiajs/react';
 import { type ReactNode, useEffect, useMemo, useRef } from 'react';
 
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
@@ -5,7 +6,7 @@ import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SocialShare from '@/components/Frontend/SocialShare';
-import type { Post } from '@/types';
+import type { Post, SeoMeta } from '@/types';
 
 const calculateReadingTime = (
   content: string,
@@ -47,6 +48,8 @@ export default function PostLayout({
   featured_image,
   srcSet,
 }: PostLayoutProps) {
+  const { url: pageUrl, props } = usePage<{ seo?: SeoMeta }>();
+  const shareUrl = props.seo?.url ?? pageUrl;
   const readingTime = useMemo(() => {
     if (!post.content) return null;
 
@@ -119,6 +122,7 @@ export default function PostLayout({
             </div>
             <SocialShare
               className="mt-8"
+              url={shareUrl}
               title={post.title}
               summary={post.excerpt ?? ''}
             />
