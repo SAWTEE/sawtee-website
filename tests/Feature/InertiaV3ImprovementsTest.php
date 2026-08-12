@@ -125,8 +125,10 @@ test('home page defers below-the-fold sections', function () {
             ->missing('publications')
             ->missing('featuredPublications')
             ->missing('featuredBlogPosts')
+            ->missing('infocus')
             ->loadDeferredProps('below', fn (Assert $reload) => $reload
                 ->has('events')
+                ->has('infocus')
                 ->has('publications')
                 ->has('sawteeInMedia')
                 ->has('newsletters')

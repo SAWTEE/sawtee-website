@@ -16,7 +16,7 @@ if (import.meta.env.PROD) {
 }
 
 function removeStaticLcpFallback(): void {
-  document.getElementById('inertia-lcp-fallback')?.remove();
+  document.body.classList.add('inertia-mounted');
 }
 
 createInertiaApp({

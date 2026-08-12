@@ -37,7 +37,7 @@
     Header set Cache-Control "public, max-age=31536000, immutable" env=BUILD_ASSET
 
     # Tracked site assets (synced from resources/site-assets).
-    Header set Cache-Control "public, max-age=604800" env=SITE_ASSET
+    Header set Cache-Control "public, max-age=31536000, immutable" env=SITE_ASSET
 
     # Media library uploads and conversions change infrequently per URL.
     Header set Cache-Control "public, max-age=2592000" env=MEDIA_ASSET

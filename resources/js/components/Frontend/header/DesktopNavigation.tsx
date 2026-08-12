@@ -1,6 +1,5 @@
 import { usePage } from '@inertiajs/react';
-import { AnimatePresence, motion } from 'framer-motion';
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 
 import InertiaLink from '@/components/shared/InertiaLink';
 import {
@@ -14,7 +13,7 @@ import {
 import { cn } from '@/lib/utils';
 import type { MenuItem, SharedProps } from '@/types';
 
-import MegaMenu from './MegaMenu';
+const MegaMenu = lazy(() => import('./MegaMenu'));
 import MultiLevelMenu, { topLevelNavItemClassName } from './MultiLevelMenu';
 
 type DesktopNavigationProps = {
@@ -113,7 +112,9 @@ export default function DesktopNavigation({
                   </InertiaLink>
                 </NavigationMenuLink>
                 <NavigationMenuContent className="z-40">
-                  <MegaMenu item={menuItem} experts={experts} />
+                  <Suspense fallback={null}>
+                    <MegaMenu item={menuItem} experts={experts} />
+                  </Suspense>
                 </NavigationMenuContent>
               </NavigationMenuItem>
             );
@@ -173,18 +174,12 @@ export default function DesktopNavigation({
 
 function FocusHighlight({ active }: { active: boolean }) {
   return (
-    <AnimatePresence>
-      {active ? (
-        <motion.div
-          className="bg-accent absolute top-0 right-0 bottom-0 left-0 -z-10 rounded-md dark:bg-neutral-800"
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.9 }}
-          transition={{ duration: 0.2 }}
-          layout
-          layoutId="focused-element"
-        />
-      ) : null}
-    </AnimatePresence>
+    <span
+      aria-hidden
+      className={cn(
+        'bg-accent absolute inset-0 -z-10 rounded-md transition-all duration-200 dark:bg-neutral-800',
+        active ? 'scale-100 opacity-100' : 'pointer-events-none scale-95 opacity-0'
+      )}
+    />
   );
 }

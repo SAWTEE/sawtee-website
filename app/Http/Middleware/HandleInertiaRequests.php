@@ -8,6 +8,7 @@ use App\Support\MemberInstituteAssembler;
 use App\Support\MenuTreeBuilder;
 use App\Support\ZiggyConfig;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -65,7 +66,10 @@ class HandleInertiaRequests extends Middleware
                     ->values()
                     ->all(),
                 'socialMenu' => fn () => SiteSetting::getValue('social_menu', []),
-                'aboutIntro' => fn () => SiteSetting::getValue('about_intro'),
+                'aboutIntro' => Inertia::defer(
+                    fn () => SiteSetting::getValue('about_intro'),
+                    'below'
+                ),
                 'memberInstitutes' => fn () => app(MemberInstituteAssembler::class)->forMarquee(),
             ]),
         ]);

@@ -16,6 +16,7 @@ use App\Models\Publication;
 use App\Models\TradeInsightVolume;
 use App\Observers\ContentCacheObserver;
 use App\Support\ContentCache;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Spatie\MediaLibrary\Conversions\FileManipulator as SpatieFileManipulator;
@@ -62,6 +63,18 @@ class AppServiceProvider extends ServiceProvider
             Feature::class,
         ] as $model) {
             $model::observe($observer);
+        }
+
+        if (! $this->app->environment('local', 'testing')) {
+            Vite::usePreloadTagAttributes([
+                'fetchpriority' => 'high',
+            ]);
+
+            // Load the full Tailwind bundle without blocking first paint (LCP uses inline CSS).
+            Vite::useStyleTagAttributes([
+                'media' => 'print',
+                'onload' => "this.media='all'",
+            ]);
         }
     }
 }

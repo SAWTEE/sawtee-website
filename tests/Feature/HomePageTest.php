@@ -46,7 +46,7 @@ test('home page exposes assembler payload keys', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->component('Frontend/Pages/Home')
             ->has('slides')
-            ->has('infocus')
+            ->missing('infocus')
             ->has('slidesResponsiveImages')
             ->has('homePageSections')
             ->has('seo.title')
@@ -64,6 +64,7 @@ test('home page exposes assembler payload keys', function () {
                 ->has('featuredBlogPosts')
             )
             ->loadDeferredProps('below', fn (Assert $reload) => $reload
+                ->has('infocus')
                 ->has('sawteeInMedia')
                 ->has('events')
                 ->has('publications')
@@ -100,7 +101,8 @@ test('home page includes a static lcp fallback image in the initial html', funct
     $response->assertOk();
     expect($response->getContent())
         ->toContain('id="inertia-lcp-fallback"')
-        ->toContain('rel="preload" as="image"');
+        ->toContain('rel="preload" as="image"')
+        ->toContain('body.inertia-mounted #inertia-lcp-fallback');
 });
 
 test('public htaccess sets long cache headers for build assets', function () {

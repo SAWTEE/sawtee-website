@@ -171,14 +171,10 @@ const Home = ({
           )}
         </div>
       </Section>
-      {/* Infocus Section */}
-      {infocus && homePageSections?.find(h => h.name === 'Infocus')?.show && (
-        <InfocusSection infocus={infocus} />
-      )}
-
       {/* Below-the-fold sections (deferred props) */}
       <Deferred
         data={[
+          'infocus',
           'events',
           'publications',
           'sawteeInMedia',
@@ -192,6 +188,10 @@ const Home = ({
         }
       >
         <>
+          {infocus && homePageSections?.find(h => h.name === 'Infocus')?.show && (
+            <InfocusSection infocus={infocus} />
+          )}
+
           {events &&
             homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (
               <PolicyOutreachSection events={events} />
