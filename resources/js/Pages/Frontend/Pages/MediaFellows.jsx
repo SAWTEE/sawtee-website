@@ -17,7 +17,7 @@ export default function MediaFellows() {
   return (
     <div className="mx-auto max-w-2xl px-8 py-20 md:px-0">
       <Glassbox className="mt-8 px-6 text-slate-800">
-        {sortByYear?.map(({ year, description, fellows }) => {
+        {sortByYear?.map(({ year, description, fellows, published_stories }) => {
           return (
             <Accordion
               type="single"
@@ -34,6 +34,17 @@ export default function MediaFellows() {
                     className="text-lg text-slate-800 dark:text-slate-300"
                     dangerouslySetInnerHTML={{ __html: description }}
                   />
+                    {published_stories?.map(({ title, link }) => (
+  <a
+    key={title}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="mt-4 inline-block text-lg underline hover:underline-offset-2"
+    href={link}
+  >
+    {title}
+  </a>
+))}
 
                   {fellows.map(fellow => {
                     return <Fellow mediaFellow={fellow} />;
