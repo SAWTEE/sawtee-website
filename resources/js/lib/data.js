@@ -1168,4 +1168,12 @@ export const mediaFellowshipData = [
       },
     ],
   },
+    {
+    year: '2026',
+    description:
+      'The 2026 edition of the SAWTEE Media Fellowship offers Nepali journalists an opportunity to explore the broader dimensions of public borrowing—including debt servicing, debt sustainability, the composition and sources of debt, and the impact of foreign loans. Fellows may also explore the progress and outcomes of foreign-funded development projects, moving beyond narrow or conspiratorial geopolitical narratives surrounding Nepal’s public debt.',
+    linkText: 'For more information',
+    link: 'https://sawtee.org/career',
+    fellows: [],
+  },
 ];
