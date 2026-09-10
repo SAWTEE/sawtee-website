@@ -31,7 +31,7 @@ export const FeaturedPublications = ({ publications, blogPosts }) => {
                     rel="noopener noreferrer"
                     className="group-hover:opacity-80"
                     href={
-                      publication.volume_slug
+                      publication.category?.slug === "trade-insight"
                         ? `/category/publications/${publication.category.slug}/${publication.volume_slug}`
                         : `/publications/${publication.file?.name}`
                     }
