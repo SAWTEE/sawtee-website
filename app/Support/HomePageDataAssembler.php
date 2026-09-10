@@ -86,7 +86,9 @@ class HomePageDataAssembler
             'events' => $this->modelsWithOptimizedMedia(
                 $this->publishedPostsByCategorySlug('featured-events', 5),
                 'post-featured-image',
-                'preview'
+                // Lead card is wide; large WebP stays sharp without shipping originals.
+                // Thumbs on the frontend still prefer preview_url.
+                'large'
             ),
             'featuredPublications' => $this->modelsWithOptimizedMedia(
                 $featuredPublications,

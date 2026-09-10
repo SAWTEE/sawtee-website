@@ -84,7 +84,8 @@ test('featured publications fall back when preview webp is missing but flag is s
         ->firstWhere('id', $publication->id);
 
     expect($featured)->not->toBeNull()
-        ->and($featured['media'][0]['preview_url'] ?? null)->toBe($media->getUrl())
+        ->and($featured['media'][0]['preview_url'] ?? null)->toStartWith($media->getUrl())
+        ->and($featured['media'][0]['preview_url'] ?? null)->toContain('?v=')
         ->and($featured['media'][0]['preview_url'] ?? null)->not->toContain('-preview.webp');
 });
 

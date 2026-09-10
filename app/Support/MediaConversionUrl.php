@@ -31,6 +31,9 @@ class MediaConversionUrl
 
     /**
      * First usable conversion URL, otherwise the original media URL.
+     *
+     * URLs include a `v=` filemtime query so browsers refetch after
+     * `media-library:regenerate` (media assets are cached for 30 days).
      */
     public static function resolve(?Media $media, string ...$conversions): string
     {
@@ -45,7 +48,7 @@ class MediaConversionUrl
             }
         }
 
-        return $media->getUrl();
+        return self::withFileVersion($media->getUrl(), $media->getPath());
     }
 
     /**
@@ -67,11 +70,16 @@ class MediaConversionUrl
             return null;
         }
 
+        $absolutePath = self::absolutePathForRelative($media, $match['relative']);
+
         if ($match['use_spatie_url']) {
-            return $media->getUrl($conversion);
+            return self::withFileVersion($media->getUrl($conversion), $absolutePath);
         }
 
-        return self::publicUrlForRelativePath($media, $match['relative']);
+        return self::withFileVersion(
+            self::publicUrlForRelativePath($media, $match['relative']),
+            $absolutePath
+        );
     }
 
     /**
@@ -149,10 +157,34 @@ class MediaConversionUrl
         return null;
     }
 
+    private static function absolutePathForRelative(Media $media, string $relativePath): string
+    {
+        $diskRoot = rtrim((string) config("filesystems.disks.{$media->disk}.root"), DIRECTORY_SEPARATOR);
+
+        return $diskRoot.DIRECTORY_SEPARATOR.ltrim(str_replace('/', DIRECTORY_SEPARATOR, $relativePath), DIRECTORY_SEPARATOR);
+    }
+
     private static function publicUrlForRelativePath(Media $media, string $relativePath): string
     {
         $baseUrl = rtrim((string) config("filesystems.disks.{$media->disk}.url"), '/');
 
         return $baseUrl.'/'.ltrim(str_replace('\\', '/', $relativePath), '/');
+    }
+
+    /**
+     * Bust long-lived media caches after conversions are regenerated in place.
+     */
+    private static function withFileVersion(string $url, string $absolutePath): string
+    {
+        if ($url === '' || ! is_file($absolutePath)) {
+            return $url;
+        }
+
+        $mtime = filemtime($absolutePath);
+        if ($mtime === false) {
+            return $url;
+        }
+
+        return $url.(str_contains($url, '?') ? '&' : '?').'v='.$mtime;
     }
 }

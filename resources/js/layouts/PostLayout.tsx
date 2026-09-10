@@ -4,6 +4,7 @@ import { type ReactNode, useEffect, useMemo, useRef } from 'react';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostHeader from '@/components/Frontend/post/post-header';
 import PostMeta from '@/components/Frontend/post/post-meta';
+import ReadingProgress from '@/components/Frontend/ReadingProgress';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SocialShare from '@/components/Frontend/SocialShare';
 import type { Post, SeoMeta } from '@/types';
@@ -75,7 +76,9 @@ export default function PostLayout({
   const hasRelated = (relatedPosts?.length ?? 0) > 0;
 
   return (
-    <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
+    <>
+      <ReadingProgress />
+      <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
       <header className="mx-auto w-full max-w-3xl">
         <PostHeader categories={post.category} heading={post.title} />
         <PostMeta
@@ -140,5 +143,6 @@ export default function PostLayout({
         </div>
       </div>
     </article>
+    </>
   );
 }

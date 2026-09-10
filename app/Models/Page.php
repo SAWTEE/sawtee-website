@@ -62,7 +62,7 @@ class Page extends Model implements HasMedia
         $this->addMediaConversion('preview')
             ->fit(Fit::Max, 400, 400)
             ->format('webp')
-            ->quality(75)
+            ->quality(80)
             ->nonQueued();
 
         $this->addMediaConversion('large')

@@ -60,7 +60,7 @@ test('resolve falls back to original when conversion is marked generated but fil
         ->and($media->hasGeneratedConversion('large'))->toBeTrue()
         ->and(MediaConversionUrl::isUsable($media, 'preview'))->toBeFalse()
         ->and(MediaConversionUrl::isUsable($media, 'large'))->toBeFalse()
-        ->and(MediaConversionUrl::resolve($media, 'large', 'preview'))->toBe($media->getUrl())
+        ->and(MediaConversionUrl::resolve($media, 'large', 'preview'))->toStartWith($media->getUrl())
         ->and(MediaConversionUrl::optional($media, 'large'))->toBeNull();
 });
 
@@ -70,12 +70,14 @@ test('resolve prefers large then preview when those files exist', function () {
     expect($media)->not->toBeNull();
 
     expect(MediaConversionUrl::resolve($media, 'large', 'preview'))
-        ->toBe($media->getUrl('large'));
+        ->toStartWith($media->getUrl('large'))
+        ->toContain('?v=');
 
     File::delete($media->getPath('large'));
 
     expect(MediaConversionUrl::resolve($media, 'large', 'preview'))
-        ->toBe($media->getUrl('preview'));
+        ->toStartWith($media->getUrl('preview'))
+        ->toContain('?v=');
 });
 
 test('resolve falls back to legacy responsive webp when large is missing', function () {
@@ -89,10 +91,11 @@ test('resolve falls back to legacy responsive webp when large is missing', funct
     File::put($legacy, 'legacy-responsive');
 
     expect(MediaConversionUrl::optional($media, 'large'))
-        ->toEndWith('-responsive.webp')
+        ->toContain('-responsive.webp')
         ->and(MediaConversionUrl::resolve($media, 'large'))
         ->toContain('/conversions/')
-        ->toContain('-responsive.webp');
+        ->toContain('-responsive.webp')
+        ->toContain('?v=');
 
     File::delete($legacy);
 });
@@ -108,7 +111,20 @@ test('resolve serves on-disk preview jpg when registered preview webp is missing
     File::put($legacyJpg, 'legacy-preview');
 
     expect(MediaConversionUrl::resolve($media, 'preview'))
-        ->toContain('-preview.jpg');
+        ->toContain('-preview.jpg')
+        ->toContain('?v=');
 
     File::delete($legacyJpg);
+});
+
+test('resolve appends a filemtime cache buster for regenerated conversions', function () {
+    $slide = createSlideWithMedia();
+    $media = $slide->getFirstMedia('slides');
+    expect($media)->not->toBeNull();
+
+    $previewPath = $media->getPath('preview');
+    $mtime = filemtime($previewPath);
+
+    expect(MediaConversionUrl::resolve($media, 'preview'))
+        ->toBe($media->getUrl('preview').'?v='.$mtime);
 });

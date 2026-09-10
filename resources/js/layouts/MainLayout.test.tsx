@@ -1,5 +1,5 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { act, fireEvent, render, screen } from '@testing-library/react';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import MainLayout from './MainLayout';
 
@@ -46,7 +46,28 @@ vi.mock('@/components/Frontend/mobileMenu', () => ({
   default: () => <div data-testid="mobile-menu" />,
 }));
 
+function mockDocumentScroll({
+  scrollTop,
+  clientHeight = 800,
+}: {
+  scrollTop: number;
+  clientHeight?: number;
+}) {
+  Object.defineProperty(document.documentElement, 'scrollTop', {
+    configurable: true,
+    value: scrollTop,
+  });
+  Object.defineProperty(window, 'innerHeight', {
+    configurable: true,
+    value: clientHeight,
+  });
+}
+
 describe('MainLayout', () => {
+  afterEach(() => {
+    mockDocumentScroll({ scrollTop: 0 });
+  });
+
   it('renders with empty menus without crashing', () => {
     render(
       <MainLayout>
@@ -59,21 +80,46 @@ describe('MainLayout', () => {
     expect(screen.getByTestId('footer')).toHaveTextContent('menu:0');
   });
 
-  it('renders a floating go-to-top control with progress ring from page load', () => {
+  it('keeps the back-to-top control hidden until the page is scrolled', () => {
+    mockDocumentScroll({ scrollTop: 0 });
+
     const { container } = render(
       <MainLayout>
         <div>Page content</div>
       </MainLayout>
     );
 
-    const button = screen.getByRole('button', {
-      name: /scroll to top\. reading progress/i,
+    const button = container.querySelector('.scroll-to-top');
+
+    expect(button).not.toBeNull();
+    expect(button).toHaveTextContent('Back to top');
+    expect(button).not.toHaveClass('scroll-to-top--visible');
+    expect(button).toHaveAttribute('aria-hidden', 'true');
+    expect(button).toBeDisabled();
+    expect(container.querySelector('.scroll-to-top__ring')).toBeNull();
+    expect(container.querySelector('#progress')).toBeNull();
+  });
+
+  it('fades in the back-to-top control after scrolling', () => {
+    mockDocumentScroll({ scrollTop: 0 });
+
+    const { container } = render(
+      <MainLayout>
+        <div>Page content</div>
+      </MainLayout>
+    );
+
+    const button = container.querySelector('.scroll-to-top');
+    expect(button).not.toHaveClass('scroll-to-top--visible');
+
+    act(() => {
+      mockDocumentScroll({ scrollTop: 500 });
+      fireEvent.scroll(window);
     });
-    expect(button).toBeInTheDocument();
-    expect(button).toHaveClass('scroll-to-top');
-    expect(button).not.toHaveClass('opacity-0');
-    expect(container.querySelector('.scroll-to-top__track')).not.toBeNull();
-    expect(container.querySelector('.scroll-to-top__ring')).not.toBeNull();
-    expect(container.querySelector('.scroll-to-top__face')).not.toBeNull();
+
+    expect(button).toHaveClass('scroll-to-top--visible');
+    expect(
+      screen.getByRole('button', { name: 'Back to top' })
+    ).toBeEnabled();
   });
 });

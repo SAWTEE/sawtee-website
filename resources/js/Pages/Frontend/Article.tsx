@@ -5,6 +5,7 @@ import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import FeaturedMedia from '@/components/Frontend/post/featured-media';
 import PostMeta from '@/components/Frontend/post/post-meta';
+import ReadingProgress from '@/components/Frontend/ReadingProgress';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SocialShare from '@/components/Frontend/SocialShare';
 import { Button } from '@/components/ui/button';
@@ -80,6 +81,8 @@ export default function Article({
         type={seo?.type ?? 'article'}
         jsonLd={seo?.jsonLd}
       />
+
+      <ReadingProgress />
 
       <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
         <header className="mx-auto w-full max-w-3xl text-left md:text-center">

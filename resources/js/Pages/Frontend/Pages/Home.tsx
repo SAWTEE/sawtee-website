@@ -21,12 +21,22 @@ import type {
 
 function featuredImageUrl(
   media: MediaItem[] | undefined,
-  fallback: string
+  fallback: string,
+  preferPreview = false
 ): string {
-  return (
-    media?.find(item => item.collection_name === 'post-featured-image')
-      ?.original_url ?? fallback
+  const item = media?.find(
+    mediaItem => mediaItem.collection_name === 'post-featured-image'
   );
+
+  if (!item) {
+    return fallback;
+  }
+
+  if (preferPreview) {
+    return item.preview_url ?? item.original_url ?? fallback;
+  }
+
+  return item.original_url ?? item.preview_url ?? fallback;
 }
 
 function postFileMedia(media: MediaItem[] | undefined): MediaItem | undefined {
@@ -285,7 +295,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
       <div className="group md:col-span-5">
         <Link href={`/category/featured-events/${lead.slug}`}>
           <div
-            className="relative h-60 max-h-60 overflow-hidden rounded-md text-center"
+            className="relative aspect-video w-full overflow-hidden rounded-md bg-muted text-center"
             title={lead.title}
           >
             <div className="ease absolute inset-0 top-0 z-10 hidden h-1.25 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
@@ -296,11 +306,11 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
                 '/assets/SM-placeholder-1024x512.webp'
               )}
               alt={lead.title}
-              width={600}
-              height={400}
+              width={960}
+              height={540}
               loading="lazy"
               decoding="async"
-              className="aspect-video w-full object-cover transition-all duration-200 ease-linear"
+              className="absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear"
             />
           </div>
         </Link>
@@ -336,7 +346,8 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
 
           const featured_image = featuredImageUrl(
             event.media,
-            '/assets/SM-placeholder-300x150.webp'
+            '/assets/SM-placeholder-300x150.webp',
+            true
           );
 
           return (

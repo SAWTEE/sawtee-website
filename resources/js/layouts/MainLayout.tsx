@@ -1,6 +1,6 @@
 import { usePage } from '@inertiajs/react';
 import { ArrowUpToLineIcon } from 'lucide-react';
-import { type CSSProperties, type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 import Footer from '@/components/Frontend/footer/footer';
 import Header from '@/components/Frontend/header/header';
@@ -17,13 +17,16 @@ import { mobileMenu } from '@/lib/data';
 import { cn } from '@/lib/utils';
 import type { MenuItem, SharedProps, SocialMenuLink } from '@/types';
 
+/** Show after roughly half a viewport of scroll (min 360px). */
+const SCROLL_TOP_SHOW_PX = 360;
+
 type MainLayoutProps = {
   children: ReactNode;
   className?: string;
 };
 
 export default function MainLayout({ children, className }: MainLayoutProps) {
-  const [scrollProgress, setScrollProgress] = useState(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const page = usePage<SharedProps>();
   const primaryMenu = page.props.primaryMenu ?? [];
@@ -37,23 +40,21 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
       return;
     }
 
-    const updateScrollProgress = () => {
-      const doc = document.documentElement;
-      const scrollable = doc.scrollHeight - doc.clientHeight;
-      const next =
-        scrollable > 0
-          ? Math.min(100, Math.max(0, (doc.scrollTop / scrollable) * 100))
-          : 0;
+    const updateScrollState = () => {
+      const threshold = Math.max(
+        SCROLL_TOP_SHOW_PX,
+        Math.round(window.innerHeight * 0.45)
+      );
 
-      setScrollProgress(next);
+      setShowScrollTop(document.documentElement.scrollTop >= threshold);
     };
 
-    updateScrollProgress();
-    window.addEventListener('scroll', updateScrollProgress, { passive: true });
-    window.addEventListener('resize', updateScrollProgress);
+    updateScrollState();
+    window.addEventListener('scroll', updateScrollState, { passive: true });
+    window.addEventListener('resize', updateScrollState);
     return () => {
-      window.removeEventListener('scroll', updateScrollProgress);
-      window.removeEventListener('resize', updateScrollProgress);
+      window.removeEventListener('scroll', updateScrollState);
+      window.removeEventListener('resize', updateScrollState);
     };
   }, []);
 
@@ -64,7 +65,7 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
   };
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
+    <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
       <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
         <SheetContent aria-describedby={undefined}>
           <SheetHeader>
@@ -105,20 +106,18 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
 
       <button
         type="button"
-        className="scroll-to-top"
-        style={
-          {
-            '--scroll-progress': scrollProgress,
-          } as CSSProperties
-        }
-        aria-label={`Scroll to top. Reading progress ${Math.round(scrollProgress)} percent.`}
+        className={cn(
+          'scroll-to-top',
+          showScrollTop && 'scroll-to-top--visible'
+        )}
+        aria-label="Back to top"
+        aria-hidden={!showScrollTop}
+        tabIndex={showScrollTop ? 0 : -1}
+        disabled={!showScrollTop}
         onClick={scrollToTop}
       >
-        <span className="scroll-to-top__track" aria-hidden />
-        <span className="scroll-to-top__ring" aria-hidden />
-        <span className="scroll-to-top__face">
-          <ArrowUpToLineIcon className="scroll-to-top__icon" aria-hidden />
-        </span>
+        <ArrowUpToLineIcon className="scroll-to-top__icon" aria-hidden />
+        <span>Back to top</span>
       </button>
     </ThemeProvider>
   );

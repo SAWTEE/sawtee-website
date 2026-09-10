@@ -62,21 +62,9 @@ export default function FeaturedSection({
                 imageFirst ? 'lg:order-1' : 'lg:order-2'
               )}
             >
-              {feature.link ? (
-                <a
-                  href={feature.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`${feature.title} (opens in a new tab)`}
-                  className="group focus-visible:ring-theme-500 relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
-                >
-                  <FeatureImage feature={feature} />
-                </a>
-              ) : (
                 <div className="relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0">
                   <FeatureImage feature={feature} />
                 </div>
-              )}
             </div>
           </article>
         );
