@@ -1,6 +1,7 @@
 import Autoplay from 'embla-carousel-autoplay';
 import { useEffect, useMemo, useState } from 'react';
 
+import CarouselIndicators from '@/components/Frontend/CarouselIndicators';
 import {
   Carousel,
   type CarouselApi,
@@ -164,31 +165,13 @@ const FullWidthCarousel = ({
               className="top-1/2 right-2 z-20 h-9 w-9 -translate-y-1/2 border-0 bg-black/35 text-white shadow-none hover:bg-black/50 hover:text-white disabled:opacity-30 sm:right-3"
             />
 
-            <div
-              className="absolute right-2 bottom-2 z-20 flex items-center sm:right-3 sm:bottom-3"
-              role="group"
-              aria-label="Slide indicators"
-            >
-              {Array.from({ length: count }).map((_, index) => (
-                <button
-                  key={index}
-                  type="button"
-                  aria-label={`Go to slide ${index + 1} of ${count}`}
-                  aria-current={index === current ? 'true' : undefined}
-                  className="flex h-8 w-8 items-center justify-center"
-                  onClick={() => api?.scrollTo(index)}
-                >
-                  <span
-                    aria-hidden
-                    className={cn(
-                      'rounded-full transition-all duration-300',
-                      index === current
-                        ? 'h-1.5 w-6 bg-white'
-                        : 'h-1.5 w-1.5 bg-white/45 hover:bg-white/70'
-                    )}
-                  />
-                </button>
-              ))}
+            <div className="absolute right-2 bottom-2 z-20 sm:right-3 sm:bottom-3">
+              <CarouselIndicators
+                count={count}
+                current={current}
+                onSelect={index => api?.scrollTo(index)}
+                variant="onMedia"
+              />
             </div>
           </>
         )}

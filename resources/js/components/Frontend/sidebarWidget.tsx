@@ -19,7 +19,7 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
 
   return (
     <Glassbox
-      className="sidebar_widget relative max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20"
+      className="sidebar_widget max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20"
       {...rest}
     >
       <SimpleList className="border-none px-5 md:px-6" heading={title}>

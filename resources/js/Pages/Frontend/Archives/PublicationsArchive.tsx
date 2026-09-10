@@ -44,7 +44,7 @@ function PublicationsArchive({
         jsonLd={seo?.jsonLd}
       />
       <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
-        <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
+        <div className="grid items-start gap-10 md:grid-cols-4 xl:grid-cols-6">
           <section className="archive-list md:col-span-2 xl:col-span-4">
             <ItemsList
               items={category.children ?? []}
@@ -52,7 +52,7 @@ function PublicationsArchive({
             />
           </section>
 
-          <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
+          <aside className="sidebar sticky top-32 flex flex-col items-center gap-12 self-start md:col-span-2">
             {sawteeInMedia && (
               <SidebarWidget
                 array={sawteeInMedia}

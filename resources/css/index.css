@@ -192,10 +192,6 @@
   .primary-link {
     @apply text-[#006181] underline underline-offset-4 hover:text-[#006181]/70 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80;
   }
-  .sidebar > :last-child,
-  .post-body > aside > :last-child {
-    @apply sticky top-32;
-  }
   .dropdown:hover > a svg {
     transform: rotate(180deg);
   }
@@ -267,8 +263,8 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
 .scroll-to-top {
     position: fixed;
     right: 1.25rem;
-    /* Sit above the footer social icon row (~3rem icons + padding). */
-    bottom: 5.5rem;
+    /* Default: pinned near the bottom of the viewport. */
+    bottom: 1.25rem;
     z-index: 50;
     display: inline-flex;
     align-items: center;
@@ -292,6 +288,7 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
         opacity 280ms ease,
         transform 280ms ease,
         visibility 280ms ease,
+        bottom 280ms ease,
         background-color 180ms ease,
         color 180ms ease,
         border-color 180ms ease,
@@ -301,7 +298,7 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
 @media (min-width: 640px) {
     .scroll-to-top {
         right: 1.75rem;
-        bottom: 6rem;
+        bottom: 1.5rem;
     }
 }
 
@@ -310,6 +307,17 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
     visibility: visible;
     pointer-events: auto;
     transform: translateY(0);
+}
+
+/* Clear the footer social icon row once the footer enters the viewport. */
+.scroll-to-top--above-footer {
+    bottom: 5.5rem;
+}
+
+@media (min-width: 640px) {
+    .scroll-to-top--above-footer {
+        bottom: 6rem;
+    }
 }
 
 .scroll-to-top:hover:not(:disabled) {
@@ -432,12 +440,6 @@ h1, h2, h3, h4, h5, h6 {
     align-self: center;
 }
 
-/* .sidebar > :last-child, .post-body > aside > :last-child {
-    position: sticky;
-    top: 8rem;
-} */
-
-
 pre {
     font-family: 'Courier New', monospace;
     color: #333;
@@ -446,10 +448,6 @@ pre {
     border-radius: 4px;
     margin-top: 10px;
     white-space: pre-wrap;
-}
-.archive-list > :first-child {
-    position: sticky;
-    top: 8rem;
 }
 
 .blockquote::before {

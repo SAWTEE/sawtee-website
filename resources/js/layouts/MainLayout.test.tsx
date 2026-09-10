@@ -32,7 +32,7 @@ vi.mock('@/components/Frontend/header/header', () => ({
 
 vi.mock('@/components/Frontend/footer/footer', () => ({
   default: ({ menu }: any) => (
-    <footer data-testid="footer">
+    <footer id="site-footer" data-testid="footer">
       menu:{Array.isArray(menu) ? menu.length : 'missing'}
     </footer>
   ),
@@ -63,9 +63,36 @@ function mockDocumentScroll({
   });
 }
 
+function mockFooterBounds({
+  top,
+  bottom,
+}: {
+  top: number;
+  bottom: number;
+}) {
+  const footer = document.getElementById('site-footer');
+
+  if (!footer) {
+    throw new Error('Expected #site-footer to be rendered');
+  }
+
+  vi.spyOn(footer, 'getBoundingClientRect').mockReturnValue({
+    top,
+    bottom,
+    left: 0,
+    right: 0,
+    width: 0,
+    height: bottom - top,
+    x: 0,
+    y: top,
+    toJSON: () => ({}),
+  } as DOMRect);
+}
+
 describe('MainLayout', () => {
   afterEach(() => {
     mockDocumentScroll({ scrollTop: 0 });
+    vi.restoreAllMocks();
   });
 
   it('renders with empty menus without crashing', () => {
@@ -94,6 +121,7 @@ describe('MainLayout', () => {
     expect(button).not.toBeNull();
     expect(button).toHaveTextContent('Back to top');
     expect(button).not.toHaveClass('scroll-to-top--visible');
+    expect(button).not.toHaveClass('scroll-to-top--above-footer');
     expect(button).toHaveAttribute('aria-hidden', 'true');
     expect(button).toBeDisabled();
     expect(container.querySelector('.scroll-to-top__ring')).toBeNull();
@@ -114,12 +142,35 @@ describe('MainLayout', () => {
 
     act(() => {
       mockDocumentScroll({ scrollTop: 500 });
+      mockFooterBounds({ top: 1200, bottom: 1800 });
       fireEvent.scroll(window);
     });
 
     expect(button).toHaveClass('scroll-to-top--visible');
+    expect(button).not.toHaveClass('scroll-to-top--above-footer');
     expect(
       screen.getByRole('button', { name: 'Back to top' })
     ).toBeEnabled();
+  });
+
+  it('raises the back-to-top control above the footer when it is in view', () => {
+    mockDocumentScroll({ scrollTop: 0 });
+
+    const { container } = render(
+      <MainLayout>
+        <div>Page content</div>
+      </MainLayout>
+    );
+
+    const button = container.querySelector('.scroll-to-top');
+
+    act(() => {
+      mockDocumentScroll({ scrollTop: 1400 });
+      mockFooterBounds({ top: 600, bottom: 1200 });
+      fireEvent.scroll(window);
+    });
+
+    expect(button).toHaveClass('scroll-to-top--visible');
+    expect(button).toHaveClass('scroll-to-top--above-footer');
   });
 });

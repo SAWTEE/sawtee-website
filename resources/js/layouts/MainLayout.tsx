@@ -25,8 +25,21 @@ type MainLayoutProps = {
   className?: string;
 };
 
+function isFooterInViewport(): boolean {
+  const footer = document.getElementById('site-footer');
+
+  if (!footer) {
+    return false;
+  }
+
+  const rect = footer.getBoundingClientRect();
+
+  return rect.top < window.innerHeight && rect.bottom > 0;
+}
+
 export default function MainLayout({ children, className }: MainLayoutProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [footerInView, setFooterInView] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const page = usePage<SharedProps>();
   const primaryMenu = page.props.primaryMenu ?? [];
@@ -47,6 +60,7 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
       );
 
       setShowScrollTop(document.documentElement.scrollTop >= threshold);
+      setFooterInView(isFooterInViewport());
     };
 
     updateScrollState();
@@ -108,7 +122,8 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
         type="button"
         className={cn(
           'scroll-to-top',
-          showScrollTop && 'scroll-to-top--visible'
+          showScrollTop && 'scroll-to-top--visible',
+          footerInView && 'scroll-to-top--above-footer'
         )}
         aria-label="Back to top"
         aria-hidden={!showScrollTop}

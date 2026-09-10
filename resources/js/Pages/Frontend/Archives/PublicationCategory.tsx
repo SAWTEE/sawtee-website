@@ -5,7 +5,8 @@ import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { mainWithPageLayout } from '@/lib/page-layouts';
-import type { FrontendPublicationCategoryProps } from '@/types';
+import { cn } from '@/lib/utils';
+import type { FrontendPublicationCategoryProps, Publication } from '@/types';
 
 function PublicationCategory({
   category,
@@ -21,6 +22,7 @@ function PublicationCategory({
     typeof featured_image === 'string' && featured_image !== ''
       ? featured_image
       : '/assets/logo-sawtee.webp';
+  const isTradeInsight = category.slug === 'trade-insight';
 
   return (
     <>
@@ -32,122 +34,130 @@ function PublicationCategory({
         type={seo?.type}
         jsonLd={seo?.jsonLd}
       />
-      <Section className={'mx-auto max-w-full px-8 py-6 lg:px-20 lg:py-20'}>
-        <div className="grid place-content-center gap-10 md:grid-cols-4 xl:grid-cols-6">
-          <section className="archive-list md:col-span-2 xl:col-span-4">
-            <div>
-              <div className="grid grid-cols-4 gap-6 gap-y-20">
-                {publications?.data?.map(publication => {
-                  return (
-                    <div key={publication.id}>
-                      <article className="article mx-auto max-w-[140px] overflow-hidden rounded-md">
-                        {category.slug === 'trade-insight' ? (
-                          <a
-                            title={publication.title}
-                            href={
-                              publication.volume_slug
-                                ? `/category/publications/${category?.slug}/${publication.volume_slug}`
-                                : `/publications/${publication.file?.name}`
-                            }
-                            className="group relative"
-                            referrerPolicy="no-referrer"
-                          >
-                            <div className="absolute top-0 left-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
-                            <img
-                              className="aspect-3/4 h-full w-full rounded-md object-cover"
-                              src={
-                                `${publication.media?.[0]?.original_url ?? ''}` ||
-                                '/assets/SM-placeholder-150x150.webp'
-                              }
-                              alt={publication.title}
-                              title={publication.title}
-                              loading="lazy"
-                            />
-                          </a>
-                        ) : (
-                          <a
-                            title={publication.title}
-                            href={
-                              publication.file
-                                ? `/publications/${publication.file?.name}`
-                                : '#'
-                            }
-                            className="group relative"
-                            target="_blank"
-                            referrerPolicy="no-referrer"
-                            rel="noopener noreferrer"
-                          >
-                            <div className="absolute top-0 left-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
-                            <img
-                              className="aspect-3/4 h-full w-full rounded-md object-cover"
-                              src={
-                                `${publication.media?.[0]?.original_url ?? ''}` ||
-                                '/assets/SM-placeholder-150x150.webp'
-                              }
-                              alt={publication.title}
-                              title={publication.title}
-                              loading="lazy"
-                            />
-                          </a>
-                        )}
-                      </article>
-                      {publication.title && (
-                        <a
-                          className="underline"
-                          target="_blank"
-                          referrerPolicy="no-referrer"
-                          href={`/publications/${publication.file?.name}`}
-                          rel="noopener noreferrer"
-                        >
-                          <p className="mt-4 text-center text-sm font-semibold">
-                            {publication.title}
-                          </p>
-                          {publication.subtitle && (
-                            <p className="mt-1 text-center text-xs">
-                              {publication.subtitle}
-                            </p>
-                          )}
-                        </a>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-              <Pagination
-                className="mt-12"
-                links={publications.links}
-                currentPage={publications.current_page}
-                totalPages={publications.last_page}
-                nextPage={publications.next_page_url}
-                prevPage={publications.prev_page_url}
-              />
+      <Section className="mx-auto max-w-full px-4 py-6 sm:px-6 md:py-10 lg:px-12 lg:py-16 xl:px-20">
+        <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
+          <section className="archive-list min-w-0 lg:col-span-8">
+            <div
+              className="grid grid-cols-1 gap-x-6 gap-y-10 sm:gap-x-8 sm:gap-y-12 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4"
+              data-testid="publication-grid"
+            >
+              {publications?.data?.map(publication => (
+                <PublicationCard
+                  key={publication.id}
+                  publication={publication}
+                  categorySlug={category.slug}
+                  isTradeInsight={isTradeInsight}
+                />
+              ))}
             </div>
+            <Pagination
+              className="mt-10 sm:mt-12"
+              links={publications.links}
+              currentPage={publications.current_page}
+              totalPages={publications.last_page}
+              nextPage={publications.next_page_url}
+              prevPage={publications.prev_page_url}
+            />
           </section>
 
-          <aside className="sidebar flex flex-col items-center gap-12 md:col-span-2">
-            {showSubscriptionBox && (
-              <Glassbox className={'w-full p-0'}>
-                <SubscriptionCard />
-              </Glassbox>
-            )}
+          <aside className="sidebar sticky top-32 flex w-full min-w-0 flex-col items-center gap-8 self-start sm:gap-10 lg:top-32 lg:col-span-4 lg:gap-12">
             {sawteeInMedia && (
               <SidebarWidget
                 array={sawteeInMedia}
-                title={'SAWTEE in Media'}
-                link={'/category/sawtee-in-media'}
+                title="SAWTEE in Media"
+                link="/category/sawtee-in-media"
               />
             )}
             {infocus && (
               <SidebarWidget
                 array={infocus}
-                title={'Infocus'}
-                link={'/category/infocus'}
+                title="Infocus"
+                link="/category/in-focus"
               />
+            )}
+            {showSubscriptionBox && (
+              <Glassbox className="w-full p-0">
+                <SubscriptionCard />
+              </Glassbox>
             )}
           </aside>
         </div>
       </Section>
     </>
+  );
+}
+
+function PublicationCard({
+  publication,
+  categorySlug,
+  isTradeInsight,
+}: {
+  publication: Publication;
+  categorySlug: string;
+  isTradeInsight: boolean;
+}) {
+  const cover =
+    publication.media?.[0]?.original_url ||
+    '/assets/SM-placeholder-150x150.webp';
+  const fileHref = publication.file
+    ? `/publications/${publication.file.name}`
+    : '#';
+  const coverHref = isTradeInsight
+    ? publication.volume_slug
+      ? `/category/publications/${categorySlug}/${publication.volume_slug}`
+      : fileHref
+    : fileHref;
+
+  return (
+    <div className="flex flex-col items-center text-center">
+      <article className="w-full max-w-56 overflow-hidden rounded-md sm:max-w-60 md:max-w-64">
+        <a
+          title={publication.title}
+          href={coverHref}
+          className="group relative block"
+          {...(isTradeInsight
+            ? { referrerPolicy: 'no-referrer' as const }
+            : {
+                target: '_blank' as const,
+                referrerPolicy: 'no-referrer' as const,
+                rel: 'noopener noreferrer',
+              })}
+        >
+          <div className="absolute inset-0 bg-black/10 bg-blend-overlay transition-colors group-hover:bg-transparent" />
+          <img
+            className="aspect-3/4 h-full w-full rounded-md object-cover"
+            src={cover}
+            alt={publication.title}
+            title={publication.title}
+            loading="lazy"
+            width={256}
+            height={341}
+          />
+        </a>
+      </article>
+
+      {publication.title ? (
+        <a
+          className={cn(
+            'mt-4 block max-w-56 underline decoration-transparent underline-offset-2 transition-colors sm:max-w-60 md:max-w-64',
+            'hover:text-[#006181] hover:decoration-[#006181]/50 dark:hover:text-[#4da3c0] dark:hover:decoration-[#4da3c0]/50'
+          )}
+          href={fileHref}
+          target="_blank"
+          referrerPolicy="no-referrer"
+          rel="noopener noreferrer"
+        >
+          <p className="text-secondary-foreground text-sm leading-snug font-semibold sm:text-[0.9375rem]">
+            {publication.title}
+          </p>
+          {publication.subtitle ? (
+            <p className="text-muted-foreground mt-1.5 text-xs leading-relaxed">
+              {publication.subtitle}
+            </p>
+          ) : null}
+        </a>
+      ) : null}
+    </div>
   );
 }
 

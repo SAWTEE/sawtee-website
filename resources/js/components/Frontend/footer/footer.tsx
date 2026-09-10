@@ -31,7 +31,10 @@ export default function Footer({
   const [mapModal, setMapModal] = useState(false);
 
   return (
-    <footer className="bg-bgDarker w-full overflow-x-clip text-slate-500">
+    <footer
+      id="site-footer"
+      className="bg-bgDarker w-full overflow-x-clip text-slate-500"
+    >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 py-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-8">
           <div className="col-span-full flex w-full min-w-0 flex-col gap-5 sm:col-span-2 md:col-span-3 lg:col-span-2 lg:mb-0">

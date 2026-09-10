@@ -20,7 +20,10 @@ const DefaultArchive = ({
   if (!posts || posts.length <= 0) return 'No posts found';
 
   return (
-    <div className="grid grid-cols-1 gap-10 p-8 xl:grid-cols-2" {...rest}>
+    <div
+      className="grid grid-cols-1 items-stretch gap-10 p-8 xl:grid-cols-2"
+      {...rest}
+    >
       {posts.map(post => (
         <ArchivePost
           key={post.id}
@@ -52,8 +55,14 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
   const categorySlug = post.category?.slug ?? '';
   const showExcerpt = hasMeaningfulExcerpt(post.excerpt);
 
+  const postHref = post.link
+    ? post.link
+    : post.category?.parent
+      ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
+      : `/category/${categorySlug}/${post.slug}`;
+
   return (
-    <Glassbox className="flex flex-col justify-start overflow-hidden rounded shadow-md">
+    <Glassbox className="flex h-full flex-col overflow-hidden rounded shadow-md">
       <div className="group relative mb-2 overflow-hidden">
         {showFallbackImage && featured_image && (
           <Link href={`/category/${categorySlug}/${post.slug}`}>
@@ -72,40 +81,30 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
           </div>
         </Link>
       </div>
-      <div className="space-y-4 px-6">
-        <a
-          href={
-            post.link
-              ? post.link
-              : post.category?.parent
-                ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
-                : `/category/${categorySlug}/${post.slug}`
-          }
-          className="primary-link"
-        >
+      <div className="flex flex-1 flex-col px-6 pb-2">
+        <a href={postHref} className="primary-link">
           <h3 className="text-secondary-foreground/90 hover:text-secondary-foreground/80 inline-block text-lg leading-5 font-medium tracking-wide transition duration-500 ease-in-out hover:underline hover:underline-offset-2">
             {post.title}
           </h3>
         </a>
-        {showExcerpt ? (
-          <p
-            className="text-secondary-foreground/70 line-clamp-3 text-sm"
-            dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
-          />
-        ) : null}
-        <div className="flex flex-col gap-2 pb-2 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+        <div className="mt-5 min-h-16 flex-1">
+          {showExcerpt ? (
+            <p
+              className="text-secondary-foreground/70 line-clamp-3 text-sm"
+              dangerouslySetInnerHTML={{ __html: post.excerpt ?? '' }}
+            />
+          ) : null}
+        </div>
+        <div className="mt-auto flex flex-col gap-2 pt-4 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <time className="text-secondary-foreground/80 shrink-0 py-1 text-xs whitespace-nowrap">
             {formatDate(post.published_at)}
           </time>
 
           <ExploreButton
-            className="min-w-0 sm:max-w-[min(100%,18rem)] sm:justify-end"
-            link={
-              post.category?.parent
-                ? `/category/${post.category.parent.slug}/${post.category.slug}/${post.slug}`
-                : `/category/${categorySlug}/${post.slug}`
-            }
-            text={`Read more: ${post.title}`}
+            className="min-w-0 sm:justify-end"
+            link={postHref}
+            text="Read more"
+            aria-label={`Read more: ${post.title}`}
             title={`Read more: ${post.title}`}
           />
         </div>

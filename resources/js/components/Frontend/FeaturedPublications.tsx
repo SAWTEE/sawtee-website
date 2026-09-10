@@ -3,6 +3,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
+import CarouselIndicators from '@/components/Frontend/CarouselIndicators';
 import {
   Carousel,
   type CarouselApi,
@@ -131,32 +132,13 @@ function FeaturedItemsSlider({
         </CarouselContent>
 
         {canSlide ? (
-          <div
-            className="mt-4 flex items-center justify-center gap-2"
-            role="group"
-            aria-label="Slide indicators"
-          >
-            {items.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                aria-label={`Go to slide ${index + 1}`}
-                aria-current={index === current ? 'true' : undefined}
-                className="flex h-8 w-8 items-center justify-center"
-                onClick={() => api?.scrollTo(index)}
-              >
-                <span
-                  aria-hidden
-                  className={cn(
-                    'rounded-full transition-all duration-300',
-                    index === current
-                      ? 'h-2.5 w-2.5 bg-[hsl(var(--theme-color))]'
-                      : 'bg-muted-foreground/40 hover:bg-muted-foreground/70 h-2.5 w-2.5'
-                  )}
-                />
-              </button>
-            ))}
-          </div>
+          <CarouselIndicators
+            className="mt-4 justify-center"
+            count={items.length}
+            current={current}
+            onSelect={index => api?.scrollTo(index)}
+            variant="onSurface"
+          />
         ) : null}
       </Carousel>
     </section>

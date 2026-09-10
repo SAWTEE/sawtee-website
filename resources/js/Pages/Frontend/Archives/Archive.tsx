@@ -50,7 +50,7 @@ function Archive({
             )}
           </div>
         </section>
-        <aside className="sidebar col-span-1 lg:col-span-2">
+        <aside className="sidebar sticky top-32 col-span-1 self-start lg:col-span-2">
           <div className="flex flex-col gap-12">
             {showSubscriptionBox && (
               <Glassbox className={'w-full p-0'}>
