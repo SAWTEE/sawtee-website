@@ -42,15 +42,16 @@ class Research extends Model implements HasMedia
         return [
             'title' => $this->title,
             'subtitle' => $this->subtitle,
+            'description' => $this->description,
         ];
     }
 
     /**
-     * Determine if the model should be searchable.
+     * Research rows have no draft/status column; all records are public catalogue entries.
      */
     public function shouldBeSearchable(): bool
     {
-        return $this->status === 'published';
+        return true;
     }
 
     public function registerMediaConversions(?Media $media = null): void

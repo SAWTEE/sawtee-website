@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Laravel\Scout\Attributes\SearchUsingPrefix;
+use Laravel\Scout\Searchable;
 use Spatie\Image\Enums\Fit;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -20,6 +22,7 @@ class Article extends Model implements HasMedia
     use HasSeoMeta;
     use HasSlug;
     use InteractsWithMedia;
+    use Searchable;
 
     protected $fillable = [
         'title',
@@ -40,6 +43,28 @@ class Article extends Model implements HasMedia
     protected $casts = [
         'published_at' => 'datetime:Y-m-d H:i:s',
     ];
+
+    /**
+     * @return array<string, mixed>
+     */
+    #[SearchUsingPrefix(['title', 'author', 'excerpt', 'subtitle'])]
+    public function toSearchableArray(): array
+    {
+        return [
+            'title' => $this->title,
+            'subtitle' => $this->subtitle,
+            'author' => $this->author,
+            'excerpt' => $this->excerpt,
+        ];
+    }
+
+    /**
+     * Only dated Trade Insight articles appear in site search.
+     */
+    public function shouldBeSearchable(): bool
+    {
+        return $this->published_at !== null;
+    }
 
     /**
      * Get the options for generating the slug.

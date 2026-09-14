@@ -43,6 +43,7 @@ class Publication extends Model implements HasMedia
         return [
             'title' => $this->title,
             'subtitle' => $this->subtitle,
+            'description' => $this->description,
         ];
     }
 
@@ -58,11 +59,11 @@ class Publication extends Model implements HasMedia
     }
 
     /**
-     * Determine if the model should be searchable.
+     * Publications have no draft/status column; all records are public catalogue entries.
      */
     public function shouldBeSearchable(): bool
     {
-        return $this->status === 'published';
+        return true;
     }
 
     public function tags(): BelongsToMany

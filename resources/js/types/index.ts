@@ -474,9 +474,13 @@ export type FrontendCategoryProps = PageProps<{
   seo?: SeoMeta;
 }>;
 
+export type SearchResultType = 'post' | 'publication' | 'research' | 'article';
+
 export type SearchResultPost = Post & {
   category?: Category | string | null;
   category_slug?: string;
+  result_type?: SearchResultType;
+  href?: string;
 };
 
 export type SearchFilterOptionCategory = {

@@ -55,6 +55,10 @@ function categorySlug(post: SearchResultPost): string | undefined {
 }
 
 function resultHref(post: SearchResultPost): string {
+  if (post.href) {
+    return post.href;
+  }
+
   const slug = categorySlug(post);
   const parentSlug =
     typeof post.category === 'object' && post.category
@@ -70,6 +74,21 @@ function resultHref(post: SearchResultPost): string {
   return `#`;
 }
 
+function resultTypeLabel(type: SearchResultPost['result_type']): string | null {
+  switch (type) {
+    case 'publication':
+      return 'Publication';
+    case 'research':
+      return 'Research';
+    case 'article':
+      return 'Trade Insight';
+    case 'post':
+      return null;
+    default:
+      return null;
+  }
+}
+
 function hasActiveFilters(filters: SearchFilters): boolean {
   return Boolean(filters.category || filters.year || filters.theme);
 }
@@ -79,16 +98,36 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
   const slug = categorySlug(post);
   const excerpt = htmlToText(post.excerpt);
   const href = resultHref(post);
+  const typeLabel = resultTypeLabel(post.result_type);
+  const categoryHref =
+    slug === 'trade-insight'
+      ? '/category/publications/trade-insight'
+      : slug === 'research'
+        ? '/category/research'
+        : slug
+          ? `/category/${slug}`
+          : null;
 
   return (
     <article className="group border-b border-[#006181]/12 py-7 last:border-b-0 md:py-8 dark:border-[#006181]/20">
       <div className="flex flex-col gap-3">
-        {(label || post.author) && (
+        {(label || post.author || typeLabel) && (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs tracking-wide uppercase">
+            {typeLabel ? (
+              <span className="text-muted-foreground font-medium tracking-wide">
+                {typeLabel}
+              </span>
+            ) : null}
+            {typeLabel && label ? (
+              <span
+                className="h-1 w-1 rounded-full bg-[#006181]/25 dark:bg-[#006181]/45"
+                aria-hidden
+              />
+            ) : null}
             {label &&
-              (slug ? (
+              (categoryHref ? (
                 <Link
-                  href={`/category/${slug}`}
+                  href={categoryHref}
                   className="font-medium text-[#006181] transition-colors hover:text-[#004d66] dark:text-[#4da3c0] dark:hover:text-[#7ec4d8]"
                 >
                   {label}
@@ -113,12 +152,16 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
         )}
 
         <h2 className="text-primary font-serif text-xl leading-snug font-semibold tracking-tight md:text-2xl dark:text-zinc-100">
-          <Link
-            href={href}
-            className="underline-offset-4 transition-colors hover:text-[#006181] hover:underline focus-visible:text-[#006181] focus-visible:underline focus-visible:outline-none dark:hover:text-[#4da3c0] dark:focus-visible:text-[#4da3c0]"
-          >
-            {post.title}
-          </Link>
+          {href !== '#' ? (
+            <Link
+              href={href}
+              className="underline-offset-4 transition-colors hover:text-[#006181] hover:underline focus-visible:text-[#006181] focus-visible:underline focus-visible:outline-none dark:hover:text-[#4da3c0] dark:focus-visible:text-[#4da3c0]"
+            >
+              {post.title}
+            </Link>
+          ) : (
+            <span>{post.title}</span>
+          )}
         </h2>
 
         {excerpt ? (
