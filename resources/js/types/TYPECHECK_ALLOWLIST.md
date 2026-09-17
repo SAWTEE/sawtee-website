@@ -7,7 +7,7 @@ Files marked with `// @ts-nocheck` while the shared/core Inertia layer is checke
 - `resources/js/lib/utils.ts`
 - `resources/js/layouts/{MainLayout,PageLayout,PostLayout,GuestLayout,AuthenticatedLayout}.tsx`
 - `resources/js/components/Frontend/header/{DesktopNavigation,mode-toggle,header,MegaMenu,social-menu}.tsx`
-- `resources/js/components/Backend/{InputError,InputLabel,PrimaryButton,SecondaryButton,TextInput,Checkbox}.tsx`
+- `resources/js/components/Backend/{InputError,PrimaryButton,SecondaryButton,Checkbox}.tsx`
 - `resources/js/components/ui/{button,label,input}.tsx`
 - `resources/js/components/shared/{theme-provider,ApplicationLogo}.tsx`
 

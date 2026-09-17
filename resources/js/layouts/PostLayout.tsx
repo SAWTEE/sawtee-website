@@ -79,70 +79,70 @@ export default function PostLayout({
     <>
       <ReadingProgress />
       <article className="relative w-full px-5 py-12 md:px-10 md:py-16 lg:py-20">
-      <header className="mx-auto w-full max-w-3xl">
-        <PostHeader categories={post.category} heading={post.title} />
-        <PostMeta
-          className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
-          author={post.author}
-          date={post.published_at}
-          readingTime={readingTime}
-          tags={post.tags}
-        />
-      </header>
-
-      {featured_image && (
-        <div className="mx-auto mt-8 max-w-4xl md:mt-10">
-          <FeaturedMedia
-            className="overflow-hidden rounded-lg border border-[#006181]/10 shadow-sm dark:border-white/10"
-            src={featured_image}
-            srcSet={srcSet}
-            alt={post.title}
-            priority
+        <header className="mx-auto w-full max-w-3xl">
+          <PostHeader categories={post.category} heading={post.title} />
+          <PostMeta
+            className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
+            author={post.author}
+            date={post.published_at}
+            readingTime={readingTime}
+            tags={post.tags}
           />
-        </div>
-      )}
+        </header>
 
-      <div className="post-body mx-auto mt-10 max-w-7xl md:mt-12">
-        <div
-          className={
-            hasRelated
-              ? 'grid gap-10 lg:grid-cols-12 lg:gap-12'
-              : 'mx-auto max-w-3xl'
-          }
-        >
+        {featured_image && (
+          <div className="mx-auto mt-8 max-w-4xl md:mt-10">
+            <FeaturedMedia
+              className="overflow-hidden rounded-lg border border-[#006181]/10 shadow-sm dark:border-white/10"
+              src={featured_image}
+              srcSet={srcSet}
+              alt={post.title}
+              priority
+            />
+          </div>
+        )}
+
+        <div className="post-body mx-auto mt-10 max-w-7xl md:mt-12">
           <div
             className={
               hasRelated
-                ? 'post-content max-w-[65ch] lg:col-span-8 lg:max-w-none'
-                : 'post-content'
+                ? 'grid gap-10 lg:grid-cols-12 lg:gap-12'
+                : 'mx-auto max-w-3xl'
             }
           >
             <div
-              ref={contentRef}
-              className="post-content prose-base text-secondary-foreground text-[1.05rem] leading-[1.75] md:text-lg md:leading-8"
+              className={
+                hasRelated
+                  ? 'post-content max-w-[65ch] lg:col-span-8 lg:max-w-none'
+                  : 'post-content'
+              }
             >
-              {children}
-            </div>
-            <SocialShare
-              className="mt-8"
-              url={shareUrl}
-              title={post.title}
-              summary={post.excerpt ?? ''}
-            />
-          </div>
-
-          {hasRelated && (
-            <aside className="w-full self-start lg:sticky lg:top-28 lg:col-span-4 lg:pt-1">
-              <SidebarWidget
-                title="Related Posts"
-                array={relatedPosts}
-                link={`/category/${post.category?.slug}`}
+              <div
+                ref={contentRef}
+                className="post-content prose-base text-secondary-foreground text-[1.05rem] leading-[1.75] md:text-lg md:leading-8"
+              >
+                {children}
+              </div>
+              <SocialShare
+                className="mt-8"
+                url={shareUrl}
+                title={post.title}
+                summary={post.excerpt ?? ''}
               />
-            </aside>
-          )}
+            </div>
+
+            {hasRelated && (
+              <aside className="w-full self-start lg:sticky lg:top-28 lg:col-span-4 lg:pt-1">
+                <SidebarWidget
+                  title="Related Posts"
+                  array={relatedPosts}
+                  link={`/category/${post.category?.slug}`}
+                />
+              </aside>
+            )}
+          </div>
         </div>
-      </div>
-    </article>
+      </article>
     </>
   );
 }

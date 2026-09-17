@@ -7,7 +7,7 @@ import type { Category } from '@/types';
 
 type PostCategoryProps = ComponentPropsWithoutRef<typeof Button>;
 
-export const PostCategory = ({ className, ...props }: PostCategoryProps) => (
+const PostCategory = ({ className, ...props }: PostCategoryProps) => (
   <Button
     variant="outline"
     className={cn(
@@ -23,7 +23,7 @@ type PostCategoriesProps = {
   className?: string;
 };
 
-export const PostCategories = ({
+const PostCategories = ({
   category,
   className = '',
   ...props

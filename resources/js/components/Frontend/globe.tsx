@@ -10,7 +10,7 @@ import { Globe } from '@/components/ui/globe';
  * `public/tmp/member_institutes.json`).
  * Coordinates are city centers listed with each institute.
  */
-export const MEMBER_INSTITUTION_MARKERS: NonNullable<COBEOptions['markers']> = [
+const MEMBER_INSTITUTION_MARKERS: NonNullable<COBEOptions['markers']> = [
   // Bangladesh — BELA, Unnayan Shamannay (Dhaka)
   { location: [23.8103, 90.4125], size: 0.06 },
   // India — CAG (Chennai)

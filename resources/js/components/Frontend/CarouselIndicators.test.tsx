@@ -5,9 +5,7 @@ import CarouselIndicators from './CarouselIndicators';
 
 describe('CarouselIndicators', () => {
   it('renders pill-shaped active and dot inactive bullets', () => {
-    render(
-      <CarouselIndicators count={3} current={1} onSelect={vi.fn()} />
-    );
+    render(<CarouselIndicators count={3} current={1} onSelect={vi.fn()} />);
 
     const group = screen.getByRole('group', { name: 'Slide indicators' });
     expect(group).toBeInTheDocument();
@@ -22,13 +20,9 @@ describe('CarouselIndicators', () => {
 
   it('calls onSelect when a bullet is clicked', () => {
     const onSelect = vi.fn();
-    render(
-      <CarouselIndicators count={2} current={0} onSelect={onSelect} />
-    );
+    render(<CarouselIndicators count={2} current={0} onSelect={onSelect} />);
 
-    fireEvent.click(
-      screen.getByRole('button', { name: 'Go to slide 2 of 2' })
-    );
+    fireEvent.click(screen.getByRole('button', { name: 'Go to slide 2 of 2' }));
     expect(onSelect).toHaveBeenCalledWith(1);
   });
 

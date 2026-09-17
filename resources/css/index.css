@@ -1,36 +1,33 @@
-@import 'tailwindcss';
+/*
+  Public-site stylesheet: Tailwind preflight, design tokens, and only the
+  utilities reachable from public pages, the login screens, and the shared
+  chrome. The admin shell loads `admin.css` on top of this (see
+  `resources/js/lib/resolve-page.ts`), so admin-only utilities stay out of the
+  stylesheet every visitor downloads.
+
+  `source(none)` disables automatic source detection — the `@source` list below
+  is the single definition of the public/admin boundary and is enforced by
+  `resources/js/test/css-source-boundary.test.ts`.
+*/
+@import 'tailwindcss' source(none);
+@import './theme.css';
 @config '../../tailwind.config.js';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
 @plugin 'tailwindcss-animate';
 
-/* Match Tailwind v3 `darkMode: ['class']` (html/body.dark toggles). */
-@custom-variant dark (&:where(.dark, .dark *));
-
-/*
-  Preserve v3 utility looks for unchanged class names after the v4 scale shift
-  (shadow-sm / blur-sm / ring defaults). Custom shadcn radii stay in JS config.
-*/
-@theme {
-  /* Body / UI / nav — system sans (no CDN / Google Fonts) */
-  --font-sans:
-    system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
-  /* Titles / display — editorial serif stack */
-  --font-serif:
-    Charter, 'Iowan Old Style', 'Palatino Linotype', Palatino, Georgia,
-    'Times New Roman', Times, serif;
-
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --drop-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.1), 0 1px 1px rgb(0 0 0 / 0.06);
-  --drop-shadow: 0 1px 2px rgb(0 0 0 / 0.1), 0 1px 1px rgb(0 0 0 / 0.06);
-  --blur-sm: 4px;
-  --blur: 8px;
-  --default-ring-width: 3px;
-  /* Brand teal #006181 — keep focus rings on-brand (not Tailwind blue). */
-  --default-ring-color: #006181;
-}
+@source '../views/**/*.blade.php';
+@source '../js/{hooks,lib,types}/**/*.{ts,tsx}';
+@source '../js/components/{Frontend,shared}/**/*.tsx';
+@source '../js/layouts/{GuestLayout,MainLayout,PageLayout,PostLayout}.tsx';
+@source '../js/Pages/{Errors,Frontend}/**/*.tsx';
+/* Login / password screens render standalone, before any admin chunk loads. */
+@source '../js/Pages/Backend/Auth/**/*.tsx';
+@source '../js/components/Backend/{Checkbox,FormField,PrimaryButton}.tsx';
+/* shadcn primitives reachable from public pages; the rest live in admin.css. */
+@source '../js/components/ui/{accordion,avatar,badge,button,carousel,collapsible,dialog,dropdown-menu,field,globe,input,label,navigation-menu,scroll-area,separator,sheet,tabs,tooltip}.tsx';
+@source not '../js/components/shared/TWTags.tsx';
+@source not '../js/**/*.{test,spec}.{ts,tsx}';
 
 @layer base {
   /*
@@ -44,7 +41,6 @@
     --background-darker: 195 14% 95%;
     --theme-color: 195 100% 25%;
     --color-border: #e2e8eb;
-    --mega_menu_bg: 195 85% 28%;
     --foreground: 200 25% 12%;
     --card: 0 0% 100%;
     --card-foreground: 200 20% 14%;
@@ -60,17 +56,10 @@
     --accent-foreground: 195 80% 18%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
-    --success: 152 45% 36%;
-    --success-foreground: 0 0% 100%;
     --border: 195 14% 88%;
     --input: 195 14% 86%;
     --ring: 195 100% 25%;
     --radius: 0.5rem;
-    --chart-1: 195 100% 25%;
-    --chart-2: 195 45% 42%;
-    --chart-3: 200 30% 30%;
-    --chart-4: 173 40% 40%;
-    --chart-5: 210 25% 50%;
     --sidebar-background: 195 20% 98%;
     --sidebar-foreground: 200 18% 22%;
     --sidebar-primary: 195 100% 25%;
@@ -81,23 +70,7 @@
     --sidebar-ring: 195 100% 25%;
     --scrollbarBG: #d5e0e4;
     --thumbBG: #7a9aa6;
-    --color-black: #000;
-    --color-bg: 0 0 100%;
-    --color-bg-reverse: var(--color-dark);
-    --color-body-bg: var(--color-white);
-    --color-dark: #262626;
-    --color-darker: #1f1f1f;
-    --color-dark-acc: #404040;
-    --color-grey-darker: #595959;
-    --color-grey-dark: #737373;
-    --color-grey: grey;
-    --color-grey-light: #8c8c8c;
-    --color-grey-lighter: #a6a6a6;
-    --color-light-acc: #bfbfbf;
-    --color-light: #d9d9d9;
-    --linkcolor: #006181;
-    --color-text: var(--color-dark);
-    --color-text-reverse: var(--color-light);
+    --color-body-bg: #fff;
   }
 
   .dark {
@@ -124,11 +97,6 @@
     /* Slightly lighter than surface so admin/frontend inputs stay readable */
     --input: 195 10% 30%;
     --ring: 195 55% 52%;
-    --chart-1: 195 55% 52%;
-    --chart-2: 195 40% 45%;
-    --chart-3: 200 30% 55%;
-    --chart-4: 173 35% 45%;
-    --chart-5: 210 25% 55%;
     --sidebar-background: 200 14% 9%;
     --sidebar-foreground: 195 12% 94%;
     --sidebar-primary: 195 55% 52%;
@@ -137,12 +105,7 @@
     --sidebar-accent-foreground: 195 12% 94%;
     --sidebar-border: 195 10% 18%;
     --sidebar-ring: 195 55% 52%;
-    --color-bg: var(--color-darker);
-    --color-body-bg: var(--color-dark);
-    --color-text: var(--color-light);
-    --color-border: #2a3338;
-    --color-bg-reverse: #fff;
-    --color-text-reverse: var(--color-dark);
+    --color-body-bg: #262626;
   }
 }
 
@@ -156,8 +119,9 @@
     box-sizing: border-box;
   }
 
+  /* Background comes from the unlayered `body` rule below (`--color-body-bg`). */
   body {
-    @apply bg-bodyBackground dark:bg-background text-foreground;
+    @apply text-foreground;
   }
 
   /* Preserve Tailwind v3 preflight defaults that changed in v4. */
@@ -185,29 +149,15 @@
     color-scheme: dark;
   }
 
-
-
   .post-content a,
   .page-content a,
   .primary-link {
     @apply text-[#006181] underline underline-offset-4 hover:text-[#006181]/70 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80;
   }
-  .dropdown:hover > a svg {
-    transform: rotate(180deg);
-  }
 }
 
-/*
-  Tailwind v4: `hidden` is a utility. Put the reveal rule in @layer utilities so it
-  can compete, and use the direct-child combinator `>` so hovering a parent only
-  opens its immediate submenu — not nested grandchildren.
-*/
+/* Kept in @layer utilities so `text-*` utilities on the anchor can override. */
 @layer utilities {
-  .dropdown:hover > .dropdown-menu,
-  .dropdown:focus-within > .dropdown-menu {
-    display: block;
-  }
-
   .experience-text > a {
     @apply underline underline-offset-2 text-theme-500 dark:text-theme-300;
   }
@@ -375,13 +325,9 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
 body {
     position: relative;
     background-color: var(--color-body-bg);
-    font-family: var(--font-sans);
     word-break: break-word;
     font-kerning: normal;
     text-rendering: optimizeLegibility;
-    font-feature-settings: normal;
-    -webkit-font-feature-settings: normal;
-    -moz-font-feature-settings: normal;
 }
 
 img,
@@ -399,11 +345,6 @@ canvas, iframe {
     scroll-margin-top: 80px;
 }
 
-#root,
-#__next {
-    isolation: isolate;
-}
-
 main {
     background-color: var(--color-body-bg);
 }
@@ -412,32 +353,8 @@ h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-serif);
 }
 
-.scroll-container::-webkit-scrollbar {
-    display: none;
-    width: none;
-}
-
-.scroll-container {
-    -ms-overflow-styles: none;
-    scrollbar-width: none;
-}
-
-/* .post-content a, .page-content a, .primary-link {
-    color: inherit;
-    text-decoration: underline;
-}
-
-.post-content a:hover, .page-content a:hover, .primary-link:hover{
-    text-decoration: underline;
-} */
-
-
 .post-content > p:first-child {
     padding-top: 0;
-}
-
-.post-slide {
-    align-self: center;
 }
 
 pre {
@@ -450,65 +367,6 @@ pre {
     white-space: pre-wrap;
 }
 
-.blockquote::before {
-    font-family: Arial, Helvetica, sans-serif;
-    content: "\201C";
-    color: #006181;
-    font-size: 4em;
-    position: absolute;
-    left: 10px;
-    top: 0;
-}
-
-.blockquote {
-    width: 80%;
-    padding: 1.2em 1.8rem 1.2em 3rem;
-    border-left: 8px solid #006181;
-    line-height: 1.5;
-    position: relative;
-}
-
-.blockquote::after {
-    content: "";
-}
-
-.cards {
-    & .title {
-        color: white !important;
-        z-index: 1;
-    }
-
-    & .content {
-        z-index: 1;
-    }
-
-    &:hover {
-        transition: background 0.4s ease-in-out;
-
-        & .title {
-            background: hsl(194, 100%, 25%, 0.6);
-        }
-
-        & a {
-            color: white !important;
-            text-decoration: none;
-        }
-
-        & .content {
-            color: rgb(0, 0, 0);
-            background: hsl(0, 17%, 95%, 0.4);
-            opacity: 1;
-        }
-    }
-}
-
-@media (hover: none) and (pointer: coarse) {
-    .left-arrow,
-    .right-arrow {
-        display: none;
-    }
-}
-
 @media (prefers-reduced-motion: reduce) {
     * {
         animation-duration: 0s !important;
@@ -517,80 +375,6 @@ pre {
 }
 
 
-
-.newsletter-html td[data-value*="logo"] img {
-    width: 120px !important;
-    height: 90px !important;
-}
-
-.newsletter-html td[data-value*="social"] img {
-    width: 24px !important;
-    height: 24px !important;
-}
-
-.shadow-soft-xl {
-  --tw-shadow: 0 20px 27px 0 rgba(0, 0, 0, 0.05);
-  --tw-shadow-colored: 0 20px 27px 0 var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-.shadow-soft-2xl {
-  --tw-shadow: 0 0.3125rem 0.625rem 0 rgba(0, 0, 0, 0.12);
-  --tw-shadow-colored: 0 0.3125rem 0.625rem 0 var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-.shadow-soft-md {
-  --tw-shadow: 0 4px 7px -1px rgba(0, 0, 0, 0.11),
-    0 2px 4px -1px rgba(0, 0, 0, 0.07);
-  --tw-shadow-colored: 0 4px 7px -1px var(--tw-shadow-color),
-    0 2px 4px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-.shadow-soft-3xl {
-  --tw-shadow: 0 8px 26px -4px hsla(0, 0%, 8%, 0.15),
-    0 8px 9px -5px hsla(0, 0%, 8%, 0.06);
-  --tw-shadow-colored: 0 8px 26px -4px var(--tw-shadow-color),
-    0 8px 9px -5px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-.shadow-soft-lg {
-  --tw-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.16);
-  --tw-shadow-colored: 0 2px 12px 0 var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000),
-    var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-}
-
-@-webkit-keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes fade-up {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-  }
-}
-.xl\:animate-fade-up {
-  -webkit-animation: fade-up 1.5s both;
-  animation: fade-up 1.5s both;
-}
-
-@layer utilities {
-  .animation-pause {
-    animation-play-state: paused;
-  }
-}
 
 /*
   Inertia View Transitions (enabled via createInertiaApp defaults.visitOptions).

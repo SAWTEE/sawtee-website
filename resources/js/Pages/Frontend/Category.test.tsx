@@ -140,7 +140,9 @@ describe('Category newsletters layout', () => {
     expect(screen.getByTestId('subscription-card')).toBeInTheDocument();
     expect(screen.queryByText('Sawtee in Media')).not.toBeInTheDocument();
     expect(screen.queryByText('In Focus')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('newsletter-subscribe-cta')).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('newsletter-subscribe-cta')
+    ).not.toBeInTheDocument();
   });
 
   it('omits Featured Events widget on covid resources', () => {

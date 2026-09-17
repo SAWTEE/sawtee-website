@@ -12,4 +12,13 @@ describe('resolvePage', () => {
       'Page not found: Errors/Error.test'
     );
   });
+
+  it.each([
+    ['Backend/Dashboard', 'admin shell'],
+    ['Backend/Auth/Login', 'auth screen'],
+  ])('resolves %s (%s)', async name => {
+    // Admin pages additionally await resources/css/admin.css; auth screens are
+    // covered by index.css and must not wait on it.
+    await expect(resolvePage(name)).resolves.toBeTypeOf('function');
+  });
 });

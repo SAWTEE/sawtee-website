@@ -1,12 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
-  content: [
-    './vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php',
-    './storage/framework/views/*.php',
-    './resources/views/**/*.blade.php',
-    './resources/js/**/*.{js,jsx,ts,tsx}',
-  ],
+  /*
+    No `content` here on purpose: each stylesheet entry declares its own
+    `@source` list so the public bundle can exclude admin-only utilities.
+    See resources/css/index.css and resources/css/admin.css.
+  */
   prefix: '',
   theme: {
     container: {
@@ -55,13 +54,11 @@ export default {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
-        megaMenuBg: 'hsl(var(--mega_menu_bg))',
         brand: {
           facebook: 'hsl(221 44% 41%)',
           linkedin: 'hsl(201 100% 35%)',
           twitter: 'hsl(203 89% 53%)',
           youtube: 'hsl(0 100% 50%)',
-          x: 'hsl(0 0% 0%)',
         },
         theme: {
           /* Scale centered on brand teal #006181 at 600 */
@@ -75,30 +72,6 @@ export default {
           700: '#004d67',
           800: '#003a4d',
           900: '#002633',
-        },
-        theme_accent: {
-          50: '#e3f7fb',
-          100: '#cbdfe3',
-          200: '#afc8ce',
-          300: '#92b2ba',
-          400: '#759ca5',
-          500: '#5b838b',
-          600: '#45666d',
-          700: '#30494f',
-          800: '#192d31',
-          900: '#001115',
-        },
-        theme_light: {
-          50: '#f0f4f3',
-          100: '#d9dcdb',
-          200: '#bec6c3',
-          300: '#a3b0ac',
-          400: '#879a94',
-          500: '#6d807a',
-          600: '#55645f',
-          700: '#3e4744',
-          800: '#252b29',
-          900: '#0b0f0d',
         },
         sidebar: {
           DEFAULT: 'hsl(var(--sidebar-background))',
@@ -158,19 +131,6 @@ export default {
             height: '0',
           },
         },
-        'fade-up': {
-          from: {
-            opacity: 0,
-            transform: 'translateY(100%)',
-          },
-          to: {
-            opacity: 1,
-          },
-        },
-        'infinite-scroll': {
-          from: { transform: 'translateX(0)' },
-          to: { transform: 'translateX(-100%)' },
-        },
         marquee: {
           to: {
             transform: 'translateX(-50%)',
@@ -180,8 +140,6 @@ export default {
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'fade-up': 'fade-up 1.5s ease-out',
-        'infinite-scroll': 'infinite-scroll 25s linear infinite',
         marquee: 'marquee var(--duration, 30s) linear infinite',
       },
     },

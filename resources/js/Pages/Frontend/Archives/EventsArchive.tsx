@@ -54,7 +54,7 @@ const EventsArchive = ({ posts = null, ...rest }: EventsArchiveProps) => {
                     </Link>
                   </h3>
                   {excerpt ? (
-                    <div className="prose prose-sm prose-slate text-slate-600 dark:text-slate-300">
+                    <div className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
                       <p className="line-clamp-3">{excerpt}</p>
                     </div>
                   ) : null}

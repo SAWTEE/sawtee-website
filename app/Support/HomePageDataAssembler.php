@@ -18,6 +18,36 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 class HomePageDataAssembler
 {
     /**
+     * Columns the home page actually renders. Everything else — post bodies, SEO
+     * columns, timestamps, Spatie conversion metadata — is dropped before it is
+     * serialised into the Inertia payload.
+     *
+     * @var list<string>
+     */
+    private const POST_KEYS = [
+        'id', 'title', 'subtitle', 'slug', 'excerpt', 'link', 'published_at',
+    ];
+
+    /** @var list<string> */
+    private const PUBLICATION_KEYS = [
+        'id', 'title', 'subtitle', 'slug', 'volume_slug', 'created_at',
+    ];
+
+    /** @var list<string> */
+    private const SLIDE_KEYS = ['id', 'title', 'subtitle'];
+
+    /** @var list<string> */
+    private const MEDIA_KEYS = [
+        'id', 'collection_name', 'original_url', 'preview_url',
+    ];
+
+    /** @var list<string> */
+    private const CATEGORY_KEYS = ['id', 'name', 'slug'];
+
+    /** @var list<string> */
+    private const FILE_KEYS = ['id', 'name'];
+
+    /**
      * Assemble Inertia props for the frontend home page.
      *
      * Cached as plain arrays so Laravel 13's cache.serializable_classes=false
@@ -72,52 +102,54 @@ class HomePageDataAssembler
         [$slides, $slidesResponsiveImages] = $this->homeSlides();
 
         return [
-            'slides' => $slides,
-            'infocus' => $this->modelsWithOptimizedMedia(
+            'slides' => $this->slimSlides($slides),
+            'infocus' => $this->slimPosts($this->modelsWithOptimizedMedia(
                 $this->featuredPostsByCategorySlug('in-focus', 5),
                 'post-featured-image',
                 'preview'
-            ),
-            'sawteeInMedia' => $this->modelsWithOptimizedMedia(
+            )),
+            'sawteeInMedia' => $this->slimPosts($this->modelsWithOptimizedMedia(
                 $this->publishedPostsByCategorySlug('sawtee-in-media', 6),
                 'post-featured-image',
                 'preview'
-            ),
-            'events' => $this->modelsWithOptimizedMedia(
+            )),
+            'events' => $this->slimPosts($this->modelsWithOptimizedMedia(
                 $this->publishedPostsByCategorySlug('featured-events', 5),
                 'post-featured-image',
                 // Lead card is wide; large WebP stays sharp without shipping originals.
                 // Thumbs on the frontend still prefer preview_url.
                 'large'
-            ),
-            'featuredPublications' => $this->modelsWithOptimizedMedia(
+            )),
+            'featuredPublications' => $this->slimPublications($this->modelsWithOptimizedMedia(
                 $featuredPublications,
                 'publication_featured_image',
                 'preview'
-            ),
-            'featuredBlogPosts' => $this->modelsWithOptimizedMedia(
+            )),
+            'featuredBlogPosts' => $this->slimPosts($this->modelsWithOptimizedMedia(
                 new EloquentCollection($featuredBlogPosts),
                 'post-featured-image',
                 'preview'
-            ),
-            'publications' => $this->modelsWithOptimizedMedia(
+            )),
+            'publications' => $this->slimPublications($this->modelsWithOptimizedMedia(
                 $publications,
                 'publication_featured_image',
                 'preview'
-            ),
-            'newsletters' => $this->modelsWithOptimizedMedia(
+            )),
+            'newsletters' => $this->slimPosts($this->modelsWithOptimizedMedia(
                 $this->publishedPostsByCategorySlug('newsletters', 6),
                 'post-featured-image',
                 'preview'
-            ),
-            'webinars' => $this->modelsWithOptimizedMedia(
+            )),
+            'webinars' => $this->slimPosts($this->modelsWithOptimizedMedia(
                 $this->publishedPostsByCategorySlug('webinar-series', 5),
                 'post-featured-image',
                 // Main carousel needs the large WebP; thumbs still read preview_url.
                 'large'
-            ),
+            )),
             'slidesResponsiveImages' => $slidesResponsiveImages,
-            'homePageSections' => HomePageSection::all()->toArray(),
+            'homePageSections' => HomePageSection::query()
+                ->get(['id', 'name', 'show'])
+                ->toArray(),
             'features' => Feature::query()
                 ->active()
                 ->orderBy('sort_order')
@@ -133,8 +165,9 @@ class HomePageDataAssembler
      */
     protected function featuredPostsByCategorySlug(string $slug, int $limit): EloquentCollection
     {
+        // Tags are filtered on, not rendered, so they are not eager loaded.
         return Post::query()
-            ->with(['category', 'tags', 'media'])
+            ->with(['category', 'media'])
             ->whereHas('category', fn (Builder $query) => $query->where('slug', $slug))
             ->whereHas('tags', fn (Builder $query) => $query->where('name', 'featured'))
             ->latest()
@@ -267,6 +300,83 @@ class HomePageDataAssembler
         $mediaArray['original_url'] = MediaConversionUrl::resolve($media, $conversion, 'preview');
 
         return $mediaArray;
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     * @return list<array<string, mixed>>
+     */
+    protected function slimPosts(array $rows): array
+    {
+        return array_map(
+            // The media list only needs to know whether a body exists, so ship the
+            // flag instead of the full HTML (by far the largest prop on the page).
+            fn (array $row) => $this->slimRow($row, self::POST_KEYS) + [
+                'has_content' => trim((string) ($row['content'] ?? '')) !== '',
+            ],
+            $rows
+        );
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     * @return list<array<string, mixed>>
+     */
+    protected function slimPublications(array $rows): array
+    {
+        return array_map(
+            fn (array $row) => $this->slimRow($row, self::PUBLICATION_KEYS),
+            $rows
+        );
+    }
+
+    /**
+     * @param  list<array<string, mixed>>  $rows
+     * @return list<array<string, mixed>>
+     */
+    protected function slimSlides(array $rows): array
+    {
+        return array_map(
+            fn (array $row) => $this->slimRow($row, self::SLIDE_KEYS),
+            $rows
+        );
+    }
+
+    /**
+     * Reduce one row to the whitelisted columns plus slimmed relations.
+     *
+     * @param  array<string, mixed>  $row
+     * @param  list<string>  $keys
+     * @return array<string, mixed>
+     */
+    protected function slimRow(array $row, array $keys): array
+    {
+        $slim = array_intersect_key($row, array_flip($keys));
+
+        if (isset($row['category']) && is_array($row['category'])) {
+            $slim['category'] = array_intersect_key(
+                $row['category'],
+                array_flip(self::CATEGORY_KEYS)
+            );
+        }
+
+        if (isset($row['file']) && is_array($row['file'])) {
+            $slim['file'] = array_intersect_key(
+                $row['file'],
+                array_flip(self::FILE_KEYS)
+            );
+        }
+
+        if (isset($row['media']) && is_array($row['media'])) {
+            $slim['media'] = array_values(array_map(
+                fn (mixed $media) => is_array($media)
+                    ? array_intersect_key($media, array_flip(self::MEDIA_KEYS))
+                    : $media,
+                $row['media']
+            ));
+        }
+
+        return $slim;
     }
 
     protected function isUnusableCacheValue(mixed $value): bool

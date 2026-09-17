@@ -60,7 +60,7 @@ const Logo = ({ text = 'SAWTEE', src }: { text?: string; src?: string }) => {
   );
 };
 
-export const SiteLogo = ({
+const SiteLogo = ({
   src,
   established,
 }: {

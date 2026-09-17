@@ -70,7 +70,9 @@ describe('DefaultArchive', () => {
   it('shows Read more without repeating the post title in the visible label', () => {
     render(
       <DefaultArchive
-        posts={[makePost({ title: 'Long media headline that used to clutter' })]}
+        posts={[
+          makePost({ title: 'Long media headline that used to clutter' }),
+        ]}
       />
     );
 

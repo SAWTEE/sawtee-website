@@ -63,13 +63,7 @@ function mockDocumentScroll({
   });
 }
 
-function mockFooterBounds({
-  top,
-  bottom,
-}: {
-  top: number;
-  bottom: number;
-}) {
+function mockFooterBounds({ top, bottom }: { top: number; bottom: number }) {
   const footer = document.getElementById('site-footer');
 
   if (!footer) {
@@ -148,9 +142,7 @@ describe('MainLayout', () => {
 
     expect(button).toHaveClass('scroll-to-top--visible');
     expect(button).not.toHaveClass('scroll-to-top--above-footer');
-    expect(
-      screen.getByRole('button', { name: 'Back to top' })
-    ).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Back to top' })).toBeEnabled();
   });
 
   it('raises the back-to-top control above the footer when it is in view', () => {

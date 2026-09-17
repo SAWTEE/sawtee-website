@@ -1,12 +1,5 @@
 export type SocialSharePlatform = 'twitter' | 'facebook' | 'linkedin' | 'copy';
 
-export const DEFAULT_SOCIAL_PROFILES = {
-  twitterHandle: 'sawteenp',
-  twitterUrl: 'https://x.com/sawteenp',
-  facebookPageUrl: 'https://www.facebook.com/sawteenp/',
-  linkedinCompanyUrl: 'https://www.linkedin.com/company/sawtee/',
-} as const;
-
 export function buildShareUrl(
   platform: Exclude<SocialSharePlatform, 'copy'>,
   options: { url: string; title?: string; summary?: string }

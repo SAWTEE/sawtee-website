@@ -104,11 +104,11 @@ function CovidResourceCard({ post }: { post: Post }) {
                     <button
                       type="button"
                       className={cn(
-                        'relative inline-flex h-9 w-9 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[#006181]/20 bg-[#006181]/8 shadow-sm outline-none transition-[margin,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-[#006181]/45 dark:border-[#006181]/35 dark:bg-[#006181]/15 dark:focus-visible:ring-[#4da3c0]/50',
+                        'relative inline-flex h-9 w-9 cursor-pointer items-center justify-center overflow-hidden rounded-full border border-[#006181]/20 bg-[#006181]/8 shadow-sm transition-[margin,box-shadow,transform] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] outline-none focus-visible:ring-2 focus-visible:ring-[#006181]/45 dark:border-[#006181]/35 dark:bg-[#006181]/15 dark:focus-visible:ring-[#4da3c0]/50',
                         'motion-reduce:transition-none',
                         hasAvatarStack &&
                           index > 0 &&
-                          '-ml-3 group-hover/authors:ml-1.5 group-focus-within/authors:ml-1.5'
+                          '-ml-3 group-focus-within/authors:ml-1.5 group-hover/authors:ml-1.5'
                       )}
                       style={{ zIndex: authors.length - index }}
                       aria-label={author}

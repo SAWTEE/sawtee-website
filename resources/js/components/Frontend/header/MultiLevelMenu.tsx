@@ -97,7 +97,7 @@ type MultiLevelMenuItemsProps = {
  * Recursive menu rows for arbitrary depth (DropdownMenu Sub nesting).
  * Desktop-oriented; mobile nav keeps its Collapsible accordion.
  */
-export function MultiLevelMenuItems({
+function MultiLevelMenuItems({
   items,
   includeBranchLinks = true,
 }: MultiLevelMenuItemsProps) {

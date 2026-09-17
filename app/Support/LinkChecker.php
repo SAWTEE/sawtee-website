@@ -166,19 +166,20 @@ class LinkChecker
                     continue;
                 }
 
-                $key = $absolute.'|'.$link['type'];
-                if (isset($checkedLinks[$key])) {
+                // Key on the resolved URL alone: the same target reached as an anchor
+                // and as an asset is one link, and counting it twice inflated both
+                // `links_checked` and `ok` and listed broken URLs more than once.
+                if (isset($checkedLinks[$absolute])) {
                     continue;
                 }
-                $checkedLinks[$key] = true;
+                $checkedLinks[$absolute] = true;
 
                 $sameHost = $this->isSameHost($absolute, $baseHost);
 
-                if (! $sameHost) {
+                if (! $sameHost && ! $checkExternal) {
                     $skippedExternal++;
-                    if (! $checkExternal) {
-                        continue;
-                    }
+
+                    continue;
                 }
 
                 $result = $this->checkTarget($absolute, $baseHost);
@@ -285,6 +286,19 @@ class LinkChecker
     private function extractLinks(string $html, string $pageUrl): array
     {
         $links = [];
+        // Each raw href/src is recorded once. The DOM pass runs first because it
+        // knows the real element type; the regex sweep below is only a fallback for
+        // markup the parser does not expose (inline scripts, JSON blobs).
+        $seen = [];
+
+        $add = function (string $href, string $type) use (&$links, &$seen): void {
+            if (isset($seen[$href])) {
+                return;
+            }
+
+            $seen[$href] = true;
+            $links[] = ['href' => $href, 'type' => $type];
+        };
 
         if ($html === '') {
             return $links;
@@ -330,12 +344,17 @@ class LinkChecker
                         continue;
                     }
 
-                    $links[] = ['href' => $value, 'type' => $type];
+                    $add($value, $type);
                 }
             }
         }
 
-        // Also catch common absolute/relative file URLs in inline content attributes.
+        foreach ($this->extractInertiaLinks($html) as $link) {
+            $add($link['href'], $link['type']);
+        }
+
+        // Fallback sweep for URLs the DOM pass cannot reach. Anything already found
+        // above is skipped, so links are never checked twice under two type labels.
         if (preg_match_all('#(?:href|src)=["\']([^"\']+)["\']#i', $html, $matches)) {
             foreach ($matches[1] as $value) {
                 $value = trim($value);
@@ -345,12 +364,8 @@ class LinkChecker
                 if (preg_match('#^(mailto:|tel:|fax:|javascript:|data:)#i', $value)) {
                     continue;
                 }
-                $links[] = ['href' => $value, 'type' => 'attribute'];
+                $add($value, 'attribute');
             }
-        }
-
-        foreach ($this->extractInertiaLinks($html) as $link) {
-            $links[] = $link;
         }
 
         return $links;
@@ -690,7 +705,9 @@ class LinkChecker
     {
         $path = parse_url($url, PHP_URL_PATH) ?: '/';
 
-        return Str::startsWith($path, '/admin');
+        // Match the /admin segment only, so a public page such as /administration
+        // is still crawled.
+        return $path === '/admin' || Str::startsWith($path, '/admin/');
     }
 
     private function looksLikeHtmlPath(string $url): bool

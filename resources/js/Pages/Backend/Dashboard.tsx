@@ -1,6 +1,7 @@
 import { Deferred, Head } from '@inertiajs/react';
 import React from 'react';
 
+import { DynamicContentBanner } from '@/components/Backend/DynamicContentBanner';
 import { TrendBadge } from '@/components/Backend/TrendBadge';
 import {
   Card,
@@ -49,6 +50,8 @@ export default function Dashboard({
       <Head title="Dashboard" />
 
       <div className="flex flex-col gap-4">
+        <DynamicContentBanner />
+
         <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs lg:grid-cols-3 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
           <StatsCard
             title="posts"

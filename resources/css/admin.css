@@ -1,0 +1,22 @@
+/*
+  Admin-shell stylesheet, layered on top of `index.css`.
+
+  Preflight and the hand-written `:root` / `.dark` tokens are intentionally
+  absent — `index.css` always loads first and provides both. This file only adds
+  the utilities that admin pages need and the public site never uses (data
+  tables, calendar, command palette, sidebar, toasts, …).
+
+  Loaded lazily for `Backend/*` pages; see `resources/js/lib/resolve-page.ts`.
+*/
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@import './theme.css';
+@config '../../tailwind.config.js';
+@plugin 'tailwindcss-animate';
+
+@source '../js/{hooks,lib,types}/**/*.{ts,tsx}';
+@source '../js/components/{Backend,shared,ui}/**/*.tsx';
+@source '../js/layouts/AuthenticatedLayout.tsx';
+@source '../js/Pages/Backend/**/*.tsx';
+@source not '../js/**/*.{test,spec}.{ts,tsx}';

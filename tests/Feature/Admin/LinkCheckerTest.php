@@ -122,6 +122,94 @@ test('link checker treats existing publication files as ok', function () {
         ->and($report['ok'])->toBeGreaterThan(0);
 });
 
+test('link checker counts each link once instead of once per extraction pass', function () {
+    config(['app.url' => 'http://sawtee.test']);
+
+    // One anchor and one image. The DOM pass and the regex fallback both see them,
+    // so counting per pass reported four links and duplicated every broken row.
+    $html = '<html><body>'
+        .'<a href="/only-page">Page</a>'
+        .'<img src="/images/only-image.png">'
+        .'</body></html>';
+
+    Http::fake([
+        'http://sawtee.test' => Http::response($html, 200, ['Content-Type' => 'text/html']),
+        'http://sawtee.test/' => Http::response($html, 200, ['Content-Type' => 'text/html']),
+        'http://sawtee.test/only-page' => Http::response('<html><body>Page</body></html>', 200, ['Content-Type' => 'text/html']),
+    ]);
+
+    $report = app(LinkChecker::class)->crawl(
+        baseUrl: 'http://sawtee.test',
+        maxPages: 10,
+        maxLinks: 50,
+    );
+
+    $brokenImages = array_filter(
+        $report['broken'],
+        fn (array $row) => $row['url'] === 'http://sawtee.test/images/only-image.png'
+    );
+
+    expect($report['links_checked'])->toBe(2)
+        ->and($brokenImages)->toHaveCount(1);
+});
+
+test('link checker crawls public paths that merely start with admin', function () {
+    config(['app.url' => 'http://sawtee.test']);
+
+    $missing = 'administration-'.uniqid().'.pdf';
+    $html = '<html><body><a href="/administration">Administration</a></body></html>';
+
+    Http::fake([
+        'http://sawtee.test' => Http::response($html, 200, ['Content-Type' => 'text/html']),
+        'http://sawtee.test/' => Http::response($html, 200, ['Content-Type' => 'text/html']),
+        'http://sawtee.test/administration' => Http::response(
+            '<html><body><a href="/publications/'.$missing.'">PDF</a></body></html>',
+            200,
+            ['Content-Type' => 'text/html']
+        ),
+    ]);
+
+    $report = app(LinkChecker::class)->crawl(
+        baseUrl: 'http://sawtee.test',
+        maxPages: 10,
+        maxLinks: 50,
+    );
+
+    expect(array_column($report['broken'], 'url'))
+        ->toContain('http://sawtee.test/publications/'.$missing);
+});
+
+test('link checker only counts external links it actually skipped', function () {
+    config(['app.url' => 'http://sawtee.test']);
+
+    $html = '<html><body><a href="https://external.example/page">External</a></body></html>';
+
+    Http::fake([
+        'http://sawtee.test' => Http::response($html, 200, ['Content-Type' => 'text/html']),
+        'http://sawtee.test/' => Http::response($html, 200, ['Content-Type' => 'text/html']),
+        'https://external.example/*' => Http::response('ok', 200),
+    ]);
+
+    $checked = app(LinkChecker::class)->crawl(
+        baseUrl: 'http://sawtee.test',
+        maxPages: 5,
+        maxLinks: 20,
+        checkExternal: true,
+    );
+
+    Cache::forget(LinkChecker::CACHE_KEY);
+
+    $skipped = app(LinkChecker::class)->crawl(
+        baseUrl: 'http://sawtee.test',
+        maxPages: 5,
+        maxLinks: 20,
+        checkExternal: false,
+    );
+
+    expect($checked['skipped_external'])->toBe(0)
+        ->and($skipped['skipped_external'])->toBe(1);
+});
+
 test('admin link checker page is gated and scan stores a report', function () {
     config(['app.url' => 'http://sawtee.test']);
 

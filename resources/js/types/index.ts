@@ -19,9 +19,6 @@ export type MenuItem = {
   menu_id?: number;
 };
 
-/** Alias for multilevel nav consumers (desktop MultiLevelMenu, mobile accordion). */
-export type MultiLevelMenuItem = MenuItem;
-
 export type SocialMenuItem = {
   name: 'twitter' | 'linkedin' | 'facebook' | 'youtube' | string;
   link: string;
@@ -76,6 +73,11 @@ export type Post = {
   subtitle?: string | null;
   excerpt?: string | null;
   content?: string | null;
+  /**
+   * Set by list endpoints that omit `content` to keep payloads small; tells the
+   * UI whether a post has a body to link to without shipping the body itself.
+   */
+  has_content?: boolean;
   status?: string;
   author?: string | null;
   genre?: string | null;

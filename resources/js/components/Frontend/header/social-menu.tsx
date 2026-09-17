@@ -100,17 +100,3 @@ const icons = {
   facebook: FacebookIcon,
   youtube: YoutubeIcon,
 };
-
-const SocialNav = ({
-  menu,
-  className = '',
-}: {
-  menu?: SocialMenuItem[] | null;
-  className?: string;
-}) => (
-  <div className={cn('ml-auto block', className)}>
-    <SocialMenu menu={menu} />
-  </div>
-);
-
-export default SocialNav;

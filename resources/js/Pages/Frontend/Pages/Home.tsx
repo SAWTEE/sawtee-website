@@ -5,6 +5,12 @@ import ExploreButton from '@/components/Frontend/ExploreButton';
 import FeaturedSection from '@/components/Frontend/feature';
 import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
 import WebsiteHead from '@/components/Frontend/Head';
+import {
+  BelowTheFoldSkeleton,
+  FeaturedPublicationsSkeleton,
+  PublicationCoversSkeleton,
+  VideoCarouselSkeleton,
+} from '@/components/Frontend/HomeSkeletons';
 import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
@@ -153,23 +159,13 @@ const Home = ({
               data={['featuredPublications', 'featuredBlogPosts']}
               fallback={
                 <aside className="min-w-0 lg:col-span-4">
-                  <div
-                    className="border-borderColor/80 dark:bg-bgDarker min-h-112 rounded-md border bg-white px-4 py-6 shadow-sm sm:min-h-128 sm:px-5 sm:py-7"
-                    aria-hidden
-                  />
+                  <FeaturedPublicationsSkeleton />
                 </aside>
               }
             >
               {featuredPublications ? (
                 <aside className="min-w-0 lg:col-span-4">
-                  <Suspense
-                    fallback={
-                      <div
-                        className="border-borderColor/80 dark:bg-bgDarker min-h-112 rounded-md border bg-white px-4 py-6 shadow-sm sm:min-h-128 sm:px-5 sm:py-7"
-                        aria-hidden
-                      />
-                    }
-                  >
+                  <Suspense fallback={<FeaturedPublicationsSkeleton />}>
                     <FeaturedPublications
                       publications={featuredPublications}
                       blogPosts={featuredBlogPosts}
@@ -191,11 +187,7 @@ const Home = ({
           'newsletters',
           'webinars',
         ]}
-        fallback={
-          <div className="text-muted-foreground px-4 py-8 text-sm md:px-8 lg:px-12">
-            Loading more content…
-          </div>
-        }
+        fallback={<BelowTheFoldSkeleton />}
       >
         <>
           {infocus &&
@@ -295,7 +287,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
       <div className="group md:col-span-5">
         <Link href={`/category/featured-events/${lead.slug}`}>
           <div
-            className="relative aspect-video w-full overflow-hidden rounded-md bg-muted text-center"
+            className="bg-muted relative aspect-video w-full overflow-hidden rounded-md text-center"
             title={lead.title}
           >
             <div className="ease absolute inset-0 top-0 z-10 hidden h-1.25 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
@@ -455,7 +447,7 @@ export const LatestPublicationSection = ({
     <Section className="publications-section">
       <div className="mx-auto max-w-5xl">
         <Title title={'Latest in publications'} />
-        <Suspense fallback={null}>
+        <Suspense fallback={<PublicationCoversSkeleton />}>
           <MultiPostsCarousel data={publications} />
         </Suspense>
         <ExploreButton
@@ -497,7 +489,7 @@ export const MediaSection = ({ sawteeInMedia }: { sawteeInMedia?: Post[] }) => {
       >
         <ul className="divide-borderColor/60 divide-y dark:divide-white/10">
           {sawteeInMedia.map(item => {
-            const hasContent = Boolean(item.content);
+            const hasContent = item.has_content ?? Boolean(item.content);
             const file = postFileMedia(item.media);
             const titleClass =
               'text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-[0.9375rem]';
@@ -637,14 +629,7 @@ export const WebinarSection = ({ webinars = [] }: { webinars?: Post[] }) => {
           Watch recent webinars and download related materials from SAWTEE’s
           research and dialogue programmes.
         </p>
-        <Suspense
-          fallback={
-            <div
-              className="border-borderColor/80 bg-muted/40 aspect-video w-full rounded-md border"
-              aria-hidden
-            />
-          }
-        >
+        <Suspense fallback={<VideoCarouselSkeleton />}>
           <VideoCarousel posts={webinars} />
         </Suspense>
         <ExploreButton

@@ -62,9 +62,9 @@ export default function FeaturedSection({
                 imageFirst ? 'lg:order-1' : 'lg:order-2'
               )}
             >
-                <div className="relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0">
-                  <FeatureImage feature={feature} />
-                </div>
+              <div className="relative flex aspect-auto w-full items-center justify-center overflow-hidden rounded-xl p-0">
+                <FeatureImage feature={feature} />
+              </div>
             </div>
           </article>
         );

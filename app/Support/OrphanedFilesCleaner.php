@@ -31,7 +31,7 @@ class OrphanedFilesCleaner
         $this->targets = [
             [
                 'label' => 'media-library',
-                'path' => public_path('media-library'),
+                'path' => $this->mediaDiskRoot(),
                 'mode' => 'media_ids',
             ],
             [
@@ -61,6 +61,18 @@ class OrphanedFilesCleaner
                 'mode' => 'tmp_uploads',
             ],
         ];
+    }
+
+    /**
+     * Resolve the media disk's real root instead of assuming public/media-library,
+     * so a re-pointed disk is still scanned (and never scanned outside itself).
+     */
+    private function mediaDiskRoot(): string
+    {
+        $disk = (string) config('media-library.disk_name', 'media');
+        $root = config("filesystems.disks.{$disk}.root");
+
+        return is_string($root) && $root !== '' ? $root : public_path('media-library');
     }
 
     /**
@@ -118,7 +130,15 @@ class OrphanedFilesCleaner
         $failed = [];
 
         foreach ($orphans as $orphan) {
-            $path = $orphan['path'];
+            $path = $orphan['path'] ?? null;
+
+            // Never delete outside the configured upload roots, whatever the caller
+            // passes in. Scan results always satisfy this; hand-built lists may not.
+            if (! is_string($path) || ! $this->isWithinTargets($path)) {
+                $failed[] = (string) ($path ?? '');
+
+                continue;
+            }
 
             try {
                 if (is_dir($path)) {
@@ -139,6 +159,35 @@ class OrphanedFilesCleaner
         }
 
         return compact('deleted', 'bytes', 'failed');
+    }
+
+    /**
+     * Guard against path traversal and stray absolute paths by resolving both the
+     * candidate and each upload root before comparing.
+     */
+    private function isWithinTargets(string $path): bool
+    {
+        $resolved = realpath($path);
+
+        if ($resolved === false) {
+            return false;
+        }
+
+        foreach ($this->targets as $target) {
+            $root = realpath($target['path']);
+
+            if ($root === false) {
+                continue;
+            }
+
+            $root = rtrim($root, DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR;
+
+            if (str_starts_with($resolved, $root)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -173,12 +222,14 @@ class OrphanedFilesCleaner
     {
         $names = [];
 
-        foreach (File::query()->pluck('path', 'name') as $name => $path) {
-            if (is_string($name) && $name !== '') {
-                $names[$name] = true;
+        // Iterate rows rather than pluck('path', 'name'): `name` is not unique, so
+        // keying by it silently discards the paths of every duplicate row.
+        foreach (File::query()->get(['name', 'path']) as $file) {
+            if (is_string($file->name) && $file->name !== '') {
+                $names[$this->basenameOf($file->name)] = true;
             }
-            if (is_string($path) && $path !== '') {
-                $names[basename($path)] = true;
+            if (is_string($file->path) && $file->path !== '') {
+                $names[$this->basenameOf($file->path)] = true;
             }
         }
 
@@ -214,6 +265,17 @@ class OrphanedFilesCleaner
     }
 
     /**
+     * Basename without any query string or fragment, so `report.pdf?v=2` still
+     * protects the on-disk `report.pdf`.
+     */
+    private function basenameOf(string $value): string
+    {
+        $path = parse_url($value, PHP_URL_PATH);
+
+        return basename(is_string($path) && $path !== '' ? $path : $value);
+    }
+
+    /**
      * @return list<string|null>
      */
     private function contentHaystacks(): array
@@ -229,9 +291,15 @@ class OrphanedFilesCleaner
         $chunks = [...$chunks, ...Publication::query()->pluck('description')->all()];
         $chunks = [...$chunks, ...Research::query()->pluck('description')->all()];
 
-        // TinyMCE / body fields that may exist on other tables.
+        // Media fellows' published stories reference outbound links and image
+        // sources. `title` holds no URLs, so plucking it protected nothing and
+        // left any file referenced only by a story looking like an orphan.
         if (DB::getSchemaBuilder()->hasTable('published_stories')) {
-            $chunks = [...$chunks, ...DB::table('published_stories')->pluck('title')->all()];
+            foreach (['link', 'media_src'] as $column) {
+                if (DB::getSchemaBuilder()->hasColumn('published_stories', $column)) {
+                    $chunks = [...$chunks, ...DB::table('published_stories')->pluck($column)->all()];
+                }
+            }
         }
 
         return $chunks;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubscribeRequest extends FormRequest
@@ -17,7 +18,7 @@ class SubscribeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -25,7 +26,6 @@ class SubscribeRequest extends FormRequest
             'email' => 'email|required|unique:subscribers,email|min:6|max:100',
         ];
     }
-
 
     /**
      * Get the error messages for the defined validation rules.

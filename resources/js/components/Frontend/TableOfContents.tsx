@@ -45,5 +45,3 @@ export const TableOfContents = ({
     </section>
   );
 };
-
-export default TableOfContents;

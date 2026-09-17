@@ -62,9 +62,7 @@ describe('CovidArchive', () => {
     expect(avatars).toHaveLength(2);
     expect(avatars[1]).toHaveClass('-ml-3');
     expect(avatars[1]?.className).toMatch(/group-hover\/authors:ml-1\.5/);
-    expect(avatars[1]?.className).toMatch(
-      /duration-500.*ease-\[cubic-bezier/
-    );
+    expect(avatars[1]?.className).toMatch(/duration-500.*ease-\[cubic-bezier/);
   });
 
   it('does not stack a single author avatar', () => {
