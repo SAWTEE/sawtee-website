@@ -16,7 +16,7 @@ export default function PostTags({ tags }: PostTagsProps) {
       {tags.map(({ id, name }) => (
         <span
           key={id}
-          className="text-muted-foreground rounded bg-[#006181]/6 px-1.5 py-0.5 text-[0.7rem] font-medium tracking-wide dark:bg-[#006181]/15"
+          className="text-muted-foreground bg-theme-600/6 dark:bg-theme-600/15 rounded px-1.5 py-0.5 text-xs font-medium tracking-wide"
         >
           {name}
         </span>

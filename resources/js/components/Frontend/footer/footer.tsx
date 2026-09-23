@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
+import { useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 
 import { SocialMenu } from '../header/social-menu';
@@ -29,11 +30,12 @@ export default function Footer({
   socialMenu?: any[];
 }) {
   const [mapModal, setMapModal] = useState(false);
+  const copy = useSiteCopy();
 
   return (
     <footer
       id="site-footer"
-      className="bg-bgDarker w-full overflow-x-clip text-slate-500"
+      className="bg-bgDarker text-muted-foreground w-full overflow-x-clip"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-x-6 gap-y-10 py-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-8">
@@ -54,29 +56,28 @@ export default function Footer({
             {/* SubscribeForm removed — home callout + archive sidebars already cover signup. */}
             <div className="mx-auto flex w-full max-w-md flex-col items-center gap-3 text-center lg:mx-0 lg:max-w-none lg:items-start lg:text-left">
               <p className="text-secondary-foreground/85 text-sm leading-relaxed">
-                Research, advocacy, and capacity building on trade, economics,
-                and environment across South Asia.
+                {copy.footer.tagline}
               </p>
               <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-sm lg:justify-start">
                 <InertiaLink
-                  href="/about"
+                  href={copy.footer.about_href}
                   className="text-primary font-medium underline-offset-2 hover:underline"
                 >
-                  About SAWTEE
+                  {copy.footer.about_label}
                 </InertiaLink>
                 <InertiaLink
-                  href="/contact"
+                  href={copy.footer.contact_href}
                   className="text-primary font-medium underline-offset-2 hover:underline"
                 >
-                  Contact
+                  {copy.footer.contact_label}
                 </InertiaLink>
                 <a
-                  href="https://sawteenp.substack.com"
+                  href={copy.newsletter.substack_url}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-primary font-medium underline-offset-2 hover:underline"
                 >
-                  Substack
+                  {copy.footer.substack_label}
                 </a>
               </div>
               {/* <SubscribeForm /> */}
@@ -88,7 +89,7 @@ export default function Footer({
                 <h2 className="text-secondary-foreground mb-4 text-lg font-medium sm:mb-5 sm:text-xl">
                   {item.title}
                 </h2>
-                <ul className="text-[0.9rem] transition-all duration-500">
+                <ul className="text-prose transition-all duration-500">
                   {item.title.includes('Contact')
                     ? item.children?.map((child_item: any) => {
                         const { url, title } = child_item;
@@ -118,6 +119,10 @@ export default function Footer({
                               <MapModel
                                 isOpen={mapModal}
                                 onOpenChange={setMapModal}
+                                title={copy.footer.map_title}
+                                description={copy.footer.map_description}
+                                embedUrl={copy.footer.map_embed_url}
+                                iframeTitle={copy.footer.map_iframe_title}
                               />
                             </MenuItem>
                           );
@@ -203,10 +208,11 @@ export default function Footer({
             );
           })}
         </div>
-        <div className="border-t border-gray-200/80 py-6 sm:py-7">
+        <div className="border-border border-t py-6 sm:py-7">
           <div className="flex flex-col items-center justify-center gap-4 text-center sm:flex-row sm:justify-between sm:gap-6 sm:text-left">
             <span className="text-secondary-foreground text-sm leading-relaxed">
-              ©<InertiaLink href="/">{' SAWTEE'}</InertiaLink>{' '}
+              ©
+              <InertiaLink href="/">{` ${copy.footer.copyright_name}`}</InertiaLink>{' '}
               {new Date().getFullYear() + ' All rights reserved. '}
             </span>
             <SocialMenu
@@ -224,7 +230,7 @@ const MenuItem = ({ children = undefined, className = '' }: any) => {
   return (
     <li
       className={cn(
-        'text-secondary-foreground/90 dark:text-secondary-foreground/80 dark:hover:text-secondary-foreground mb-3 flex w-full min-w-0 items-center justify-start gap-2 last:mb-0 hover:text-slate-900 sm:mb-4',
+        'text-secondary-foreground/90 dark:text-secondary-foreground/80 dark:hover:text-secondary-foreground hover:text-foreground mb-3 flex w-full min-w-0 items-center justify-start gap-2 last:mb-0 sm:mb-4',
         className
       )}
     >

@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/accordion';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { slugify } from '@/lib/helpers';
+import { useSiteCopy } from '@/lib/site-copy';
 import { cn, htmlToText } from '@/lib/utils';
 import type { MemberCountry, PageData, PageSection } from '@/types';
 
@@ -51,17 +52,18 @@ type MembersProps = {
 };
 
 const Members = ({ memberInstitutions = null }: MembersProps) => {
+  const copy = useSiteCopy();
+
   return (
     <section
       id="member-institutions"
-      className="offset-element mt-16 border-t border-[#006181]/15 pt-16 md:mt-20 md:pt-20 dark:border-[#006181]/25"
-      aria-label="Member Institutions"
+      className="offset-element border-theme-600/15 dark:border-theme-600/25 mt-16 border-t pt-16 md:mt-20 md:pt-20"
+      aria-label={copy.about.member_institutions_heading}
     >
       <div className="mb-8 md:mb-10">
-        <Title title="Member Institutions" as="h2" />
+        <Title title={copy.about.member_institutions_heading} as="h2" />
         <p className="text-muted-foreground -mt-4 max-w-2xl text-sm leading-relaxed md:-mt-5 md:text-base">
-          Partner organisations across South Asia advancing SAWTEE&apos;s
-          regional network.
+          {copy.about.member_institutions_intro}
         </p>
       </div>
 
@@ -74,17 +76,17 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
                 className="border-borderColor/60 dark:border-white/10"
               >
                 <AccordionTrigger className="py-4 hover:no-underline">
-                  <span className="text-primary font-serif text-lg font-semibold tracking-tight md:text-xl dark:text-zinc-100">
+                  <span className="text-primary dark:text-foreground font-serif text-lg font-semibold tracking-tight md:text-xl">
                     {country}
                   </span>
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 pl-1 md:pl-2">
-                  <ol className="text-muted-foreground list-decimal space-y-2.5 pl-5 marker:text-[#006181]/70">
+                  <ol className="text-muted-foreground marker:text-theme-600/70 list-decimal space-y-2.5 pl-5">
                     {institutes.map(({ member_name, member_website_link }) => {
                       return (
                         <li
                           key={member_name}
-                          className="text-[0.95rem] md:text-base"
+                          className="text-prose md:text-base"
                         >
                           <a
                             target="_blank"
@@ -92,7 +94,7 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
                             aria-label={member_name}
                             href={member_website_link}
                             rel="noopener noreferrer"
-                            className="text-secondary-foreground hover:text-[#006181] dark:hover:text-[#4da3c0]"
+                            className="text-secondary-foreground hover:text-theme-600 dark:hover:text-theme-450"
                           >
                             {member_name}
                           </a>
@@ -107,7 +109,7 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
         })}
       </div>
 
-      <MemberInstitutesMarquee className="mt-12 border-[#006181]/12 dark:border-[#006181]/20" />
+      <MemberInstitutesMarquee className="border-theme-600/12 dark:border-theme-600/20 mt-12" />
     </section>
   );
 };
@@ -130,19 +132,19 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
   return (
     <section
       id={sectionID}
-      className="offset-element mb-14 border-b border-[#006181]/12 pb-14 last:mb-0 last:border-b-0 last:pb-0 md:mb-16 md:pb-16 dark:border-[#006181]/20"
+      className="offset-element border-theme-600/12 dark:border-theme-600/20 mb-14 border-b pb-14 last:mb-0 last:border-b-0 last:pb-0 md:mb-16 md:pb-16"
     >
       <PageSectionTitle titleText={title} />
 
       {isTabs && childSections.length > 0 && (
         <div className="mt-2">
           <Tabs defaultValue={childSections[0].title} orientation="vertical">
-            <TabsList className="bg-bgDarker/50 mb-4 grid h-auto w-full grid-cols-3 gap-1 border border-[#006181]/10 p-1.5 dark:border-white/10">
+            <TabsList className="bg-bgDarker/50 border-theme-600/10 mb-4 grid h-auto w-full grid-cols-3 gap-1 border p-1.5 dark:border-white/10">
               {childSections.map(({ title: childTitle }) => (
                 <TabsTrigger
                   key={childTitle}
                   value={childTitle}
-                  className="data-[state=active]:border-l-[3px] data-[state=active]:border-l-[#006181] data-[state=active]:bg-white/80 dark:data-[state=active]:bg-black/40"
+                  className="data-[state=active]:border-l-theme-600 data-[state=active]:border-l-3 data-[state=active]:bg-white/80 dark:data-[state=active]:bg-black/40"
                 >
                   <span className="font-serif text-sm font-semibold tracking-tight md:text-base lg:text-lg">
                     {childTitle}
@@ -155,7 +157,7 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
                 <TabsContent
                   key={childTitle}
                   value={childTitle}
-                  className="border-borderColor/60 bg-bgDarker/40 space-y-2 rounded-lg border border-l-[3px] border-l-[#006181] p-5 leading-relaxed text-zinc-700 md:p-6 dark:border-white/10 dark:border-l-[#006181]/80 dark:text-zinc-300"
+                  className="border-borderColor/60 bg-bgDarker/40 border-l-theme-600 text-muted-foreground dark:border-l-theme-600/80 dark:text-muted-foreground space-y-2 rounded-lg border border-l-3 p-5 leading-relaxed md:p-6 dark:border-white/10"
                 >
                   {childDescription && (
                     <p className="px-1">{htmlToText(childDescription)}</p>
@@ -188,7 +190,7 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
                   </AccordionTrigger>
                   <AccordionContent>
                     <div
-                      className="border-borderColor/50 bg-bgDarker/40 rounded-md border-l-[3px] border-l-[#006181] p-5 text-[0.95rem] leading-relaxed text-zinc-700 md:p-6 md:text-base dark:border-white/10 dark:border-l-[#006181]/80 dark:text-zinc-300"
+                      className="border-borderColor/50 bg-bgDarker/40 border-l-theme-600 text-prose text-muted-foreground dark:border-l-theme-600/80 dark:text-muted-foreground rounded-md border-l-3 p-5 leading-relaxed md:p-6 md:text-base dark:border-white/10"
                       dangerouslySetInnerHTML={{
                         __html: childDescription ?? '',
                       }}
@@ -202,7 +204,7 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
 
       {isDefault && (
         <div
-          className="text-secondary-foreground/90 max-w-prose leading-relaxed dark:text-zinc-300"
+          className="text-secondary-foreground/90 dark:text-muted-foreground max-w-prose leading-relaxed"
           dangerouslySetInnerHTML={{
             __html: description ?? '',
           }}
@@ -226,7 +228,7 @@ const PageSectionTitle = ({
   return (
     <h2
       className={cn(
-        'text-primary mb-5 font-serif text-2xl font-semibold tracking-tight md:mb-6 md:text-3xl lg:text-4xl dark:text-zinc-100',
+        'text-primary dark:text-foreground mb-5 font-serif text-2xl font-semibold tracking-tight md:mb-6 md:text-3xl lg:text-4xl',
         className
       )}
     >

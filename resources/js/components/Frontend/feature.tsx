@@ -45,7 +45,7 @@ export default function FeaturedSection({
                   href={feature.link}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-theme-700 hover:text-theme-600 dark:text-theme-300 dark:hover:text-theme-200 mt-6 inline-flex max-w-max items-center gap-1.5 text-sm font-medium underline underline-offset-4 transition-colors hover:underline-offset-[6px]"
+                  className="text-theme-700 hover:text-theme-600 dark:text-theme-300 dark:hover:text-theme-200 mt-6 inline-flex max-w-max items-center gap-1.5 text-sm font-medium underline underline-offset-4 transition-colors hover:underline-offset-4"
                 >
                   Learn more
                   <span className="sr-only">

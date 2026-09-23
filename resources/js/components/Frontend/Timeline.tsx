@@ -49,13 +49,13 @@ export default function VerticalTimeline({
               className="border-theme-50 bg-theme-600 dark:border-theme-900 dark:bg-theme-400 absolute top-8 left-0 box-content h-3 w-3 -translate-x-1/2 rounded-full border-4 sm:left-[6.5rem] sm:ml-0"
             />
 
-            <time className="bg-theme-100 text-theme-700 dark:bg-theme-800 dark:text-theme-200 left-0 mb-3 inline-flex h-6 min-w-20 translate-y-0.5 items-center justify-center rounded-full px-2.5 text-[0.7rem] font-semibold tracking-wide uppercase sm:absolute sm:mb-0">
+            <time className="bg-theme-100 text-theme-700 dark:bg-theme-800 dark:text-theme-200 left-0 mb-3 inline-flex h-6 min-w-20 translate-y-0.5 items-center justify-center rounded-full px-2.5 text-xs font-semibold tracking-wide uppercase sm:absolute sm:mb-0">
               {formatShortMonthDay(
                 item.published_at ? new Date(item.published_at) : new Date()
               )}
             </time>
 
-            <div className="bg-bgDarker/80 dark:bg-card/40 rounded-xl border border-[#006181]/10 p-4 shadow-sm transition duration-200 group-hover:border-[#006181]/25 group-hover:shadow-md dark:border-[#006181]/20">
+            <div className="bg-bgDarker/80 dark:bg-card/40 border-theme-600/10 group-hover:border-theme-600/25 dark:border-theme-600/20 rounded-xl border p-4 shadow-sm transition duration-200 group-hover:shadow-md">
               {href ? (
                 <a
                   href={href}

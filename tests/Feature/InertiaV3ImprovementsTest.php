@@ -35,6 +35,7 @@ test('admin pages do not share frontend menus', function () {
         ->assertInertia(fn (Assert $page) => $page
             ->missing('primaryMenu')
             ->missing('footerMenu')
+            ->missing('siteCopy')
         );
 });
 

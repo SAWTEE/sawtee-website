@@ -62,7 +62,7 @@ describe('CovidArchive', () => {
     expect(avatars).toHaveLength(2);
     expect(avatars[1]).toHaveClass('-ml-3');
     expect(avatars[1]?.className).toMatch(/group-hover\/authors:ml-1\.5/);
-    expect(avatars[1]?.className).toMatch(/duration-500.*ease-\[cubic-bezier/);
+    expect(avatars[1]?.className).toMatch(/duration-500.*ease-out/);
   });
 
   it('does not stack a single author avatar', () => {
@@ -79,8 +79,8 @@ describe('CovidArchive', () => {
   });
 
   it('styles author tooltips for light and dark mode', () => {
-    expect(AUTHOR_TOOLTIP_CLASSNAME).toMatch(/dark:bg-\[#0b3a48]/);
-    expect(AUTHOR_TOOLTIP_CLASSNAME).toMatch(/dark:text-\[#e8f6fb]/);
+    expect(AUTHOR_TOOLTIP_CLASSNAME).toMatch(/dark:bg-theme-ink/);
+    expect(AUTHOR_TOOLTIP_CLASSNAME).toMatch(/dark:text-theme-mist/);
     expect(AUTHOR_TOOLTIP_CLASSNAME).toMatch(/bg-white/);
 
     render(<CovidArchive posts={[makePost({ author: 'Ada Lovelace' })]} />);

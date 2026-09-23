@@ -7,7 +7,7 @@ JSON fixtures used by `php artisan sawtee:seed-content` (and `DatabaseSeeder`).
 | `media-fellowships.json` | Fellowships, fellows, published stories (+ media from `resources/site-assets`) |
 | `member-institutes.json` | Members, institutes; syncs About page `pageData` |
 | `home-features.json` | Home feature cards |
-| `site-settings.json` | About mega-menu intro + social links |
+| `site-settings.json` | Know Us mega-menu intro + social links. Other SiteCopy keys (footer, newsletter, SEO, errors, …) are filled from PHP defaults if missing. |
 
 Static images for `/assets/...` live in **`resources/site-assets`** (tracked) and are synced to `public/assets` on build/deploy.
 

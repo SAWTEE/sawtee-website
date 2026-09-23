@@ -8,14 +8,7 @@ import type { Category } from '@/types';
 type PostCategoryProps = ComponentPropsWithoutRef<typeof Button>;
 
 const PostCategory = ({ className, ...props }: PostCategoryProps) => (
-  <Button
-    variant="outline"
-    className={cn(
-      'category h-auto rounded-md border-[#006181]/25 px-3 py-1 text-xs font-medium tracking-wide text-[#006181] uppercase hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15',
-      className
-    )}
-    {...props}
-  />
+  <Button variant="chip" className={className} {...props} />
 );
 
 type PostCategoriesProps = {

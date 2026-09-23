@@ -3,6 +3,25 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { DynamicContentBanner } from './DynamicContentBanner';
 
+vi.mock('@/components/shared/InertiaLink', () => ({
+  default: ({
+    href,
+    children,
+    prefetch: _prefetch,
+    ...props
+  }: {
+    href: string;
+    children?: React.ReactNode;
+    prefetch?: boolean | string;
+  }) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}));
+
+vi.stubGlobal('route', (name: string) => `/${name}`);
+
 /** This jsdom setup has no localStorage, so provide a minimal in-memory one. */
 function stubLocalStorage(): void {
   let store: Record<string, string> = {};
@@ -26,33 +45,44 @@ describe('DynamicContentBanner', () => {
     stubLocalStorage();
   });
 
-  it('explains where each kind of content is managed', () => {
+  it('nudges editors toward the new public-copy screens', () => {
     render(<DynamicContentBanner />);
 
     expect(
-      screen.getByRole('heading', { name: 'What you can edit on the website' })
+      screen.getByRole('heading', {
+        name: 'Public copy is now editable in this admin',
+      })
     ).toBeInTheDocument();
-    expect(screen.getByText('Editable here now')).toBeInTheDocument();
+    expect(screen.getByText('What’s new')).toBeInTheDocument();
+
+    expect(screen.getByRole('link', { name: 'Site Settings' })).toHaveAttribute(
+      'href',
+      '/admin.settings.edit'
+    );
+    expect(screen.getByRole('link', { name: 'Features' })).toHaveAttribute(
+      'href',
+      '/admin.features.index'
+    );
     expect(
-      screen.getByText('In the database, but no editor yet')
-    ).toBeInTheDocument();
-    expect(screen.getByText('Still fixed in code')).toBeInTheDocument();
+      screen.getByRole('link', { name: 'Home Page Sections' })
+    ).toHaveAttribute('href', '/admin.home-page-sections.index');
   });
 
-  it('points editors at the CMS home for contact details', () => {
+  it('explains home headings win over site settings', () => {
     render(<DynamicContentBanner />);
 
-    // Contact details come from the Contact page's JSON pageData, not from code.
     expect(
-      screen.getByText('Contact page details, via the Contact page’s JSON data')
+      screen.getByText(
+        /Those headings win over Site Settings when both are set/
+      )
     ).toBeInTheDocument();
   });
 
-  it('names the seeder for database-backed content that has no admin screen', () => {
+  it('points remaining contact details at the Contact page JSON', () => {
     render(<DynamicContentBanner />);
 
     expect(
-      screen.getByText(/php artisan sawtee:seed-content/)
+      screen.getByText(/Contact page JSON still owns phones, email, address/)
     ).toBeInTheDocument();
   });
 
@@ -65,7 +95,7 @@ describe('DynamicContentBanner', () => {
 
     expect(
       screen.queryByRole('heading', {
-        name: 'What you can edit on the website',
+        name: 'Public copy is now editable in this admin',
       })
     ).not.toBeInTheDocument();
 
@@ -74,7 +104,7 @@ describe('DynamicContentBanner', () => {
 
     expect(
       screen.queryByRole('heading', {
-        name: 'What you can edit on the website',
+        name: 'Public copy is now editable in this admin',
       })
     ).not.toBeInTheDocument();
   });

@@ -42,12 +42,12 @@ function Post({
             }}
           />
           {file && (
-            <p className="mt-10 border-t border-[#006181]/12 pt-6 dark:border-[#006181]/20">
+            <p className="border-theme-600/12 dark:border-theme-600/20 mt-10 border-t pt-6">
               <a
                 target="_blank"
                 href={file}
                 rel="noopener noreferrer"
-                className="font-medium text-[#006181] underline-offset-4 hover:text-[#006181]/80 dark:text-[#4da3c0]"
+                className="text-theme-600 hover:text-theme-600/80 dark:text-theme-450 font-medium underline-offset-4"
               >
                 {`Download PDF: ${post.title}`}
                 <span className="sr-only"> (opens in a new tab)</span>

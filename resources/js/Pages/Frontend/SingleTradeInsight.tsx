@@ -35,7 +35,7 @@ function SingleTradeInsight({
             {hasCover && (
               <div className="mx-auto w-full max-w-[220px] shrink-0 md:mx-0 md:max-w-[240px]">
                 <img
-                  className="aspect-3/4 w-full rounded-lg border border-[#006181]/10 object-cover shadow-sm dark:border-white/10"
+                  className="border-theme-600/10 aspect-3/4 w-full rounded-lg border object-cover shadow-sm dark:border-white/10"
                   src={media ?? undefined}
                   alt={volumeLabel ?? ''}
                 />
@@ -43,10 +43,10 @@ function SingleTradeInsight({
             )}
 
             <div className="flex min-w-0 flex-1 flex-col gap-4 md:pt-1">
-              <p className="text-xs font-medium tracking-wide text-[#006181] uppercase dark:text-[#4da3c0]">
+              <p className="text-theme-600 dark:text-theme-450 text-xs font-medium tracking-wide uppercase">
                 Trade Insight
               </p>
-              <h2 className="text-primary font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl xl:text-4xl dark:text-zinc-100">
+              <h2 className="text-primary dark:text-foreground font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl xl:text-4xl">
                 {subtitle ? subtitle : volumeLabel}
               </h2>
               {subtitle && volumeLabel && subtitle !== volumeLabel && (
@@ -57,7 +57,7 @@ function SingleTradeInsight({
 
               {tradeInsightVolume.description && (
                 <div
-                  className="prose-base text-secondary-foreground/90 max-w-prose text-[1.05rem] leading-relaxed md:text-lg md:leading-8 dark:text-zinc-300"
+                  className="prose-base text-secondary-foreground/90 text-lead dark:text-muted-foreground max-w-prose leading-relaxed md:text-lg md:leading-8"
                   dangerouslySetInnerHTML={{
                     __html: tradeInsightVolume.description,
                   }}
@@ -65,12 +65,12 @@ function SingleTradeInsight({
               )}
 
               {pdfHref && (
-                <div className="mt-2 border-t border-[#006181]/12 pt-5 dark:border-[#006181]/20">
+                <div className="border-theme-600/12 dark:border-theme-600/20 mt-2 border-t pt-5">
                   <Button
                     variant="outline"
                     size="lg"
                     asChild
-                    className="border-[#006181]/25 text-[#006181] hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15"
+                    className="border-theme-600/25 text-theme-600 hover:bg-theme-600/8 hover:text-theme-600 dark:border-theme-600/40 dark:text-theme-450 dark:hover:bg-theme-600/15"
                   >
                     <a href={pdfHref} target="_blank" rel="noopener noreferrer">
                       {`Download PDF: ${volumeLabel}`}
@@ -83,12 +83,12 @@ function SingleTradeInsight({
           </div>
 
           <section
-            className="mt-14 border-t border-[#006181]/15 pt-10 md:mt-16 md:pt-12 dark:border-[#006181]/25"
+            className="border-theme-600/15 dark:border-theme-600/25 mt-14 border-t pt-10 md:mt-16 md:pt-12"
             aria-labelledby="trade-insight-contents"
           >
             <h3
               id="trade-insight-contents"
-              className="text-primary font-serif text-2xl font-semibold tracking-tight md:text-3xl dark:text-zinc-100"
+              className="text-primary dark:text-foreground font-serif text-2xl font-semibold tracking-tight md:text-3xl"
             >
               Contents
               <span

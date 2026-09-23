@@ -54,7 +54,7 @@ export default function CarouselIndicators({
                     ? 'bg-white'
                     : 'bg-white/45 hover:bg-white/70'
                   : isActive
-                    ? 'bg-[hsl(var(--theme-color))]'
+                    ? 'bg-themeColor'
                     : 'bg-muted-foreground/40 hover:bg-muted-foreground/70'
               )}
             />

@@ -30,4 +30,15 @@
   --default-ring-width: 3px;
   /* Brand teal #006181 — keep focus rings on-brand (not Tailwind blue). */
   --default-ring-color: #006181;
+
+  /* Editorial type that sits between Tailwind’s default steps. */
+  --text-prose: 0.95rem;
+  --text-fine: 0.9375rem;
+  --text-lead: 1.05rem;
+  --text-display: 1.65rem;
+  --tracking-kicker: 0.14em;
+  --tracking-eyebrow: 0.16em;
+  --tracking-label: 0.18em;
+  --leading-prose: 1.75;
+  --border-width-3: 3px;
 }

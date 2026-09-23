@@ -7,6 +7,7 @@ import SvgBackground from '@/components/Frontend/SvgBackground';
 import { Button } from '@/components/ui/button';
 import GuestLayout from '@/layouts/GuestLayout';
 import MainLayout from '@/layouts/MainLayout';
+import { SITE_COPY_DEFAULTS, useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 
 type ErrorStatus = 403 | 404 | 419 | 500 | 503;
@@ -24,56 +25,15 @@ type ErrorCopy = {
   hint?: string;
 };
 
-const ERROR_COPY: Record<ErrorStatus, ErrorCopy> = {
-  403: {
-    title: 'Access denied',
-    description:
-      'You do not have permission to view this page. If you believe this is a mistake, contact SAWTEE.',
-    action: 'Go to homepage',
-    hint: 'You may need to sign in, or this content may be restricted.',
-  },
-  404: {
-    title: 'Page not found',
-    description:
-      'The page you requested could not be found. It may have moved, or the link may be outdated.',
-    action: 'Go to homepage',
-    hint: 'Try searching, or browse publications and research from the links below.',
-  },
-  419: {
-    title: 'Session expired',
-    description:
-      'Your session timed out for security. Please reload the page and try again.',
-    action: 'Reload page',
-    hint: 'This usually happens after a long idle period.',
-  },
-  500: {
-    title: 'Something went wrong',
-    description:
-      'An unexpected error occurred on our servers. Please try again in a moment.',
-    action: 'Go to homepage',
-    hint: 'If the problem continues, please contact us.',
-  },
-  503: {
-    title: 'Service unavailable',
-    description:
-      'SAWTEE is temporarily unavailable for maintenance. Please check back soon.',
-    action: 'Go to homepage',
-    hint: 'We are working to restore access as quickly as possible.',
-  },
-};
-
-const PUBLIC_LINKS = [
-  { href: '/', label: 'Home' },
-  { href: '/search', label: 'Search' },
-  { href: '/category/publications', label: 'Publications' },
-  { href: '/about', label: 'About' },
-  { href: '/contact', label: 'Contact' },
-] as const;
+function defaultErrorPages(): Record<string, ErrorCopy> {
+  return SITE_COPY_DEFAULTS.errors.pages;
+}
 
 function resolveCopy(
   status: number,
   message: string | undefined,
-  admin: boolean
+  admin: boolean,
+  pages: Record<string, ErrorCopy>
 ): ErrorCopy {
   const fallback: ErrorCopy = {
     title: 'Unexpected error',
@@ -83,7 +43,7 @@ function resolveCopy(
     action: admin ? 'Back to dashboard' : 'Go to homepage',
   };
 
-  const copy = ERROR_COPY[status as ErrorStatus] ?? fallback;
+  const copy = pages[String(status)] ?? fallback;
   const action =
     admin && copy.action === 'Go to homepage'
       ? 'Back to dashboard'
@@ -110,11 +70,13 @@ export default function ErrorPage({
   message,
   admin = false,
 }: ErrorPageProps) {
+  const siteCopy = useSiteCopy();
   const code = Number(status) || 500;
   const { title, description, action, hint } = resolveCopy(
     code,
     message,
-    admin
+    admin,
+    { ...defaultErrorPages(), ...siteCopy.errors.pages }
   );
   const homeHref = admin ? '/admin/dashboard' : '/';
   const isReload = code === 419;
@@ -152,6 +114,7 @@ export default function ErrorPage({
           homeHref={homeHref}
           isReload={isReload}
           enter={enter}
+          siteCopy={siteCopy}
         />
       )}
     </>
@@ -179,16 +142,16 @@ function AdminErrorContent({
 }: ContentProps) {
   return (
     <div className="space-y-5 text-center">
-      <p className="text-xs font-medium tracking-[0.18em] text-[#006181] uppercase dark:text-[#4da3c0]">
+      <p className="tracking-label text-theme-600 dark:text-theme-450 text-xs font-medium uppercase">
         SAWTEE CMS
       </p>
-      <p className="font-serif text-5xl font-semibold tracking-tight text-[#006181] tabular-nums dark:text-[#4da3c0]">
+      <p className="text-theme-600 dark:text-theme-450 font-serif text-5xl font-semibold tracking-tight tabular-nums">
         {code}
       </p>
-      <h1 className="text-xl font-semibold text-slate-800 dark:text-slate-100">
+      <h1 className="text-foreground dark:text-foreground text-xl font-semibold">
         {title}
       </h1>
-      <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+      <p className="text-muted-foreground dark:text-muted-foreground text-sm leading-relaxed">
         {description}
       </p>
       {hint ? (
@@ -227,7 +190,9 @@ function PublicErrorContent({
   homeHref,
   isReload,
   enter,
+  siteCopy,
 }: ContentProps & {
+  siteCopy: ReturnType<typeof useSiteCopy>;
   enter: (delay?: number) =>
     | {
         initial: { opacity: number; y: number };
@@ -243,15 +208,11 @@ function PublicErrorContent({
   return (
     <div className="relative flex min-h-[min(85vh,52rem)] w-full flex-col justify-center overflow-hidden">
       <div
-        className="bg-pattern-tile dark:bg-pattern-tile-fade pointer-events-none absolute inset-0 -z-10 opacity-35 dark:opacity-25"
-        style={{
-          backgroundSize: '960px',
-          backgroundPosition: 'top center',
-        }}
+        className="bg-pattern-tile bg-pattern-error dark:bg-pattern-tile-fade pointer-events-none absolute inset-0 -z-10 opacity-35 dark:opacity-25"
         aria-hidden
       />
       <div
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_left,rgba(0,97,129,0.1),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top_left,rgba(0,97,129,0.16),transparent_55%)]"
+        className="bg-brand-glow pointer-events-none absolute inset-0 -z-10"
         aria-hidden
       />
       <div
@@ -269,7 +230,7 @@ function PublicErrorContent({
           <motion.div {...enter(0)}>
             <Link
               href="/"
-              className="group inline-flex items-center gap-3 rounded-md focus-visible:ring-2 focus-visible:ring-[#006181]/40 focus-visible:outline-none"
+              className="group focus-visible:ring-theme-600/40 inline-flex items-center gap-3 rounded-md focus-visible:ring-2 focus-visible:outline-none"
               aria-label="SAWTEE home"
             >
               <img
@@ -284,19 +245,19 @@ function PublicErrorContent({
           </motion.div>
 
           <motion.p
-            className="mt-8 text-xs font-medium tracking-[0.18em] text-[#006181] uppercase dark:text-[#4da3c0]"
+            className="tracking-label text-theme-600 dark:text-theme-450 mt-8 text-xs font-medium uppercase"
             {...enter(0.05)}
           >
-            South Asia Watch on Trade, Economics and Environment
+            {siteCopy.errors.eyebrow}
           </motion.p>
 
           <div className="mt-6 flex flex-col gap-5 sm:flex-row sm:items-start sm:gap-8">
             <motion.div
-              className="relative shrink-0 border-l-[3px] border-[#006181] pl-4 sm:pl-5"
+              className="border-theme-600 relative shrink-0 border-l-3 pl-4 sm:pl-5"
               {...enter(0.1)}
             >
               <p
-                className="font-serif text-7xl leading-none font-semibold tracking-tight text-[#006181] tabular-nums sm:text-8xl dark:text-[#4da3c0]"
+                className="text-theme-600 dark:text-theme-450 font-serif text-7xl leading-none font-semibold tracking-tight tabular-nums sm:text-8xl"
                 aria-hidden
               >
                 {code}
@@ -304,7 +265,7 @@ function PublicErrorContent({
             </motion.div>
 
             <motion.div className="min-w-0 pt-1" {...enter(0.16)}>
-              <h1 className="text-primary font-serif text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl dark:text-zinc-100">
+              <h1 className="text-primary dark:text-foreground font-serif text-3xl leading-tight font-semibold tracking-tight text-balance sm:text-4xl">
                 {title}
               </h1>
               <p className="text-muted-foreground mt-4 max-w-md text-base leading-relaxed text-pretty">
@@ -325,16 +286,14 @@ function PublicErrorContent({
             {isReload ? (
               <Button
                 type="button"
-                className="h-11 rounded-md bg-[#006181] px-5 text-sm font-medium text-white hover:bg-[#004d66] dark:bg-[#006181] dark:hover:bg-[#0a7a9c]"
+                variant="brand"
+                size="cta"
                 onClick={() => router.reload()}
               >
                 {action}
               </Button>
             ) : (
-              <Button
-                asChild
-                className="h-11 rounded-md bg-[#006181] px-5 text-sm font-medium text-white hover:bg-[#004d66] dark:bg-[#006181] dark:hover:bg-[#0a7a9c]"
-              >
+              <Button asChild variant="brand" size="cta">
                 <Link href={homeHref}>{action}</Link>
               </Button>
             )}
@@ -342,40 +301,43 @@ function PublicErrorContent({
             <Button
               asChild
               variant="outline"
-              className="bg-background/70 h-11 rounded-md border-[#006181]/25 hover:bg-[#006181]/6 dark:border-[#006181]/40 dark:bg-black/30 dark:hover:bg-[#006181]/15"
+              className="bg-background/70 border-theme-600/25 hover:bg-theme-600/6 dark:border-theme-600/40 dark:hover:bg-theme-600/15 h-11 rounded-md dark:bg-black/30"
             >
-              <Link href="/search">Search the site</Link>
+              <Link href="/search">{siteCopy.errors.search_label}</Link>
             </Button>
 
             <button
               type="button"
               onClick={goBack}
-              className="inline-flex h-11 items-center gap-1.5 rounded-md px-2 text-sm font-medium text-[#006181] transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#006181]/35 focus-visible:outline-none dark:text-[#4da3c0]"
+              className="text-theme-600 focus-visible:ring-theme-600/35 dark:text-theme-450 inline-flex h-11 items-center gap-1.5 rounded-md px-2 text-sm font-medium transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
             >
               <ArrowLeft className="h-4 w-4" aria-hidden />
-              Go back
+              {siteCopy.errors.go_back_label}
             </button>
           </motion.div>
 
           <motion.nav
-            className="mt-12 border-t border-[#006181]/15 pt-6 dark:border-[#006181]/25"
+            className="border-theme-600/15 dark:border-theme-600/25 mt-12 border-t pt-6"
             aria-label="Helpful links"
             {...enter(0.28)}
           >
-            <p className="text-muted-foreground mb-3 text-[0.65rem] font-semibold tracking-[0.16em] uppercase">
-              Continue exploring
+            <p className="text-muted-foreground tracking-eyebrow mb-3 text-xs font-semibold uppercase">
+              {siteCopy.errors.explore_heading}
             </p>
             <ul className="flex flex-wrap gap-x-1 gap-y-2">
-              {PUBLIC_LINKS.map(link => (
+              {(siteCopy.errors.public_links.length
+                ? siteCopy.errors.public_links
+                : SITE_COPY_DEFAULTS.errors.public_links
+              ).map(link => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
                     className={cn(
                       'group inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium',
                       'text-primary/90 underline-offset-4 transition-colors',
-                      'hover:text-[#006181] hover:underline',
-                      'focus-visible:ring-2 focus-visible:ring-[#006181]/35 focus-visible:outline-none',
-                      'dark:text-zinc-200 dark:hover:text-[#4da3c0]'
+                      'hover:text-theme-600 hover:underline',
+                      'focus-visible:ring-theme-600/35 focus-visible:ring-2 focus-visible:outline-none',
+                      'dark:text-foreground dark:hover:text-theme-450'
                     )}
                   >
                     {link.label}
@@ -394,15 +356,14 @@ function PublicErrorContent({
           className="pointer-events-none relative hidden min-h-64 lg:col-span-5 lg:block"
           aria-hidden
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgb(0_97_129/0.08),transparent_65%)] dark:bg-[radial-gradient(circle_at_center,rgb(0_97_129/0.14),transparent_65%)]" />
+          <div className="bg-brand-glow-center absolute inset-0" />
           <div className="absolute top-1/2 left-1/2 w-[min(100%,22rem)] -translate-x-1/2 -translate-y-1/2">
-            <div className="border-l-[3px] border-[#006181]/40 pl-6">
-              <p className="font-serif text-2xl leading-snug font-semibold tracking-tight text-[#006181]/80 dark:text-[#4da3c0]/90">
-                Research, dialogue, and policy engagement across South Asia.
+            <div className="border-theme-600/40 border-l-3 pl-6">
+              <p className="text-theme-600/80 dark:text-theme-450/90 font-serif text-2xl leading-snug font-semibold tracking-tight">
+                {siteCopy.errors.aside_heading}
               </p>
               <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
-                SAWTEE is an independent think tank network working on trade,
-                economics, and environment.
+                {siteCopy.errors.aside_body}
               </p>
             </div>
           </div>

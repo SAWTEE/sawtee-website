@@ -152,7 +152,7 @@
   .post-content a,
   .page-content a,
   .primary-link {
-    @apply text-[#006181] underline underline-offset-4 hover:text-[#006181]/70 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80;
+    @apply text-theme-600 underline underline-offset-4 hover:text-theme-600/70 dark:text-theme-450 dark:hover:text-theme-450/80;
   }
 }
 
@@ -191,13 +191,13 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
 /* Fixed top reading progress (post/article pages). */
 .progress {
     height: 0.25rem;
-    background-color: #006181;
+    background-color: var(--color-theme-600);
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 50;
-    transform: scaleX(0);
+    transform: scaleX(var(--progress, 0));
     transform-origin: left center;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -206,7 +206,7 @@ html::-webkit-scrollbar-thumb, html::-webkit-scrollbar-buttons {
 }
 
 .dark .progress {
-    background-color: #4da3c0;
+    background-color: var(--color-theme-450);
 }
 
 /* Floating back-to-top control (fade in after scroll). */
@@ -424,6 +424,142 @@ pre {
   Pattern tiles: relative urls so Vite resolves them at build time
   (avoids "didn't resolve at build time" for /assets/... absolute paths).
 */
+@utility bg-brand-glow {
+  background-image: radial-gradient(
+    ellipse at top left,
+    rgb(0 97 129 / 0.1),
+    transparent 55%
+  );
+  @variant dark {
+    background-image: radial-gradient(
+      ellipse at top left,
+      rgb(0 97 129 / 0.16),
+      transparent 55%
+    );
+  }
+}
+
+@utility bg-brand-glow-soft {
+  background-image: radial-gradient(
+    ellipse at top left,
+    rgb(0 97 129 / 0.07),
+    transparent 55%
+  );
+  @variant dark {
+    background-image: radial-gradient(
+      ellipse at top left,
+      rgb(0 97 129 / 0.12),
+      transparent 55%
+    );
+  }
+}
+
+@utility bg-brand-glow-center {
+  background-image: radial-gradient(
+    circle at center,
+    rgb(0 97 129 / 0.08),
+    transparent 65%
+  );
+  @variant dark {
+    background-image: radial-gradient(
+      circle at center,
+      rgb(0 97 129 / 0.14),
+      transparent 65%
+    );
+  }
+}
+
+@utility bg-brand-wash {
+  background-image:
+    linear-gradient(160deg, rgb(0 97 129 / 0.08), transparent 55%),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.65), transparent);
+  @variant dark {
+    background-image:
+      linear-gradient(160deg, rgb(0 97 129 / 0.18), transparent 55%),
+      linear-gradient(to bottom, rgb(15 23 42 / 0.4), transparent);
+  }
+}
+
+@utility bg-brand-sheen {
+  background-image: linear-gradient(
+    135deg,
+    rgb(0 97 129 / 0.07),
+    transparent 50%
+  );
+  @variant dark {
+    background-image: linear-gradient(
+      135deg,
+      rgb(0 97 129 / 0.16),
+      transparent 50%
+    );
+  }
+}
+
+@utility animation-delay-150 {
+  animation-delay: -0.15s;
+}
+
+@utility animation-delay-300 {
+  animation-delay: -0.3s;
+}
+
+@utility bg-pattern-page {
+  background-size: 1018px;
+  background-position: top center;
+  background-blend-mode: multiply;
+}
+
+@utility bg-pattern-error {
+  background-size: 960px;
+  background-position: top center;
+}
+
+@utility bg-pattern-search {
+  background-size: 900px;
+  background-position: top center;
+}
+
+@utility bg-select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23006181'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 12px 12px;
+  background-position: right 0.75rem center;
+}
+
+@utility image-editorial {
+  filter: saturate(0.72) contrast(0.96) brightness(0.88);
+}
+
+@utility substack-embed {
+  display: block;
+  border: none;
+  background: white;
+}
+
+@utility substack-embed-dark {
+  display: block;
+  border: none;
+  background: white;
+  filter: invert(1) hue-rotate(180deg);
+}
+
+@utility spotlight {
+  top: var(--spot-y);
+  left: var(--spot-x);
+  width: 17.5rem;
+  height: 17.5rem;
+  background: rgb(0 97 129 / 0.12);
+  filter: blur(5rem);
+}
+
+@utility stack-index {
+  z-index: var(--stack);
+}
+
+@utility progress-indicator {
+  transform: translateX(var(--progress-offset));
+}
+
 @utility bg-pattern-tile {
   background-image: url('../images/pattern-tile-green.svg');
 }

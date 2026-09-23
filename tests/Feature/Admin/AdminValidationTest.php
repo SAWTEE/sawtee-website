@@ -138,6 +138,8 @@ test('home page section update is validated', function () {
 
     $this->patch(route('admin.home-page-sections.update', $section), [
         'name' => 'Carousel',
+        'heading' => 'In the spotlight',
+        'intro' => 'A short intro',
         'show' => false,
         'order' => 3,
     ])->assertSessionHasNoErrors();
@@ -146,6 +148,8 @@ test('home page section update is validated', function () {
 
     expect($section->show)->toBeFalse()
         ->and($section->order)->toBe(3)
+        ->and($section->heading)->toBe('In the spotlight')
+        ->and($section->intro)->toBe('A short intro')
         ->and($other->fresh()->name)->toBe('Infocus');
 });
 

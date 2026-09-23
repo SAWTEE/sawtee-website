@@ -19,7 +19,7 @@ const SubscriptionCard = ({
   return (
     <div className="relative w-full text-center">
       {showIcon && (
-        <MailboxIcon className="mx-auto h-24 w-24 text-slate-600 dark:text-slate-300" />
+        <MailboxIcon className="text-muted-foreground dark:text-muted-foreground mx-auto h-24 w-24" />
       )}
 
       {subText && <p className="text-theme-500 mt-2 text-sm">{subText}</p>}

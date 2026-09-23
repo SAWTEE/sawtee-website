@@ -67,11 +67,11 @@ const MultiPostsCarousel = ({ data = [] }: MultiPostsCarouselProps) => {
                   />
                 )}
                 <div className="absolute top-3 left-4 z-20 flex items-center justify-between">
-                  <Badge className="bg-theme-700 group-hover:bg-theme-100 group-hover:text-theme-800 border-transparent px-2 font-sans text-[0.65rem] font-semibold text-white transition-all duration-200 ease-in-out">
+                  <Badge className="bg-theme-700 group-hover:bg-theme-100 group-hover:text-theme-800 border-transparent px-2 font-sans text-xs font-semibold text-white transition-all duration-200 ease-in-out">
                     {publication.category?.name ?? 'Publication'}
                   </Badge>
                 </div>
-                <div className="z-20 w-full rounded-b-md p-2 text-sm leading-4 font-medium text-white backdrop-blur-[2px] transition-all duration-200 ease-in-out group-hover:bg-black/20">
+                <div className="z-20 w-full rounded-b-md p-2 text-sm leading-4 font-medium text-white backdrop-blur-sm transition-all duration-200 ease-in-out group-hover:bg-black/20">
                   {href ? (
                     <a
                       target="_blank"

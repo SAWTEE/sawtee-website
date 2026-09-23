@@ -140,14 +140,14 @@ function PublicationCard({
         <a
           className={cn(
             'mt-4 block max-w-56 underline decoration-transparent underline-offset-2 transition-colors sm:max-w-60 md:max-w-64',
-            'hover:text-[#006181] hover:decoration-[#006181]/50 dark:hover:text-[#4da3c0] dark:hover:decoration-[#4da3c0]/50'
+            'hover:text-theme-600 hover:decoration-theme-600/50 dark:hover:text-theme-450 dark:hover:decoration-theme-450/50'
           )}
           href={fileHref}
           target="_blank"
           referrerPolicy="no-referrer"
           rel="noopener noreferrer"
         >
-          <p className="text-secondary-foreground text-sm leading-snug font-semibold sm:text-[0.9375rem]">
+          <p className="text-secondary-foreground sm:text-fine text-sm leading-snug font-semibold">
             {publication.title}
           </p>
           {publication.subtitle ? (

@@ -112,23 +112,16 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
       role="region"
       aria-label="Video recordings and resources"
     >
-      <div className="relative min-w-0 lg:col-span-7">
-        <Carousel
-          setApi={setApi}
-          opts={{ loop: canSlide, align: 'start' }}
-          className="video-carousel"
-        >
+      <div className="video-carousel relative min-w-0 lg:col-span-7">
+        <Carousel setApi={setApi} opts={{ loop: canSlide, align: 'start' }}>
           <CarouselContent className="ml-0">
             {posts.map(article => {
               const media = featuredMedia(article);
 
               return (
-                <CarouselItem
-                  key={article.id}
-                  className="video-slide basis-full pl-0"
-                >
+                <CarouselItem key={article.id} className="basis-full pl-0">
                   <a
-                    className="group border-borderColor/80 bg-theme-900 focus-visible:ring-theme-500 relative block aspect-video overflow-hidden rounded-md border shadow-sm ring-offset-2 outline-none focus-visible:ring-2"
+                    className="video-slide group border-borderColor/80 bg-theme-900 focus-visible:ring-theme-500 relative block aspect-video overflow-hidden rounded-md border shadow-sm ring-offset-2 outline-none focus-visible:ring-2"
                     target="_blank"
                     rel="noopener noreferrer"
                     href={article.link || '#'}
@@ -148,7 +141,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                       aria-hidden
                     />
                     <span
-                      className="absolute top-1/2 left-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-red-600 text-white shadow-lg ring-4 ring-white/25 transition duration-200 group-hover:scale-105 group-hover:bg-red-500"
+                      className="bg-destructive group-hover:bg-destructive absolute top-1/2 left-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-lg ring-4 ring-white/25 transition duration-200 group-hover:scale-105"
                       aria-hidden
                     >
                       <Play className="ml-0.5 h-6 w-6 fill-current" />
@@ -225,7 +218,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                     <img
                       className={cn(
                         'h-full w-full object-cover',
-                        !isActive && 'opacity-[0.88]'
+                        !isActive && 'opacity-90'
                       )}
                       alt=""
                       width={96}
@@ -238,13 +231,13 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                       className="absolute inset-0 flex items-center justify-center bg-black/25"
                       aria-hidden
                     >
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-600 text-white shadow-sm ring-2 ring-white/30">
+                      <span className="bg-destructive flex h-6 w-6 items-center justify-center rounded-full text-white shadow-sm ring-2 ring-white/30">
                         <Play className="ml-px h-3 w-3 fill-current" />
                       </span>
                     </span>
                   </div>
 
-                  <p className="text-foreground line-clamp-2 text-sm leading-snug font-medium md:text-[0.9375rem]">
+                  <p className="text-foreground md:text-fine line-clamp-2 text-sm leading-snug font-medium">
                     {article.title}
                   </p>
                 </button>

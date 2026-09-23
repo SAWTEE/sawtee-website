@@ -1,4 +1,9 @@
-import { type MouseEvent, type ReactNode, useState } from 'react';
+import {
+  type CSSProperties,
+  type MouseEvent,
+  type ReactNode,
+  useState,
+} from 'react';
 
 import { cn } from '@/lib/utils';
 
@@ -22,8 +27,8 @@ const CardWithEffect = ({
   return (
     <div
       className={cn(
-        'bg-bgDarker relative flex-1 overflow-hidden rounded-lg border border-black/8 transition-[border-color,box-shadow] duration-300 dark:border-white/10',
-        'hover:border-[#006181]/35 hover:shadow-sm dark:hover:border-[#006181]/40',
+        'bg-bgDarker relative flex-1 overflow-hidden rounded-lg border border-black/8 transition-all duration-300 dark:border-white/10',
+        'hover:border-theme-600/35 dark:hover:border-theme-600/40 hover:shadow-sm',
         className
       )}
       onMouseMove={handleMouseMove}
@@ -32,17 +37,13 @@ const CardWithEffect = ({
     >
       {isHovered && (
         <div
-          className="pointer-events-none absolute rounded-full"
-          style={{
-            width: '280px',
-            height: '280px',
-            top: mousePosition.y - 140,
-            left: mousePosition.x - 140,
-            background: 'rgba(0, 97, 129, 0.12)',
-            filter: 'blur(80px)',
-            zIndex: 10,
-            willChange: 'transform, top, left',
-          }}
+          className="spotlight pointer-events-none absolute z-10 rounded-full"
+          style={
+            {
+              '--spot-x': `${mousePosition.x - 140}px`,
+              '--spot-y': `${mousePosition.y - 140}px`,
+            } as CSSProperties
+          }
           aria-hidden
         />
       )}

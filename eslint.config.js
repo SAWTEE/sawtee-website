@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import { plugin as shadcn } from '@shadcn/lint';
 import globals from 'globals';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
@@ -6,6 +7,8 @@ import prettier from 'eslint-plugin-prettier';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+
+import policy from './design-system.lint.json' with { type: 'json' };
 
 export default [
   { ignores: ['node_modules/**', 'public/**', 'vendor/**', 'bootstrap/ssr/**', 'docs/**', 'storage/**'] },
@@ -27,6 +30,9 @@ export default [
     },
     settings: {
       react: { version: 'detect' },
+      shadcn: {
+        note: 'SAWTEE colors live in resources/css/theme.css and resources/css/index.css. Brand teal is theme-600 (#006181).',
+      },
     },
     plugins: {
       react,
@@ -34,6 +40,7 @@ export default [
       prettier,
       'simple-import-sort': simpleImportSort,
       '@typescript-eslint': tseslint,
+      shadcn,
     },
     rules: {
       ...react.configs.recommended.rules,
@@ -70,6 +77,8 @@ export default [
         },
       ],
       'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+      ...policy.rules,
     },
   },
+  ...policy.overrides,
 ];

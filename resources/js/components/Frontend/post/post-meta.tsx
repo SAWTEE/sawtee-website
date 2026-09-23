@@ -15,7 +15,7 @@ type PostMetaProps = {
 };
 
 const MetaSep = () => (
-  <span className="text-[#006181]/35 dark:text-[#006181]/50" aria-hidden>
+  <span className="text-theme-600/35 dark:text-theme-600/50" aria-hidden>
     ·
   </span>
 );

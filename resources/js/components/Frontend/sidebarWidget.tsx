@@ -19,7 +19,7 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
 
   return (
     <Glassbox
-      className="sidebar_widget max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20"
+      className="sidebar_widget border-theme-600/12 dark:border-theme-600/20 max-h-max overflow-y-auto border py-5 shadow-none"
       {...rest}
     >
       <SimpleList className="border-none px-5 md:px-6" heading={title}>
@@ -27,10 +27,10 @@ const SidebarWidget = ({ array, title, link, ...rest }: SidebarWidgetProps) => {
           return (
             <li className="group mb-5 last:mb-3" key={post.id}>
               <InertiaLink
-                className="text-secondary-foreground no-underline group-hover:text-[#006181] dark:group-hover:text-[#4da3c0]"
+                className="text-secondary-foreground group-hover:text-theme-600 dark:group-hover:text-theme-450 no-underline"
                 href={`/category/${post.category?.slug}/${post.slug}`}
               >
-                <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">
+                <p className="md:text-prose font-serif text-sm leading-snug font-medium tracking-tight">
                   {post.title}
                 </p>
               </InertiaLink>

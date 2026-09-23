@@ -106,12 +106,12 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
       >
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-4">
-            <p className="text-xs font-medium tracking-[0.18em] text-[#006181] uppercase dark:text-[#4da3c0]">
+            <p className="tracking-label text-theme-600 dark:text-theme-450 text-xs font-medium uppercase">
               Curated collection
             </p>
             <h2
               id="ldc-collection-intro"
-              className="text-primary mt-3 font-serif text-2xl leading-tight font-semibold tracking-tight md:text-3xl dark:text-zinc-100"
+              className="text-primary dark:text-foreground mt-3 font-serif text-2xl leading-tight font-semibold tracking-tight md:text-3xl"
             >
               Trade, finance &amp; irreversible graduation
             </h2>
@@ -124,7 +124,7 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
                   <li key={genre}>
                     <a
                       href={`#ldc-genre-${slugify(genre)}`}
-                      className="inline-flex items-center border border-[#006181]/20 bg-[#006181]/6 px-2.5 py-1 text-[0.7rem] font-medium tracking-wide text-[#006181] uppercase transition-colors hover:bg-[#006181]/12 focus-visible:ring-2 focus-visible:ring-[#006181]/35 focus-visible:outline-none dark:border-[#006181]/40 dark:bg-[#006181]/15 dark:text-[#4da3c0]"
+                      className="border-theme-600/20 bg-theme-600/6 text-theme-600 hover:bg-theme-600/12 focus-visible:ring-theme-600/35 dark:border-theme-600/40 dark:bg-theme-600/15 dark:text-theme-450 inline-flex items-center border px-2.5 py-1 text-xs font-medium tracking-wide uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none"
                     >
                       {genre}
                     </a>
@@ -136,10 +136,10 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
 
           <div className="relative lg:col-span-8">
             <div
-              className="pointer-events-none absolute -inset-x-2 -inset-y-3 bg-[radial-gradient(ellipse_at_top_left,rgba(0,97,129,0.07),transparent_55%)] dark:bg-[radial-gradient(ellipse_at_top_left,rgba(0,97,129,0.12),transparent_55%)]"
+              className="bg-brand-glow-soft pointer-events-none absolute -inset-x-2 -inset-y-3"
               aria-hidden
             />
-            <p className="text-primary/90 relative max-w-2xl font-serif text-lg leading-relaxed tracking-tight md:text-xl dark:text-zinc-200">
+            <p className="text-primary/90 dark:text-foreground relative max-w-2xl font-serif text-lg leading-relaxed tracking-tight md:text-xl">
               {ldcFeature?.description?.trim() ??
                 'Articles, reports, and webinars on the constraints LDCs face, their evolving priorities, and the reforms needed to leverage trade and finance for sustainable development.'}
             </p>
@@ -151,7 +151,7 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
         </div>
 
         <div
-          className="mt-10 h-px w-full bg-linear-to-r from-[#006181]/35 via-[#006181]/12 to-transparent dark:from-[#006181]/50 dark:via-[#006181]/20"
+          className="from-theme-600/35 via-theme-600/12 dark:from-theme-600/50 dark:via-theme-600/20 mt-10 h-px w-full bg-linear-to-r to-transparent"
           aria-hidden
         />
       </section>
@@ -171,7 +171,7 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
             <div>
               <h3
                 id={`ldc-heading-${slugify(genre)}`}
-                className="text-primary font-serif text-xl font-semibold tracking-tight md:text-2xl dark:text-zinc-100"
+                className="text-primary dark:text-foreground font-serif text-xl font-semibold tracking-tight md:text-2xl"
               >
                 {genre}
               </h3>
@@ -180,7 +180,7 @@ const LDCArchive = ({ posts = [] }: LDCArchiveProps) => {
               </p>
             </div>
             <span
-              className="mb-1 hidden h-px max-w-xs flex-1 bg-[#006181]/15 sm:block dark:bg-[#006181]/25"
+              className="bg-theme-600/15 dark:bg-theme-600/25 mb-1 hidden h-px max-w-xs flex-1 sm:block"
               aria-hidden
             />
           </div>
@@ -209,15 +209,15 @@ function LeadResource({ post }: { post: Post }) {
   const external = Boolean(post.link && !isInertiaHref(post.link));
 
   return (
-    <article className="group relative overflow-hidden rounded-lg border border-[#006181]/12 bg-[#006181]/4 dark:border-[#006181]/25 dark:bg-[#006181]/10">
+    <article className="group border-theme-600/12 bg-theme-600/4 dark:border-theme-600/25 dark:bg-theme-600/10 relative overflow-hidden rounded-lg border">
       <div
-        className="absolute inset-y-0 left-0 w-1 bg-[#006181] dark:bg-[#4da3c0]"
+        className="bg-theme-600 dark:bg-theme-450 absolute inset-y-0 left-0 w-1"
         aria-hidden
       />
       <div className="flex flex-col gap-5 p-6 pl-7 md:flex-row md:items-end md:justify-between md:gap-8 md:p-8 md:pl-9">
         <div className="min-w-0 flex-1">
           <div className="mb-3 flex flex-wrap items-center gap-x-3 gap-y-2">
-            <span className="text-[0.65rem] font-semibold tracking-[0.16em] text-[#006181] uppercase dark:text-[#4da3c0]">
+            <span className="tracking-eyebrow text-theme-600 dark:text-theme-450 text-xs font-semibold uppercase">
               Latest
             </span>
             {post.genre ? (
@@ -243,7 +243,7 @@ function LeadResource({ post }: { post: Post }) {
           </div>
 
           <PostLink post={post} className="focus-visible:outline-none">
-            <h3 className="text-primary font-serif text-xl leading-snug font-semibold tracking-tight transition-colors group-hover:text-[#006181] md:text-2xl lg:text-[1.65rem] dark:text-zinc-100 dark:group-hover:text-[#4da3c0]">
+            <h3 className="text-primary group-hover:text-theme-600 lg:text-display dark:text-foreground dark:group-hover:text-theme-450 font-serif text-xl leading-snug font-semibold tracking-tight transition-colors md:text-2xl">
               {post.title}
             </h3>
           </PostLink>
@@ -251,7 +251,7 @@ function LeadResource({ post }: { post: Post }) {
 
         <PostLink
           post={post}
-          className="inline-flex shrink-0 items-center gap-1.5 text-sm font-medium text-[#006181] transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-[#006181]/35 focus-visible:outline-none dark:text-[#4da3c0]"
+          className="text-theme-600 focus-visible:ring-theme-600/35 dark:text-theme-450 inline-flex shrink-0 items-center gap-1.5 text-sm font-medium transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
         >
           {external ? (
             <>
@@ -284,14 +284,14 @@ function ResourceCard({
     <article
       className={cn(
         'group bg-bgDarker/60 relative flex h-full flex-col border border-transparent transition-colors',
-        'hover:border-[#006181]/18 hover:bg-[#006181]/3',
-        'dark:bg-black/30 dark:hover:border-[#006181]/30 dark:hover:bg-[#006181]/10',
+        'hover:border-theme-600/18 hover:bg-theme-600/3',
+        'dark:hover:border-theme-600/30 dark:hover:bg-theme-600/10 dark:bg-black/30',
         featured ? 'p-6 md:p-7' : 'p-5 md:p-6'
       )}
     >
       <div className="mb-3 flex items-start justify-between gap-3">
         {post.genre ? (
-          <span className="relative text-[0.65rem] font-semibold tracking-[0.14em] text-[#006181] uppercase after:absolute after:top-full after:left-0 after:mt-1 after:h-px after:w-6 after:bg-[#006181]/45 dark:text-[#4da3c0] dark:after:bg-[#4da3c0]/50">
+          <span className="tracking-kicker text-theme-600 after:bg-theme-600/45 dark:text-theme-450 dark:after:bg-theme-450/50 relative text-xs font-semibold uppercase after:absolute after:top-full after:left-0 after:mt-1 after:h-px after:w-6">
             {post.genre}
           </span>
         ) : (
@@ -311,9 +311,9 @@ function ResourceCard({
         <h4
           className={cn(
             'text-primary font-serif leading-snug font-semibold tracking-tight underline-offset-4 transition-colors',
-            'group-hover:text-[#006181] group-hover:underline',
-            'group-focus-visible:text-[#006181] group-focus-visible:underline',
-            'dark:text-zinc-100 dark:group-hover:text-[#4da3c0] dark:group-focus-visible:text-[#4da3c0]',
+            'group-hover:text-theme-600 group-hover:underline',
+            'group-focus-visible:text-theme-600 group-focus-visible:underline',
+            'dark:text-foreground dark:group-hover:text-theme-450 dark:group-focus-visible:text-theme-450',
             featured ? 'text-lg md:text-xl' : 'text-base md:text-lg'
           )}
         >

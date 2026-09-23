@@ -11,6 +11,8 @@ class HomePageSection extends Model
 
     protected $fillable = [
         'name',
+        'heading',
+        'intro',
         'description',
         'show',
         'order',

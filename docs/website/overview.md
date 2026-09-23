@@ -6,11 +6,11 @@ The public site is an **Inertia (React) + Laravel** app:
 - Default shell: `MainLayout` (header/footer menus from the CMS, shared SEO head tags)
 - Nested chrome: archives/pages use `PageLayout`; post singles use `PostLayout`
 - Content is loaded from the same database editors manage in `/admin`
-- Common HTTP errors (403, 404, 500, 503) use a branded Inertia error page when debug mode is off
+- Common HTTP errors (403, 404, 500, 503) use a branded Inertia error page when debug mode is off; visitor copy is in **Site Settings → Error pages**
 
 ## Main content areas visitors see
 
-- Home (carousel, featured pubs, blogs, media, newsletter, webinars, …)  
+- Home (carousel, feature cards, featured pubs, blogs, media, newsletter, webinars, …)  
 - Category archives and single posts  
 - Publications and research downloads  
 - Custom pages (Contact, Our Work, …)  
@@ -23,4 +23,4 @@ Home “below the fold” blocks (events, publications, media, newsletters, webi
 
 Visitors can install the public site as a PWA (home screen / standalone window). Offline, they see a branded fallback page — not cached CMS articles or admin screens. Editors using `/admin` are unaffected; that area is never service-worker cached.
 
-Editors do not edit React files for day-to-day content — they use the CMS. Developers change templates when design or new page types are required.
+Editors do not edit React files for day-to-day content — they use the CMS (including **Site Settings**, **Features**, and **Homepage sections** for public wording). Developers change templates when design or new page types are required.

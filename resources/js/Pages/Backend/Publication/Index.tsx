@@ -76,7 +76,7 @@ export default function Index({
         return row.original.tags?.map((tag: any) => (
           <span
             key={tag.id}
-            className="ml-2 inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-blue-500/10 ring-inset"
+            className="bg-theme-50 text-theme-600 ring-theme-600/10 ml-2 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset"
           >
             {tag.name}
           </span>

@@ -46,7 +46,7 @@ export default function DeleteMenuItem({
         <form onSubmit={submit} noValidate>
           <div
             // @ts-ignore allowlist-migration
-            className="mb-4 border-l-4 border-orange-500 bg-orange-100 p-4 text-orange-700"
+            className="border-warning bg-warning-muted text-warning mb-4 border-l-4 p-4"
             role="alert"
           >
             {/* @ts-ignore allowlist-migration */}

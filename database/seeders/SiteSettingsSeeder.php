@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\SiteSetting;
+use App\Support\SiteCopy;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
@@ -12,21 +13,19 @@ class SiteSettingsSeeder extends Seeder
     {
         $path = database_path('data/site-settings.json');
 
-        if (! File::exists($path)) {
-            $this->command?->warn('Missing database/data/site-settings.json — skipped.');
+        if (File::exists($path)) {
+            /** @var array<string, mixed> $settings */
+            $settings = File::json($path);
 
-            return;
+            foreach ($settings as $key => $value) {
+                if (SiteSetting::query()->where('key', $key)->exists()) {
+                    continue;
+                }
+
+                SiteSetting::putValue((string) $key, $value);
+            }
         }
 
-        /** @var array{about_intro?: string, social_menu?: list<array{name: string, link: string}>} $settings */
-        $settings = File::json($path);
-
-        if (array_key_exists('about_intro', $settings)) {
-            SiteSetting::putValue('about_intro', $settings['about_intro']);
-        }
-
-        if (array_key_exists('social_menu', $settings)) {
-            SiteSetting::putValue('social_menu', $settings['social_menu']);
-        }
+        SiteCopy::seedMissing();
     }
 }

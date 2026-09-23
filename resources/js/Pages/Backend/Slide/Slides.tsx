@@ -61,7 +61,7 @@ const Slides = ({ slides = undefined, slider = undefined }: any) => {
       header: 'Slide Image',
       cell: ({ row }: any) => {
         return (
-          <div className="w-45 rounded-md border-2 border-slate-700">
+          <div className="border-border w-45 rounded-md border-2">
             <AspectRatio ratio={5 / 2}>
               <img
                 src={row.original.media[0]?.preview_url}

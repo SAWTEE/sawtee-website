@@ -19,14 +19,23 @@ const buttonVariants = cva(
           'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        brand: 'bg-theme-600 text-primary-foreground shadow hover:bg-theme-700',
+        chip: 'border border-theme-600/25 bg-transparent font-medium tracking-wide text-theme-600 uppercase shadow-none hover:bg-theme-600/8 hover:text-theme-600 dark:border-theme-600/40 dark:text-theme-450 dark:hover:bg-theme-600/15',
       },
       size: {
         default: 'h-9 px-4 py-2',
         sm: 'h-8 rounded-md px-3 text-xs',
         lg: 'h-10 rounded-md px-8',
+        cta: 'h-11 rounded-md px-5',
         icon: 'h-9 w-9',
       },
     },
+    compoundVariants: [
+      {
+        variant: 'chip',
+        class: 'h-auto rounded-md px-3 py-1 text-xs',
+      },
+    ],
     defaultVariants: {
       variant: 'default',
       size: 'default',

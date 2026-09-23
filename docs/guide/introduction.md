@@ -21,11 +21,12 @@ It is **not** a full developer API reference. Engineering notes stay in the main
 Admin CMS  →  database + media library  →  Inertia pages  →  public React UI
 ```
 
-Editors never edit React files. They edit posts, publications, pages, menus, and homepage toggles in `/admin`. The public site reads that data on each request (with short caching for home/menus/sitemap).
+Editors never edit React files. They edit posts, publications, pages, menus, homepage sections, feature cards, and **Site Settings** (footer, search, SEO defaults, error copy, and similar strings) in `/admin`. The public site reads that data on each request (with short caching for home/menus/sitemap).
 
 ## Where to go next
 
 - New to the project → [Local setup](./local-setup)  
 - Editor handbook → [CMS overview](/cms/overview)  
+- Public wording (footer, search, errors) → [Site settings](/cms/site-settings)  
 - How the public site is structured → [Website overview](/website/overview)  
 - Staging vs production → [Environments](./environments)

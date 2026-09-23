@@ -11,7 +11,7 @@ const Glassbox = ({ children, className = '', ...rest }: GlassboxProps) => {
   return (
     <div
       className={cn(
-        'text-secondary-foreground bg-background/90 dark:bg-card/90 w-full rounded-lg border border-[#006181]/12 py-4 shadow-sm dark:border-[#006181]/25 dark:text-zinc-200',
+        'text-secondary-foreground bg-background/90 dark:bg-card/90 border-theme-600/12 dark:border-theme-600/25 dark:text-foreground w-full rounded-lg border py-4 shadow-sm',
         className
       )}
       {...rest}

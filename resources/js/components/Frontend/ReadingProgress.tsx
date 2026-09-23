@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { type CSSProperties, useEffect, useState } from 'react';
 
 /**
  * Fixed top reading progress bar driven by document scroll.
@@ -36,7 +36,7 @@ export default function ReadingProgress() {
       aria-valuemin={0}
       aria-valuemax={100}
       aria-valuenow={Math.round(progress)}
-      style={{ transform: `scaleX(${progress / 100})` }}
+      style={{ '--progress': String(progress / 100) } as CSSProperties}
     />
   );
 }

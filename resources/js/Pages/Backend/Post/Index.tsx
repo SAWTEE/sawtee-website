@@ -82,19 +82,19 @@ export default function Index({
     switch (status) {
       case 'unpublished':
         return (
-          <span className="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-red-500/10 ring-inset">
+          <span className="bg-destructive/10 text-destructive ring-destructive/10 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
             {status}
           </span>
         );
       case 'draft':
         return (
-          <span className="inline-flex items-center rounded-md bg-blue-50 px-2 py-1 text-xs font-medium text-blue-600 ring-1 ring-blue-500/10 ring-inset">
+          <span className="bg-theme-50 text-theme-600 ring-theme-600/10 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
             {status}
           </span>
         );
       default:
         return (
-          <span className="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-green-500/10 ring-inset">
+          <span className="bg-success-muted text-success ring-success/10 inline-flex items-center rounded-md px-2 py-1 text-xs font-medium ring-1 ring-inset">
             {status}
           </span>
         );

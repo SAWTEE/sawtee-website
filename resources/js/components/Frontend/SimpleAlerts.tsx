@@ -14,7 +14,7 @@ export default function SimpleAlerts({
   return (
     <div
       className={cn(
-        'mb-4 rounded-lg bg-blue-50 p-4 text-sm text-blue-800 dark:bg-gray-800 dark:text-blue-400',
+        'bg-theme-50 text-theme-800 dark:bg-muted dark:text-theme-450 mb-4 rounded-lg p-4 text-sm',
         className
       )}
       role="alert"

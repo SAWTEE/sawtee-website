@@ -66,17 +66,17 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
             <div className="mb-6 flex items-center gap-4 md:mb-8">
               <time
                 dateTime={year}
-                className="text-primary inline-flex min-w-18 items-center justify-center border border-[#006181]/25 bg-[#006181]/8 px-3 py-1.5 font-serif text-lg font-semibold tracking-tight md:min-w-22 md:text-xl dark:border-[#006181]/40 dark:bg-[#006181]/15 dark:text-[#4da3c0]"
+                className="text-primary border-theme-600/25 bg-theme-600/8 dark:border-theme-600/40 dark:bg-theme-600/15 dark:text-theme-450 inline-flex min-w-18 items-center justify-center border px-3 py-1.5 font-serif text-lg font-semibold tracking-tight md:min-w-22 md:text-xl"
               >
                 {year}
               </time>
               <div
-                className="h-px flex-1 bg-[#006181]/15 dark:bg-[#006181]/25"
+                className="bg-theme-600/15 dark:bg-theme-600/25 h-px flex-1"
                 aria-hidden
               />
             </div>
 
-            <ol className="relative m-0 list-none border-l border-[#006181]/20 pl-6 md:pl-8 dark:border-[#006181]/30">
+            <ol className="border-theme-600/20 dark:border-theme-600/30 relative m-0 list-none border-l pl-6 md:pl-8">
               {items.map(item => {
                 const href = researchHref(item);
                 const image = featuredImage(item);
@@ -91,7 +91,7 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                     className="relative pb-8 last:pb-0 md:pb-10"
                   >
                     <span
-                      className="absolute top-1.5 left-0 h-2.5 w-2.5 -translate-x-[calc(1.5rem+1px+50%)] rounded-full border-2 border-[#006181] bg-white md:-translate-x-[calc(2rem+1px+50%)] dark:border-[#4da3c0] dark:bg-zinc-950"
+                      className="border-theme-600 dark:border-theme-450 dark:bg-background absolute top-1.5 left-0 h-2.5 w-2.5 -translate-x-[calc(1.5rem+1px+50%)] rounded-full border-2 bg-white md:-translate-x-[calc(2rem+1px+50%)]"
                       aria-hidden
                     />
 
@@ -102,7 +102,7 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={cn(
-                            'block w-full shrink-0 overflow-hidden rounded-md border border-[#006181]/10 sm:w-24 dark:border-white/10',
+                            'border-theme-600/10 block w-full shrink-0 overflow-hidden rounded-md border sm:w-24 dark:border-white/10',
                             !href && 'pointer-events-none'
                           )}
                         >
@@ -117,13 +117,13 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                       ) : null}
 
                       <div className="min-w-0 flex-1">
-                        <h3 className="text-primary font-serif text-base leading-snug font-semibold tracking-tight md:text-lg dark:text-zinc-100">
+                        <h3 className="text-primary dark:text-foreground font-serif text-base leading-snug font-semibold tracking-tight md:text-lg">
                           {href ? (
                             <a
                               href={href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="underline-offset-4 transition-colors hover:text-[#006181] hover:underline focus-visible:text-[#006181] focus-visible:underline focus-visible:outline-none dark:hover:text-[#4da3c0] dark:focus-visible:text-[#4da3c0]"
+                              className="hover:text-theme-600 focus-visible:text-theme-600 dark:hover:text-theme-450 dark:focus-visible:text-theme-450 underline-offset-4 transition-colors hover:underline focus-visible:underline focus-visible:outline-none"
                             >
                               {item.title}
                             </a>
@@ -133,7 +133,7 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                         </h3>
 
                         {item.subtitle ? (
-                          <p className="text-muted-foreground mt-1.5 text-sm leading-relaxed md:text-[0.95rem]">
+                          <p className="text-muted-foreground md:text-prose mt-1.5 text-sm leading-relaxed">
                             {item.subtitle}
                           </p>
                         ) : null}
@@ -149,7 +149,7 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                             href={href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium tracking-wide text-[#006181] uppercase transition-opacity hover:opacity-80 dark:text-[#4da3c0]"
+                            className="text-theme-600 dark:text-theme-450 mt-3 inline-flex items-center gap-1.5 text-xs font-medium tracking-wide uppercase transition-opacity hover:opacity-80"
                           >
                             {isExternal ? (
                               <ExternalLink

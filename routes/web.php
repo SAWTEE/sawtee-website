@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\ArticleController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\FeatureController;
 use App\Http\Controllers\Admin\FellowController;
 use App\Http\Controllers\Admin\FellowshipController;
 use App\Http\Controllers\Admin\HomePageSectionController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Admin\PublicationController;
 use App\Http\Controllers\Admin\PublishedStoryController;
 use App\Http\Controllers\Admin\ResearchController;
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\SlideController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\TagController;
@@ -118,6 +120,9 @@ Route::middleware(['auth', 'verified', 'inertia.encrypt'])->prefix('admin')->as(
     // Resources managed entirely from their index screen through dialogs.
     Route::resource('/categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('/themes', ThemeController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('/features', FeatureController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::get('/settings', [SiteSettingController::class, 'edit'])->name('settings.edit');
+    Route::patch('/settings', [SiteSettingController::class, 'update'])->name('settings.update');
     Route::resource('/tags', TagController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('/fellowships', FellowshipController::class)->only(['index', 'store', 'update', 'destroy']);
     Route::resource('/members', MemberController::class)->only(['index', 'store', 'update', 'destroy']);

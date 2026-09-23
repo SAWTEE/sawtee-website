@@ -79,7 +79,10 @@ function SocialMenuListItem({
 }) {
   return (
     <li
-      className={cn('rounded-full bg-gray-700 hover:bg-gray-700/90', className)}
+      className={cn(
+        'bg-foreground hover:bg-foreground/90 rounded-full',
+        className
+      )}
     >
       <a
         href={link}

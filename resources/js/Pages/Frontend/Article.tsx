@@ -88,15 +88,10 @@ export default function Article({
         <header className="mx-auto w-full max-w-3xl text-left md:text-center">
           <div className="post-categories mb-3 flex flex-wrap justify-center gap-2">
             <Link href={`/trade-insight/${volumePath}`}>
-              <Button
-                variant="outline"
-                className="category h-auto rounded-md border-[#006181]/25 px-3 py-1 text-xs font-medium tracking-wide text-[#006181] uppercase hover:bg-[#006181]/8 hover:text-[#006181] dark:border-[#006181]/40 dark:text-[#4da3c0] dark:hover:bg-[#006181]/15"
-              >
-                {volumeLabel}
-              </Button>
+              <Button variant="chip">{volumeLabel}</Button>
             </Link>
           </div>
-          <h1 className="text-primary font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl xl:text-4xl dark:text-zinc-100">
+          <h1 className="text-primary dark:text-foreground font-serif text-2xl font-semibold tracking-tight capitalize md:text-3xl xl:text-4xl">
             {title}
           </h1>
           {subtitle && (
@@ -105,7 +100,7 @@ export default function Article({
             </p>
           )}
           <PostMeta
-            className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
+            className="border-theme-600/12 dark:border-theme-600/20 mt-5 border-b pb-5"
             author={article.author}
             date={article.published_at}
             readingTime={readingTime}
@@ -116,7 +111,7 @@ export default function Article({
         {featured_image && (
           <div className="mx-auto mt-8 max-w-4xl md:mt-10">
             <FeaturedMedia
-              className="overflow-hidden rounded-lg border border-[#006181]/10 shadow-sm dark:border-white/10"
+              className="border-theme-600/10 overflow-hidden rounded-lg border shadow-sm dark:border-white/10"
               src={featured_image}
               srcSet={srcSet ?? undefined}
               alt={title}
@@ -140,7 +135,7 @@ export default function Article({
                   : 'post-content'
               }
             >
-              <div className="post-content prose-base text-secondary-foreground text-[1.05rem] leading-[1.75] md:text-lg md:leading-8">
+              <div className="post-content prose-base text-secondary-foreground text-lead leading-prose md:text-lg md:leading-8">
                 <div
                   dangerouslySetInnerHTML={{
                     __html: content ?? '',
@@ -157,7 +152,7 @@ export default function Article({
 
             {hasRelated && (
               <aside className="w-full self-start lg:sticky lg:top-28 lg:col-span-4 lg:pt-1">
-                <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/20">
+                <Glassbox className="sidebar_widget border-theme-600/12 dark:border-theme-600/20 relative max-h-max overflow-y-auto border py-5 shadow-none">
                   <SimpleList
                     className="border-none px-5 md:px-6"
                     heading="Related Articles"
@@ -166,10 +161,10 @@ export default function Article({
                       return (
                         <li className="group mb-5 last:mb-3" key={post.id}>
                           <Link
-                            className="text-secondary-foreground no-underline group-hover:text-[#006181] dark:group-hover:text-[#4da3c0]"
+                            className="text-secondary-foreground group-hover:text-theme-600 dark:group-hover:text-theme-450 no-underline"
                             href={`/trade-insight/${volume.volume}/${post.slug}`}
                           >
-                            <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">
+                            <p className="md:text-prose font-serif text-sm leading-snug font-medium tracking-tight">
                               {post.title}
                             </p>
                           </Link>

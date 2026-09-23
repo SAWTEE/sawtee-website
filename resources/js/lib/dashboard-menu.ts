@@ -10,6 +10,7 @@ import {
   Link2,
   MenuIcon,
   ReceiptText,
+  Settings2,
   SlidersHorizontalIcon,
   TagsIcon,
   UserPen,
@@ -45,6 +46,16 @@ export const DashBoardMenuItems = [
     name: 'Home Page Sections',
     icon: LayoutTemplate,
     route: 'admin.home-page-sections.index',
+  },
+  {
+    name: 'Site Settings',
+    icon: Settings2,
+    route: 'admin.settings.edit',
+  },
+  {
+    name: 'Features',
+    icon: LayoutDashboard,
+    route: 'admin.features.index',
   },
   {
     name: 'Menu',

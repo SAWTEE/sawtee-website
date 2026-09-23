@@ -16,11 +16,11 @@ export default function SimpleList({
 }: SimpleListProps) {
   return (
     <div
-      className={cn('border-l-2 border-[var(--color-border)] px-6', className)}
+      className={cn('border-borderColor border-l-2 px-6', className)}
       {...rest}
     >
       {heading && (
-        <h3 className="text-primary mb-4 font-serif text-lg font-semibold tracking-tight md:text-xl dark:text-zinc-100">
+        <h3 className="text-primary dark:text-foreground mb-4 font-serif text-lg font-semibold tracking-tight md:text-xl">
           {heading}
         </h3>
       )}

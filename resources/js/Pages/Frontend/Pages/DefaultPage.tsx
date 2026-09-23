@@ -17,7 +17,7 @@ const DefaultPage = ({ sections, content, ...rest }: DefaultPageProps) => {
     >
       {content ? (
         <div
-          className="text-secondary-foreground/90 max-w-prose dark:text-zinc-300"
+          className="text-secondary-foreground/90 dark:text-muted-foreground max-w-prose"
           dangerouslySetInnerHTML={{ __html: content }}
         />
       ) : null}
@@ -26,12 +26,12 @@ const DefaultPage = ({ sections, content, ...rest }: DefaultPageProps) => {
         return (
           <div
             key={index}
-            className="mt-12 border-t border-[#006181]/12 pt-10 first:mt-0 first:border-t-0 first:pt-0 md:mt-14 md:pt-12 dark:border-[#006181]/20"
+            className="border-theme-600/12 dark:border-theme-600/20 mt-12 border-t pt-10 first:mt-0 first:border-t-0 first:pt-0 md:mt-14 md:pt-12"
           >
             {title ? (
               <h3
                 className={cn(
-                  'text-primary mb-4 font-serif text-xl font-semibold tracking-tight md:mb-5 md:text-2xl lg:text-3xl dark:text-zinc-100'
+                  'text-primary dark:text-foreground mb-4 font-serif text-xl font-semibold tracking-tight md:mb-5 md:text-2xl lg:text-3xl'
                 )}
               >
                 {title}
@@ -43,7 +43,7 @@ const DefaultPage = ({ sections, content, ...rest }: DefaultPageProps) => {
             ) : null}
             {description ? (
               <div
-                className="text-secondary-foreground/90 max-w-prose leading-relaxed dark:text-zinc-300"
+                className="text-secondary-foreground/90 dark:text-muted-foreground max-w-prose leading-relaxed"
                 dangerouslySetInnerHTML={{ __html: description }}
               />
             ) : null}

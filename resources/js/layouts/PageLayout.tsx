@@ -31,21 +31,12 @@ export default function PageLayout({
             priority
           />
         ) : (
-          <div
-            className="bg-pattern-tile dark:bg-pattern-tile-fade absolute inset-0 -z-[1] h-full w-full"
-            style={{
-              backgroundSize: '1018px',
-              backgroundPosition: 'top center',
-              backgroundBlendMode: 'multiply',
-            }}
-          />
+          <div className="bg-pattern-tile bg-pattern-page dark:bg-pattern-tile-fade absolute inset-0 -z-[1] h-full w-full" />
         )}
         <PostHeader
           className={cn('absolute bottom-4 left-12 z-10 px-2 text-left')}
           textStyle={
-            hasFeaturedImage
-              ? 'text-gray-100'
-              : 'text-gray-800 dark:text-gray-200'
+            hasFeaturedImage ? 'text-primary-foreground' : 'text-foreground'
           }
           heading={title}
         />

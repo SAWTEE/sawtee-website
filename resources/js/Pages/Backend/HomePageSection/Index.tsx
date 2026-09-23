@@ -53,6 +53,13 @@ export default function Index({
       enableSorting: true,
     },
     {
+      accessorKey: 'heading',
+      header: ({ column }: any) => (
+        <DataTableColumnHeader column={column} title="Heading" />
+      ),
+      enableSorting: false,
+    },
+    {
       accessorKey: 'description',
       header: ({ column }: any) => (
         <DataTableColumnHeader column={column} title="Desription" />
@@ -70,12 +77,7 @@ export default function Index({
       accessorKey: 'show',
       header: 'Section Visible',
       cell: ({ row }: any) => {
-        return (
-          <Switch
-            checked={row.original.show}
-            className="data-[state=checked]:bg-green-500"
-          />
-        );
+        return <Switch checked={row.original.show} />;
       },
     },
     {

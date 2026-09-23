@@ -3,7 +3,7 @@
 1. Visit `/admin` (or `/admin/login`).  
 2. Sign in with your staff account.  
 3. Complete email verification if prompted.  
-4. You land on the **Dashboard**.
+4. You land on the **Dashboard**. A notice lists the new screens for public copy (**Site Settings**, **Features**, **Home Page Sections**) and links through to them. Dismiss it after you have tried those screens — it will return when that list changes.
 
 ## Tips
 

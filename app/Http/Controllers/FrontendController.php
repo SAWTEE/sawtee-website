@@ -8,6 +8,7 @@ use App\Actions\Frontend\BuildThemeArchive;
 use App\Actions\Frontend\ResolvePageBySlug;
 use App\Support\HomePageDataAssembler;
 use App\Support\ResolvesSeoMeta;
+use App\Support\SiteCopy;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -16,6 +17,7 @@ class FrontendController extends Controller
     public function index(HomePageDataAssembler $homePageData, ResolvesSeoMeta $seo): Response
     {
         $home = $homePageData->assemble();
+        $copy = SiteCopy::all();
         $lcpImage = data_get($home, 'slides.0.media.0.original_url');
         $lcpSrcSet = data_get($home, 'slidesResponsiveImages.0') ?: null;
 
@@ -39,8 +41,8 @@ class FrontendController extends Controller
                 'webinars' => Inertia::defer(fn () => $home['webinars'] ?? null, 'below'),
                 'seo' => $seo->for(
                     title: 'Home',
-                    description: "Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges.",
-                    image: '/assets/logo-sawtee.webp',
+                    description: (string) ($copy['seo']['home_description'] ?? ''),
+                    image: (string) ($copy['seo']['default_image'] ?? '/assets/logo-sawtee.webp'),
                 ),
             ],
         ))->withViewData([

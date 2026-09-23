@@ -167,10 +167,10 @@ function Category({
         {isNewsletters && (
           <div
             data-testid="newsletter-subscribe-cta"
-            className="rounded-xl border border-[#006181]/12 bg-[linear-gradient(135deg,rgba(0,97,129,0.07),transparent_50%)] px-5 py-6 md:px-8 md:py-8 dark:border-[#006181]/25 dark:bg-[linear-gradient(135deg,rgba(0,97,129,0.16),transparent_50%)]"
+            className="border-theme-600/12 bg-brand-sheen dark:border-theme-600/25 rounded-xl border px-5 py-6 md:px-8 md:py-8"
           >
             <div className="mb-5 max-w-3xl">
-              <p className="text-primary mb-2 text-xs font-semibold tracking-[0.16em] uppercase">
+              <p className="text-primary tracking-eyebrow mb-2 text-xs font-semibold uppercase">
                 Subscribe
               </p>
               <h3 className="text-secondary-foreground font-serif text-xl font-semibold tracking-tight md:text-2xl">

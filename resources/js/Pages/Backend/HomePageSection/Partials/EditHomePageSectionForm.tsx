@@ -12,6 +12,8 @@ import { toastFormErrors } from '@/lib/form-errors';
 export default function EditHomePageSectionForm({ section = undefined }: any) {
   const { data, setData, processing, errors, patch } = useForm({
     name: section.name,
+    heading: section.heading ?? '',
+    intro: section.intro ?? '',
     description: section.description,
     order: section.order,
     show: section.show,
@@ -55,6 +57,41 @@ export default function EditHomePageSectionForm({ section = undefined }: any) {
           )}
         </FormField>
         <FormField
+          id="heading"
+          label="Public heading"
+          error={errors.heading}
+          className="col-span-1"
+        >
+          {field => (
+            <Input
+              {...field}
+              type="text"
+              name="heading"
+              value={data.heading ?? ''}
+              placeholder="heading shown on the home page"
+              onChange={e => {
+                setData('heading', e.target.value);
+              }}
+            />
+          )}
+        </FormField>
+        <FormField
+          id="intro"
+          label="Intro"
+          error={errors.intro}
+          className="col-span-2"
+        >
+          {field => (
+            <Textarea
+              {...field}
+              name="intro"
+              value={data.intro ?? ''}
+              placeholder="optional intro shown under the heading"
+              onChange={e => setData('intro', e.target.value)}
+            />
+          )}
+        </FormField>
+        <FormField
           id="description"
           label="description"
           error={errors.description}
@@ -91,7 +128,6 @@ export default function EditHomePageSectionForm({ section = undefined }: any) {
         >
           <Switch
             checked={data.show}
-            className="data-[state=checked]:bg-green-500"
             id="show"
             name="show"
             onCheckedChange={value => setData('show', value)}

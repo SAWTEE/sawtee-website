@@ -16,7 +16,7 @@ export default function AirBnbCard({
       return (
         <div
           key={image_src}
-          className="h-auto max-h-64 w-full overflow-hidden rounded-md border border-[#006181]/12 dark:border-[#006181]/25"
+          className="border-theme-600/12 dark:border-theme-600/25 h-auto max-h-64 w-full overflow-hidden rounded-md border"
         >
           <ZoomableImage
             className="h-full w-full max-w-full object-cover"
@@ -27,7 +27,7 @@ export default function AirBnbCard({
       );
     })
   ) : (
-    <div className="w-full overflow-hidden rounded-md border border-[#006181]/12 dark:border-[#006181]/25">
+    <div className="border-theme-600/12 dark:border-theme-600/25 w-full overflow-hidden rounded-md border">
       <iframe
         className="aspect-video w-full"
         src={mediaSrc ?? undefined}

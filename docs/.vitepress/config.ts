@@ -42,6 +42,7 @@ export default defineConfig({
             { text: 'Categories, tags & themes', link: '/cms/taxonomies' },
             { text: 'Pages, sections & menus', link: '/cms/pages-menus' },
             { text: 'Homepage sections', link: '/cms/homepage' },
+            { text: 'Site settings', link: '/cms/site-settings' },
             { text: 'Media & files', link: '/cms/media' },
             { text: 'Teams & fellowships', link: '/cms/people' },
           ],

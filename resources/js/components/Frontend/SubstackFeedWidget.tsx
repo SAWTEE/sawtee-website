@@ -1,6 +1,7 @@
 import Glassbox from '@/components/Frontend/Glassbox';
 import SimpleList from '@/components/Frontend/SimpleList';
 import { formatDate } from '@/lib/helpers';
+import { useSiteCopy } from '@/lib/site-copy';
 import type { SubstackFeedItem } from '@/types';
 
 type SubstackFeedWidgetProps = {
@@ -9,18 +10,19 @@ type SubstackFeedWidgetProps = {
   title?: string;
 };
 
-const DEFAULT_PUBLICATION_URL = 'https://sawteenp.substack.com';
-
 export default function SubstackFeedWidget({
   posts = null,
-  publicationUrl = DEFAULT_PUBLICATION_URL,
-  title = 'On Substack',
+  publicationUrl,
+  title,
 }: SubstackFeedWidgetProps) {
+  const copy = useSiteCopy();
   const items = posts ?? [];
+  const resolvedUrl = publicationUrl ?? copy.newsletter.substack_url;
+  const resolvedTitle = title ?? copy.newsletter.substack_title;
 
   return (
-    <Glassbox className="sidebar_widget relative max-h-max overflow-y-auto border border-[#006181]/12 py-5 shadow-none dark:border-[#006181]/25">
-      <SimpleList className="border-none px-5 md:px-6" heading={title}>
+    <Glassbox className="sidebar_widget border-theme-600/12 dark:border-theme-600/25 relative max-h-max overflow-y-auto border py-5 shadow-none">
+      <SimpleList className="border-none px-5 md:px-6" heading={resolvedTitle}>
         {items.length > 0 ? (
           items.map(post => {
             const heading = post.subtitle?.trim() || post.title;
@@ -35,9 +37,9 @@ export default function SubstackFeedWidget({
                   href={post.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-secondary-foreground no-underline group-hover:text-[#006181] dark:group-hover:text-[#4da3c0]"
+                  className="text-secondary-foreground group-hover:text-theme-600 dark:group-hover:text-theme-450 no-underline"
                 >
-                  <p className="font-serif text-sm leading-snug font-medium tracking-tight md:text-[0.95rem]">
+                  <p className="md:text-prose font-serif text-sm leading-snug font-medium tracking-tight">
                     {heading}
                   </p>
                   {support ? (
@@ -62,10 +64,10 @@ export default function SubstackFeedWidget({
         )}
         <li className="mt-2 list-none">
           <a
-            href={publicationUrl}
+            href={resolvedUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1 text-sm font-medium text-[#006181] underline underline-offset-2 hover:underline-offset-4 dark:text-[#4da3c0]"
+            className="text-theme-600 dark:text-theme-450 inline-flex items-center gap-1 text-sm font-medium underline underline-offset-2 hover:underline-offset-4"
           >
             Read on Substack
           </a>

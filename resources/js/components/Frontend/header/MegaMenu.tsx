@@ -5,6 +5,7 @@ import { lazy, Suspense } from 'react';
 import Glassbox from '@/components/Frontend/Glassbox';
 import InertiaLink from '@/components/shared/InertiaLink';
 import { useTheme } from '@/components/shared/theme-provider';
+import { useSiteCopy } from '@/lib/site-copy';
 import type { MenuItem, SharedProps } from '@/types';
 
 const SawteeGlobe = lazy(() => import('../globe'));
@@ -138,17 +139,12 @@ const MegaMenu = ({
   item: MenuItem;
   experts?: unknown[];
 }) => {
+  const copy = useSiteCopy();
   const aboutIntro = usePage<SharedProps>().props.aboutIntro;
 
   if (item.name === 'Know Us') {
     return (
-      <AboutMegaMenu
-        item={item}
-        introText={
-          aboutIntro ||
-          'South Asia Watch on Trade, Economics and Environment (SAWTEE) was launched in 1994 as a loose regional network of non-governmental organizations (NGOs) from five South Asian countries: Bangladesh, India, Nepal, Pakistan and Sri Lanka. Taking into consideration the emerging need for fair, effective and meaningful integration of South Asian countries into the regional as well as global economies, the major motto of this regional initiative has been “GLOBALIZATION YES, BUT WITH SAFETY NETS”.'
-        }
-      />
+      <AboutMegaMenu item={item} introText={aboutIntro || copy.about_intro} />
     );
   }
   if (item.name === 'Our Work') {

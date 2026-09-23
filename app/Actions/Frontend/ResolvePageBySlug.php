@@ -9,6 +9,7 @@ use App\Support\HomePageDataAssembler;
 use App\Support\MediaConversionUrl;
 use App\Support\MediaFellowshipAssembler;
 use App\Support\ResolvesSeoMeta;
+use App\Support\SiteCopy;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,7 +25,7 @@ class ResolvePageBySlug
         if ($slug === 'home') {
             return Inertia::render('Frontend/Pages/Home', array_merge(
                 $this->homePageData->assemble(),
-                ['seo' => $this->seo->for(title: 'Home', description: "Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges.")]
+                ['seo' => $this->seo->for(title: 'Home', description: (string) (SiteCopy::all()['seo']['home_description'] ?? ''))]
             ));
         }
 

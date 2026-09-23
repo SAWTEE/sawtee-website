@@ -1,3 +1,4 @@
+import type { CSSProperties } from 'react';
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -24,8 +25,12 @@ function Progress({ className, value = 0, ...props }: ProgressProps) {
     >
       <div
         data-slot="progress-indicator"
-        className="bg-primary h-full w-full flex-1 transition-transform duration-300 ease-out"
-        style={{ transform: `translateX(-${100 - percentage}%)` }}
+        className="bg-primary progress-indicator h-full w-full flex-1 transition-transform duration-300 ease-out"
+        style={
+          {
+            '--progress-offset': `-${100 - percentage}%`,
+          } as CSSProperties
+        }
       />
     </div>
   );

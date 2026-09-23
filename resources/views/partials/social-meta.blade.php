@@ -15,7 +15,7 @@
         : 'SAWTEE | '.$ogTitle;
     $ogDescription = trim((string) ($seo['description'] ?? ''));
     if ($ogDescription === '') {
-        $ogDescription = 'South Asia Watch on Trade, Economics and Environment (SAWTEE) — research, dialogue, and advocacy on trade and development.';
+        $ogDescription = (string) (\App\Support\SiteCopy::all()['seo']['default_description'] ?? '');
     }
     $ogImage = (string) ($seo['image'] ?? '');
     if ($ogImage === '') {

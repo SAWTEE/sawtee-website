@@ -16,9 +16,11 @@ import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
 import Title from '@/components/Frontend/title';
 import { formatDate } from '@/lib/helpers';
+import { useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 import type {
   HomePageProps,
+  HomePageSection,
   MediaItem,
   Post,
   Publication,
@@ -49,6 +51,13 @@ function postFileMedia(media: MediaItem[] | undefined): MediaItem | undefined {
   return media?.find(item => item.collection_name === 'post-files');
 }
 
+function sectionByName(
+  sections: HomePageSection[] | undefined,
+  name: string
+): HomePageSection | undefined {
+  return sections?.find(section => section.name === name);
+}
+
 const FeaturedPublications = lazy(() =>
   import('@/components/Frontend/FeaturedPublications').then(m => ({
     default: m.FeaturedPublications,
@@ -74,10 +83,13 @@ const Home = ({
   features,
   seo,
 }: HomePageProps) => {
-  // const [open, setOpen] = useState(true);
-
+  const copy = useSiteCopy();
+  const featuredPublication = sectionByName(
+    homePageSections,
+    'Featured Publication'
+  );
   const FeaturedPublicationSectionIsVisible = Boolean(
-    homePageSections?.find(h => h.name === 'Featured Publication')?.show
+    featuredPublication?.show
   );
 
   const lcpImage = slides?.[0]?.media?.[0]?.original_url;
@@ -86,14 +98,9 @@ const Home = ({
   return (
     <>
       <WebsiteHead
-        title={
-          seo?.title ?? 'South Asia Watch on Trade, Economics and Environment'
-        }
-        description={
-          seo?.description ??
-          "Explore South Asia's dynamic journey since the 1980s, navigating global integration and economic challenges."
-        }
-        image={seo?.image ?? '/assets/logo-sawtee.webp'}
+        title={seo?.title ?? copy.seo.home_title}
+        description={seo?.description ?? copy.seo.home_description}
+        image={seo?.image ?? copy.seo.default_image}
         url={seo?.url}
         type={seo?.type}
         jsonLd={seo?.jsonLd}
@@ -113,9 +120,7 @@ const Home = ({
         ) : null}
       </WebsiteHead>
 
-      <h1 className="sr-only">
-        South Asia Watch on Trade, Economics and Environment (SAWTEE)
-      </h1>
+      <h1 className="sr-only">{copy.home.h1}</h1>
 
       {/* POPUP CODE */}
       {/* <Dialog open={open} onOpenChange={() => setOpen(!open)}>
@@ -169,6 +174,11 @@ const Home = ({
                     <FeaturedPublications
                       publications={featuredPublications}
                       blogPosts={featuredBlogPosts}
+                      publicationsHeading={featuredPublication?.heading}
+                      blogsHeading={
+                        featuredPublication?.intro ??
+                        copy.home.featured_blogs_heading
+                      }
                     />
                   </Suspense>
                 </aside>
@@ -190,20 +200,39 @@ const Home = ({
         fallback={<BelowTheFoldSkeleton />}
       >
         <>
-          {infocus &&
-            homePageSections?.find(h => h.name === 'Infocus')?.show && (
-              <InfocusSection infocus={infocus} />
-            )}
+          {infocus && sectionByName(homePageSections, 'Infocus')?.show && (
+            <InfocusSection
+              infocus={infocus}
+              heading={sectionByName(homePageSections, 'Infocus')?.heading}
+              intro={sectionByName(homePageSections, 'Infocus')?.intro}
+            />
+          )}
 
           {events &&
-            homePageSections?.find(h => h.name === 'Policy Outreach')?.show && (
-              <PolicyOutreachSection events={events} />
+            sectionByName(homePageSections, 'Policy Outreach')?.show && (
+              <PolicyOutreachSection
+                events={events}
+                heading={
+                  sectionByName(homePageSections, 'Policy Outreach')?.heading
+                }
+                intro={
+                  sectionByName(homePageSections, 'Policy Outreach')?.intro
+                }
+              />
             )}
 
           {publications &&
-            homePageSections?.find(h => h.name === 'Latest Publications')
-              ?.show && (
-              <LatestPublicationSection publications={publications} />
+            sectionByName(homePageSections, 'Latest Publications')?.show && (
+              <LatestPublicationSection
+                publications={publications}
+                heading={
+                  sectionByName(homePageSections, 'Latest Publications')
+                    ?.heading
+                }
+                intro={
+                  sectionByName(homePageSections, 'Latest Publications')?.intro
+                }
+              />
             )}
 
           <Section className="outreach-section">
@@ -211,24 +240,46 @@ const Home = ({
               <Title
                 title={
                   sawteeInMedia && newsletters
-                    ? 'Media and Newsletter'
+                    ? copy.home.media_and_newsletter_heading
                     : sawteeInMedia && !newsletters
-                      ? 'Media'
-                      : 'Newsletters'
+                      ? copy.home.media_heading
+                      : copy.home.newsletters_heading
                 }
               />
               <div className="grid gap-8 lg:grid-cols-2 lg:gap-10">
-                {homePageSections?.find(h => h.name === 'Sawtee in Media')
-                  ?.show && <MediaSection sawteeInMedia={sawteeInMedia} />}
+                {sectionByName(homePageSections, 'Sawtee in Media')?.show && (
+                  <MediaSection
+                    sawteeInMedia={sawteeInMedia}
+                    heading={
+                      sectionByName(homePageSections, 'Sawtee in Media')
+                        ?.heading
+                    }
+                    intro={
+                      sectionByName(homePageSections, 'Sawtee in Media')?.intro
+                    }
+                    eyebrow={copy.home.media_eyebrow}
+                  />
+                )}
 
-                {homePageSections?.find(h => h.name === 'Newsletter')?.show && (
-                  <NewsletterSection newsletters={newsletters} />
+                {sectionByName(homePageSections, 'Newsletter')?.show && (
+                  <NewsletterSection
+                    newsletters={newsletters}
+                    heading={
+                      sectionByName(homePageSections, 'Newsletter')?.heading
+                    }
+                    intro={sectionByName(homePageSections, 'Newsletter')?.intro}
+                    eyebrow={copy.home.newsletter_eyebrow}
+                  />
                 )}
               </div>
             </div>
           </Section>
-          {homePageSections?.find(h => h.name === 'Webinar')?.show && (
-            <WebinarSection webinars={webinars} />
+          {sectionByName(homePageSections, 'Webinar')?.show && (
+            <WebinarSection
+              webinars={webinars}
+              heading={sectionByName(homePageSections, 'Webinar')?.heading}
+              intro={sectionByName(homePageSections, 'Webinar')?.intro}
+            />
           )}
         </>
       </Deferred>
@@ -244,8 +295,13 @@ const Home = ({
           </div>
         </Section>
       )}
-      {homePageSections?.find(h => h.name === 'Newsletter Callout')?.show && (
-        <NewsletterCalloutSection />
+      {sectionByName(homePageSections, 'Newsletter Callout')?.show && (
+        <NewsletterCalloutSection
+          heading={
+            sectionByName(homePageSections, 'Newsletter Callout')?.heading
+          }
+          intro={sectionByName(homePageSections, 'Newsletter Callout')?.intro}
+        />
       )}
     </>
   );
@@ -290,7 +346,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
             className="bg-muted relative aspect-video w-full overflow-hidden rounded-md text-center"
             title={lead.title}
           >
-            <div className="ease absolute inset-0 top-0 z-10 hidden h-1.25 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
+            <div className="ease bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1.25 w-full transition-all duration-200 group-hover:block" />
             <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
             <img
               src={featuredImageUrl(
@@ -310,19 +366,19 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
           <div className="">
             <Link
               href={`/category/featured-events/${lead.slug}`}
-              className="inline-flex min-h-6 items-center py-1 text-xs font-medium text-sky-700 uppercase transition duration-200 ease-in-out hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200"
+              className="text-theme-700 hover:text-theme-800 dark:text-theme-300 dark:hover:text-theme-200 inline-flex min-h-6 items-center py-1 text-xs font-medium uppercase transition duration-200 ease-in-out"
             >
               {lead.category?.name}
             </Link>
             <Link
               href={`/category/featured-events/${lead.slug}`}
-              className="text-secondary-foreground mb-2 block text-2xl leading-6 font-bold tracking-wide transition duration-200 ease-in-out group-hover:text-sky-500/80 lg:text-3xl"
+              className="text-secondary-foreground group-hover:text-theme-500/80 mb-2 block text-2xl leading-6 font-bold tracking-wide transition duration-200 ease-in-out lg:text-3xl"
             >
               {lead.title}
             </Link>
             {lead.excerpt ? (
               <p
-                className="text-muted-foreground mt-2 text-base dark:text-slate-400"
+                className="text-muted-foreground dark:text-muted-foreground mt-2 text-base"
                 dangerouslySetInnerHTML={{ __html: lead.excerpt }}
               />
             ) : null}
@@ -358,13 +414,13 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
                     decoding="async"
                     className="h-full w-full object-cover transition-all duration-200 ease-linear"
                   />
-                  <div className="ease absolute inset-0 top-0 z-10 hidden h-1 w-full bg-sky-500/80 transition-all duration-200 group-hover:block" />
+                  <div className="ease bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1 w-full transition-all duration-200 group-hover:block" />
                   <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
                 </div>
               </Link>
               <Link
                 href={`/category/featured-events/${event.slug}`}
-                className="text-md text-secondary-foreground my-2 inline-block leading-5 font-semibold tracking-wide transition duration-200 ease-in-out group-hover:text-sky-500/80"
+                className="text-md text-secondary-foreground group-hover:text-theme-500/80 my-2 inline-block leading-5 font-semibold tracking-wide transition duration-200 ease-in-out"
               >
                 {event.title}
               </Link>
@@ -393,11 +449,24 @@ export const CarouselSection = ({
   );
 };
 
-export const InfocusSection = ({ infocus = [] }: { infocus?: Post[] }) => {
+export const InfocusSection = ({
+  infocus = [],
+  heading,
+  intro,
+}: {
+  infocus?: Post[];
+  heading?: string | null;
+  intro?: string | null;
+}) => {
   return (
     <Section className="infocus-section">
       <div className="mx-auto max-w-5xl">
-        <Title title={'In focus'} />
+        <Title title={heading || 'In focus'} />
+        {intro ? (
+          <p className="text-muted-foreground -mt-4 mb-8 max-w-2xl text-sm leading-relaxed md:-mt-5 md:text-base">
+            {intro}
+          </p>
+        ) : null}
         <SimpleList heading={null}>
           {infocus.map(item => {
             return (
@@ -440,13 +509,22 @@ export const InfocusSection = ({ infocus = [] }: { infocus?: Post[] }) => {
 
 export const LatestPublicationSection = ({
   publications = [],
+  heading,
+  intro,
 }: {
   publications?: Publication[];
+  heading?: string | null;
+  intro?: string | null;
 }) => {
   return (
     <Section className="publications-section">
       <div className="mx-auto max-w-5xl">
-        <Title title={'Latest in publications'} />
+        <Title title={heading || 'Latest in publications'} />
+        {intro ? (
+          <p className="text-muted-foreground -mt-4 mb-8 max-w-2xl text-sm leading-relaxed md:-mt-5 md:text-base">
+            {intro}
+          </p>
+        ) : null}
         <Suspense fallback={<PublicationCoversSkeleton />}>
           <MultiPostsCarousel data={publications} />
         </Suspense>
@@ -460,11 +538,24 @@ export const LatestPublicationSection = ({
   );
 };
 
-export const PolicyOutreachSection = ({ events = [] }: { events?: Post[] }) => {
+export const PolicyOutreachSection = ({
+  events = [],
+  heading,
+  intro,
+}: {
+  events?: Post[];
+  heading?: string | null;
+  intro?: string | null;
+}) => {
   return (
     <Section>
       <div className="mx-auto max-w-5xl">
-        <Title title={'Policy outreach'} />
+        <Title title={heading || 'Policy outreach'} />
+        {intro ? (
+          <p className="text-muted-foreground -mt-4 mb-8 max-w-2xl text-sm leading-relaxed md:-mt-5 md:text-base">
+            {intro}
+          </p>
+        ) : null}
         <FeaturedEventsSection events={events} />
         <ExploreButton
           text="More in featured events"
@@ -475,7 +566,17 @@ export const PolicyOutreachSection = ({ events = [] }: { events?: Post[] }) => {
   );
 };
 
-export const MediaSection = ({ sawteeInMedia }: { sawteeInMedia?: Post[] }) => {
+export const MediaSection = ({
+  sawteeInMedia,
+  heading,
+  intro,
+  eyebrow,
+}: {
+  sawteeInMedia?: Post[];
+  heading?: string | null;
+  intro?: string | null;
+  eyebrow?: string;
+}) => {
   if (!sawteeInMedia?.length) {
     return null;
   }
@@ -483,16 +584,19 @@ export const MediaSection = ({ sawteeInMedia }: { sawteeInMedia?: Post[] }) => {
   return (
     <div className="flex w-full flex-col">
       <OutreachColumn
-        eyebrow="Coverage"
-        heading="SAWTEE in media"
-        description="Press mentions and commentary featuring SAWTEE’s work across South Asia."
+        eyebrow={eyebrow || 'Coverage'}
+        heading={heading || 'SAWTEE in media'}
+        description={
+          intro ||
+          'Press mentions and commentary featuring SAWTEE’s work across South Asia.'
+        }
       >
         <ul className="divide-borderColor/60 divide-y dark:divide-white/10">
           {sawteeInMedia.map(item => {
             const hasContent = item.has_content ?? Boolean(item.content);
             const file = postFileMedia(item.media);
             const titleClass =
-              'text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-[0.9375rem]';
+              'text-sm font-medium leading-snug text-secondary-foreground transition-colors hover:text-theme-700 dark:hover:text-theme-300 md:text-fine';
 
             return (
               <li key={item.id} className="py-4 first:pt-0 last:pb-0">
@@ -539,8 +643,14 @@ export const MediaSesction = MediaSection;
 
 export const NewsletterSection = ({
   newsletters,
+  heading,
+  intro,
+  eyebrow,
 }: {
   newsletters?: Post[];
+  heading?: string | null;
+  intro?: string | null;
+  eyebrow?: string;
 }) => {
   if (!newsletters?.length) {
     return null;
@@ -549,9 +659,12 @@ export const NewsletterSection = ({
   return (
     <div className="flex w-full flex-col">
       <OutreachColumn
-        eyebrow="Updates"
-        heading="SAWTEE e-newsletters"
-        description="Monthly digests on trade, economics, and environment from the SAWTEE desk."
+        eyebrow={eyebrow || 'Updates'}
+        heading={heading || 'SAWTEE e-newsletters'}
+        description={
+          intro ||
+          'Monthly digests on trade, economics, and environment from the SAWTEE desk.'
+        }
       >
         <ul className="divide-borderColor/60 divide-y dark:divide-white/10">
           {newsletters.map(item => {
@@ -560,7 +673,7 @@ export const NewsletterSection = ({
             return (
               <li key={item.id} className="py-4 first:pt-0 last:pb-0">
                 <a
-                  className="text-secondary-foreground hover:text-theme-700 dark:hover:text-theme-300 text-sm leading-snug font-medium transition-colors md:text-[0.9375rem]"
+                  className="text-secondary-foreground hover:text-theme-700 dark:hover:text-theme-300 md:text-fine text-sm leading-snug font-medium transition-colors"
                   href={
                     file?.original_url ?? `/category/newsletters/${item.slug}`
                   }
@@ -604,7 +717,7 @@ function OutreachColumn({
 }) {
   return (
     <div className="border-borderColor/80 dark:bg-bgDarker rounded-md border bg-white px-5 py-6 shadow-sm sm:px-6 sm:py-7">
-      <p className="text-theme-700 dark:text-theme-300 mb-2 font-sans text-[11px] font-semibold tracking-[0.14em] uppercase md:text-xs">
+      <p className="text-theme-700 dark:text-theme-300 tracking-kicker mb-2 font-sans text-xs font-semibold uppercase md:text-xs">
         {eyebrow}
       </p>
       <h3 className="text-secondary-foreground text-lg font-semibold tracking-tight md:text-xl">
@@ -620,14 +733,22 @@ function OutreachColumn({
   );
 }
 
-export const WebinarSection = ({ webinars = [] }: { webinars?: Post[] }) => {
+export const WebinarSection = ({
+  webinars = [],
+  heading,
+  intro,
+}: {
+  webinars?: Post[];
+  heading?: string | null;
+  intro?: string | null;
+}) => {
   return (
     <Section className="section videos-section">
       <div className="mx-auto max-w-5xl">
-        <Title title="Recordings and resources" />
+        <Title title={heading || 'Recordings and resources'} />
         <p className="text-muted-foreground mb-8 max-w-2xl text-sm leading-relaxed md:text-base">
-          Watch recent webinars and download related materials from SAWTEE’s
-          research and dialogue programmes.
+          {intro ||
+            'Watch recent webinars and download related materials from SAWTEE’s research and dialogue programmes.'}
         </p>
         <Suspense fallback={<VideoCarouselSkeleton />}>
           <VideoCarousel posts={webinars} />
@@ -642,10 +763,16 @@ export const WebinarSection = ({ webinars = [] }: { webinars?: Post[] }) => {
   );
 };
 
-export const NewsletterCalloutSection = () => {
+export const NewsletterCalloutSection = ({
+  heading,
+  intro,
+}: {
+  heading?: string | null;
+  intro?: string | null;
+}) => {
   return (
     <Section className="subscribe-section">
-      <NewsletterCallout />
+      <NewsletterCallout heading={heading} intro={intro} />
     </Section>
   );
 };

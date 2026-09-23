@@ -179,7 +179,7 @@ function FocusHighlight({ active }: { active: boolean }) {
       {active ? (
         <motion.div
           aria-hidden
-          className="bg-accent absolute top-0 right-0 bottom-0 left-0 -z-10 rounded-md dark:bg-neutral-800"
+          className="bg-accent dark:bg-muted absolute top-0 right-0 bottom-0 left-0 -z-10 rounded-md"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.9 }}

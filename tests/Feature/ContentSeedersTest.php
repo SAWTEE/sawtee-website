@@ -29,7 +29,9 @@ test('sawtee content seeders are idempotent and populate cms tables', function (
         ->and(Institute::query()->count())->toBeGreaterThanOrEqual(11)
         ->and(Feature::query()->active()->count())->toBe(3)
         ->and(SiteSetting::getValue('about_intro'))->toBeString()->not->toBeEmpty()
-        ->and(SiteSetting::getValue('social_menu'))->toBeArray()->not->toBeEmpty();
+        ->and(SiteSetting::getValue('social_menu'))->toBeArray()->not->toBeEmpty()
+        ->and(SiteSetting::getValue('footer'))->toBeArray()
+        ->and(SiteSetting::getValue('mobile_menu'))->toBeArray()->not->toBeEmpty();
 
     $firstPassFellows = Fellow::query()->count();
     $firstPassInstitutes = Institute::query()->count();

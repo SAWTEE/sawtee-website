@@ -1,67 +1,77 @@
-import { X } from 'lucide-react';
+import { ArrowRight, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
+import InertiaLink from '@/components/shared/InertiaLink';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
 /**
- * Explains which parts of the public site are already CMS-managed and which are
- * still held in code or seed files, so editors know where a given piece of
- * content can actually be changed.
+ * Nudges editors toward the screens that now own public copy, and points
+ * remaining content at the right CMS area.
  *
  * Bump `STORAGE_KEY` whenever the lists below change, so editors see the
  * updated summary once instead of staying dismissed on stale content.
  */
-const STORAGE_KEY = 'sawtee.dashboard.dynamic-content-notice.v2';
+const STORAGE_KEY = 'sawtee.dashboard.dynamic-content-notice.v4';
+
+type StartHereItem = {
+  step: string;
+  label: string;
+  routeName: string;
+  hint: string;
+};
+
+const START_HERE: StartHereItem[] = [
+  {
+    step: '1',
+    label: 'Site Settings',
+    routeName: 'admin.settings.edit',
+    hint: 'Footer, social icons, newsletter, search, SEO defaults, error pages, Know Us intro, Our Work, Reform Monitor, and Media fellows copy. Each heading on that screen says where the text appears.',
+  },
+  {
+    step: '2',
+    label: 'Features',
+    routeName: 'admin.features.index',
+    hint: 'Home-page feature cards: title, description, image path, link, order, and visibility.',
+  },
+  {
+    step: '3',
+    label: 'Home Page Sections',
+    routeName: 'admin.home-page-sections.index',
+    hint: 'Show or hide each home block, and edit the public heading and intro. Those headings win over Site Settings when both are set.',
+  },
+];
 
 type Group = {
   heading: string;
   description: string;
   items: string[];
-  tone: 'live' | 'seeded' | 'static';
+  tone: 'live' | 'seeded';
 };
 
 const GROUPS: Group[] = [
   {
-    heading: 'Editable here now',
-    description: 'Changes publish to the live site straight from this admin.',
+    heading: 'Day-to-day content',
+    description: 'Unchanged: publish as you always have.',
     tone: 'live',
     items: [
       'Posts, articles, publications and research',
-      'Pages and page sections',
-      'Categories, tags and themes',
+      'Pages and page sections (including Contact phones, email, and address in that page’s JSON)',
       'Header and footer navigation menus',
-      'Home page section toggles, sliders and slides',
-      'Team, member countries and member institutes',
-      'Media fellowships, fellows and published stories',
-      'Contact page details, via the Contact page’s JSON data',
+      'Sliders and slides',
+      'Team, member countries, member institutes, fellowships and fellows',
       'SEO title, description and share image on every content type',
     ],
   },
   {
-    heading: 'In the database, but no editor yet',
+    heading: 'Leave these alone unless you mean to',
     description:
-      'These no longer live in the frontend code, but there is no admin screen for them. A developer has to update database/data and re-run the seeder (php artisan sawtee:seed-content).',
+      'These used to live in code. Defaults remain as a fallback if a field is empty.',
     tone: 'seeded',
     items: [
-      'Home page “feature” cards (media fellowship, COVID resources, LDC interests)',
-      'The “Know Us” mega-menu intro text',
-      'Global social media links',
-    ],
-  },
-  {
-    heading: 'Still fixed in code',
-    description:
-      'Wording and links baked into the site’s templates. A developer has to change these. Not an exhaustive list.',
-    tone: 'static',
-    items: [
-      'Home page section headings and intro copy',
-      'Footer tagline and quick links',
-      'Newsletter callout copy and Substack addresses',
-      'Our Work section blurbs and their curated images',
-      'Reform Monitor disclaimer and error page wording',
-      'Footer map embed and the Know Us globe markers',
-      'Mobile menu fallback, used only when CMS menus are empty',
+      'Do not edit React files for public wording — use the three screens above.',
+      'The Contact page JSON still owns phones, email, address, and office hours.',
+      'Menus still own header and footer labels; Site Settings only supplies a mobile-menu fallback when the CMS header menu is empty.',
     ],
   },
 ];
@@ -69,13 +79,11 @@ const GROUPS: Group[] = [
 const TONE_STYLES: Record<Group['tone'], string> = {
   live: 'border-emerald-500/30 bg-emerald-500/5',
   seeded: 'border-amber-500/30 bg-amber-500/5',
-  static: 'border-border bg-muted/40',
 };
 
 const TONE_DOT: Record<Group['tone'], string> = {
   live: 'bg-emerald-500',
   seeded: 'bg-amber-500',
-  static: 'bg-muted-foreground',
 };
 
 export function DynamicContentBanner() {
@@ -121,18 +129,49 @@ export function DynamicContentBanner() {
         <X className="size-4" aria-hidden />
       </Button>
 
+      <p className="text-primary text-xs font-semibold tracking-wide uppercase">
+        What’s new
+      </p>
       <h2
         id="dynamic-content-banner-title"
-        className="pr-10 text-base font-semibold tracking-tight"
+        className="mt-1 pr-10 text-base font-semibold tracking-tight"
       >
-        What you can edit on the website
+        Public copy is now editable in this admin
       </h2>
-      <p className="text-muted-foreground mt-1 text-sm">
-        Content that used to be written into the site’s code has been moved into
-        this CMS in stages. Here is where each part stands today.
+      <p className="text-muted-foreground mt-1 max-w-3xl text-sm leading-relaxed">
+        Footer text, feature cards, home headings, search, SEO fallbacks, and
+        error pages no longer require a deploy. Start with the three screens
+        below — then dismiss this notice when you are done.
       </p>
 
-      <div className="mt-4 grid grid-cols-1 gap-3 md:grid-cols-3">
+      <ol className="mt-4 grid list-none grid-cols-1 gap-3 p-0 md:grid-cols-3">
+        {START_HERE.map(item => (
+          <li key={item.routeName}>
+            <InertiaLink
+              href={route(item.routeName)}
+              prefetch
+              aria-label={item.label}
+              className="border-border bg-card hover:border-primary/40 hover:bg-primary/5 focus-visible:ring-ring group flex h-full flex-col gap-2 rounded-lg border p-3 no-underline transition-colors focus-visible:ring-2 focus-visible:outline-none"
+            >
+              <span className="flex items-center justify-between gap-2">
+                <span className="text-muted-foreground font-mono text-xs">
+                  {item.step}
+                </span>
+                <ArrowRight
+                  className="text-muted-foreground size-3.5 shrink-0 transition-transform group-hover:translate-x-0.5"
+                  aria-hidden
+                />
+              </span>
+              <span className="text-sm font-semibold">{item.label}</span>
+              <span className="text-muted-foreground text-xs leading-relaxed">
+                {item.hint}
+              </span>
+            </InertiaLink>
+          </li>
+        ))}
+      </ol>
+
+      <div className="mt-4 grid grid-cols-1 gap-3 lg:grid-cols-2">
         {GROUPS.map(group => (
           <section
             key={group.heading}

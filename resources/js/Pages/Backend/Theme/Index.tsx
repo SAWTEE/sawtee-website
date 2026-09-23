@@ -66,7 +66,7 @@ export default function Index({
       accessorKey: 'description',
       header: 'Description',
       cell: ({ row }: any) => (
-        <span className="line-clamp-[2]">{row.original.description}</span>
+        <span className="line-clamp-2">{row.original.description}</span>
       ),
     },
     {

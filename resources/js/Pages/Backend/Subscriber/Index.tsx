@@ -41,7 +41,9 @@ export default function Index({
     <>
       <Head title="Subscribers" />
       {subscribers.length === 0 && (
-        <p className="text-center text-gray-500">No Subscribers Found</p>
+        <p className="text-muted-foreground text-center">
+          No Subscribers Found
+        </p>
       )}
       {subscribers.length > 0 && (
         <DataTable

@@ -288,7 +288,116 @@ export type Slide = {
 export type HomePageSection = {
   id: number;
   name: string;
+  heading?: string | null;
+  intro?: string | null;
   show: number | boolean;
+};
+
+export type GlobeMarker = {
+  location: [number, number];
+  size: number;
+};
+
+export type ErrorPageCopy = {
+  title: string;
+  description: string;
+  action: string;
+  hint?: string;
+};
+
+export type SiteCopy = {
+  about_intro: string;
+  social_menu: Array<{ name: string; link: string }>;
+  footer: {
+    tagline: string;
+    about_label: string;
+    about_href: string;
+    contact_label: string;
+    contact_href: string;
+    substack_label: string;
+    copyright_name: string;
+    map_title: string;
+    map_description: string;
+    map_iframe_title: string;
+    map_embed_url: string;
+  };
+  newsletter: {
+    heading: string;
+    intro: string;
+    substack_url: string;
+    substack_embed: string;
+    substack_title: string;
+    embed_title: string;
+  };
+  home: {
+    h1: string;
+    media_and_newsletter_heading: string;
+    media_heading: string;
+    newsletters_heading: string;
+    media_eyebrow: string;
+    newsletter_eyebrow: string;
+    featured_blogs_heading: string;
+  };
+  our_work: {
+    thematic_heading: string;
+    thematic_intro: string;
+    sectors_heading: string;
+    sectors_intro: string;
+    explore_label: string;
+    placeholder_image: string;
+    sector_images: Record<string, string>;
+  };
+  reform_monitor: {
+    title: string;
+    disclaimer: string;
+  };
+  errors: {
+    eyebrow: string;
+    search_label: string;
+    go_back_label: string;
+    explore_heading: string;
+    aside_heading: string;
+    aside_body: string;
+    public_links: Array<{ href: string; label: string }>;
+    pages: Record<string, ErrorPageCopy>;
+  };
+  globe_markers: GlobeMarker[];
+  mobile_menu: MenuItem[];
+  contact: {
+    org_name: string;
+    working_days_label: string;
+    working_days: string;
+    office_hours_label: string;
+    unavailable: string;
+    location_image_alt: string;
+  };
+  media_fellows: {
+    intro: string;
+    empty: string;
+    cohort_heading: string;
+  };
+  about: {
+    member_institutions_heading: string;
+    member_institutions_intro: string;
+  };
+  search: {
+    button_label: string;
+    title: string;
+    description: string;
+    placeholder: string;
+    input_label: string;
+    results_label: string;
+    press_enter: string;
+    helper: string;
+    examples: string[];
+  };
+  seo: {
+    default_title: string;
+    default_description: string;
+    default_image: string;
+    home_title: string;
+    home_description: string;
+  };
 };
 
 export type PaginationLink = {
@@ -388,6 +497,8 @@ export type SharedProps = {
   socialMenu?: SocialMenuLink[];
   aboutIntro?: string | null;
   memberInstitutes?: MemberInstituteLogo[];
+  /** Public frontend only (once props); absent on /admin. */
+  siteCopy?: SiteCopy;
 };
 
 export type PageProps<
@@ -589,6 +700,7 @@ export function emptySharedProps(
     socialMenu: [],
     aboutIntro: null,
     memberInstitutes: [],
+    siteCopy: undefined,
     ...overrides,
   };
 }

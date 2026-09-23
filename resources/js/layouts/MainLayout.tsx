@@ -13,7 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet';
-import { mobileMenu } from '@/lib/data';
+import { useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 import type { MenuItem, SharedProps, SocialMenuLink } from '@/types';
 
@@ -42,11 +42,12 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
   const [footerInView, setFooterInView] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const page = usePage<SharedProps>();
+  const copy = useSiteCopy();
   const primaryMenu = page.props.primaryMenu ?? [];
   const footerMenu = page.props.footerMenu ?? [];
   const socialMenu: SocialMenuLink[] = page.props.socialMenu ?? [];
   const navMenu: MenuItem[] =
-    primaryMenu.length > 0 ? primaryMenu : (mobileMenu as MenuItem[]);
+    primaryMenu.length > 0 ? primaryMenu : copy.mobile_menu;
 
   useEffect(() => {
     if (typeof window === 'undefined') {

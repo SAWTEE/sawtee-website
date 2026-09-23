@@ -52,7 +52,7 @@ export default function Dashboard({
       <div className="flex flex-col gap-4">
         <DynamicContentBanner />
 
-        <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:shadow-xs lg:grid-cols-3 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-3 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-3">
           <StatsCard
             title="posts"
             stat={posts}
@@ -147,7 +147,7 @@ function AnalyticsSkeleton() {
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-4 lg:px-6">
       {Array.from({ length: 4 }).map((_, i) => (
-        <Card key={i} className="from-primary/5 to-card bg-linear-to-t">
+        <Card key={i} variant="stat">
           <CardHeader>
             <div className="bg-muted h-3 w-24 animate-pulse rounded" />
             <div className="bg-muted mt-3 h-8 w-16 animate-pulse rounded" />
@@ -161,7 +161,7 @@ function AnalyticsSkeleton() {
 function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
   return (
     <div className="grid grid-cols-1 gap-4 px-4 lg:grid-cols-4 lg:px-6">
-      <Card className="from-primary/5 to-card @container/card bg-linear-to-t *:data-[slot=card]:shadow-xs">
+      <Card variant="stat" className="@container/card">
         <CardHeader>
           <CardDescription className="uppercase">Views today</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums">
@@ -169,7 +169,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="from-primary/5 to-card @container/card bg-linear-to-t">
+      <Card variant="stat" className="@container/card">
         <CardHeader>
           <CardDescription className="uppercase">
             Views this week
@@ -179,7 +179,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="from-primary/5 to-card @container/card bg-linear-to-t">
+      <Card variant="stat" className="@container/card">
         <CardHeader>
           <CardDescription className="uppercase">
             Views this month
@@ -189,7 +189,7 @@ function AnalyticsSection({ analytics }: { analytics: AnalyticsSummary }) {
           </CardTitle>
         </CardHeader>
       </Card>
-      <Card className="from-primary/5 to-card @container/card bg-linear-to-t lg:col-span-1">
+      <Card variant="stat" className="@container/card lg:col-span-1">
         <CardHeader>
           <CardDescription className="uppercase">Top pages</CardDescription>
           <CardTitle className="text-base font-semibold">This month</CardTitle>

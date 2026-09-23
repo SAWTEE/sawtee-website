@@ -44,7 +44,7 @@ class ResolvesSeoMeta
             'title' => $resolvedTitle,
             'description' => $resolvedDescription !== ''
                 ? $resolvedDescription
-                : 'South Asia Watch on Trade, Economics and Environment (SAWTEE) — research, dialogue, and advocacy on trade and development.',
+                : (string) (SiteCopy::all()['seo']['default_description'] ?? ''),
             'image' => $resolvedImage,
             'url' => $url ?? url()->current(),
             'type' => $type,

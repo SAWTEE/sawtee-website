@@ -3,6 +3,7 @@ import { Fragment, type ReactNode } from 'react';
 
 import { SocialMenu } from '@/components/Frontend/header/social-menu';
 import ZoomableImage from '@/components/Frontend/ZoomableImage';
+import { useSiteCopy } from '@/lib/site-copy';
 import type { ContactPageData, PageData } from '@/types';
 
 function isContactPageData(
@@ -17,15 +18,17 @@ type ContactProps = {
 };
 
 const Contact = ({ pageData }: ContactProps) => {
+  const copy = useSiteCopy();
+
   if (!isContactPageData(pageData)) {
     return (
       <section className="contact-page-content mx-auto w-full max-w-5xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
-        <div className="border-borderColor/70 bg-bgDarker/80 rounded-lg border border-l-[3px] border-l-[#006181] p-6 shadow-sm md:p-10 dark:border-white/10 dark:border-l-[#006181]/80 dark:bg-black/40">
-          <h2 className="text-primary text-center font-serif text-2xl font-semibold tracking-tight md:text-3xl dark:text-zinc-100">
-            South Asia Watch on Trade, Economics and Environment (SAWTEE)
+        <div className="border-borderColor/70 bg-bgDarker/80 border-l-theme-600 dark:border-l-theme-600/80 rounded-lg border border-l-3 p-6 shadow-sm md:p-10 dark:border-white/10 dark:bg-black/40">
+          <h2 className="text-primary dark:text-foreground text-center font-serif text-2xl font-semibold tracking-tight md:text-3xl">
+            {copy.contact.org_name}
           </h2>
           <p className="text-muted-foreground mt-4 text-center text-sm leading-relaxed md:text-base">
-            Contact details are unavailable right now. Please try again later.
+            {copy.contact.unavailable}
           </p>
         </div>
       </section>
@@ -36,22 +39,22 @@ const Contact = ({ pageData }: ContactProps) => {
 
   return (
     <section className="contact-page-content mx-auto w-full max-w-5xl px-5 py-16 md:px-10 md:py-20 lg:py-24">
-      <div className="border-borderColor/70 bg-bgDarker/80 rounded-lg border border-l-[3px] border-l-[#006181] p-6 shadow-sm md:p-10 dark:border-white/10 dark:border-l-[#006181]/80 dark:bg-black/40">
-        <header className="mb-8 border-b border-[#006181]/12 pb-8 text-center md:mb-10 md:pb-10 dark:border-[#006181]/20">
-          <h2 className="text-primary font-serif text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl dark:text-zinc-100">
-            South Asia Watch on Trade, Economics and Environment (SAWTEE)
+      <div className="border-borderColor/70 bg-bgDarker/80 border-l-theme-600 dark:border-l-theme-600/80 rounded-lg border border-l-3 p-6 shadow-sm md:p-10 dark:border-white/10 dark:bg-black/40">
+        <header className="border-theme-600/12 dark:border-theme-600/20 mb-8 border-b pb-8 text-center md:mb-10 md:pb-10">
+          <h2 className="text-primary dark:text-foreground font-serif text-2xl font-semibold tracking-tight md:text-3xl lg:text-4xl">
+            {copy.contact.org_name}
           </h2>
           <div className="text-muted-foreground mt-4 space-y-1 text-sm md:text-base">
             <p>
-              <span className="text-primary/80 font-medium dark:text-zinc-200">
-                Working days:
+              <span className="text-primary/80 dark:text-foreground font-medium">
+                {copy.contact.working_days_label}
               </span>{' '}
-              Monday–Friday
+              {copy.contact.working_days}
             </p>
             {pageData.opening_hours ? (
               <p>
-                <span className="text-primary/80 font-medium dark:text-zinc-200">
-                  Office hours:
+                <span className="text-primary/80 dark:text-foreground font-medium">
+                  {copy.contact.office_hours_label}
                 </span>{' '}
                 {pageData.opening_hours}
               </p>
@@ -110,18 +113,18 @@ const Contact = ({ pageData }: ContactProps) => {
           </div>
 
           {pageData.location_image ? (
-            <div className="overflow-hidden rounded-md border border-[#006181]/12 dark:border-[#006181]/25">
+            <div className="border-theme-600/12 dark:border-theme-600/25 overflow-hidden rounded-md border">
               <ZoomableImage
                 className="aspect-square w-full object-cover"
                 src={pageData.location_image}
-                alt="SAWTEE office location"
+                alt={copy.contact.location_image_alt}
               />
             </div>
           ) : null}
         </div>
 
         {pageData.map_url ? (
-          <div className="mt-10 overflow-hidden rounded-md border border-[#006181]/12 md:mt-12 dark:border-[#006181]/25">
+          <div className="border-theme-600/12 dark:border-theme-600/25 mt-10 overflow-hidden rounded-md border md:mt-12">
             <iframe
               src={pageData.map_url}
               className="aspect-video w-full"
@@ -146,7 +149,7 @@ const ContactAction = ({
   children?: ReactNode;
 }) => {
   const className =
-    'text-secondary-foreground inline-flex items-center gap-2.5 text-[0.95rem] leading-relaxed transition-colors hover:text-[#006181] focus-visible:text-[#006181] focus-visible:outline-none md:text-base dark:text-zinc-300 dark:hover:text-[#4da3c0] dark:focus-visible:text-[#4da3c0]';
+    'text-secondary-foreground inline-flex items-center gap-2.5 text-prose leading-relaxed transition-colors hover:text-theme-600 focus-visible:text-theme-600 focus-visible:outline-none md:text-base dark:text-muted-foreground dark:hover:text-theme-450 dark:focus-visible:text-theme-450';
 
   if (href) {
     return (

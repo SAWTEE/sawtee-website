@@ -4,7 +4,7 @@ export const TwitterIcon = ({ className = '' }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={cn('text-background', className)}
       viewBox="0 0 20 20"
     >
       <title>Twitter Logo</title>
@@ -12,7 +12,7 @@ export const TwitterIcon = ({ className = '' }: any) => {
         <path
           id="Vector"
           d="M11.3214 8.93666L16.4919 3.05566H15.2667L10.7772 8.16205L7.1914 3.05566H3.05566L8.47803 10.7774L3.05566 16.9446H4.28097L9.022 11.552L12.8088 16.9446H16.9446L11.3211 8.93666H11.3214ZM9.64322 10.8455L9.09382 10.0765L4.72246 3.95821H6.60445L10.1322 8.8959L10.6816 9.66481L15.2672 16.083H13.3852L9.64322 10.8458V10.8455Z"
-          fill="white"
+          fill="currentColor"
         />
       </g>
     </svg>
@@ -22,7 +22,7 @@ export const TwitterIcon = ({ className = '' }: any) => {
 export const YoutubeIcon = () => {
   return (
     <svg
-      className="h-[0.875rem] w-[1.25rem] text-white"
+      className="text-background h-3.5 w-5"
       viewBox="0 0 16 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,7 @@ export const FacebookIcon = ({ className = '' }: any) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={className}
+      className={cn('text-background', className)}
       viewBox="0 0 24 24"
     >
       <title>Facebook Logo</title>
@@ -60,7 +60,7 @@ export const FacebookIcon = ({ className = '' }: any) => {
 export const LinkedinIcon = ({ className = '' }: any) => {
   return (
     <svg
-      className={cn('h-[1rem] w-[1rem] text-white', className)}
+      className={cn('text-background size-4', className)}
       viewBox="0 0 13 12"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

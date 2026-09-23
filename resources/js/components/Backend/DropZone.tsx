@@ -198,7 +198,7 @@ export default function DropZone({
             </div>
           </label>
         ) : (
-          <div className="relative aspect-video w-full overflow-hidden rounded-[10px]">
+          <div className="relative aspect-video w-full overflow-hidden rounded-lg">
             <label
               htmlFor={inputId}
               className={cn(

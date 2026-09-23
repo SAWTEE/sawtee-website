@@ -10,21 +10,24 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import { cn } from '@/lib/utils';
 import type { MediaItem, Post, Publication } from '@/types';
 
 type FeaturedPublication = Publication;
 
+type ListKind = 'publication' | 'post';
+
 type FeaturedPublicationsProps = {
   publications?: FeaturedPublication[];
   blogPosts?: Post[];
+  publicationsHeading?: string | null;
+  blogsHeading?: string | null;
 };
-
-type ListKind = 'publication' | 'post';
 
 export const FeaturedPublications = ({
   publications,
   blogPosts,
+  publicationsHeading,
+  blogsHeading,
 }: FeaturedPublicationsProps) => {
   const sortedPublications = sortByCreatedAt(publications ?? []);
 
@@ -32,7 +35,7 @@ export const FeaturedPublications = ({
     <div className="border-borderColor/80 dark:bg-bgDarker rounded-md border bg-white px-4 py-6 shadow-sm sm:px-5 sm:py-7">
       {sortedPublications.length > 0 ? (
         <FeaturedItemsSlider
-          heading="Featured publications"
+          heading={publicationsHeading || 'Featured publications'}
           ariaLabel="Featured publications carousel"
           kind="publication"
           items={sortedPublications}
@@ -48,7 +51,7 @@ export const FeaturedPublications = ({
             />
           ) : null}
           <FeaturedItemsSlider
-            heading="Blogs and articles"
+            heading={blogsHeading || 'Blogs and articles'}
             ariaLabel="Blogs and articles carousel"
             kind="post"
             items={blogPosts}
@@ -108,12 +111,7 @@ function FeaturedItemsSlider({
               ]
             : []
         }
-        className={cn(
-          'w-full',
-          kind === 'publication'
-            ? 'featured-publication-carousel'
-            : 'featured-blog-carousel'
-        )}
+        className="w-full"
       >
         <CarouselContent className="ml-0">
           {items.map(item => {
@@ -147,7 +145,7 @@ function FeaturedItemsSlider({
 
 function SectionHeading({ children }: { children: ReactNode }) {
   return (
-    <h2 className="text-theme-700 dark:text-theme-300 mb-5 font-sans text-[11px] font-semibold tracking-[0.14em] uppercase md:text-xs">
+    <h2 className="text-theme-700 dark:text-theme-300 tracking-kicker mb-5 font-sans text-xs font-semibold uppercase md:text-xs">
       {children}
     </h2>
   );
@@ -193,7 +191,7 @@ function ListCopy({
 }) {
   return (
     <div className="min-w-0 flex-1">
-      <p className="text-secondary-foreground group-hover:text-theme-700 dark:group-hover:text-theme-300 font-sans text-sm leading-snug font-semibold transition-colors group-hover:underline group-hover:underline-offset-2 md:text-[0.9375rem]">
+      <p className="text-secondary-foreground group-hover:text-theme-700 dark:group-hover:text-theme-300 md:text-fine font-sans text-sm leading-snug font-semibold transition-colors group-hover:underline group-hover:underline-offset-2">
         {title}
       </p>
       {subtitle ? (

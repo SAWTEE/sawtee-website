@@ -3,6 +3,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { SubscribeForm } from './NewsletterCallout';
 
+vi.mock('@inertiajs/react', () => ({
+  usePage: () => ({ props: {} }),
+}));
+
 vi.mock('@/components/shared/theme-provider', () => ({
   useTheme: () => ({ resolvedTheme: 'light', theme: 'light' }),
 }));

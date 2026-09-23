@@ -11,6 +11,8 @@ test('shared menus default to empty collections when none exist', function () {
             ->component('Frontend/Pages/Home')
             ->has('primaryMenu', 0)
             ->has('footerMenu', 0)
+            ->has('siteCopy.footer.tagline')
+            ->has('siteCopy.mobile_menu')
         );
 });
 

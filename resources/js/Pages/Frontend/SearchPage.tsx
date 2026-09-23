@@ -109,7 +109,7 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
           : null;
 
   return (
-    <article className="group border-b border-[#006181]/12 py-7 last:border-b-0 md:py-8 dark:border-[#006181]/20">
+    <article className="group border-theme-600/12 dark:border-theme-600/20 border-b py-7 last:border-b-0 md:py-8">
       <div className="flex flex-col gap-3">
         {(label || post.author || typeLabel) && (
           <div className="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs tracking-wide uppercase">
@@ -120,7 +120,7 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
             ) : null}
             {typeLabel && label ? (
               <span
-                className="h-1 w-1 rounded-full bg-[#006181]/25 dark:bg-[#006181]/45"
+                className="bg-theme-600/25 dark:bg-theme-600/45 h-1 w-1 rounded-full"
                 aria-hidden
               />
             ) : null}
@@ -128,18 +128,18 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
               (categoryHref ? (
                 <Link
                   href={categoryHref}
-                  className="font-medium text-[#006181] transition-colors hover:text-[#004d66] dark:text-[#4da3c0] dark:hover:text-[#7ec4d8]"
+                  className="text-theme-600 hover:text-theme-700 dark:text-theme-450 dark:hover:text-theme-foam font-medium transition-colors"
                 >
                   {label}
                 </Link>
               ) : (
-                <span className="font-medium text-[#006181] dark:text-[#4da3c0]">
+                <span className="text-theme-600 dark:text-theme-450 font-medium">
                   {label}
                 </span>
               ))}
             {label && post.author ? (
               <span
-                className="h-1 w-1 rounded-full bg-[#006181]/25 dark:bg-[#006181]/45"
+                className="bg-theme-600/25 dark:bg-theme-600/45 h-1 w-1 rounded-full"
                 aria-hidden
               />
             ) : null}
@@ -151,11 +151,11 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
           </div>
         )}
 
-        <h2 className="text-primary font-serif text-xl leading-snug font-semibold tracking-tight md:text-2xl dark:text-zinc-100">
+        <h2 className="text-primary dark:text-foreground font-serif text-xl leading-snug font-semibold tracking-tight md:text-2xl">
           {href !== '#' ? (
             <Link
               href={href}
-              className="underline-offset-4 transition-colors hover:text-[#006181] hover:underline focus-visible:text-[#006181] focus-visible:underline focus-visible:outline-none dark:hover:text-[#4da3c0] dark:focus-visible:text-[#4da3c0]"
+              className="hover:text-theme-600 focus-visible:text-theme-600 dark:hover:text-theme-450 dark:focus-visible:text-theme-450 underline-offset-4 transition-colors hover:underline focus-visible:underline focus-visible:outline-none"
             >
               {post.title}
             </Link>
@@ -165,7 +165,7 @@ function SearchResultRow({ post }: { post: SearchResultPost }) {
         </h2>
 
         {excerpt ? (
-          <p className="text-muted-foreground max-w-3xl text-sm leading-relaxed md:text-[0.95rem]">
+          <p className="text-muted-foreground md:text-prose max-w-3xl text-sm leading-relaxed">
             {excerpt}
           </p>
         ) : null}
@@ -206,11 +206,10 @@ function FilterSelect({
         onChange={e => onChange(e.target.value)}
         className={cn(
           'border-borderColor/70 bg-background/80 h-10 w-full appearance-none rounded-md border px-3 pr-9 text-sm shadow-none backdrop-blur-sm',
-          'focus-visible:border-[#006181]/45 focus-visible:ring-2 focus-visible:ring-[#006181]/25 focus-visible:outline-none',
+          'focus-visible:border-theme-600/45 focus-visible:ring-theme-600/25 focus-visible:ring-2 focus-visible:outline-none',
           'disabled:cursor-not-allowed disabled:opacity-60',
-          'dark:border-[#006181]/35 dark:bg-black/40 dark:focus-visible:border-[#006181]/55',
-          'bg-[length:12px_12px] bg-[right_0.75rem_center] bg-no-repeat',
-          "bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 fill=%22none%22 viewBox=%220 0 24 24%22 stroke=%22%23006181%22%3E%3Cpath stroke-linecap=%22round%22 stroke-linejoin=%22round%22 stroke-width=%222%22 d=%22m6 9 6 6 6-6%22/%3E%3C/svg%3E')]"
+          'dark:border-theme-600/35 dark:focus-visible:border-theme-600/55 dark:bg-black/40',
+          'bg-select-chevron'
         )}
       >
         {children}
@@ -365,22 +364,18 @@ export default function SearchPage({
       />
 
       <div className="pb-16 md:pb-24">
-        <header className="relative overflow-hidden border-b border-[#006181]/12 dark:border-[#006181]/25">
+        <header className="border-theme-600/12 dark:border-theme-600/25 relative overflow-hidden border-b">
           <div
-            className="bg-pattern-tile dark:bg-pattern-tile-fade absolute inset-0 -z-[1] opacity-40 dark:opacity-30"
-            style={{
-              backgroundSize: '900px',
-              backgroundPosition: 'top center',
-            }}
+            className="bg-pattern-tile bg-pattern-search dark:bg-pattern-tile-fade absolute inset-0 -z-[1] opacity-40 dark:opacity-30"
             aria-hidden
           />
           <div className="from-background via-background/90 absolute inset-0 -z-[1] bg-linear-to-b to-transparent dark:from-black/80 dark:via-black/70" />
 
           <div className="relative mx-auto max-w-3xl px-4 pt-14 pb-10 md:px-6 md:pt-20 md:pb-14">
-            <p className="mb-3 text-xs font-medium tracking-[0.18em] text-[#006181] uppercase dark:text-[#4da3c0]">
+            <p className="tracking-label text-theme-600 dark:text-theme-450 mb-3 text-xs font-medium uppercase">
               Search
             </p>
-            <h1 className="text-primary font-serif text-3xl font-semibold tracking-tight md:text-4xl xl:text-5xl dark:text-zinc-100">
+            <h1 className="text-primary dark:text-foreground font-serif text-3xl font-semibold tracking-tight md:text-4xl xl:text-5xl">
               {heading}
             </h1>
             <p className="text-muted-foreground mt-3 max-w-2xl text-sm leading-relaxed md:text-base">
@@ -397,7 +392,7 @@ export default function SearchPage({
               </label>
               <div className="relative min-w-0 flex-1">
                 <SearchIcon
-                  className="pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2 text-[#006181] dark:text-[#4da3c0]"
+                  className="text-theme-600 dark:text-theme-450 pointer-events-none absolute top-1/2 left-3.5 h-4 w-4 -translate-y-1/2"
                   aria-hidden
                 />
                 <Input
@@ -410,26 +405,27 @@ export default function SearchPage({
                   onChange={e => setSearchQuery(e.target.value)}
                   className={cn(
                     '[&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none',
-                    'bg-background/80 h-12 w-full appearance-none rounded-md border border-[#006181]/20 py-3 pr-4 pl-10 text-base shadow-none backdrop-blur-sm',
+                    'bg-background/80 border-theme-600/20 h-12 w-full appearance-none rounded-md border py-3 pr-4 pl-10 text-base shadow-none backdrop-blur-sm',
                     'placeholder:text-muted-foreground/80',
-                    'focus-visible:border-[#006181]/45 focus-visible:ring-[#006181]/30',
-                    'dark:border-[#006181]/35 dark:bg-black/40 dark:focus-visible:border-[#006181]/55'
+                    'focus-visible:border-theme-600/45 focus-visible:ring-theme-600/30',
+                    'dark:border-theme-600/35 dark:focus-visible:border-theme-600/55 dark:bg-black/40'
                   )}
                 />
               </div>
               <Button
                 type="submit"
+                variant="brand"
                 disabled={isSearching}
-                className="h-12 shrink-0 rounded-md bg-[#006181] px-6 text-sm font-medium text-white hover:bg-[#004d66] disabled:opacity-70 dark:bg-[#006181] dark:hover:bg-[#0a7a9c]"
+                className="h-12 shrink-0 px-6 disabled:opacity-70"
               >
                 {isSearching ? 'Searching…' : 'Search'}
               </Button>
             </form>
 
             {showFilters && (
-              <div className="mt-6 border-t border-[#006181]/12 pt-6 dark:border-[#006181]/25">
+              <div className="border-theme-600/12 dark:border-theme-600/25 mt-6 border-t pt-6">
                 <div className="mb-3 flex items-center justify-between gap-3">
-                  <p className="text-muted-foreground text-xs font-medium tracking-[0.14em] uppercase">
+                  <p className="text-muted-foreground tracking-kicker text-xs font-medium uppercase">
                     Refine results
                   </p>
                   {filtersActive ? (
@@ -437,7 +433,7 @@ export default function SearchPage({
                       type="button"
                       onClick={clearFilters}
                       disabled={isSearching}
-                      className="inline-flex items-center gap-1 text-xs font-medium text-[#006181] transition-colors hover:text-[#004d66] disabled:opacity-60 dark:text-[#4da3c0] dark:hover:text-[#7ec4d8]"
+                      className="text-theme-600 hover:text-theme-700 dark:text-theme-450 dark:hover:text-theme-foam inline-flex items-center gap-1 text-xs font-medium transition-colors disabled:opacity-60"
                     >
                       <XIcon className="h-3.5 w-3.5" aria-hidden />
                       Clear filters
@@ -520,9 +516,9 @@ export default function SearchPage({
             >
               <span className="sr-only">Loading search results</span>
               <span className="inline-flex gap-1.5" aria-hidden>
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70 [animation-delay:-0.3s]" />
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70 [animation-delay:-0.15s]" />
-                <span className="h-2 w-2 animate-pulse rounded-full bg-[#006181]/70" />
+                <span className="bg-theme-600/70 animation-delay-300 h-2 w-2 animate-pulse rounded-full" />
+                <span className="bg-theme-600/70 animation-delay-150 h-2 w-2 animate-pulse rounded-full" />
+                <span className="bg-theme-600/70 h-2 w-2 animate-pulse rounded-full" />
               </span>
               <span className="text-muted-foreground text-sm">Searching…</span>
             </div>
@@ -530,7 +526,7 @@ export default function SearchPage({
 
           {!isSearching && !hasQuery && !filtersActive && (
             <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
-              <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
+              <p className="text-primary dark:text-foreground font-serif text-lg tracking-tight md:text-xl">
                 Start with a keyword
               </p>
               <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
@@ -542,7 +538,7 @@ export default function SearchPage({
 
           {!isSearching && (hasQuery || filtersActive) && !hasResults && (
             <div className="border-borderColor/60 mt-6 rounded-lg border border-dashed px-5 py-10 text-center md:px-8 dark:border-white/15">
-              <p className="text-primary font-serif text-lg tracking-tight md:text-xl dark:text-zinc-100">
+              <p className="text-primary dark:text-foreground font-serif text-lg tracking-tight md:text-xl">
                 No matches found
               </p>
               <p className="text-muted-foreground mx-auto mt-2 max-w-md text-sm leading-relaxed">
@@ -554,7 +550,7 @@ export default function SearchPage({
                 <button
                   type="button"
                   onClick={clearFilters}
-                  className="mt-5 text-sm font-medium text-[#006181] underline-offset-4 hover:underline dark:text-[#4da3c0]"
+                  className="text-theme-600 dark:text-theme-450 mt-5 text-sm font-medium underline-offset-4 hover:underline"
                 >
                   Clear filters
                 </button>

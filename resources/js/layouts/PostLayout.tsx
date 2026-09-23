@@ -82,7 +82,7 @@ export default function PostLayout({
         <header className="mx-auto w-full max-w-3xl">
           <PostHeader categories={post.category} heading={post.title} />
           <PostMeta
-            className="mt-5 border-b border-[#006181]/12 pb-5 dark:border-[#006181]/20"
+            className="border-theme-600/12 dark:border-theme-600/20 mt-5 border-b pb-5"
             author={post.author}
             date={post.published_at}
             readingTime={readingTime}
@@ -93,7 +93,7 @@ export default function PostLayout({
         {featured_image && (
           <div className="mx-auto mt-8 max-w-4xl md:mt-10">
             <FeaturedMedia
-              className="overflow-hidden rounded-lg border border-[#006181]/10 shadow-sm dark:border-white/10"
+              className="border-theme-600/10 overflow-hidden rounded-lg border shadow-sm dark:border-white/10"
               src={featured_image}
               srcSet={srcSet}
               alt={post.title}
@@ -119,7 +119,7 @@ export default function PostLayout({
             >
               <div
                 ref={contentRef}
-                className="post-content prose-base text-secondary-foreground text-[1.05rem] leading-[1.75] md:text-lg md:leading-8"
+                className="post-content prose-base text-secondary-foreground text-lead leading-prose md:text-lg md:leading-8"
               >
                 {children}
               </div>

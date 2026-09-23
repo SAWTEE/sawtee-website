@@ -44,6 +44,6 @@ describe('ReadingProgress', () => {
     fireEvent.scroll(window);
 
     expect(bar).toHaveAttribute('aria-valuenow', '50');
-    expect(bar).toHaveStyle({ transform: 'scaleX(0.5)' });
+    expect(bar.style.getPropertyValue('--progress')).toBe('0.5');
   });
 });

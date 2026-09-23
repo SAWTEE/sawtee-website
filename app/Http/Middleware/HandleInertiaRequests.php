@@ -3,9 +3,9 @@
 namespace App\Http\Middleware;
 
 use App\Models\Feature;
-use App\Models\SiteSetting;
 use App\Support\MemberInstituteAssembler;
 use App\Support\MenuTreeBuilder;
+use App\Support\SiteCopy;
 use App\Support\ZiggyConfig;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -65,9 +65,9 @@ class HandleInertiaRequests extends Middleware
                     ->map->toFrontendArray()
                     ->values()
                     ->all(),
-                'socialMenu' => fn () => SiteSetting::getValue('social_menu', []),
+                'socialMenu' => fn () => SiteCopy::all()['social_menu'] ?? [],
                 'aboutIntro' => Inertia::defer(
-                    fn () => SiteSetting::getValue('about_intro'),
+                    fn () => SiteCopy::all()['about_intro'] ?? null,
                     'below'
                 ),
                 'memberInstitutes' => fn () => app(MemberInstituteAssembler::class)->forMarquee(),
@@ -93,6 +93,7 @@ class HandleInertiaRequests extends Middleware
         return [
             'primaryMenu' => fn () => $menus->forLocation('header'),
             'footerMenu' => fn () => $menus->forLocation('footer'),
+            'siteCopy' => fn () => SiteCopy::all(),
         ];
     }
 }

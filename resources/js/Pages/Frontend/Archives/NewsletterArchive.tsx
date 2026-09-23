@@ -22,7 +22,7 @@ const NewsletterArchive = ({ posts = null }: NewsletterArchiveProps) => {
       <ArchiveIntro />
 
       <div className="mt-10 md:mt-12">
-        <div className="mb-6 flex items-end justify-between gap-4 border-b border-[#006181]/15 pb-3 dark:border-[#006181]/25">
+        <div className="border-theme-600/15 dark:border-theme-600/25 mb-6 flex items-end justify-between gap-4 border-b pb-3">
           <h3 className="text-secondary-foreground font-serif text-lg font-semibold tracking-tight md:text-xl">
             Issue archive
           </h3>
@@ -40,8 +40,8 @@ const NewsletterArchive = ({ posts = null }: NewsletterArchiveProps) => {
 
 function ArchiveIntro() {
   return (
-    <header className="relative overflow-hidden rounded-xl border border-[#006181]/12 bg-[linear-gradient(160deg,rgba(0,97,129,0.08),transparent_55%),linear-gradient(to_bottom,rgba(255,255,255,0.65),transparent)] px-6 py-8 md:px-8 md:py-10 dark:border-[#006181]/25 dark:bg-[linear-gradient(160deg,rgba(0,97,129,0.18),transparent_55%),linear-gradient(to_bottom,rgba(15,23,42,0.4),transparent)]">
-      <p className="text-primary mb-2 text-xs font-semibold tracking-[0.18em] uppercase">
+    <header className="border-theme-600/12 bg-brand-wash dark:border-theme-600/25 relative overflow-hidden rounded-xl border px-6 py-8 md:px-8 md:py-10">
+      <p className="text-primary tracking-label mb-2 text-xs font-semibold uppercase">
         Monthly e-newsletter
       </p>
       <h2 className="text-primary max-w-3xl font-serif text-2xl leading-tight font-bold md:text-3xl lg:text-4xl">

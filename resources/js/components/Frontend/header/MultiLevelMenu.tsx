@@ -109,7 +109,7 @@ function MultiLevelMenuItems({
         if (hasChildren(item)) {
           return (
             <DropdownMenuSub key={key}>
-              <DropdownMenuSubTrigger className="focus:bg-bgDarker data-[state=open]:bg-bgDarker font-medium dark:focus:bg-neutral-800 dark:data-[state=open]:bg-neutral-800">
+              <DropdownMenuSubTrigger className="focus:bg-bgDarker data-[state=open]:bg-bgDarker dark:focus:bg-muted dark:data-[state=open]:bg-muted font-medium">
                 {item.title}
               </DropdownMenuSubTrigger>
               <DropdownMenuPortal>
@@ -118,7 +118,7 @@ function MultiLevelMenuItems({
                     <>
                       <DropdownMenuItem
                         asChild
-                        className="focus:bg-bgDarker dark:focus:bg-neutral-800"
+                        className="focus:bg-bgDarker dark:focus:bg-muted"
                       >
                         <MenuLink item={item} />
                       </DropdownMenuItem>
@@ -139,7 +139,7 @@ function MultiLevelMenuItems({
           <DropdownMenuItem
             key={key}
             asChild
-            className="focus:bg-bgDarker dark:focus:bg-neutral-800"
+            className="focus:bg-bgDarker dark:focus:bg-muted"
           >
             <MenuLink item={item} />
           </DropdownMenuItem>
@@ -155,7 +155,7 @@ export const topLevelNavItemClassName =
 
 const triggerBaseClassName = cn(
   topLevelNavItemClassName,
-  'outline-none transition-[color,box-shadow] hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50'
+  'outline-none transition-all hover:bg-accent hover:text-accent-foreground focus-visible:bg-accent focus-visible:text-accent-foreground focus-visible:outline-1 focus-visible:ring focus-visible:ring-ring/50'
 );
 
 export type MultiLevelMenuProps = {
@@ -302,7 +302,7 @@ export default function MultiLevelMenu({
           <>
             <DropdownMenuItem
               asChild
-              className="focus:bg-bgDarker dark:focus:bg-neutral-800"
+              className="focus:bg-bgDarker dark:focus:bg-muted"
             >
               <MenuLink item={item} />
             </DropdownMenuItem>

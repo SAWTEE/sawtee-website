@@ -1,14 +1,12 @@
 import { Head, usePage } from '@inertiajs/react';
 import type { ReactNode } from 'react';
 
+import { useSiteCopy } from '@/lib/site-copy';
 import type { SeoMeta } from '@/types';
 
 type WebsiteHeadProps = Partial<SeoMeta> & {
   children?: ReactNode;
 };
-
-const DEFAULT_DESCRIPTION =
-  'South Asia Watch on Trade, Economics and Environment (SAWTEE) — research, dialogue, and advocacy on trade and development.';
 
 const DEFAULT_IMAGE = '/assets/logo-sawtee.webp';
 
@@ -60,11 +58,13 @@ const WebsiteHead = ({
   jsonLd,
   children,
 }: WebsiteHeadProps) => {
+  const copy = useSiteCopy();
   const { app_url: appUrl = '' } = usePage().props as { app_url?: string };
 
-  const resolvedTitle = title?.trim() || 'SAWTEE';
-  const resolvedDescription = description?.trim() || DEFAULT_DESCRIPTION;
-  const resolvedImage = toAbsoluteUrl(image ?? DEFAULT_IMAGE, appUrl);
+  const resolvedTitle = title?.trim() || copy.seo.default_title;
+  const resolvedDescription =
+    description?.trim() || copy.seo.default_description;
+  const resolvedImage = toAbsoluteUrl(image ?? copy.seo.default_image, appUrl);
   const resolvedUrl = toAbsoluteUrl(url ?? '/', appUrl);
   const brandedTitle = withBrandTitle(resolvedTitle);
 

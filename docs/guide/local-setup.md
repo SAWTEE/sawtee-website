@@ -44,6 +44,7 @@ On the staging **server**, install secrets as `.env` (GitHub Actions does this f
 | `npm run build` | Production **client-only** assets (+ PWA files) |
 | `npm run build:ssr` | Optional: also emit `bootstrap/ssr` (not used by cPanel deploy) |
 | `php artisan test` | PHP test suite |
+| `php artisan sawtee:seed-content` | Seed fellowships, institutes, home features, and site settings |
 | `npm run docs:dev` | Run this documentation site locally (`cd docs && npm i && npm run docs:dev`) |
 
 ## Preview branded error pages

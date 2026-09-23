@@ -6,32 +6,33 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { SITE_COPY_DEFAULTS } from '@/lib/site-copy';
 
 export const MapModel = ({
   isOpen = undefined,
   onOpenChange = undefined,
+  title = SITE_COPY_DEFAULTS.footer.map_title,
+  description = SITE_COPY_DEFAULTS.footer.map_description,
+  embedUrl = SITE_COPY_DEFAULTS.footer.map_embed_url,
+  iframeTitle = SITE_COPY_DEFAULTS.footer.map_iframe_title,
 }: any) => {
   return (
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Location Map</DialogTitle>
-          <DialogDescription>
-            View SAWTEE&apos;s location in google maps.
-          </DialogDescription>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         <DialogClose />
         <div className="w-full">
           <iframe
-            src={
-              'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3531.8576852768524!2d85.329329!3d27.72168!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1913dfb0b0b3%3A0x4d5d3519d24d3c38!2sSouth%20Asia%20Watch%20on%20Trade%2C%20Economics%20and%20Environment%20(SAWTEE)!5e0!3m2!1sen!2snp!4v1700216228197!5m2!1sen!2snp'
-            }
+            src={embedUrl}
             className="aspect-video w-full rounded-md"
             width="100%"
             // @ts-ignore allowlist-migration
             allowFullScreen="true"
             loading="lazy"
-            title="sawtee location map"
+            title={iframeTitle}
             referrerPolicy="no-referrer-when-downgrade"
           />
         </div>

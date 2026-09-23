@@ -1,4 +1,5 @@
 import { usePage } from '@inertiajs/react';
+import type { CSSProperties } from 'react';
 
 import { cn } from '@/lib/utils';
 import type { MemberInstituteLogo, SharedProps } from '@/types';
@@ -30,7 +31,7 @@ function InstituteMark({
         <img
           src={logo}
           alt=""
-          className="max-h-12 max-w-full object-contain grayscale transition-[filter] duration-300 group-hover:grayscale-0 md:max-h-14 dark:brightness-110"
+          className="max-h-12 max-w-full object-contain grayscale transition-all duration-300 group-hover:grayscale-0 md:max-h-14 dark:brightness-110"
           loading="lazy"
           decoding="async"
         />
@@ -77,7 +78,7 @@ export default function MemberInstitutesMarquee({
 
       <div
         className="animate-marquee flex w-max motion-reduce:animate-none"
-        style={{ ['--duration' as string]: '45s' }}
+        style={{ '--duration': '45s' } as CSSProperties}
       >
         <div className="flex items-center">
           {items.map(inst => (

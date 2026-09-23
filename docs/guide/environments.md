@@ -44,7 +44,7 @@ Admin paths are never recorded. Dashboard analytics load as a deferred Inertia p
 
 ## Branded errors vs debug
 
-With `APP_DEBUG=true` in `local` or `development`, Laravel’s detailed exception UI is kept (branded Inertia error pages are skipped). Staging/production should run `APP_DEBUG=false` so visitors see the branded `Errors/Error` page for common statuses (403, 404, 500, 503).
+With `APP_DEBUG=true` in `local` or `development`, Laravel’s detailed exception UI is kept (branded Inertia error pages are skipped). Staging/production should run `APP_DEBUG=false` so visitors see the branded `Errors/Error` page for common statuses (403, 404, 500, 503). Visitor-facing strings on that page are edited in **Site Settings → Error pages**.
 
 ## Session cookies on HTTPS
 

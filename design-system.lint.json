@@ -1,0 +1,62 @@
+{
+  "rules": {
+    "shadcn/no-raw-colors": [
+      "error",
+      {
+        "message": "Use a SAWTEE theme color for \"{{className}}\" (theme, primary, muted, border, destructive, success, warning, brand). See {{file}}."
+      }
+    ],
+    "shadcn/no-arbitrary-values": [
+      "error",
+      {
+        "allow": ["layout"]
+      }
+    ],
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-restyle": [
+      "error",
+      {
+        "allow": [
+          "layout",
+          "spacing",
+          "typography",
+          "border",
+          "color",
+          "shape",
+          "effects",
+          "motion"
+        ],
+        "contracts": [
+          {
+            "pattern": "^Card$",
+            "allow": ["layout", "spacing"],
+            "message": {
+              "default": "Use Card variant=\"stat\" for the dashboard wash. Card owns its color, shape, and shadow."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": ["resources/js/components/ui/**"],
+      "rules": {
+        "shadcn/no-restyle": "off",
+        "shadcn/no-arbitrary-values": "off"
+      }
+    },
+    {
+      "files": ["resources/js/components/ui/multi-select.tsx"],
+      "rules": {
+        "shadcn/no-inline-styles": "off"
+      }
+    },
+    {
+      "files": ["resources/js/components/shared/ApplicationLogo.tsx"],
+      "rules": {
+        "shadcn/no-raw-colors": "off"
+      }
+    }
+  ]
+}

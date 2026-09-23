@@ -77,6 +77,12 @@ To preview the branded page locally, temporarily set `APP_DEBUG=false` (or use a
 
 Covered by `tests/Feature/ErrorPagesTest.php`.
 
+## Public site copy
+
+Visitor-facing strings that used to live in React now come from `App\Support\SiteCopy` (the `site_settings` table), edited at **`/admin/settings`**. Home feature cards are **`/admin/features`**. Homepage block headings and intros are fields on **Home Page Sections**.
+
+`HandleInertiaRequests` shares merged `siteCopy` on public pages (`shareOnce`). Saving a setting forgets the `site_settings` cache. Editor guide: [`docs/cms/site-settings.md`](./docs/cms/site-settings.md) and [`docs/cms/homepage.md`](./docs/cms/homepage.md).
+
 ## Inertia v3 performance / UX
 
 Notable patterns already in the app:

@@ -27,7 +27,7 @@ const ExploreButton = ({
     <InertiaLink
       href={target}
       className={cn(
-        'inline-flex max-w-full min-w-0 items-center gap-1 rounded-md py-2 text-sm font-medium text-[#006181] underline underline-offset-2 hover:text-[#006181]/80 hover:underline-offset-4 dark:text-[#4da3c0] dark:hover:text-[#4da3c0]/80',
+        'text-theme-600 hover:text-theme-600/80 dark:text-theme-450 dark:hover:text-theme-450/80 inline-flex max-w-full min-w-0 items-center gap-1 rounded-md py-2 text-sm font-medium underline underline-offset-2 hover:underline-offset-4',
         className
       )}
       onMouseEnter={() => setHovered(true)}

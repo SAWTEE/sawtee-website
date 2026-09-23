@@ -27,7 +27,7 @@ const EventsArchive = ({ posts = null, ...rest }: EventsArchiveProps) => {
               className="relative flex w-full flex-col overflow-hidden p-0 shadow-sm xl:flex-row xl:items-stretch xl:gap-6 xl:border-0 xl:bg-transparent xl:p-0 xl:shadow-none"
               {...rest}
             >
-              <div className="relative aspect-16/10 w-full shrink-0 overflow-hidden bg-zinc-100 xl:aspect-auto xl:min-h-55 xl:w-[min(42%,28rem)] xl:self-stretch xl:rounded-lg dark:bg-zinc-800/60">
+              <div className="bg-muted dark:bg-muted relative aspect-16/10 w-full shrink-0 overflow-hidden xl:aspect-auto xl:min-h-55 xl:w-[min(42%,28rem)] xl:self-stretch xl:rounded-lg">
                 {featured_image?.original_url ? (
                   <img
                     src={featured_image.original_url}
@@ -42,10 +42,10 @@ const EventsArchive = ({ posts = null, ...rest }: EventsArchiveProps) => {
 
               <div className="flex min-w-0 flex-1 flex-col justify-between gap-3 px-5 py-5 xl:px-0 xl:py-1">
                 <div className="space-y-2">
-                  <time className="block text-sm font-normal text-slate-600 dark:text-slate-300">
+                  <time className="text-muted-foreground dark:text-muted-foreground block text-sm font-normal">
                     {formatDate(published_at)}
                   </time>
-                  <h3 className="text-md font-semibold text-slate-800 xl:text-lg dark:text-slate-300">
+                  <h3 className="text-md text-foreground dark:text-muted-foreground font-semibold xl:text-lg">
                     <Link
                       href={`/category/${category?.slug}/${slug}`}
                       className="block leading-snug hover:underline hover:underline-offset-2"
@@ -54,7 +54,7 @@ const EventsArchive = ({ posts = null, ...rest }: EventsArchiveProps) => {
                     </Link>
                   </h3>
                   {excerpt ? (
-                    <div className="text-sm leading-relaxed text-slate-600 dark:text-slate-300">
+                    <div className="text-muted-foreground dark:text-muted-foreground text-sm leading-relaxed">
                       <p className="line-clamp-3">{excerpt}</p>
                     </div>
                   ) : null}

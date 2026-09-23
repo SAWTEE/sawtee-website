@@ -16,7 +16,7 @@ hero:
       link: /website/overview
 features:
   - title: For editors
-    details: Step-by-step help for posts, publications, menus, homepage blocks, and media uploads.
+    details: Step-by-step help for posts, publications, menus, homepage blocks, site settings, and media uploads.
   - title: For the public site
     details: How home, archives, and detail pages map to CMS content and SEO fields.
   - title: Hosted on GitHub Pages

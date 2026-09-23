@@ -72,7 +72,7 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
               src={featured_image?.original_url}
               alt={post.title}
             />
-            <div className="absolute top-0 right-0 bottom-0 left-0 bg-gray-900 opacity-25 transition duration-300 hover:bg-transparent" />
+            <div className="bg-foreground absolute top-0 right-0 bottom-0 left-0 opacity-25 transition duration-300 hover:bg-transparent" />
           </Link>
         )}
         <Link href={`/category/${categorySlug}/${post.slug}`}>

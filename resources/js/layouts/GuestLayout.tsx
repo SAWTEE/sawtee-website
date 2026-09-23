@@ -10,7 +10,7 @@ type GuestLayoutProps = { children: ReactNode };
 export default function Guest({ children }: GuestLayoutProps) {
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0 dark:bg-gray-900">
+      <div className="bg-muted dark:bg-background flex min-h-screen flex-col items-center pt-6 sm:justify-center sm:pt-0">
         <div className="absolute right-10 bottom-10">
           <ModeToggle />
         </div>
@@ -20,7 +20,7 @@ export default function Guest({ children }: GuestLayoutProps) {
           </InertiaLink>
         </div>
 
-        <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg dark:bg-gray-800">
+        <div className="dark:bg-muted mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
           {children}
         </div>
       </div>

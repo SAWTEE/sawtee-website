@@ -148,7 +148,7 @@ class HomePageDataAssembler
             )),
             'slidesResponsiveImages' => $slidesResponsiveImages,
             'homePageSections' => HomePageSection::query()
-                ->get(['id', 'name', 'show'])
+                ->get(['id', 'name', 'heading', 'intro', 'show'])
                 ->toArray(),
             'features' => Feature::query()
                 ->active()

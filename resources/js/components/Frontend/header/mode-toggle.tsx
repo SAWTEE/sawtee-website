@@ -19,18 +19,18 @@ export function ModeToggle() {
       title={ariaLabel}
       onClick={() => setTheme(nextTheme)}
       className={cn(
-        'text-muted-foreground relative h-10 w-10 shrink-0 rounded-md border border-[#006181]/15 bg-transparent shadow-none transition-colors',
-        'hover:text-primary hover:border-[#006181]/35 hover:bg-[#006181]/5',
-        'focus-visible:ring-[#006181]/40',
-        'dark:border-[#006181]/30 dark:text-zinc-300',
-        'dark:hover:border-[#006181]/45 dark:hover:bg-[#006181]/10 dark:hover:text-zinc-100'
+        'text-muted-foreground border-theme-600/15 relative h-10 w-10 shrink-0 rounded-md border bg-transparent shadow-none transition-colors',
+        'hover:text-primary hover:border-theme-600/35 hover:bg-theme-600/5',
+        'focus-visible:ring-theme-600/40',
+        'dark:border-theme-600/30 dark:text-muted-foreground',
+        'dark:hover:border-theme-600/45 dark:hover:bg-theme-600/10 dark:hover:text-foreground'
       )}
     >
       <Sun
         aria-hidden
         strokeWidth={1.75}
         className={cn(
-          'h-[1.125rem] w-[1.125rem] text-[#006181] transition-all duration-300 ease-out',
+          'text-theme-600 h-[1.125rem] w-[1.125rem] transition-all duration-300 ease-out',
           'scale-100 rotate-0 opacity-100',
           'dark:scale-0 dark:-rotate-90 dark:opacity-0'
         )}
@@ -39,7 +39,7 @@ export function ModeToggle() {
         aria-hidden
         strokeWidth={1.75}
         className={cn(
-          'absolute h-[1.125rem] w-[1.125rem] text-[#4da3c0] transition-all duration-300 ease-out',
+          'text-theme-450 absolute h-[1.125rem] w-[1.125rem] transition-all duration-300 ease-out',
           'scale-0 rotate-90 opacity-0',
           'dark:scale-100 dark:rotate-0 dark:opacity-100'
         )}
