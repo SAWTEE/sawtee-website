@@ -15,7 +15,11 @@
         : 'SAWTEE | '.$ogTitle;
     $ogDescription = trim((string) ($seo['description'] ?? ''));
     if ($ogDescription === '') {
-        $ogDescription = (string) (\App\Support\SiteCopy::all()['seo']['default_description'] ?? '');
+        // Admin screens are not public share targets. Skip the site-settings
+        // lookup so the CMS layout does not pay for (and then cache) that query.
+        $ogDescription = request()->is('admin', 'admin/*')
+            ? (string) config('app.name', 'SAWTEE')
+            : (string) (\App\Support\SiteCopy::all()['seo']['default_description'] ?? '');
     }
     $ogImage = (string) ($seo['image'] ?? '');
     if ($ogImage === '') {
