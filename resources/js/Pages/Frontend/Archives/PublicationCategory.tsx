@@ -13,6 +13,7 @@ function PublicationCategory({
   publications,
   infocus = null,
   sawteeInMedia = null,
+  events = null,
   featured_image = null,
   showSubscriptionBox = true,
   srcSet: _srcSet = null,
@@ -66,6 +67,13 @@ function PublicationCategory({
                 array={sawteeInMedia}
                 title="SAWTEE in Media"
                 link="/category/sawtee-in-media"
+              />
+            )}
+            {events && (
+              <SidebarWidget
+                array={events}
+                title="Featured Events"
+                link="/category/featured-events"
               />
             )}
             {infocus && (

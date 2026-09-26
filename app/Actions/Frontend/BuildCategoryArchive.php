@@ -8,6 +8,7 @@ use App\Models\Post;
 use App\Models\Publication;
 use App\Models\Research;
 use App\Models\Team;
+use App\Support\ArchiveSidebarPosts;
 use App\Support\MediaConversionUrl;
 use App\Support\ResolvesSeoMeta;
 use App\Support\SubstackFeed;
@@ -20,6 +21,7 @@ class BuildCategoryArchive
     public function __construct(
         protected ResolvesSeoMeta $seo,
         protected SubstackFeed $substackFeed,
+        protected ArchiveSidebarPosts $sidebarPosts,
     ) {}
 
     public function handle(
@@ -30,10 +32,10 @@ class BuildCategoryArchive
         ?string $article = null,
     ): Response {
         $segments = $request->segments();
-
-        $infocus = $slug === 'in-focus' ? null : $this->postsByCategorySlug('in-focus', 5);
-        $sawteeInMedia = $slug === 'sawtee-in-media' ? null : $this->postsByCategorySlug('sawtee-in-media', 5);
-        $events = $slug === 'featured-events' ? null : $this->postsByCategorySlug('featured-events', 5);
+        $sidebar = $this->sidebarPosts->for($slug);
+        $infocus = $sidebar['infocus'];
+        $sawteeInMedia = $sidebar['sawteeInMedia'];
+        $events = $sidebar['events'];
 
         $category = Category::with(
             $slug === 'publications' ? ['parent', 'children'] : ['parent']
@@ -45,8 +47,23 @@ class BuildCategoryArchive
         );
 
         return match ($slug) {
-            'research' => $this->handleResearchCategory($category, $featuredImage, $categoryResponsiveImages),
-            'teams' => $this->handleTeamsCategory($category, $subcategory, $featuredImage, $categoryResponsiveImages),
+            'research' => $this->handleResearchCategory(
+                $category,
+                $featuredImage,
+                $categoryResponsiveImages,
+                $infocus,
+                $sawteeInMedia,
+                $events,
+            ),
+            'teams' => $this->handleTeamsCategory(
+                $category,
+                $subcategory,
+                $featuredImage,
+                $categoryResponsiveImages,
+                $infocus,
+                $sawteeInMedia,
+                $events,
+            ),
             'publications' => $this->handlePublicationsCategory(
                 $category,
                 $subcategory,
@@ -55,6 +72,7 @@ class BuildCategoryArchive
                 $article,
                 $infocus,
                 $sawteeInMedia,
+                $events,
                 $featuredImage,
                 $categoryResponsiveImages
             ),
@@ -66,6 +84,7 @@ class BuildCategoryArchive
                 $segments,
                 $infocus,
                 $sawteeInMedia,
+                $events,
                 $featuredImage,
                 $categoryResponsiveImages
             ),
@@ -82,17 +101,7 @@ class BuildCategoryArchive
         };
     }
 
-    protected function postsByCategorySlug(string $slug, int $limit)
-    {
-        return Post::with(['category', 'media'])
-            ->whereHas('category', fn ($query) => $query->where('slug', $slug))
-            ->where('status', 'published')
-            ->latest()
-            ->take($limit)
-            ->get();
-    }
-
-    protected function handleResearchCategory($category, $featuredImage, $categoryResponsiveImages): Response
+    protected function handleResearchCategory($category, $featuredImage, $categoryResponsiveImages, $infocus, $sawteeInMedia, $events): Response
     {
         $collection = Research::with('media', 'file')->orderByDesc('id')->get();
         $posts = collect($collection)->groupBy('year')->all();
@@ -100,13 +109,16 @@ class BuildCategoryArchive
         return Inertia::render('Frontend/Category', [
             'category' => $category,
             'posts' => $posts,
+            'infocus' => $infocus,
+            'sawteeInMedia' => $sawteeInMedia,
+            'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
         ]);
     }
 
-    protected function handleTeamsCategory($category, $subcategory, $featuredImage, $categoryResponsiveImages): Response
+    protected function handleTeamsCategory($category, $subcategory, $featuredImage, $categoryResponsiveImages, $infocus, $sawteeInMedia, $events): Response
     {
         if (! $subcategory) {
             $teams = Team::with('media')->orderBy('order', 'ASC')->simplePaginate(10);
@@ -125,6 +137,9 @@ class BuildCategoryArchive
         return Inertia::render('Frontend/Category', [
             'category' => $category,
             'posts' => $posts,
+            'infocus' => $infocus,
+            'sawteeInMedia' => $sawteeInMedia,
+            'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
@@ -139,6 +154,7 @@ class BuildCategoryArchive
         $article,
         $infocus,
         $sawteeInMedia,
+        $events,
         $featuredImage,
         $categoryResponsiveImages,
     ): Response {
@@ -205,6 +221,7 @@ class BuildCategoryArchive
                     'category' => $category,
                     'infocus' => $infocus,
                     'sawteeInMedia' => $sawteeInMedia,
+                    'events' => $events,
                     'publications' => $publications,
                     'srcSet' => $categoryResponsiveImages,
                     'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
@@ -218,6 +235,7 @@ class BuildCategoryArchive
                 'publications' => $publications,
                 'infocus' => $infocus,
                 'sawteeInMedia' => $sawteeInMedia,
+                'events' => $events,
                 'featured_image' => $featuredImage,
                 'srcSet' => $categoryResponsiveImages,
                 'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
@@ -230,6 +248,7 @@ class BuildCategoryArchive
             'category' => $category,
             'infocus' => $infocus,
             'sawteeInMedia' => $sawteeInMedia,
+            'events' => $events,
             'publications' => $publications,
             'srcSet' => $categoryResponsiveImages,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
@@ -244,6 +263,7 @@ class BuildCategoryArchive
         $segments,
         $infocus,
         $sawteeInMedia,
+        $events,
         $featuredImage,
         $categoryResponsiveImages,
     ): Response {
@@ -265,6 +285,7 @@ class BuildCategoryArchive
                 'posts' => $posts,
                 'infocus' => $infocus,
                 'sawteeInMedia' => $sawteeInMedia,
+                'events' => $events,
                 'featured_image' => $featuredImage,
                 'srcSet' => $categoryResponsiveImages,
                 'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
@@ -289,6 +310,7 @@ class BuildCategoryArchive
             'posts' => $posts,
             'infocus' => $infocus,
             'sawteeInMedia' => $sawteeInMedia,
+            'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),

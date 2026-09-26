@@ -12,6 +12,8 @@ type Props = FrontendArchiveProps & { showSubscriptionBox?: boolean };
 function Archive({
   posts,
   sawteeInMedia,
+  infocus,
+  events,
   meta_title,
   meta_description,
   layout_title: _layout_title,
@@ -63,6 +65,20 @@ function Archive({
                 array={sawteeInMedia}
                 title={'Sawtee in Media'}
                 link={'/category/sawtee-in-media'}
+              />
+            )}
+            {events && (
+              <SidebarWidget
+                array={events}
+                title={'Featured Events'}
+                link={'/category/featured-events'}
+              />
+            )}
+            {infocus && (
+              <SidebarWidget
+                array={infocus}
+                title={'In Focus'}
+                link={'/category/in-focus'}
               />
             )}
           </div>

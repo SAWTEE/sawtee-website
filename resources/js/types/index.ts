@@ -632,6 +632,7 @@ export type FrontendArchiveProps = PageProps<{
   layout_title?: string;
   posts?: Paginated<Post> | Post[];
   sawteeInMedia?: Post[] | null;
+  events?: Post[] | null;
   category?: Category;
   publications?: PublicationsBySlug | Paginated<Publication> | null;
   teams?: SimplePaginated<Team> | null;
@@ -669,6 +670,7 @@ export type FrontendPublicationsArchiveProps = PageProps<{
   publications?: PublicationsBySlug | null;
   infocus?: Post[] | null;
   sawteeInMedia?: Post[] | null;
+  events?: Post[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
   seo?: SeoMeta;
@@ -680,6 +682,7 @@ export type FrontendPublicationCategoryProps = PageProps<{
   publications: Paginated<Publication>;
   infocus?: Post[] | null;
   sawteeInMedia?: Post[] | null;
+  events?: Post[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
   seo?: SeoMeta;

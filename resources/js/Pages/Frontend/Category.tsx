@@ -61,12 +61,9 @@ function Category({
 }: Props) {
   const isInFocus =
     category.slug.includes('infocus') || category.slug.includes('in-focus');
-  const isMedia = category.slug.includes('sawtee-in-media');
-  const isEvents = category.slug.includes('featured-events');
+  const isPolicyOutreach = category.slug.includes('featured-events');
   const isNewsletters = category.slug.includes('newsletters');
-  const isOpinionInLead = category.slug.includes('opinion-in-lead');
   const isCovid = category.slug.includes('covid');
-  const hideMediaAndInfocusSidebar = isNewsletters || isOpinionInLead;
   const paginated = isPaginatedPosts(posts) ? posts : null;
 
   const renderArchiveComponent = (): ReactNode => {
@@ -139,21 +136,23 @@ function Category({
                   </Glassbox>
                 )
               )}
-              {!hideMediaAndInfocusSidebar && !isMedia && sawteeInMedia && (
-                <SidebarWidget
-                  array={sawteeInMedia}
-                  title={'Sawtee in Media'}
-                  link={'/category/sawtee-in-media'}
-                />
-              )}
-              {!isCovid && !isEvents && events && (
+              {!isNewsletters &&
+                (isPolicyOutreach || isInFocus) &&
+                sawteeInMedia && (
+                  <SidebarWidget
+                    array={sawteeInMedia}
+                    title={'Sawtee in Media'}
+                    link={'/category/sawtee-in-media'}
+                  />
+                )}
+              {!isPolicyOutreach && events && (
                 <SidebarWidget
                   array={events}
                   title={'Featured Events'}
                   link={'/category/featured-events'}
                 />
               )}
-              {!hideMediaAndInfocusSidebar && !isInFocus && infocus && (
+              {!isNewsletters && !isInFocus && infocus && (
                 <SidebarWidget
                   array={infocus}
                   link={'/category/in-focus'}

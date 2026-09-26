@@ -48,6 +48,59 @@ test('category archive returns inertia payload', function () {
             ->where('category.slug', 'in-focus')
             ->has('posts')
             ->has('seo')
+            ->has('events')
+            ->has('sawteeInMedia')
+            ->where('infocus', null)
+        );
+});
+
+test('default category archive sends featured events and in focus without post bodies', function () {
+    $events = Category::query()->create([
+        'name' => 'Featured Events',
+        'slug' => 'featured-events',
+        'type' => 'post',
+        'parent_id' => null,
+    ]);
+    $focus = Category::query()->create([
+        'name' => 'In focus',
+        'slug' => 'in-focus',
+        'type' => 'post',
+        'parent_id' => null,
+    ]);
+    Post::factory()->create([
+        'category_id' => $events->id,
+        'theme_id' => null,
+        'status' => 'published',
+        'title' => 'Outreach sidebar item',
+        'content' => '<p>This body must not ship to the sidebar.</p>',
+    ]);
+    Post::factory()->create([
+        'category_id' => $focus->id,
+        'theme_id' => null,
+        'status' => 'published',
+        'title' => 'Focus sidebar item',
+        'content' => '<p>Also hidden from the sidebar.</p>',
+    ]);
+    $category = Category::query()->create([
+        'name' => 'LDCs Interests',
+        'slug' => 'ldcs-interests',
+        'type' => 'post',
+        'parent_id' => null,
+    ]);
+
+    $this->get(route('category.show', $category->slug))
+        ->assertOk()
+        ->assertInertia(fn (Assert $page) => $page
+            ->component('Frontend/Category')
+            ->where('events.0.title', 'Outreach sidebar item')
+            ->where('events.0.category.slug', 'featured-events')
+            ->missing('events.0.content')
+            ->missing('events.0.excerpt')
+            ->missing('events.0.media')
+            ->where('infocus.0.title', 'Focus sidebar item')
+            ->missing('infocus.0.content')
+            ->missing('infocus.0.media')
+            ->where('sawteeInMedia', null)
         );
 });
 

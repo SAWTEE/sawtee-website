@@ -19,6 +19,7 @@ function PublicationsArchive({
   category,
   infocus = null,
   sawteeInMedia = null,
+  events = null,
   publications = null,
   showSubscriptionBox = true,
   featured_image = null,
@@ -58,6 +59,13 @@ function PublicationsArchive({
                 array={sawteeInMedia}
                 title={'SAWTEE in Media'}
                 link={'/category/sawtee-in-media'}
+              />
+            )}
+            {events && (
+              <SidebarWidget
+                array={events}
+                title={'Featured Events'}
+                link={'/category/featured-events'}
               />
             )}
             {infocus && (

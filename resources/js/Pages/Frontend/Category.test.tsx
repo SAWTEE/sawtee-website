@@ -43,6 +43,14 @@ vi.mock('./Archives/DefaultArchive', () => ({
   default: () => <div data-testid="default-archive" />,
 }));
 
+vi.mock('./Archives/LDCArchive', () => ({
+  default: () => <div data-testid="ldc-archive" />,
+}));
+
+vi.mock('./Archives/EventsArchive', () => ({
+  default: () => <div data-testid="events-archive" />,
+}));
+
 vi.mock('@/lib/page-layouts', () => ({
   mainWithPageLayout: () => () => null,
 }));
@@ -114,16 +122,17 @@ describe('Category newsletters layout', () => {
     expect(screen.getByTestId('newsletter-archive')).toBeInTheDocument();
   });
 
-  it('omits Sawtee in Media and In Focus widgets on newsletters', () => {
+  it('keeps only featured events beside the substack feed on newsletters', () => {
     render(<Category {...baseProps} />);
 
     expect(screen.getByTestId('substack-feed')).toBeInTheDocument();
     expect(screen.getByText('Featured Events')).toBeInTheDocument();
     expect(screen.queryByText('Sawtee in Media')).not.toBeInTheDocument();
     expect(screen.queryByText('In Focus')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('sidebar-widget')).toHaveLength(1);
   });
 
-  it('omits Sawtee in Media and In Focus widgets on opinion in lead', () => {
+  it('keeps featured events and in focus on opinion in lead', () => {
     render(
       <Category
         {...baseProps}
@@ -137,15 +146,95 @@ describe('Category newsletters layout', () => {
     );
 
     expect(screen.getByText('Featured Events')).toBeInTheDocument();
-    expect(screen.getByTestId('subscription-card')).toBeInTheDocument();
+    expect(screen.getByText('In Focus')).toBeInTheDocument();
     expect(screen.queryByText('Sawtee in Media')).not.toBeInTheDocument();
-    expect(screen.queryByText('In Focus')).not.toBeInTheDocument();
+    expect(screen.getByTestId('subscription-card')).toBeInTheDocument();
+    expect(screen.getAllByTestId('sidebar-widget')).toHaveLength(2);
     expect(
       screen.queryByTestId('newsletter-subscribe-cta')
     ).not.toBeInTheDocument();
   });
 
-  it('omits Featured Events widget on covid resources', () => {
+  it('keeps featured events and in focus on LDC interest', () => {
+    render(
+      <Category
+        {...baseProps}
+        category={{
+          ...baseProps.category,
+          id: 11,
+          name: 'LDCs Interests',
+          slug: 'ldcs-interests',
+        }}
+      />
+    );
+
+    expect(screen.getByTestId('ldc-archive')).toBeInTheDocument();
+    expect(screen.getByTestId('subscription-card')).toBeInTheDocument();
+    expect(screen.getByText('Featured Events')).toBeInTheDocument();
+    expect(screen.getByText('In Focus')).toBeInTheDocument();
+    expect(screen.queryByText('Sawtee in Media')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('sidebar-widget')).toHaveLength(2);
+  });
+
+  it('uses featured events in place of the current category on media and in focus', () => {
+    const { unmount } = render(
+      <Category
+        {...baseProps}
+        category={{
+          ...baseProps.category,
+          id: 12,
+          name: 'SAWTEE in Media',
+          slug: 'sawtee-in-media',
+        }}
+      />
+    );
+
+    expect(screen.getByText('Featured Events')).toBeInTheDocument();
+    expect(screen.getByText('In Focus')).toBeInTheDocument();
+    expect(screen.queryByText('Sawtee in Media')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('sidebar-widget')).toHaveLength(2);
+
+    unmount();
+
+    render(
+      <Category
+        {...baseProps}
+        category={{
+          ...baseProps.category,
+          id: 13,
+          name: 'In Focus',
+          slug: 'in-focus',
+        }}
+      />
+    );
+
+    expect(screen.getByText('Sawtee in Media')).toBeInTheDocument();
+    expect(screen.getByText('Featured Events')).toBeInTheDocument();
+    expect(screen.queryByText('In Focus')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('sidebar-widget')).toHaveLength(2);
+  });
+
+  it('drops featured events on policy outreach and keeps both other lists', () => {
+    render(
+      <Category
+        {...baseProps}
+        category={{
+          ...baseProps.category,
+          id: 14,
+          name: 'Featured Events',
+          slug: 'featured-events',
+        }}
+      />
+    );
+
+    expect(screen.getByTestId('events-archive')).toBeInTheDocument();
+    expect(screen.getByText('Sawtee in Media')).toBeInTheDocument();
+    expect(screen.getByText('In Focus')).toBeInTheDocument();
+    expect(screen.queryByText('Featured Events')).not.toBeInTheDocument();
+    expect(screen.getAllByTestId('sidebar-widget')).toHaveLength(2);
+  });
+
+  it('keeps featured events and in focus on covid resources', () => {
     render(
       <Category
         {...baseProps}
@@ -159,8 +248,8 @@ describe('Category newsletters layout', () => {
     );
 
     expect(screen.getByTestId('covid-archive')).toBeInTheDocument();
-    expect(screen.queryByText('Featured Events')).not.toBeInTheDocument();
-    expect(screen.getByText('Sawtee in Media')).toBeInTheDocument();
+    expect(screen.getByText('Featured Events')).toBeInTheDocument();
     expect(screen.getByText('In Focus')).toBeInTheDocument();
+    expect(screen.queryByText('Sawtee in Media')).not.toBeInTheDocument();
   });
 });
