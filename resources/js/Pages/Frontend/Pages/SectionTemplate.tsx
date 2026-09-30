@@ -57,7 +57,7 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
   return (
     <section
       id="member-institutions"
-      className="offset-element border-theme-600/15 dark:border-theme-600/25 mt-16 border-t pt-16 md:mt-20 md:pt-20"
+      className="offset-element pt-16 md:mt-20 md:pt-20"
       aria-label={copy.about.member_institutions_heading}
     >
       <div className="mb-8 md:mb-10">
@@ -109,7 +109,7 @@ const Members = ({ memberInstitutions = null }: MembersProps) => {
         })}
       </div>
 
-      <MemberInstitutesMarquee className="border-theme-600/12 dark:border-theme-600/20 mt-12" />
+      <MemberInstitutesMarquee className="mt-12" />
     </section>
   );
 };
@@ -132,7 +132,7 @@ const PageSectionView = ({ section, sections }: PageSectionViewProps) => {
   return (
     <section
       id={sectionID}
-      className="offset-element border-theme-600/12 dark:border-theme-600/20 mb-14 border-b pb-14 last:mb-0 last:border-b-0 last:pb-0 md:mb-16 md:pb-16"
+      className="offset-element mb-14 pb-14 last:mb-0 last:pb-0 md:mb-16 md:pb-16"
     >
       <PageSectionTitle titleText={title} />
 
