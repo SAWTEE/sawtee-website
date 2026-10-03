@@ -17,9 +17,9 @@ Staging and production on cPanel stay client-rendered. Local Vite may still use 
 
 ## TEMPORARY: responsive-image backfill
 
-Staging and production deploys currently run `php artisan media-library:regenerate` after migrate so existing uploads get Spatie width variants and tiny placeholders.
+Staging and production deploys currently run `php artisan sawtee:backfill-responsive-images` after migrate so existing uploads get Spatie width variants and tiny placeholders. The command isolates each small batch in its own PHP process so cPanel’s 128MB CLI limit cannot accumulate across 1,000+ images.
 
-**Remove those TEMPORARY workflow steps** from `.github/workflows/deploy-staging.yml` and `.github/workflows/deploy.yml` after the command has succeeded once on each environment. New uploads generate variants on their own; leaving the step in place re-converts every `large` image on every deploy.
+**Remove those TEMPORARY workflow steps** from `.github/workflows/deploy-staging.yml` and `.github/workflows/deploy.yml` after the command has succeeded once on each environment. New uploads generate variants on their own; leaving the step in place is cheap (it skips items that already have variants) but still unnecessary.
 
 ## Env files in the repo
 
