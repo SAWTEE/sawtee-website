@@ -2,6 +2,7 @@
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Support\MediaConversionUrl;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
@@ -38,12 +39,10 @@ test('post page html includes featured image in open graph tags', function () {
     $post->addMedia(UploadedFile::fake()->image('featured.jpg', 1200, 630))
         ->toMediaCollection('post-featured-image');
 
-    $featuredUrl = $post->fresh()->getFirstMediaUrl('post-featured-image');
-    expect($featuredUrl)->not->toBeEmpty();
-
-    $absoluteImage = str_starts_with($featuredUrl, 'http')
-        ? $featuredUrl
-        : url($featuredUrl);
+    $featuredMedia = $post->fresh()->getFirstMedia('post-featured-image');
+    $absoluteImage = MediaConversionUrl::resolve($featuredMedia, 'large');
+    expect($absoluteImage)->not->toBeEmpty()
+        ->not->toBe(url('/assets/logo-sawtee.webp'));
 
     $response = $this->get(route('category.show', [
         'categories' => $category->slug,
