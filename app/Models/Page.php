@@ -69,7 +69,8 @@ class Page extends Model implements HasMedia
             ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('page-media')
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->withResponsiveImages();
     }
 
     // protected $with = ['media'];

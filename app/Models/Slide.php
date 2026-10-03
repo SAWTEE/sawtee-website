@@ -39,6 +39,7 @@ class Slide extends Model implements HasMedia
             ->performOnCollections('slides')
             ->format('webp')
             ->quality(80)
+            ->withResponsiveImages()
             ->nonQueued();
     }
 

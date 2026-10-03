@@ -38,7 +38,7 @@ class HomePageDataAssembler
 
     /** @var list<string> */
     private const MEDIA_KEYS = [
-        'id', 'collection_name', 'original_url', 'preview_url',
+        'id', 'collection_name', 'original_url', 'preview_url', 'srcset', 'placeholder',
     ];
 
     /** @var list<string> */
@@ -218,9 +218,9 @@ class HomePageDataAssembler
         foreach ($slides as $slide) {
             /** @var Slide $slide */
             $media = $slide->getFirstMedia('slides');
-            // Only emit srcSet when the large file exists; a bare conversion URL 404s
+            // Only emit srcSet when real files exist; a bare conversion URL 404s
             // and can break <img> even when original_url is valid.
-            $slidesResponsiveImages[] = MediaConversionUrl::optional($media, 'large') ?? '';
+            $slidesResponsiveImages[] = ResponsiveImageSet::srcset($media, 'large') ?? '';
             $payload[] = $this->modelToArrayWithOptimizedMedia($slide, 'slides', 'large');
         }
 
@@ -298,6 +298,14 @@ class HomePageDataAssembler
 
         // Frontend components read `original_url`; prefer optimized conversions on disk.
         $mediaArray['original_url'] = MediaConversionUrl::resolve($media, $conversion, 'preview');
+
+        // Flat keys for <ResponsiveImage>. Prefer the large conversion's
+        // variants even when the visible `src` is the preview thumb — preview
+        // itself is not registered with withResponsiveImages().
+        $mediaArray['srcset'] = ResponsiveImageSet::srcset($media, 'large')
+            ?? ResponsiveImageSet::srcset($media, $conversion);
+        $mediaArray['placeholder'] = ResponsiveImageSet::placeholder($media, 'large')
+            ?? ResponsiveImageSet::placeholder($media, $conversion);
 
         return $mediaArray;
     }

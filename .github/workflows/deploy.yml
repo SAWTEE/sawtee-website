@@ -327,6 +327,27 @@ jobs:
             php artisan about || true
             echo "🎉 Deployment completed successfully!"
 
+      # TEMPORARY one-shot backfill for Spatie responsive images.
+      # Delete this entire step after it has succeeded on production.
+      # New uploads already generate variants; leaving this here re-runs
+      # every large conversion on each subsequent deploy.
+      - name: TEMPORARY — backfill responsive images (delete after success)
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          command_timeout: 120m
+          script: |
+            set -e
+            cd ${{ secrets.SSH_TARGET_DIR }}
+            echo "TEMPORARY: regenerating media so existing files get srcset + placeholders."
+            echo "Remove this GitHub Actions step after this command succeeds on production."
+            QUEUE_CONNECTION=sync php artisan media-library:regenerate --only-missing --force --no-interaction
+            QUEUE_CONNECTION=sync php artisan media-library:regenerate --only=large --force --no-interaction
+            echo "✅ Media regenerate finished. Delete the TEMPORARY backfill step from deploy.yml."
+
       - name: Health check
         uses: appleboy/ssh-action@v1.0.0
         with:

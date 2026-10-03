@@ -47,6 +47,7 @@ export default function Article({
   volume,
   featured_image = null,
   srcSet = null,
+  placeholder = null,
   relatedArticles = [],
   seo,
 }: FrontendArticleProps) {
@@ -114,6 +115,7 @@ export default function Article({
               className="border-theme-600/10 overflow-hidden rounded-lg border shadow-sm dark:border-white/10"
               src={featured_image}
               srcSet={srcSet ?? undefined}
+              placeholder={placeholder}
               alt={title}
               priority
             />

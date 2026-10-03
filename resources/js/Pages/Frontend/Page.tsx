@@ -82,6 +82,7 @@ Page.layout = (props: FrontendPageProps) => {
         ? p.featured_image
         : p.featured_image?.original_url,
     srcSet: p.srcSet,
+    placeholder: p.placeholder,
   }))(props);
 };
 

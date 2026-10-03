@@ -15,6 +15,12 @@ Staging and production on cPanel stay client-rendered. Local Vite may still use 
 3. GitHub Environment `staging` + `STAGING_*` secrets for app/DB/target dir; reuse prod `SSH_*`, `MAIL_*`, and `DB_PASSWORD` (see main README)  
 4. Push to `staging` → `.github/workflows/deploy-staging.yml` (no cPanel Node.js App required)
 
+## TEMPORARY: responsive-image backfill
+
+Staging and production deploys currently run `php artisan media-library:regenerate` after migrate so existing uploads get Spatie width variants and tiny placeholders.
+
+**Remove those TEMPORARY workflow steps** from `.github/workflows/deploy-staging.yml` and `.github/workflows/deploy.yml` after the command has succeeded once on each environment. New uploads generate variants on their own; leaving the step in place re-converts every `large` image on every deploy.
+
 ## Env files in the repo
 
 | File | Committed? | Role |

@@ -50,7 +50,7 @@ const FeaturedRow = () => (
 export const FeaturedPublicationsSkeleton = () => (
   <Panel
     label="Loading featured publications"
-    className="min-h-112 px-4 py-6 sm:min-h-128 sm:px-5 sm:py-7"
+    className="h-full min-h-112 px-4 py-6 sm:min-h-128 sm:px-5 sm:py-7"
   >
     <EyebrowBar />
     <FeaturedRow />

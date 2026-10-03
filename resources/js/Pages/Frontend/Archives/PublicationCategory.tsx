@@ -1,9 +1,11 @@
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
 import Pagination from '@/components/Frontend/Pagination';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
+import { mediaImage } from '@/lib/media-image';
 import { mainWithPageLayout } from '@/lib/page-layouts';
 import { cn } from '@/lib/utils';
 import type { FrontendPublicationCategoryProps, Publication } from '@/types';
@@ -104,9 +106,11 @@ function PublicationCard({
   categorySlug: string;
   isTradeInsight: boolean;
 }) {
-  const cover =
-    publication.media?.[0]?.original_url ||
-    '/assets/SM-placeholder-150x150.webp';
+  const cover = mediaImage(
+    publication.media,
+    undefined,
+    '/assets/SM-placeholder-150x150.webp'
+  );
   const fileHref = publication.file
     ? `/publications/${publication.file.name}`
     : '#';
@@ -132,14 +136,16 @@ function PublicationCard({
               })}
         >
           <div className="absolute inset-0 bg-black/10 bg-blend-overlay transition-colors group-hover:bg-transparent" />
-          <img
+          <ResponsiveImage
             className="aspect-3/4 h-full w-full rounded-md object-cover"
-            src={cover}
+            src={cover.src}
+            srcSet={cover.srcSet}
+            placeholder={cover.placeholder}
             alt={publication.title}
             title={publication.title}
-            loading="lazy"
             width={256}
             height={341}
+            sizes="(min-width: 768px) 16rem, 50vw"
           />
         </a>
       </article>
@@ -174,6 +180,7 @@ PublicationCategory.layout = mainWithPageLayout(props => ({
   featured_image:
     typeof props.featured_image === 'string' ? props.featured_image : null,
   srcSet: props.srcSet,
+  placeholder: props.placeholder,
 }));
 
 export default PublicationCategory;

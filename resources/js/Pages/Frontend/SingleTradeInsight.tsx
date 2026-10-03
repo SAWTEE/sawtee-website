@@ -1,4 +1,5 @@
 import WebsiteHead from '@/components/Frontend/Head';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import Section from '@/components/Frontend/section';
 import { TableOfContents } from '@/components/Frontend/TableOfContents';
 import { Button } from '@/components/ui/button';
@@ -8,6 +9,8 @@ import type { FrontendTradeInsightProps } from '@/types';
 function SingleTradeInsight({
   tradeInsightVolume,
   media = null,
+  srcSet = null,
+  placeholder = null,
   seo,
 }: FrontendTradeInsightProps) {
   const volumeLabel = tradeInsightVolume.volume ?? tradeInsightVolume.title;
@@ -34,10 +37,13 @@ function SingleTradeInsight({
           <div className="flex flex-col gap-8 md:flex-row md:items-start md:gap-10 lg:gap-12">
             {hasCover && (
               <div className="mx-auto w-full max-w-[220px] shrink-0 md:mx-0 md:max-w-[240px]">
-                <img
+                <ResponsiveImage
                   className="border-theme-600/10 aspect-3/4 w-full rounded-lg border object-cover shadow-sm dark:border-white/10"
-                  src={media ?? undefined}
+                  src={media}
+                  srcSet={srcSet}
+                  placeholder={placeholder}
                   alt={volumeLabel ?? ''}
+                  sizes="240px"
                 />
               </div>
             )}

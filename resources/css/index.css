@@ -530,6 +530,18 @@ pre {
   filter: saturate(0.72) contrast(0.96) brightness(0.88);
 }
 
+/*
+ * Low-quality placeholder behind a <ResponsiveImage>. The tiny blurred SVG
+ * comes in through --image-placeholder and the full image paints over it.
+ */
+@utility image-placeholder {
+  background-image: var(--image-placeholder);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: pixelated;
+}
+
 @utility substack-embed {
   display: block;
   border: none;

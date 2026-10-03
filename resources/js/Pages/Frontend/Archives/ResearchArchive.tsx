@@ -1,5 +1,7 @@
 import { Download, ExternalLink } from 'lucide-react';
 
+import ResponsiveImage from '@/components/Frontend/responsive-image';
+import { mediaImage } from '@/lib/media-image';
 import { cn, htmlToText } from '@/lib/utils';
 import type { Research, ResearchByYear } from '@/types';
 
@@ -27,10 +29,20 @@ function researchHref(item: Research): string | undefined {
   return item.link ?? undefined;
 }
 
-function featuredImage(item: Research): string | undefined {
-  return (item.media ?? []).find(
+function featuredImage(item: Research) {
+  const media = (item.media ?? []).find(
     m => m.collection_name === 'research_featured_image'
-  )?.original_url;
+  );
+
+  if (!media) {
+    return null;
+  }
+
+  return mediaImage(
+    [media],
+    'research_featured_image',
+    media.original_url ?? ''
+  );
 }
 
 const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
@@ -106,11 +118,12 @@ const ResearchArchive = ({ posts = null }: ResearchArchiveProps) => {
                             !href && 'pointer-events-none'
                           )}
                         >
-                          <img
-                            src={image}
+                          <ResponsiveImage
+                            src={image.src}
+                            srcSet={image.srcSet}
+                            placeholder={image.placeholder}
                             alt=""
-                            loading="lazy"
-                            decoding="async"
+                            sizes="(min-width: 640px) 6rem, 100vw"
                             className="aspect-3/4 w-full object-cover transition-opacity duration-300 group-hover:opacity-90"
                           />
                         </a>

@@ -6,9 +6,9 @@ use App\Models\Page;
 use App\Models\Section;
 use App\Models\Theme;
 use App\Support\HomePageDataAssembler;
-use App\Support\MediaConversionUrl;
 use App\Support\MediaFellowshipAssembler;
 use App\Support\ResolvesSeoMeta;
+use App\Support\ResponsiveImageSet;
 use App\Support\SiteCopy;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -32,14 +32,18 @@ class ResolvePageBySlug
         $page = Page::query()->where('slug', $slug)->firstOrFail();
         $sections = Section::query()->where('page_id', $page->id)->with('media')->get();
         $themes = $slug === 'our-work' ? Theme::all() : null;
-        $featuredImage = $page->getFirstMediaUrl('page-media');
+        $heroImage = ResponsiveImageSet::for($page->getFirstMedia('page-media'), 'large');
+        $featuredImage = $heroImage['src'] !== ''
+            ? $heroImage['src']
+            : $page->getFirstMediaUrl('page-media');
 
         $props = [
             'page' => $page,
             'sections' => $sections,
             'themes' => $themes,
             'featured_image' => $featuredImage,
-            'srcSet' => MediaConversionUrl::optional($page->getFirstMedia('page-media'), 'large'),
+            'srcSet' => $heroImage['srcset'],
+            'placeholder' => $heroImage['placeholder'],
             'seo' => $this->seo->for(
                 model: $page,
                 image: $featuredImage ?: '/assets/logo-sawtee.webp',

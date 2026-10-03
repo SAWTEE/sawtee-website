@@ -2,10 +2,12 @@ import { Link } from '@inertiajs/react';
 
 import Glassbox from '@/components/Frontend/Glassbox';
 import WebsiteHead from '@/components/Frontend/Head';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import Section from '@/components/Frontend/section';
 import SidebarWidget from '@/components/Frontend/sidebarWidget';
 import SubscriptionCard from '@/components/Frontend/subscriptionCard';
 import { Separator } from '@/components/ui/separator';
+import { mediaImage } from '@/lib/media-image';
 import { mainWithPageLayout } from '@/lib/page-layouts';
 import { cn } from '@/lib/utils';
 import type {
@@ -145,15 +147,16 @@ const ItemComponent = ({
                 >
                   <div className="absolute top-0 left-0 h-full w-full bg-black/10 bg-blend-overlay group-hover:bg-transparent" />
 
-                  <img
+                  <ResponsiveImage
                     className="aspect-3/4 h-full w-full rounded-md object-cover"
-                    src={
-                      `${publication.media?.[0]?.original_url ?? ''}` ||
+                    {...mediaImage(
+                      publication.media,
+                      undefined,
                       '/assets/SM-placeholder-150x150.webp'
-                    }
+                    )}
                     alt={publication.title}
                     title={publication.title}
-                    loading="lazy"
+                    sizes="140px"
                   />
                 </a>
               </article>
@@ -228,6 +231,7 @@ PublicationsArchive.layout = mainWithPageLayout(props => ({
   featured_image:
     typeof props.featured_image === 'string' ? props.featured_image : null,
   srcSet: props.srcSet,
+  placeholder: props.placeholder,
 }));
 
 export default PublicationsArchive;

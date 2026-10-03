@@ -2,6 +2,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { useEffect, useMemo, useState } from 'react';
 
 import CarouselIndicators from '@/components/Frontend/CarouselIndicators';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import {
   Carousel,
   type CarouselApi,
@@ -17,12 +18,15 @@ type FullWidthCarouselProps = {
   slides?: Slide[];
   responsiveImages?: string[];
   className?: string;
+  /** Stretch to the sibling column height on large screens (home aside). */
+  matchSiblingHeight?: boolean;
 };
 
 const FullWidthCarousel = ({
   slides,
   responsiveImages,
   className = '',
+  matchSiblingHeight = false,
 }: FullWidthCarouselProps) => {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
@@ -79,6 +83,7 @@ const FullWidthCarousel = ({
     <div
       className={cn(
         'bg-theme-900 relative w-full overflow-hidden rounded-md ring-1 ring-black/10 dark:ring-white/10',
+        matchSiblingHeight && 'lg:h-full',
         className
       )}
       role="region"
@@ -89,37 +94,56 @@ const FullWidthCarousel = ({
         setApi={setApi}
         opts={{ loop: true, align: 'start' }}
         plugins={plugins}
-        className="w-full"
+        className={cn('w-full', matchSiblingHeight && 'lg:h-full')}
       >
-        <CarouselContent className="ml-0">
+        <CarouselContent
+          className={cn('ml-0', matchSiblingHeight && 'lg:h-full')}
+        >
           {slides.map((slide, index) => {
-            const imageSrc = slide.media?.[0]?.original_url;
-            const srcSet = responsiveImages?.[index] || undefined;
+            const image = slide.media?.[0];
+            const imageSrc = image?.original_url;
+            const srcSet =
+              image?.srcset || responsiveImages?.[index] || undefined;
             const hasCopy = Boolean(slide.title || slide.subtitle);
 
             return (
               <CarouselItem
                 key={slide.id}
-                className="relative basis-full pl-0"
+                className={cn(
+                  'relative basis-full pl-0',
+                  matchSiblingHeight && 'lg:h-full'
+                )}
                 aria-hidden={index !== current}
               >
-                <div className="bg-theme-900 relative aspect-video w-full overflow-hidden sm:aspect-2/1 lg:aspect-2/1">
+                <div
+                  className={cn(
+                    'bg-theme-900 relative w-full overflow-hidden',
+                    matchSiblingHeight
+                      ? 'aspect-video sm:aspect-2/1 lg:aspect-auto lg:h-full'
+                      : 'aspect-video sm:aspect-2/1 lg:aspect-2/1'
+                  )}
+                >
                   {imageSrc ? (
-                    <img
+                    <ResponsiveImage
                       src={imageSrc}
                       srcSet={srcSet}
                       sizes="(max-width: 1024px) 100vw, 66vw"
+                      placeholder={image?.placeholder}
                       alt={slide.title || 'Homepage slide'}
                       width={1280}
                       height={720}
-                      className="h-full w-full object-cover"
-                      loading={index === 0 ? 'eager' : 'lazy'}
-                      fetchPriority={index === 0 ? 'high' : 'auto'}
-                      decoding={index === 0 ? 'sync' : 'async'}
+                      className={cn(
+                        'h-full w-full object-cover',
+                        matchSiblingHeight && 'lg:absolute lg:inset-0'
+                      )}
+                      priority={index === 0}
                     />
                   ) : (
                     <div
-                      className="bg-theme-800 flex h-full w-full items-center justify-center text-sm text-white/70"
+                      className={cn(
+                        'bg-theme-800 flex h-full w-full items-center justify-center text-sm text-white/70',
+                        matchSiblingHeight && 'lg:absolute lg:inset-0'
+                      )}
                       aria-hidden
                     >
                       No image

@@ -12,10 +12,12 @@ import {
   VideoCarouselSkeleton,
 } from '@/components/Frontend/HomeSkeletons';
 import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import SimpleList from '@/components/Frontend/SimpleList';
 import SvgBackground from '@/components/Frontend/SvgBackground';
 import Title from '@/components/Frontend/title';
 import { formatDate } from '@/lib/helpers';
+import { mediaImage } from '@/lib/media-image';
 import { useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 import type {
@@ -27,24 +29,12 @@ import type {
   Slide,
 } from '@/types';
 
-function featuredImageUrl(
+function featuredImage(
   media: MediaItem[] | undefined,
   fallback: string,
   preferPreview = false
-): string {
-  const item = media?.find(
-    mediaItem => mediaItem.collection_name === 'post-featured-image'
-  );
-
-  if (!item) {
-    return fallback;
-  }
-
-  if (preferPreview) {
-    return item.preview_url ?? item.original_url ?? fallback;
-  }
-
-  return item.original_url ?? item.preview_url ?? fallback;
+) {
+  return mediaImage(media, 'post-featured-image', fallback, preferPreview);
 }
 
 function postFileMedia(media: MediaItem[] | undefined): MediaItem | undefined {
@@ -138,7 +128,7 @@ const Home = ({
       <Section className="carousel-section px-4 py-5 md:px-8 md:py-6 lg:px-12 lg:py-6">
         <div
           className={cn(
-            'mx-auto grid grid-cols-1 items-center gap-6 lg:gap-8',
+            'mx-auto grid grid-cols-1 items-stretch gap-6 lg:gap-8',
             FeaturedPublicationSectionIsVisible && 'lg:grid-cols-12'
           )}
           id="carousel-section"
@@ -147,7 +137,7 @@ const Home = ({
             className={cn(
               'min-w-0',
               FeaturedPublicationSectionIsVisible
-                ? 'lg:col-span-8'
+                ? 'lg:col-span-8 lg:h-full lg:min-h-0'
                 : 'lg:col-span-12'
             )}
           >
@@ -156,6 +146,7 @@ const Home = ({
               <CarouselSection
                 slides={slides}
                 slidesResponsiveImages={slidesResponsiveImages}
+                matchSiblingHeight={FeaturedPublicationSectionIsVisible}
               />
             ) : null}
           </div>
@@ -163,13 +154,13 @@ const Home = ({
             <Deferred
               data={['featuredPublications', 'featuredBlogPosts']}
               fallback={
-                <aside className="min-w-0 lg:col-span-4">
+                <aside className="min-w-0 lg:col-span-4 lg:h-full">
                   <FeaturedPublicationsSkeleton />
                 </aside>
               }
             >
               {featuredPublications ? (
-                <aside className="min-w-0 lg:col-span-4">
+                <aside className="min-w-0 lg:col-span-4 lg:h-full">
                   <Suspense fallback={<FeaturedPublicationsSkeleton />}>
                     <FeaturedPublications
                       publications={featuredPublications}
@@ -348,16 +339,15 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
           >
             <div className="ease bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1.25 w-full transition-all duration-200 group-hover:block" />
             <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
-            <img
-              src={featuredImageUrl(
+            <ResponsiveImage
+              {...featuredImage(
                 lead.media,
                 '/assets/SM-placeholder-1024x512.webp'
               )}
               alt={lead.title}
               width={960}
               height={540}
-              loading="lazy"
-              decoding="async"
+              sizes="(min-width: 768px) 40vw, 100vw"
               className="absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear"
             />
           </div>
@@ -392,7 +382,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
             return null;
           }
 
-          const featured_image = featuredImageUrl(
+          const featured_image = featuredImage(
             event.media,
             '/assets/SM-placeholder-300x150.webp',
             true
@@ -405,13 +395,12 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
                   className="relative h-40 max-h-40 overflow-hidden rounded-md text-center"
                   title={event.title}
                 >
-                  <img
-                    src={featured_image}
+                  <ResponsiveImage
+                    {...featured_image}
                     alt={event.title}
                     width={300}
                     height={160}
-                    loading="lazy"
-                    decoding="async"
+                    sizes="(min-width: 768px) 20vw, 50vw"
                     className="h-full w-full object-cover transition-all duration-200 ease-linear"
                   />
                   <div className="ease bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1 w-full transition-all duration-200 group-hover:block" />
@@ -437,14 +426,17 @@ export default Home;
 export const CarouselSection = ({
   slides,
   slidesResponsiveImages,
+  matchSiblingHeight = false,
 }: {
   slides?: Slide[];
   slidesResponsiveImages?: string[];
+  matchSiblingHeight?: boolean;
 }) => {
   return (
     <FullWidthCarousel
       slides={slides}
       responsiveImages={slidesResponsiveImages}
+      matchSiblingHeight={matchSiblingHeight}
     />
   );
 };

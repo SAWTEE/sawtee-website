@@ -3,7 +3,9 @@ import type { HTMLAttributes } from 'react';
 
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import { formatDate } from '@/lib/helpers';
+import { mediaImage } from '@/lib/media-image';
 import type { Post } from '@/types';
 
 type EventsArchiveProps = HTMLAttributes<HTMLDivElement> & {
@@ -29,13 +31,17 @@ const EventsArchive = ({ posts = null, ...rest }: EventsArchiveProps) => {
             >
               <div className="bg-muted dark:bg-muted relative aspect-16/10 w-full shrink-0 overflow-hidden xl:aspect-auto xl:min-h-55 xl:w-[min(42%,28rem)] xl:self-stretch xl:rounded-lg">
                 {featured_image?.original_url ? (
-                  <img
-                    src={featured_image.original_url}
+                  <ResponsiveImage
+                    {...mediaImage(
+                      [featured_image],
+                      'post-featured-image',
+                      featured_image.original_url
+                    )}
                     alt=""
                     className="absolute inset-0 h-full w-full object-cover object-center"
-                    width="1216"
-                    height="640"
-                    loading="lazy"
+                    width={1216}
+                    height={640}
+                    sizes="(min-width: 1280px) 28rem, 100vw"
                   />
                 ) : null}
               </div>

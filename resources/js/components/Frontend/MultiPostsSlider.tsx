@@ -1,3 +1,4 @@
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import {
   Carousel,
   CarouselContent,
@@ -5,6 +6,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { mediaImage } from '@/lib/media-image';
 import type { Publication } from '@/types';
 
 import { Badge } from '../ui/badge';
@@ -27,11 +29,11 @@ const MultiPostsCarousel = ({ data = [] }: MultiPostsCarouselProps) => {
     >
       <CarouselContent>
         {data.map(publication => {
-          const featured = publication.media?.find(
-            media => media.collection_name === 'publication_featured_image'
+          const media = mediaImage(
+            publication.media,
+            'publication_featured_image',
+            '/assets/SM-placeholder-150x150.webp'
           );
-          const media =
-            featured?.original_url ?? '/assets/SM-placeholder-150x150.webp';
           const href = publication.file?.name
             ? `/publications/${publication.file.name}`
             : null;
@@ -43,13 +45,14 @@ const MultiPostsCarousel = ({ data = [] }: MultiPostsCarouselProps) => {
               className="sm:basis-1/2 md:basis-1/3 lg:basis-1/4"
             >
               <div className="group relative mx-auto flex aspect-3/4 w-45 items-end justify-start overflow-hidden rounded-md text-left">
-                <img
-                  src={media}
+                <ResponsiveImage
+                  src={media.src}
+                  srcSet={media.srcSet}
+                  placeholder={media.placeholder}
                   alt=""
                   width={180}
                   height={240}
-                  loading="lazy"
-                  decoding="async"
+                  sizes="180px"
                   className="absolute inset-0 h-full w-full object-cover"
                 />
                 {href ? (

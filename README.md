@@ -206,6 +206,8 @@ Branch: **`staging`**. Workflow: `.github/workflows/deploy-staging.yml` (CI on P
 4. Create a GitHub **Environment** named `staging` (optional protection rules).
 5. Push to `staging` to deploy. No cPanel Node.js App is required for Inertia.
 
+The next staging and production deploys run a **TEMPORARY** `media-library:regenerate` backfill. Delete that step from both deploy workflows after it has succeeded once — see `docs/guide/environments.md`.
+
 
 
 ## Caching (shared-hosting safe)

@@ -3,7 +3,9 @@ import type { HTMLAttributes } from 'react';
 
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import Glassbox from '@/components/Frontend/Glassbox';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import { formatDate } from '@/lib/helpers';
+import { mediaImage } from '@/lib/media-image';
 import { htmlToText } from '@/lib/utils';
 import type { Post } from '@/types';
 
@@ -66,11 +68,15 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
       <div className="group relative mb-2 overflow-hidden">
         {showFallbackImage && featured_image && (
           <Link href={`/category/${categorySlug}/${post.slug}`}>
-            <img
+            <ResponsiveImage
               className="aspect-video w-full object-cover transition-all duration-500 ease-in group-hover:scale-105"
-              loading="lazy"
-              src={featured_image?.original_url}
+              {...mediaImage(
+                [featured_image],
+                'post-featured-image',
+                featured_image.original_url ?? ''
+              )}
               alt={post.title}
+              sizes="(min-width: 1280px) 40vw, 100vw"
             />
             <div className="bg-foreground absolute top-0 right-0 bottom-0 left-0 opacity-25 transition duration-300 hover:bg-transparent" />
           </Link>

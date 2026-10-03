@@ -10,10 +10,10 @@ class TinyPlaceholderGenerator implements TinyPlaceholderGeneratorContract
     public function generateTinyPlaceholder(string $sourceImagePath, string $tinyImageDestinationPath): void
     {
         $bytes = Image::fromPath($sourceImagePath)
-            ->scale(width: 32)
-            ->blur(5)
+            ->scale(width: 20)
+            ->blur(3)
             ->toJpeg()
-            ->quality(50)
+            ->quality(40)
             ->toBytes();
 
         file_put_contents($tinyImageDestinationPath, $bytes);

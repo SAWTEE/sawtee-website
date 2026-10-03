@@ -51,6 +51,10 @@ export type MediaItem = {
   mime_type?: string | null;
   original_url?: string;
   preview_url?: string;
+  /** Width-descriptor srcset from Spatie responsive variants. */
+  srcset?: string | null;
+  /** Tiny pixelated SVG shown while the full image is deferred. */
+  placeholder?: string | null;
   responsive_images?: unknown;
 };
 
@@ -547,6 +551,7 @@ export type FrontendPageProps = PageProps<{
   themes?: Theme[] | null;
   featured_image?: string | MediaItem | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   seo?: SeoMeta;
   fellowships?: MediaFellowshipYear[];
 }>;
@@ -556,6 +561,7 @@ export type FrontendPostProps = PageProps<{
   category?: Category | null;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   file?: string | null;
   relatedPosts?: Post[];
   seo?: SeoMeta;
@@ -639,6 +645,7 @@ export type FrontendArchiveProps = PageProps<{
   infocus?: Post[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   seo?: SeoMeta;
 }>;
 
@@ -647,6 +654,7 @@ export type FrontendArticleProps = PageProps<{
   volume: Publication;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   relatedArticles?: Pick<Article, 'id' | 'title' | 'slug' | 'published_at'>[];
   seo?: SeoMeta;
 }>;
@@ -654,6 +662,8 @@ export type FrontendArticleProps = PageProps<{
 export type FrontendTradeInsightProps = PageProps<{
   tradeInsightVolume: Publication;
   media?: string | null;
+  srcSet?: string | null;
+  placeholder?: string | null;
   seo?: SeoMeta;
 }>;
 
@@ -662,6 +672,7 @@ export type FrontendTeamsArchiveProps = PageProps<{
   teams: SimplePaginated<Team>;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   seo?: SeoMeta;
 }>;
 
@@ -673,6 +684,7 @@ export type FrontendPublicationsArchiveProps = PageProps<{
   events?: Post[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   seo?: SeoMeta;
   showSubscriptionBox?: boolean;
 }>;
@@ -685,6 +697,7 @@ export type FrontendPublicationCategoryProps = PageProps<{
   events?: Post[] | null;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   seo?: SeoMeta;
   showSubscriptionBox?: boolean;
 }>;

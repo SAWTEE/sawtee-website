@@ -8,6 +8,7 @@ type PageLayoutProps = {
   title?: string | null;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
   children?: ReactNode;
   showBackgroundPattern?: boolean;
 };
@@ -16,6 +17,7 @@ export default function PageLayout({
   title,
   featured_image,
   srcSet,
+  placeholder,
   children,
 }: PageLayoutProps) {
   const hasFeaturedImage = Boolean(featured_image && featured_image !== '');
@@ -26,6 +28,7 @@ export default function PageLayout({
           <FeaturedMedia
             src={featured_image as string}
             srcSet={srcSet ?? undefined}
+            placeholder={placeholder}
             alt={title ?? ''}
             className={'max-h-80'}
             priority

@@ -53,7 +53,8 @@ class Section extends Model implements HasMedia
             ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('section-media')
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->withResponsiveImages();
     }
 
     public function registerMediaCollections(): void

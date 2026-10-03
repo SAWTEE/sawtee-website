@@ -3,12 +3,14 @@ import '../../../css/video-carousel.css';
 import { ArrowLeft, ArrowRight, Play } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import {
   Carousel,
   type CarouselApi,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { mediaImage } from '@/lib/media-image';
 import { cn } from '@/lib/utils';
 
 import { Button } from '../ui/button';
@@ -17,6 +19,8 @@ type VideoMedia = {
   collection_name?: string;
   original_url?: string;
   preview_url?: string;
+  srcset?: string | null;
+  placeholder?: string | null;
 };
 
 type VideoPost = {
@@ -37,15 +41,20 @@ function featuredMedia(post: VideoPost): VideoMedia | null {
   );
 }
 
-function mainImageUrl(media: VideoMedia | null): string {
-  return media?.original_url || '/assets/SM-placeholder-1024x512.webp';
+function mainImage(media: VideoMedia | null) {
+  return mediaImage(
+    media ? [media] : undefined,
+    undefined,
+    '/assets/SM-placeholder-1024x512.webp'
+  );
 }
 
-function thumbImageUrl(media: VideoMedia | null): string {
-  return (
-    media?.preview_url ||
-    media?.original_url ||
-    '/assets/SM-placeholder-300x150.webp'
+function thumbImage(media: VideoMedia | null) {
+  return mediaImage(
+    media ? [media] : undefined,
+    undefined,
+    '/assets/SM-placeholder-300x150.webp',
+    true
   );
 }
 
@@ -127,14 +136,13 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                     href={article.link || '#'}
                     aria-label={`Watch ${article.title} (opens in a new tab)`}
                   >
-                    <img
+                    <ResponsiveImage
                       className="h-full w-full object-cover transition duration-300 group-hover:scale-[1.02]"
                       alt=""
                       width={1200}
                       height={675}
-                      loading="lazy"
-                      decoding="async"
-                      src={mainImageUrl(media)}
+                      sizes="(min-width: 1024px) 55vw, 100vw"
+                      {...mainImage(media)}
                     />
                     <span
                       className="pointer-events-none absolute inset-0 bg-linear-to-t from-black/55 via-black/15 to-transparent"
@@ -215,7 +223,7 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                   onClick={() => api?.scrollTo(index)}
                 >
                   <div className="border-borderColor/70 bg-muted relative h-14 w-24 shrink-0 overflow-hidden rounded-md border">
-                    <img
+                    <ResponsiveImage
                       className={cn(
                         'h-full w-full object-cover',
                         !isActive && 'opacity-90'
@@ -223,9 +231,8 @@ const VideoCarousel = ({ posts = [], className = '' }: VideoCarouselProps) => {
                       alt=""
                       width={96}
                       height={56}
-                      loading="lazy"
-                      decoding="async"
-                      src={thumbImageUrl(media)}
+                      sizes="96px"
+                      {...thumbImage(media)}
                     />
                     <span
                       className="absolute inset-0 flex items-center justify-center bg-black/25"

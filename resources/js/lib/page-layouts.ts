@@ -6,6 +6,7 @@ type PageChrome = {
   title?: string | null;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
 };
 
 type PostChrome = {
@@ -13,6 +14,7 @@ type PostChrome = {
   relatedPosts?: unknown;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
 };
 
 /**

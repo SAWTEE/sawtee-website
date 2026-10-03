@@ -65,6 +65,7 @@ Post.layout = mainWithPostLayout(props => ({
   relatedPosts: props.relatedPosts,
   featured_image: props.featured_image,
   srcSet: props.srcSet,
+  placeholder: props.placeholder,
 }));
 
 export default Post;

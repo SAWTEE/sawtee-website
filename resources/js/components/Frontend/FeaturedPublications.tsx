@@ -4,12 +4,14 @@ import type { ReactNode } from 'react';
 import { useEffect, useState } from 'react';
 
 import CarouselIndicators from '@/components/Frontend/CarouselIndicators';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import {
   Carousel,
   type CarouselApi,
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { type MediaImage, mediaImage } from '@/lib/media-image';
 import type { MediaItem, Post, Publication } from '@/types';
 
 type FeaturedPublication = Publication;
@@ -32,7 +34,7 @@ export const FeaturedPublications = ({
   const sortedPublications = sortByCreatedAt(publications ?? []);
 
   return (
-    <div className="border-borderColor/80 dark:bg-bgDarker rounded-md border bg-white px-4 py-6 shadow-sm sm:px-5 sm:py-7">
+    <div className="border-borderColor/80 dark:bg-bgDarker h-full rounded-md border bg-white px-4 py-6 shadow-sm sm:px-5 sm:py-7">
       {sortedPublications.length > 0 ? (
         <FeaturedItemsSlider
           heading={publicationsHeading || 'Featured publications'}
@@ -122,7 +124,7 @@ function FeaturedItemsSlider({
               <CarouselItem key={item.id} className="basis-full py-0.5 pl-0">
                 <ItemLink kind={kind} href={href}>
                   <ListCopy title={item.title} subtitle={item.subtitle} />
-                  {media ? <ListThumb src={media} alt={item.title} /> : null}
+                  {media ? <ListThumb image={media} alt={item.title} /> : null}
                 </ItemLink>
               </CarouselItem>
             );
@@ -203,21 +205,22 @@ function ListCopy({
   );
 }
 
-function ListThumb({ src, alt }: { src: string; alt: string }) {
+function ListThumb({ image, alt }: { image: MediaImage; alt: string }) {
   return (
     <div
       title={alt}
       aria-hidden
       className="border-borderColor/70 bg-muted/30 mx-auto h-28 w-1/3 max-w-20 shrink-0 overflow-hidden rounded-md border"
     >
-      <img
+      <ResponsiveImage
         className="h-full w-full object-cover"
-        src={src}
+        src={image.src}
+        srcSet={image.srcSet}
+        placeholder={image.placeholder}
         alt=""
         width={80}
         height={112}
-        loading="lazy"
-        decoding="async"
+        sizes="80px"
       />
     </div>
   );
@@ -240,22 +243,17 @@ function sortByCreatedAt(items: FeaturedPublication[]): FeaturedPublication[] {
 function resolveMedia(
   item: { media?: MediaItem[]; title?: string },
   kind: ListKind
-): string | null {
-  if (!item.media?.length) {
-    return `/assets/SM-placeholder-150x150.webp`;
-  }
-
+): MediaImage {
   const collection =
     kind === 'publication'
       ? 'publication_featured_image'
       : 'post-featured-image';
 
-  return (
-    item.media.find(media => media.collection_name === collection)
-      ?.preview_url ??
-    item.media.find(media => media.collection_name === collection)
-      ?.original_url ??
-    `/assets/SM-placeholder-150x150.webp`
+  return mediaImage(
+    item.media,
+    collection,
+    '/assets/SM-placeholder-150x150.webp',
+    true
   );
 }
 

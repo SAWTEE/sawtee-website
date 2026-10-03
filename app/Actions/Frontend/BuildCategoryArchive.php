@@ -9,8 +9,8 @@ use App\Models\Publication;
 use App\Models\Research;
 use App\Models\Team;
 use App\Support\ArchiveSidebarPosts;
-use App\Support\MediaConversionUrl;
 use App\Support\ResolvesSeoMeta;
+use App\Support\ResponsiveImageSet;
 use App\Support\SubstackFeed;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -40,17 +40,22 @@ class BuildCategoryArchive
         $category = Category::with(
             $slug === 'publications' ? ['parent', 'children'] : ['parent']
         )->where('slug', $slug)->firstOrFail();
-        $featuredImage = $category->getFirstMediaUrl('category_media');
-        $categoryResponsiveImages = MediaConversionUrl::optional(
+        $categoryHero = ResponsiveImageSet::for(
             $category->getFirstMedia('category_media'),
             'large'
         );
+        $featuredImage = $categoryHero['src'] !== ''
+            ? $categoryHero['src']
+            : $category->getFirstMediaUrl('category_media');
+        $categoryResponsiveImages = $categoryHero['srcset'];
+        $categoryPlaceholder = $categoryHero['placeholder'];
 
         return match ($slug) {
             'research' => $this->handleResearchCategory(
                 $category,
                 $featuredImage,
                 $categoryResponsiveImages,
+                $categoryPlaceholder,
                 $infocus,
                 $sawteeInMedia,
                 $events,
@@ -60,6 +65,7 @@ class BuildCategoryArchive
                 $subcategory,
                 $featuredImage,
                 $categoryResponsiveImages,
+                $categoryPlaceholder,
                 $infocus,
                 $sawteeInMedia,
                 $events,
@@ -74,7 +80,8 @@ class BuildCategoryArchive
                 $sawteeInMedia,
                 $events,
                 $featuredImage,
-                $categoryResponsiveImages
+                $categoryResponsiveImages,
+                $categoryPlaceholder,
             ),
             'programme' => $this->handleProgrammeCategory(
                 $category,
@@ -86,7 +93,8 @@ class BuildCategoryArchive
                 $sawteeInMedia,
                 $events,
                 $featuredImage,
-                $categoryResponsiveImages
+                $categoryResponsiveImages,
+                $categoryPlaceholder,
             ),
             default => $this->handleDefaultCategory(
                 $category,
@@ -96,12 +104,13 @@ class BuildCategoryArchive
                 $sawteeInMedia,
                 $events,
                 $featuredImage,
-                $categoryResponsiveImages
+                $categoryResponsiveImages,
+                $categoryPlaceholder
             ),
         };
     }
 
-    protected function handleResearchCategory($category, $featuredImage, $categoryResponsiveImages, $infocus, $sawteeInMedia, $events): Response
+    protected function handleResearchCategory($category, $featuredImage, $categoryResponsiveImages, $categoryPlaceholder, $infocus, $sawteeInMedia, $events): Response
     {
         $collection = Research::with('media', 'file')->orderByDesc('id')->get();
         $posts = collect($collection)->groupBy('year')->all();
@@ -114,11 +123,12 @@ class BuildCategoryArchive
             'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
+            'placeholder' => $categoryPlaceholder,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
         ]);
     }
 
-    protected function handleTeamsCategory($category, $subcategory, $featuredImage, $categoryResponsiveImages, $infocus, $sawteeInMedia, $events): Response
+    protected function handleTeamsCategory($category, $subcategory, $featuredImage, $categoryResponsiveImages, $categoryPlaceholder, $infocus, $sawteeInMedia, $events): Response
     {
         if (! $subcategory) {
             $teams = Team::with('media')->orderBy('order', 'ASC')->simplePaginate(10);
@@ -128,6 +138,7 @@ class BuildCategoryArchive
                 'teams' => $teams,
                 'featured_image' => $featuredImage,
                 'srcSet' => $categoryResponsiveImages,
+                'placeholder' => $categoryPlaceholder,
                 'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
             ]);
         }
@@ -142,6 +153,7 @@ class BuildCategoryArchive
             'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
+            'placeholder' => $categoryPlaceholder,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
         ]);
     }
@@ -157,6 +169,7 @@ class BuildCategoryArchive
         $events,
         $featuredImage,
         $categoryResponsiveImages,
+        $categoryPlaceholder,
     ): Response {
         if ($post) {
             $tradeInsightVolume = Publication::with('articles', 'media')->whereHas('category', function ($query) {
@@ -167,11 +180,13 @@ class BuildCategoryArchive
 
             if ($isArticleSlug) {
                 $articleModel = Article::with(['tags', 'media'])->where('slug', $article)->firstOrFail();
-                $media = $articleModel->getFirstMediaUrl('article-featured-image');
-                $srcSet = MediaConversionUrl::optional(
+                $heroImage = ResponsiveImageSet::for(
                     $articleModel->getFirstMedia('article-featured-image'),
                     'large'
                 );
+                $media = $heroImage['src'] !== ''
+                    ? $heroImage['src']
+                    : $articleModel->getFirstMediaUrl('article-featured-image');
                 $relatedArticles = Article::select(['id', 'title', 'slug', 'published_at'])
                     ->where('publication_id', $tradeInsightVolume->id)
                     ->whereKeyNot($articleModel->id)
@@ -183,7 +198,8 @@ class BuildCategoryArchive
                     'article' => $articleModel,
                     'volume' => $tradeInsightVolume,
                     'featured_image' => $media,
-                    'srcSet' => $srcSet,
+                    'srcSet' => $heroImage['srcset'],
+                    'placeholder' => $heroImage['placeholder'],
                     'relatedArticles' => $relatedArticles,
                     'seo' => $this->seo->for(
                         model: $articleModel,
@@ -200,11 +216,19 @@ class BuildCategoryArchive
                 ]);
             }
 
-            $media = $tradeInsightVolume->getFirstMediaUrl('publication_featured_image');
+            $cover = ResponsiveImageSet::for(
+                $tradeInsightVolume->getFirstMedia('publication_featured_image'),
+                'large'
+            );
+            $media = $cover['src'] !== ''
+                ? $cover['src']
+                : $tradeInsightVolume->getFirstMediaUrl('publication_featured_image');
 
             return Inertia::render('Frontend/SingleTradeInsight', [
                 'tradeInsightVolume' => $tradeInsightVolume,
                 'media' => $media,
+                'srcSet' => $cover['srcset'],
+                'placeholder' => $cover['placeholder'],
                 'seo' => $this->seo->for(model: $tradeInsightVolume, image: $media ?: null),
             ]);
         }
@@ -223,7 +247,9 @@ class BuildCategoryArchive
                     'sawteeInMedia' => $sawteeInMedia,
                     'events' => $events,
                     'publications' => $publications,
+                    'featured_image' => $featuredImage,
                     'srcSet' => $categoryResponsiveImages,
+                    'placeholder' => $categoryPlaceholder,
                     'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
                 ]);
             }
@@ -238,6 +264,7 @@ class BuildCategoryArchive
                 'events' => $events,
                 'featured_image' => $featuredImage,
                 'srcSet' => $categoryResponsiveImages,
+                'placeholder' => $categoryPlaceholder,
                 'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
             ]);
         }
@@ -250,7 +277,9 @@ class BuildCategoryArchive
             'sawteeInMedia' => $sawteeInMedia,
             'events' => $events,
             'publications' => $publications,
+            'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
+            'placeholder' => $categoryPlaceholder,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
         ]);
     }
@@ -266,6 +295,7 @@ class BuildCategoryArchive
         $events,
         $featuredImage,
         $categoryResponsiveImages,
+        $categoryPlaceholder,
     ): Response {
         if ($subcategory) {
             $category = Category::with('parent')->where('slug', $subcategory)->firstOrFail();
@@ -288,6 +318,7 @@ class BuildCategoryArchive
                 'events' => $events,
                 'featured_image' => $featuredImage,
                 'srcSet' => $categoryResponsiveImages,
+                'placeholder' => $categoryPlaceholder,
                 'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
             ]);
         }
@@ -313,6 +344,7 @@ class BuildCategoryArchive
             'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
+            'placeholder' => $categoryPlaceholder,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
         ]);
     }
@@ -326,6 +358,7 @@ class BuildCategoryArchive
         $events,
         $featuredImage,
         $categoryResponsiveImages,
+        $categoryPlaceholder,
     ): Response {
         if ($post) {
             return $this->renderPost($category, $segments);
@@ -345,6 +378,7 @@ class BuildCategoryArchive
             'events' => $events,
             'featured_image' => $featuredImage,
             'srcSet' => $categoryResponsiveImages,
+            'placeholder' => $categoryPlaceholder,
             'seo' => $this->seo->for(model: $category, image: $featuredImage ?: null),
         ];
 
@@ -377,14 +411,17 @@ class BuildCategoryArchive
             ->get();
 
         $file = $post->getFirstMediaUrl('post-files');
-        $media = $post->getFirstMediaUrl('post-featured-image');
-        $srcSet = MediaConversionUrl::optional($post->getFirstMedia('post-featured-image'), 'large');
+        $heroImage = ResponsiveImageSet::for($post->getFirstMedia('post-featured-image'), 'large');
+        $media = $heroImage['src'] !== ''
+            ? $heroImage['src']
+            : $post->getFirstMediaUrl('post-featured-image');
 
         return Inertia::render('Frontend/Post', [
             'post' => $post,
             'category' => $category,
             'featured_image' => $media,
-            'srcSet' => $srcSet,
+            'srcSet' => $heroImage['srcset'],
+            'placeholder' => $heroImage['placeholder'],
             'file' => $file,
             'relatedPosts' => $relatedPosts,
             'seo' => $this->seo->for(

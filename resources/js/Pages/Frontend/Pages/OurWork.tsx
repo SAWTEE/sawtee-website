@@ -2,7 +2,9 @@ import { Link } from '@inertiajs/react';
 import { ArrowUpRight } from 'lucide-react';
 
 import CardWithEffect from '@/components/Frontend/CardWithEffect';
+import ResponsiveImage from '@/components/Frontend/responsive-image';
 import Title from '@/components/Frontend/title';
+import { type MediaImage, mediaImage } from '@/lib/media-image';
 import { useSiteCopy } from '@/lib/site-copy';
 import { cn, htmlToText } from '@/lib/utils';
 import type { PageSection, Theme } from '@/types';
@@ -14,17 +16,17 @@ type OurWorkProps = {
 };
 
 /** Curated WebP stills for known sector cards — prefer over low-quality CMS stock. */
-function sectorImageSrc(
+function sectorImage(
   section: PageSection,
   overrides: Record<string, string>,
   placeholder: string
-): string {
+): MediaImage {
   const key = (section.link || section.title || '').toLowerCase().trim();
   if (key && overrides[key]) {
-    return overrides[key];
+    return { src: overrides[key] };
   }
 
-  return section.media?.[0]?.original_url ?? placeholder;
+  return mediaImage(section.media, undefined, placeholder);
 }
 
 export default function OurWork({
@@ -110,16 +112,15 @@ export default function OurWork({
                     href={href}
                     className="focus-visible:ring-theme-500 relative block aspect-3/2 w-full overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
                   >
-                    <img
+                    <ResponsiveImage
                       className="image-editorial h-full w-full object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                       alt=""
-                      src={sectorImageSrc(
+                      {...sectorImage(
                         sector,
                         copy.our_work.sector_images,
                         copy.our_work.placeholder_image
                       )}
-                      loading="lazy"
-                      decoding="async"
+                      sizes="(min-width: 768px) 50vw, 100vw"
                     />
                     {/* Muted brand wash so busy or soft assets read as editorial stills */}
                     <div

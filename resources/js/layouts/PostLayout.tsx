@@ -40,6 +40,7 @@ type PostLayoutProps = {
   post: Post;
   featured_image?: string | null;
   srcSet?: string | null;
+  placeholder?: string | null;
 };
 
 export default function PostLayout({
@@ -48,6 +49,7 @@ export default function PostLayout({
   post,
   featured_image,
   srcSet,
+  placeholder,
 }: PostLayoutProps) {
   const { url: pageUrl, props } = usePage<{ seo?: SeoMeta }>();
   const shareUrl = props.seo?.url ?? pageUrl;
@@ -96,6 +98,7 @@ export default function PostLayout({
               className="border-theme-600/10 overflow-hidden rounded-lg border shadow-sm dark:border-white/10"
               src={featured_image}
               srcSet={srcSet}
+              placeholder={placeholder}
               alt={post.title}
               priority
             />

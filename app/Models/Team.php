@@ -44,7 +44,8 @@ class Team extends Model implements HasMedia
             ->fit(Fit::Max, 1600, 1200)
             ->performOnCollections('avatar')
             ->format('webp')
-            ->quality(80);
+            ->quality(80)
+            ->withResponsiveImages();
     }
 
     public function registerMediaCollections(): void

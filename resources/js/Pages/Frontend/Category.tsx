@@ -195,6 +195,7 @@ Category.layout = mainWithPageLayout(props => ({
       ? props.featured_image
       : props.featured_image,
   srcSet: props.srcSet,
+  placeholder: props.placeholder,
 }));
 
 export default Category;

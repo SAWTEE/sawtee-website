@@ -102,6 +102,7 @@ class Publication extends Model implements HasMedia
             ->performOnCollections('publication_featured_image')
             ->format('webp')
             ->quality(80)
+            ->withResponsiveImages()
             ->nonQueued();
     }
 

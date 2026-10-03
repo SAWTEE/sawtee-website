@@ -66,6 +66,7 @@ TeamsArchive.layout = mainWithPageLayout(props => ({
   featured_image:
     typeof props.featured_image === 'string' ? props.featured_image : null,
   srcSet: props.srcSet,
+  placeholder: props.placeholder,
 }));
 
 export default TeamsArchive;
