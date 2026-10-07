@@ -168,14 +168,22 @@ describe('DesktopNavigation', () => {
       />
     );
 
-    expect(container.querySelector('.bg-accent')).toBeNull();
+    const highlightSpans = () =>
+      [...container.querySelectorAll('.bg-accent')] as HTMLElement[];
+    const visibleHighlights = () =>
+      highlightSpans().filter(el => el.classList.contains('opacity-100'));
+
+    // FocusHighlight stays mounted at opacity-0 until a top-level item is hovered.
+    expect(visibleHighlights()).toHaveLength(0);
+    expect(
+      highlightSpans().every(el => el.classList.contains('opacity-0'))
+    ).toBe(true);
 
     fireEvent.pointerEnter(screen.getByRole('link', { name: 'Home' }));
-    expect(container.querySelector('.bg-accent')).not.toBeNull();
+    expect(visibleHighlights().length).toBeGreaterThan(0);
 
     fireEvent.pointerEnter(screen.getByRole('link', { name: 'Events' }));
-    // AnimatePresence may keep the exiting highlight briefly while layoutId morphs.
-    expect(container.querySelectorAll('.bg-accent').length).toBeGreaterThan(0);
+    expect(visibleHighlights().length).toBeGreaterThan(0);
   });
 
   it('applies the same top-level typography to links, mega, and multilevel triggers', () => {

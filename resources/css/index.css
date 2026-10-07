@@ -19,7 +19,7 @@
 @source '../views/**/*.blade.php';
 @source '../js/{hooks,lib,types}/**/*.{ts,tsx}';
 @source '../js/components/{Frontend,shared}/**/*.tsx';
-@source '../js/layouts/{GuestLayout,MainLayout,PageLayout,PostLayout}.tsx';
+@source '../js/layouts/{GuestLayout,MainLayout,MobileNavSheet,PageLayout,PostLayout}.tsx';
 @source '../js/Pages/{Errors,Frontend}/**/*.tsx';
 /* Login / password screens render standalone, before any admin chunk loads. */
 @source '../js/Pages/Backend/Auth/**/*.tsx';
