@@ -1,8 +1,9 @@
+import { resolve, sep } from 'node:path';
+
 import inertia from '@inertiajs/vite';
+import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import laravel from 'laravel-vite-plugin';
-import tailwindcss from '@tailwindcss/vite';
-import { resolve, sep } from 'node:path';
 import { defineConfig } from 'vite';
 import { VitePWA } from 'vite-plugin-pwa';
 
@@ -99,11 +100,7 @@ export default defineConfig(({ isSsrBuild }) => ({
               // Avoid Workbox's terser pass (flaky under some CI/sandbox environments).
               mode: 'development',
               navigateFallback: '/offline.html',
-              navigateFallbackDenylist: [
-                /^\/admin/,
-                /^\/sanctum/,
-                /\/login/,
-              ],
+              navigateFallbackDenylist: [/^\/admin/, /^\/sanctum/, /\/login/],
               additionalManifestEntries: pwaIconEntries,
               maximumFileSizeToCacheInBytes: 3_000_000,
               runtimeCaching: [
@@ -206,9 +203,16 @@ export default defineConfig(({ isSsrBuild }) => ({
       },
       output: {
         /**
+         * Merge tiny shared modules so HTTP/1.1 does not pay a round trip
+         * per 1–2 KB file on the homepage.
+         */
+        experimentalMinChunkSize: 12_000,
+        /**
          * Named vendor chunks improve cache hits and keep the entry smaller so
          * first load only pays for frameworks shared by the public shell.
          * Heavy admin/media libs stay isolated (loaded only when imported).
+         * Radix, Embla, icons, and Framer Motion stay with their callers so a
+         * closed mobile sheet does not download the whole widget set.
          *
          * @see https://vite.dev/guide/build.html#chunking-strategy
          * @see https://rollupjs.org/configuration-options/#output-manualchunks
@@ -222,32 +226,12 @@ export default defineConfig(({ isSsrBuild }) => ({
             return 'vendor-tinymce';
           }
 
-          if (id.includes('framer-motion')) {
-            return 'vendor-framer-motion';
-          }
-
-          if (id.includes('embla-carousel')) {
-            return 'vendor-embla';
-          }
-
           if (id.includes('@tanstack')) {
             return 'vendor-tanstack';
           }
 
           if (id.includes('date-fns') || id.includes('react-day-picker')) {
             return 'vendor-date';
-          }
-
-          if (
-            id.includes('lucide-react') ||
-            id.includes('@radix-ui/react-icons') ||
-            id.includes('react-icons')
-          ) {
-            return 'vendor-icons';
-          }
-
-          if (id.includes('@radix-ui')) {
-            return 'vendor-radix';
           }
 
           if (id.includes('@inertiajs')) {

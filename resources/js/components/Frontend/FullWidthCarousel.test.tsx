@@ -7,13 +7,11 @@ vi.mock('./responsive-image', () => ({
   default: (props: {
     alt?: string;
     className?: string;
-    loading?: string;
     priority?: boolean;
   }) => (
     <img
       alt={props.alt}
       className={props.className}
-      loading={props.loading}
       data-priority={props.priority ? 'true' : 'false'}
     />
   ),
@@ -51,6 +49,18 @@ const slides = [
     subtitle: 'Subtitle',
     media: [{ id: 1, original_url: '/hero.webp' }],
   },
+  {
+    id: 2,
+    title: 'Second slide',
+    subtitle: 'Subtitle',
+    media: [{ id: 2, original_url: '/second.webp' }],
+  },
+  {
+    id: 3,
+    title: 'Third slide',
+    subtitle: 'Subtitle',
+    media: [{ id: 3, original_url: '/third.webp' }],
+  },
 ];
 
 describe('FullWidthCarousel', () => {
@@ -66,12 +76,20 @@ describe('FullWidthCarousel', () => {
   });
 
   it('treats the first slide as the LCP image', () => {
-    render(<FullWidthCarousel slides={slides} />);
+    render(<FullWidthCarousel slides={slides.slice(0, 1)} />);
 
     expect(screen.getByAltText('Hero slide')).toHaveAttribute(
       'data-priority',
       'true'
     );
+  });
+
+  it('does not request images for slides beyond the current and next', () => {
+    render(<FullWidthCarousel slides={slides} />);
+
+    expect(screen.getByAltText('Hero slide')).toBeInTheDocument();
+    expect(screen.getByAltText('Second slide')).toBeInTheDocument();
+    expect(screen.queryByAltText('Third slide')).not.toBeInTheDocument();
   });
 
   it('fills the sibling column height on large screens', () => {

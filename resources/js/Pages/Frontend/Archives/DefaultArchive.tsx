@@ -69,7 +69,7 @@ const ArchivePost = ({ post, showFallbackImage = false }: ArchivePostProps) => {
         {showFallbackImage && featured_image && (
           <Link href={`/category/${categorySlug}/${post.slug}`}>
             <ResponsiveImage
-              className="aspect-video w-full object-cover transition-all duration-500 ease-in group-hover:scale-105"
+              className="aspect-video w-full object-cover transition-transform duration-500 ease-in group-hover:scale-105"
               {...mediaImage(
                 [featured_image],
                 'post-featured-image',

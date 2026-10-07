@@ -1,21 +1,15 @@
 import { usePage } from '@inertiajs/react';
 import { ArrowUpToLineIcon } from 'lucide-react';
-import { type ReactNode, useEffect, useState } from 'react';
+import { lazy, type ReactNode, Suspense, useEffect, useState } from 'react';
 
 import Footer from '@/components/Frontend/footer/footer';
 import Header from '@/components/Frontend/header/header';
-import SearchModal from '@/components/Frontend/header/searchModal';
-import MobileMenu from '@/components/Frontend/mobileMenu';
 import { ThemeProvider } from '@/components/shared/theme-provider';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet';
 import { useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 import type { MenuItem, SharedProps, SocialMenuLink } from '@/types';
+
+const MobileNavSheet = lazy(() => import('./MobileNavSheet'));
 
 /** Show after roughly half a viewport of scroll (min 360px). */
 const SCROLL_TOP_SHOW_PX = 360;
@@ -41,6 +35,7 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
   const [showScrollTop, setShowScrollTop] = useState(false);
   const [footerInView, setFooterInView] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [mobileNavReady, setMobileNavReady] = useState(false);
   const page = usePage<SharedProps>();
   const copy = useSiteCopy();
   const primaryMenu = page.props.primaryMenu ?? [];
@@ -73,6 +68,12 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
     };
   }, []);
 
+  useEffect(() => {
+    if (showMobileMenu) {
+      setMobileNavReady(true);
+    }
+  }, [showMobileMenu]);
+
   const scrollToTop = () => {
     if (typeof window !== 'undefined') {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -81,22 +82,16 @@ export default function MainLayout({ children, className }: MainLayoutProps) {
 
   return (
     <ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-      <Sheet open={showMobileMenu} onOpenChange={setShowMobileMenu}>
-        <SheetContent aria-describedby={undefined}>
-          <SheetHeader>
-            <SheetTitle className="sr-only">Mobile Menu</SheetTitle>
-            <div className="mx-auto my-4">
-              <SearchModal />
-            </div>
-          </SheetHeader>
-
-          <MobileMenu
+      {mobileNavReady ? (
+        <Suspense fallback={null}>
+          <MobileNavSheet
+            open={showMobileMenu}
+            onOpenChange={setShowMobileMenu}
             menu={navMenu}
-            socialLinks={socialMenu}
-            showSocialLinks={true}
+            socialMenu={socialMenu}
           />
-        </SheetContent>
-      </Sheet>
+        </Suspense>
+      ) : null}
 
       <Header
         menu={primaryMenu}

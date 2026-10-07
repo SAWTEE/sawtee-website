@@ -49,6 +49,7 @@ export default function Footer({
                 alt="SAWTEE"
                 width={128}
                 height={32}
+                loading="lazy"
                 decoding="async"
                 className="h-8 w-32 object-contain"
               />

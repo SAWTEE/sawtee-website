@@ -14,7 +14,15 @@ const appName = import.meta.env.VITE_APP_NAME ?? 'SAWTEE';
 registerInertiaErrorHandlers();
 
 if (import.meta.env.PROD) {
-  void import('@/lib/register-pwa').then(({ registerPwa }) => registerPwa());
+  const bootPwa = () => {
+    void import('@/lib/register-pwa').then(({ registerPwa }) => registerPwa());
+  };
+
+  if (typeof window.requestIdleCallback === 'function') {
+    window.requestIdleCallback(bootPwa, { timeout: 4000 });
+  } else {
+    window.addEventListener('load', bootPwa, { once: true });
+  }
 }
 
 function removeStaticLcpFallback(): void {

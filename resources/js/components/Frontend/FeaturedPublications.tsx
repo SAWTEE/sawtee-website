@@ -11,6 +11,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
+import { isNearbyCarouselSlide } from '@/lib/is-nearby-carousel-slide';
 import { type MediaImage, mediaImage } from '@/lib/media-image';
 import type { MediaItem, Post, Publication } from '@/types';
 
@@ -116,15 +117,20 @@ function FeaturedItemsSlider({
         className="w-full"
       >
         <CarouselContent className="ml-0">
-          {items.map(item => {
+          {items.map((item, index) => {
             const media = resolveMedia(item, kind);
             const href = resolveHref(item, kind);
+            const showThumb =
+              Boolean(media) &&
+              isNearbyCarouselSlide(index, current, items.length);
 
             return (
               <CarouselItem key={item.id} className="basis-full py-0.5 pl-0">
                 <ItemLink kind={kind} href={href}>
                   <ListCopy title={item.title} subtitle={item.subtitle} />
-                  {media ? <ListThumb image={media} alt={item.title} /> : null}
+                  {showThumb && media ? (
+                    <ListThumb image={media} alt={item.title} />
+                  ) : null}
                 </ItemLink>
               </CarouselItem>
             );

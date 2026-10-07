@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import Header from './header';
 
@@ -23,8 +23,46 @@ vi.mock('./searchModal', () => ({
   default: () => <div data-testid="search-modal" />,
 }));
 
+vi.mock('./DesktopNavigation', () => ({
+  default: ({ menu }: { menu: Array<{ title: string }> }) => (
+    <nav data-testid="desktop-navigation">
+      {menu.map(item => (
+        <span key={item.title}>{item.title}</span>
+      ))}
+    </nav>
+  ),
+}));
+
+function stubMatchMedia(matches: boolean): void {
+  Object.defineProperty(window, 'matchMedia', {
+    writable: true,
+    value: (query: string) => ({
+      matches,
+      media: query,
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+    }),
+  });
+}
+
 describe('Header responsiveness', () => {
-  it('exposes a mobile menu toggle that is hidden on large screens via lg:hidden', () => {
+  afterEach(() => {
+    stubMatchMedia(false);
+  });
+
+  it('does not mount desktop navigation on small viewports', () => {
+    stubMatchMedia(false);
+
+    render(
+      <Header menu={[{ id: 1, title: 'About', url: '/about', children: [] }]} />
+    );
+
+    expect(screen.queryByText('About')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('desktop-navigation')).not.toBeInTheDocument();
+  });
+
+  it('exposes a mobile menu toggle on small viewports because desktop nav is not mounted', () => {
+    stubMatchMedia(false);
     render(
       <Header menu={[]} showMobileMenu={false} setShowMobileMenu={vi.fn()} />
     );
@@ -36,6 +74,22 @@ describe('Header responsiveness', () => {
       .getAllByTestId('mode-toggle')
       .find(el => el.parentElement === toggle.parentElement);
     expect(mobileThemeToggle).toBeTruthy();
+  });
+
+  it('does not render the mobile menu toggle on large viewports', async () => {
+    stubMatchMedia(true);
+    render(
+      <Header
+        menu={[{ id: 1, title: 'About', url: '/about', children: [] }]}
+        showMobileMenu={false}
+        setShowMobileMenu={vi.fn()}
+      />
+    );
+
+    expect(
+      screen.queryByRole('button', { name: /open menu/i })
+    ).not.toBeInTheDocument();
+    expect(await screen.findByTestId('desktop-navigation')).toBeInTheDocument();
   });
 
   it('loads a compact header logo after the LCP image', () => {

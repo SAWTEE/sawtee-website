@@ -12,6 +12,7 @@ import {
   CarouselPrevious,
 } from '@/components/ui/carousel';
 import { dismissStaticLcpFallback } from '@/lib/dismiss-lcp-fallback';
+import { isNearbyCarouselSlide } from '@/lib/is-nearby-carousel-slide';
 import { firstSrcSetUrl } from '@/lib/media-image';
 import { cn } from '@/lib/utils';
 import type { Slide } from '@/types';
@@ -136,7 +137,8 @@ const FullWidthCarousel = ({
                       : 'aspect-video sm:aspect-2/1 lg:aspect-2/1'
                   )}
                 >
-                  {imageSrc ? (
+                  {imageSrc &&
+                  isNearbyCarouselSlide(index, current, slides.length) ? (
                     <ResponsiveImage
                       src={imageSrc}
                       srcSet={srcSet}
@@ -157,7 +159,7 @@ const FullWidthCarousel = ({
                         index === 0 ? dismissStaticLcpFallback : undefined
                       }
                     />
-                  ) : (
+                  ) : imageSrc ? null : (
                     <div
                       className={cn(
                         'bg-theme-800 flex h-full w-full items-center justify-center text-sm text-white/70',

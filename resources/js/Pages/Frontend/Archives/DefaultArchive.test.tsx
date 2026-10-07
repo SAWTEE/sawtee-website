@@ -86,4 +86,30 @@ describe('DefaultArchive', () => {
       'Read more: Long media headline that used to clutter'
     );
   });
+
+  it('scales archive images with a composited transform transition', () => {
+    const { container } = render(
+      <DefaultArchive
+        showFallbackImage
+        posts={[
+          makePost({
+            media: [
+              {
+                id: 1,
+                collection_name: 'post-featured-image',
+                original_url: '/media/story.webp',
+                placeholder: 'data:image/svg+xml;base64,abc',
+              },
+            ],
+          }),
+        ]}
+      />
+    );
+
+    const image = container.querySelector('img');
+
+    expect(image).toHaveClass('transition-transform');
+    expect(image).toHaveClass('group-hover:scale-105');
+    expect(image?.className).not.toMatch(/\btransition-all\b/);
+  });
 });

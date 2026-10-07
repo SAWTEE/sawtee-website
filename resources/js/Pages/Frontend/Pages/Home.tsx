@@ -3,11 +3,11 @@ import { lazy, type ReactNode, Suspense } from 'react';
 
 import ExploreButton from '@/components/Frontend/ExploreButton';
 import FeaturedSection from '@/components/Frontend/feature';
+import { FeaturedPublications } from '@/components/Frontend/FeaturedPublications';
 import FullWidthCarousel from '@/components/Frontend/FullWidthCarousel';
 import WebsiteHead from '@/components/Frontend/Head';
 import {
   BelowTheFoldSkeleton,
-  FeaturedPublicationsSkeleton,
   PublicationCoversSkeleton,
   VideoCarouselSkeleton,
 } from '@/components/Frontend/HomeSkeletons';
@@ -15,6 +15,7 @@ import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
 import ResponsiveImage from '@/components/Frontend/responsive-image';
 import SimpleList from '@/components/Frontend/SimpleList';
 import Title from '@/components/Frontend/title';
+import MountWhenVisible from '@/components/shared/MountWhenVisible';
 import { formatDate } from '@/lib/helpers';
 import { firstSrcSetUrl, mediaImage } from '@/lib/media-image';
 import { useSiteCopy } from '@/lib/site-copy';
@@ -47,11 +48,6 @@ function sectionByName(
   return sections?.find(section => section.name === name);
 }
 
-const FeaturedPublications = lazy(() =>
-  import('@/components/Frontend/FeaturedPublications').then(m => ({
-    default: m.FeaturedPublications,
-  }))
-);
 const MultiPostsCarousel = lazy(
   () => import('@/components/Frontend/MultiPostsSlider')
 );
@@ -154,17 +150,14 @@ const Home = ({
           </div>
           {FeaturedPublicationSectionIsVisible ? (
             <aside className="min-w-0 lg:col-span-4 lg:h-full">
-              <Suspense fallback={<FeaturedPublicationsSkeleton />}>
-                <FeaturedPublications
-                  publications={featuredPublications}
-                  blogPosts={featuredBlogPosts}
-                  publicationsHeading={featuredPublication?.heading}
-                  blogsHeading={
-                    featuredPublication?.intro ??
-                    copy.home.featured_blogs_heading
-                  }
-                />
-              </Suspense>
+              <FeaturedPublications
+                publications={featuredPublications}
+                blogPosts={featuredBlogPosts}
+                publicationsHeading={featuredPublication?.heading}
+                blogsHeading={
+                  featuredPublication?.intro ?? copy.home.featured_blogs_heading
+                }
+              />
             </aside>
           ) : null}
         </div>
@@ -268,12 +261,14 @@ const Home = ({
 
       {features && (
         <Section className="reform-section relative overflow-hidden">
-          <Suspense fallback={null}>
-            <SvgBackground
-              className="opacity-40 dark:opacity-20"
-              svgStyles="dark:text-theme-900 text-theme-100"
-            />
-          </Suspense>
+          <MountWhenVisible>
+            <Suspense fallback={null}>
+              <SvgBackground
+                className="opacity-40 dark:opacity-20"
+                svgStyles="dark:text-theme-900 text-theme-100"
+              />
+            </Suspense>
+          </MountWhenVisible>
           <div className="relative mx-auto max-w-5xl">
             <FeaturedSection features={features} />
           </div>
@@ -330,8 +325,8 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
             className="bg-muted relative aspect-video w-full overflow-hidden rounded-md text-center"
             title={lead.title}
           >
-            <div className="ease bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1.25 w-full transition-all duration-200 group-hover:block" />
-            <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
+            <div className="bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1.25 w-full group-hover:block" />
+            <div className="absolute inset-0 z-20 h-full w-full bg-black/20 transition-colors duration-200 group-hover:bg-transparent" />
             <ResponsiveImage
               {...featuredImage(
                 lead.media,
@@ -341,7 +336,7 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
               width={960}
               height={540}
               sizes="(min-width: 768px) 40vw, 100vw"
-              className="absolute inset-0 h-full w-full object-cover transition-all duration-200 ease-linear"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
         </Link>
@@ -394,10 +389,10 @@ const FeaturedEventsSection = ({ events }: { events: Post[] }) => {
                     width={300}
                     height={160}
                     sizes="(min-width: 768px) 20vw, 50vw"
-                    className="h-full w-full object-cover transition-all duration-200 ease-linear"
+                    className="h-full w-full object-cover"
                   />
-                  <div className="ease bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1 w-full transition-all duration-200 group-hover:block" />
-                  <div className="ease absolute inset-0 z-20 h-full w-full bg-black/20 transition-all duration-200 group-hover:bg-transparent" />
+                  <div className="bg-theme-500/80 absolute inset-0 top-0 z-10 hidden h-1 w-full group-hover:block" />
+                  <div className="absolute inset-0 z-20 h-full w-full bg-black/20 transition-colors duration-200 group-hover:bg-transparent" />
                 </div>
               </Link>
               <Link
@@ -510,9 +505,11 @@ export const LatestPublicationSection = ({
             {intro}
           </p>
         ) : null}
-        <Suspense fallback={<PublicationCoversSkeleton />}>
-          <MultiPostsCarousel data={publications} />
-        </Suspense>
+        <MountWhenVisible fallback={<PublicationCoversSkeleton />}>
+          <Suspense fallback={<PublicationCoversSkeleton />}>
+            <MultiPostsCarousel data={publications} />
+          </Suspense>
+        </MountWhenVisible>
         <ExploreButton
           className="mt-8"
           text="More In Publications"
@@ -735,9 +732,11 @@ export const WebinarSection = ({
           {intro ||
             'Watch recent webinars and download related materials from SAWTEE’s research and dialogue programmes.'}
         </p>
-        <Suspense fallback={<VideoCarouselSkeleton />}>
-          <VideoCarousel posts={webinars} />
-        </Suspense>
+        <MountWhenVisible fallback={<VideoCarouselSkeleton />}>
+          <Suspense fallback={<VideoCarouselSkeleton />}>
+            <VideoCarousel posts={webinars} />
+          </Suspense>
+        </MountWhenVisible>
         <ExploreButton
           className="mt-8"
           text="More recordings and resources"

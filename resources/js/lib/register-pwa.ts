@@ -14,7 +14,7 @@ export function registerPwa(): void {
     return;
   }
 
-  window.addEventListener('load', () => {
+  const register = () => {
     void navigator.serviceWorker
       .register('/sw.js', { scope: '/' })
       .then(registration => {
@@ -41,7 +41,14 @@ export function registerPwa(): void {
       .catch(() => {
         // Registration failures are non-fatal (unsupported origin, etc.).
       });
-  });
+  };
+
+  if (document.readyState === 'complete') {
+    register();
+    return;
+  }
+
+  window.addEventListener('load', register, { once: true });
 }
 
 function showUpdateBanner(onRefresh: () => void): void {

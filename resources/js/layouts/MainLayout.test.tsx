@@ -101,6 +101,17 @@ describe('MainLayout', () => {
     expect(screen.getByTestId('footer')).toHaveTextContent('menu:0');
   });
 
+  it('does not mount the mobile menu sheet until it is opened', () => {
+    render(
+      <MainLayout>
+        <div>Page content</div>
+      </MainLayout>
+    );
+
+    expect(screen.queryByTestId('mobile-menu')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('search-modal')).not.toBeInTheDocument();
+  });
+
   it('keeps the back-to-top control hidden until the page is scrolled', () => {
     mockDocumentScroll({ scrollTop: 0 });
 

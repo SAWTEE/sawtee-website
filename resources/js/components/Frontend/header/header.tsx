@@ -1,12 +1,19 @@
-import type { ComponentPropsWithoutRef, ReactNode } from 'react';
+import {
+  type ComponentPropsWithoutRef,
+  lazy,
+  type ReactNode,
+  Suspense,
+} from 'react';
 
 import InertiaLink from '@/components/shared/InertiaLink';
+import useMinWidth from '@/hooks/use-min-width';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types';
 
-import DesktopNavigation from './DesktopNavigation';
 import { ModeToggle } from './mode-toggle';
-import SearchModal from './searchModal';
+
+const DesktopNavigation = lazy(() => import('./DesktopNavigation'));
+const SearchModal = lazy(() => import('./searchModal'));
 
 type SiteHeaderProps = ComponentPropsWithoutRef<'header'> & {
   children?: ReactNode;
@@ -98,42 +105,53 @@ const Header = ({
   setShowMobileMenu,
   className,
 }: HeaderProps) => {
+  const isDesktop = useMinWidth(1024);
+
   return (
     <SiteHeader className={className}>
       <SiteHeaderInner>
         <div className="flex w-full min-w-0 items-center justify-between gap-3">
           <SiteLogo src="/assets/logo-sawtee-header.webp" />
-          <DesktopNavigation menu={menu ?? []} />
-          <div className="hidden shrink-0 gap-4 lg:flex">
-            <ModeToggle />
-            <SearchModal />
-          </div>
-          <div className="flex shrink-0 items-center gap-2 lg:hidden">
-            <ModeToggle />
-            <button
-              type="button"
-              onClick={() => setShowMobileMenu?.(!showMobileMenu)}
-              className="text-primary hover:opacity-80"
-              id="open-sidebar"
-              aria-label="Open menu"
-              aria-expanded={showMobileMenu}
-            >
-              <svg
-                className="h-6 w-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
+          {isDesktop ? (
+            <Suspense fallback={null}>
+              <DesktopNavigation menu={menu ?? []} />
+            </Suspense>
+          ) : null}
+          {isDesktop ? (
+            <div className="flex shrink-0 gap-4">
+              <ModeToggle />
+              <Suspense fallback={null}>
+                <SearchModal />
+              </Suspense>
+            </div>
+          ) : (
+            <div className="flex shrink-0 items-center gap-2 lg:hidden">
+              <ModeToggle />
+              <button
+                type="button"
+                onClick={() => setShowMobileMenu?.(!showMobileMenu)}
+                className="text-primary hover:opacity-80"
+                id="open-sidebar"
+                aria-label="Open menu"
+                aria-expanded={showMobileMenu}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
+                <svg
+                  className="h-6 w-6"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                </svg>
+              </button>
+            </div>
+          )}
         </div>
       </SiteHeaderInner>
     </SiteHeader>
