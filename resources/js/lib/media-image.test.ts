@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { mediaImage } from './media-image';
+import { firstSrcSetUrl, mediaImage } from './media-image';
 
 describe('mediaImage', function () {
   it('falls back when the collection is empty', function () {
@@ -44,5 +44,15 @@ describe('mediaImage', function () {
       srcSet: '/cover.webp 200w',
       placeholder: null,
     });
+  });
+});
+
+describe('firstSrcSetUrl', function () {
+  it('returns the first candidate and falls back when srcset is empty', function () {
+    expect(
+      firstSrcSetUrl('/wide.webp 1200w, /narrow.webp 400w', '/original.webp')
+    ).toBe('/wide.webp');
+    expect(firstSrcSetUrl(null, '/original.webp')).toBe('/original.webp');
+    expect(firstSrcSetUrl(undefined)).toBeUndefined();
   });
 });

@@ -124,8 +124,8 @@ test('home page defers below-the-fold sections', function () {
             ->has('slides')
             ->missing('events')
             ->missing('publications')
-            ->missing('featuredPublications')
-            ->missing('featuredBlogPosts')
+            ->has('featuredPublications')
+            ->has('featuredBlogPosts')
             ->missing('infocus')
             ->loadDeferredProps('below', fn (Assert $reload) => $reload
                 ->has('events')
@@ -134,10 +134,6 @@ test('home page defers below-the-fold sections', function () {
                 ->has('sawteeInMedia')
                 ->has('newsletters')
                 ->has('webinars')
-            )
-            ->loadDeferredProps('sidebar', fn (Assert $reload) => $reload
-                ->has('featuredPublications')
-                ->has('featuredBlogPosts')
             )
         );
 });

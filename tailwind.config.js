@@ -151,11 +151,22 @@ export default {
             transform: 'translateX(-50%)',
           },
         },
+        'fade-up': {
+          from: {
+            opacity: '0',
+            transform: 'translateY(0.4rem)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
         marquee: 'marquee var(--duration, 30s) linear infinite',
+        'fade-up': 'fade-up 0.45s ease-out',
       },
     },
   },

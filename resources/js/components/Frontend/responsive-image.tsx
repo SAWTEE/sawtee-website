@@ -22,6 +22,8 @@ export type ResponsiveImageProps = {
   title?: string;
   /** When true, treat as LCP candidate: load eagerly and never defer. */
   priority?: boolean;
+  onLoad?: (event: SyntheticEvent<HTMLImageElement>) => void;
+  onError?: (event: SyntheticEvent<HTMLImageElement>) => void;
 };
 
 /**
@@ -43,6 +45,8 @@ const ResponsiveImage = ({
   className,
   title,
   priority = false,
+  onLoad,
+  onError,
 }: ResponsiveImageProps) => {
   const fullImageReady = useFullImageReady(priority);
   const [fullImageLoaded, setFullImageLoaded] = useState(false);
@@ -59,6 +63,7 @@ const ResponsiveImage = ({
     if (showFullImage && event.currentTarget.currentSrc !== placeholder) {
       setFullImageLoaded(true);
     }
+    onLoad?.(event);
   };
 
   return (
@@ -82,6 +87,7 @@ const ResponsiveImage = ({
       fetchPriority={priority ? 'high' : 'auto'}
       decoding={priority ? 'sync' : 'async'}
       onLoad={handleLoad}
+      onError={onError}
     />
   );
 };

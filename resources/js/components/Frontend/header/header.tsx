@@ -49,6 +49,8 @@ const Logo = ({ text = 'SAWTEE', src }: { text?: string; src?: string }) => {
         alt="SAWTEE"
         width={128}
         height={32}
+        decoding="async"
+        fetchPriority="low"
         className="h-auto w-24 max-w-full object-contain sm:w-32"
       />
     );
@@ -100,7 +102,7 @@ const Header = ({
     <SiteHeader className={className}>
       <SiteHeaderInner>
         <div className="flex w-full min-w-0 items-center justify-between gap-3">
-          <SiteLogo src="/assets/logo-sawtee.svg" />
+          <SiteLogo src="/assets/logo-sawtee-header.webp" />
           <DesktopNavigation menu={menu ?? []} />
           <div className="hidden shrink-0 gap-4 lg:flex">
             <ModeToggle />

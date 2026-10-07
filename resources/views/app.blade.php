@@ -27,10 +27,16 @@
         <style>
             #inertia-lcp-fallback {
                 box-sizing: border-box;
+                left: 0;
                 margin: 0 auto;
                 max-width: 80rem;
                 padding: 1.25rem 1rem;
+                pointer-events: none;
+                position: absolute;
+                right: 0;
+                top: 0;
                 width: 100%;
+                z-index: 30;
             }
 
             #inertia-lcp-fallback-inner {
@@ -48,7 +54,7 @@
                 width: 100%;
             }
 
-            body.inertia-mounted #inertia-lcp-fallback {
+            body.inertia-lcp-ready #inertia-lcp-fallback {
                 display: none;
             }
         </style>
@@ -87,7 +93,7 @@
         class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-0 focus:z-50 focus:rounded-b-lg focus:bg-theme-500 focus:px-3 focus:py-2 focus:text-base focus:font-medium focus:text-gray-100 focus:outline-none focus:ring-4 focus:ring-sky-500">Skip
         to main content</a>
     @isset($lcpImage)
-        <div id="inertia-lcp-fallback">
+        <div id="inertia-lcp-fallback" aria-hidden="true">
             <div id="inertia-lcp-fallback-inner">
                 <img src="{{ $lcpImage }}" alt="Homepage hero slide" width="1280" height="720" fetchpriority="high" decoding="sync"
                     @if (!empty($lcpSrcSet))

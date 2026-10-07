@@ -7,6 +7,7 @@ test('sawtee sync site assets copies tracked files into public assets', function
     $this->artisan('sawtee:sync-site-assets')->assertSuccessful();
 
     expect(public_path('assets/logo-sawtee.webp'))->toBeFile()
+        ->and(public_path('assets/logo-sawtee-header.webp'))->toBeFile()
         ->and(public_path('assets/member-institutes/bela.webp'))->toBeFile()
         ->and(public_path('assets/himal-lamsal.webp'))->toBeFile();
 });

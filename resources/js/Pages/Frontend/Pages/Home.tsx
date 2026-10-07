@@ -14,10 +14,9 @@ import {
 import NewsletterCallout from '@/components/Frontend/NewsletterCallout';
 import ResponsiveImage from '@/components/Frontend/responsive-image';
 import SimpleList from '@/components/Frontend/SimpleList';
-import SvgBackground from '@/components/Frontend/SvgBackground';
 import Title from '@/components/Frontend/title';
 import { formatDate } from '@/lib/helpers';
-import { mediaImage } from '@/lib/media-image';
+import { firstSrcSetUrl, mediaImage } from '@/lib/media-image';
 import { useSiteCopy } from '@/lib/site-copy';
 import { cn } from '@/lib/utils';
 import type {
@@ -57,6 +56,7 @@ const MultiPostsCarousel = lazy(
   () => import('@/components/Frontend/MultiPostsSlider')
 );
 const VideoCarousel = lazy(() => import('@/components/Frontend/VideoCarousel'));
+const SvgBackground = lazy(() => import('@/components/Frontend/SvgBackground'));
 
 const Home = ({
   infocus,
@@ -82,8 +82,10 @@ const Home = ({
     featuredPublication?.show
   );
 
-  const lcpImage = slides?.[0]?.media?.[0]?.original_url;
-  const lcpSrcSet = slidesResponsiveImages?.[0] || undefined;
+  const firstSlideMedia = slides?.[0]?.media?.[0];
+  const lcpSrcSet =
+    firstSlideMedia?.srcset || slidesResponsiveImages?.[0] || undefined;
+  const lcpImage = firstSrcSetUrl(lcpSrcSet, firstSlideMedia?.original_url);
 
   return (
     <>
@@ -150,32 +152,21 @@ const Home = ({
               />
             ) : null}
           </div>
-          {FeaturedPublicationSectionIsVisible && (
-            <Deferred
-              data={['featuredPublications', 'featuredBlogPosts']}
-              fallback={
-                <aside className="min-w-0 lg:col-span-4 lg:h-full">
-                  <FeaturedPublicationsSkeleton />
-                </aside>
-              }
-            >
-              {featuredPublications ? (
-                <aside className="min-w-0 lg:col-span-4 lg:h-full">
-                  <Suspense fallback={<FeaturedPublicationsSkeleton />}>
-                    <FeaturedPublications
-                      publications={featuredPublications}
-                      blogPosts={featuredBlogPosts}
-                      publicationsHeading={featuredPublication?.heading}
-                      blogsHeading={
-                        featuredPublication?.intro ??
-                        copy.home.featured_blogs_heading
-                      }
-                    />
-                  </Suspense>
-                </aside>
-              ) : null}
-            </Deferred>
-          )}
+          {FeaturedPublicationSectionIsVisible ? (
+            <aside className="min-w-0 lg:col-span-4 lg:h-full">
+              <Suspense fallback={<FeaturedPublicationsSkeleton />}>
+                <FeaturedPublications
+                  publications={featuredPublications}
+                  blogPosts={featuredBlogPosts}
+                  publicationsHeading={featuredPublication?.heading}
+                  blogsHeading={
+                    featuredPublication?.intro ??
+                    copy.home.featured_blogs_heading
+                  }
+                />
+              </Suspense>
+            </aside>
+          ) : null}
         </div>
       </Section>
       {/* Below-the-fold sections (deferred props) */}
@@ -277,10 +268,12 @@ const Home = ({
 
       {features && (
         <Section className="reform-section relative overflow-hidden">
-          <SvgBackground
-            className="opacity-40 dark:opacity-20"
-            svgStyles="dark:text-theme-900 text-theme-100"
-          />
+          <Suspense fallback={null}>
+            <SvgBackground
+              className="opacity-40 dark:opacity-20"
+              svgStyles="dark:text-theme-900 text-theme-100"
+            />
+          </Suspense>
           <div className="relative mx-auto max-w-5xl">
             <FeaturedSection features={features} />
           </div>

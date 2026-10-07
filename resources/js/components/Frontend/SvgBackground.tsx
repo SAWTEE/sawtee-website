@@ -1,4 +1,5 @@
-import Particles from '@/components/Frontend/Particles';
+import { lazy, Suspense, useEffect, useState } from 'react';
+
 import { cn } from '@/lib/utils';
 
 type SvgBackgroundProps = {
@@ -8,11 +9,37 @@ type SvgBackgroundProps = {
   showParticles?: boolean;
 };
 
+const Particles = lazy(() => import('@/components/Frontend/Particles'));
+
 export default function SvgBackground({
   className = '',
   svgStyles,
   showParticles = true,
 }: SvgBackgroundProps) {
+  const [particlesEnabled, setParticlesEnabled] = useState(false);
+
+  useEffect(() => {
+    if (!showParticles) {
+      return;
+    }
+
+    const desktop = window.matchMedia('(min-width: 768px)');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+    const sync = () => {
+      setParticlesEnabled(desktop.matches && !reduceMotion.matches);
+    };
+
+    sync();
+    desktop.addEventListener('change', sync);
+    reduceMotion.addEventListener('change', sync);
+
+    return () => {
+      desktop.removeEventListener('change', sync);
+      reduceMotion.removeEventListener('change', sync);
+    };
+  }, [showParticles]);
+
   return (
     <div
       className={cn(
@@ -48,8 +75,10 @@ export default function SvgBackground({
           r="22.5"
         />
       </svg>
-      {showParticles ? (
-        <Particles className="pointer-events-none absolute inset-0" />
+      {particlesEnabled ? (
+        <Suspense fallback={null}>
+          <Particles className="pointer-events-none absolute inset-0" />
+        </Suspense>
       ) : null}
     </div>
   );

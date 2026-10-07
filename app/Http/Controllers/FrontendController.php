@@ -8,6 +8,7 @@ use App\Actions\Frontend\BuildThemeArchive;
 use App\Actions\Frontend\ResolvePageBySlug;
 use App\Support\HomePageDataAssembler;
 use App\Support\ResolvesSeoMeta;
+use App\Support\ResponsiveImageSet;
 use App\Support\SiteCopy;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,22 +19,21 @@ class FrontendController extends Controller
     {
         $home = $homePageData->assemble();
         $copy = SiteCopy::all();
-        $lcpImage = data_get($home, 'slides.0.media.0.original_url');
-        $lcpSrcSet = data_get($home, 'slidesResponsiveImages.0') ?: null;
+        [$lcpImage, $lcpSrcSet] = $this->lcpImageFromHome($home);
 
-        // First paint: slider / LCP only. Sidebar + below-the-fold defer.
+        // First paint: slider, LCP, and the featured sidebar. Below-the-fold defers.
         $critical = [
             'slides' => $home['slides'] ?? null,
             'slidesResponsiveImages' => $home['slidesResponsiveImages'] ?? null,
             'homePageSections' => $home['homePageSections'] ?? null,
+            'featuredPublications' => $home['featuredPublications'] ?? null,
+            'featuredBlogPosts' => $home['featuredBlogPosts'] ?? null,
         ];
 
         return Inertia::render('Frontend/Pages/Home', array_merge(
             $critical,
             [
                 'infocus' => Inertia::defer(fn () => $home['infocus'] ?? null, 'below'),
-                'featuredPublications' => Inertia::defer(fn () => $home['featuredPublications'] ?? null, 'sidebar'),
-                'featuredBlogPosts' => Inertia::defer(fn () => $home['featuredBlogPosts'] ?? null, 'sidebar'),
                 'events' => Inertia::defer(fn () => $home['events'] ?? null, 'below'),
                 'publications' => Inertia::defer(fn () => $home['publications'] ?? null, 'below'),
                 'sawteeInMedia' => Inertia::defer(fn () => $home['sawteeInMedia'] ?? null, 'below'),
@@ -81,5 +81,26 @@ class FrontendController extends Controller
             $post,
             $article,
         );
+    }
+
+    /**
+     * Prefer a srcset candidate for preload/src so HTTP/1.1 does not fetch the
+     * original file and a width variant as two competing hero requests.
+     *
+     * @param  array<string, mixed>  $home
+     * @return array{0: string|null, 1: string|null}
+     */
+    private function lcpImageFromHome(array $home): array
+    {
+        $original = data_get($home, 'slides.0.media.0.original_url');
+        $srcSet = data_get($home, 'slides.0.media.0.srcset')
+            ?: data_get($home, 'slidesResponsiveImages.0')
+            ?: null;
+        $srcSet = is_string($srcSet) && $srcSet !== '' ? $srcSet : null;
+        $fromSrcSet = ResponsiveImageSet::firstUrl($srcSet);
+        $image = $fromSrcSet
+            ?? (is_string($original) && $original !== '' ? $original : null);
+
+        return [$image, $srcSet];
     }
 }

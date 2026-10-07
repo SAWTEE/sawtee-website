@@ -4,8 +4,18 @@ import { describe, expect, it, vi } from 'vitest';
 import FullWidthCarousel from './FullWidthCarousel';
 
 vi.mock('./responsive-image', () => ({
-  default: (props: { alt?: string; className?: string }) => (
-    <img alt={props.alt} className={props.className} />
+  default: (props: {
+    alt?: string;
+    className?: string;
+    loading?: string;
+    priority?: boolean;
+  }) => (
+    <img
+      alt={props.alt}
+      className={props.className}
+      loading={props.loading}
+      data-priority={props.priority ? 'true' : 'false'}
+    />
   ),
 }));
 
@@ -52,6 +62,15 @@ describe('FullWidthCarousel', () => {
     ).not.toHaveClass('lg:h-full');
     expect(container.querySelector('.aspect-video')).toHaveClass(
       'lg:aspect-2/1'
+    );
+  });
+
+  it('treats the first slide as the LCP image', () => {
+    render(<FullWidthCarousel slides={slides} />);
+
+    expect(screen.getByAltText('Hero slide')).toHaveAttribute(
+      'data-priority',
+      'true'
     );
   });
 

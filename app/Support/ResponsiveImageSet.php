@@ -2,6 +2,7 @@
 
 namespace App\Support;
 
+use Illuminate\Support\Str;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\ResponsiveImages\ResponsiveImage;
 use Spatie\MediaLibrary\Support\PathGenerator\PathGeneratorFactory;
@@ -52,6 +53,21 @@ class ResponsiveImageSet
     {
         return self::srcsetFor(self::usableVariants($media, $conversion))
             ?? MediaConversionUrl::optional($media, $conversion);
+    }
+
+    /**
+     * First candidate URL from a srcset string, so preload/src share one file
+     * instead of the original plus a width variant on HTTP/1.1.
+     */
+    public static function firstUrl(?string $srcset): ?string
+    {
+        if (! is_string($srcset) || $srcset === '') {
+            return null;
+        }
+
+        $first = trim(Str::before(Str::before($srcset, ','), ' '));
+
+        return $first !== '' ? $first : null;
     }
 
     /**

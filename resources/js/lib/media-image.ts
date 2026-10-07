@@ -43,3 +43,21 @@ export function mediaImage(
     placeholder: item.placeholder ?? null,
   };
 }
+
+/**
+ * First URL in a width-descriptor srcset so preload/src share one file
+ * instead of competing with the original on HTTP/1.1.
+ */
+export function firstSrcSetUrl(
+  srcSet?: string | null,
+  fallback?: string | null
+): string | undefined {
+  if (srcSet) {
+    const first = srcSet.trim().split(',')[0]?.trim().split(/\s+/)[0];
+    if (first) {
+      return first;
+    }
+  }
+
+  return fallback || undefined;
+}

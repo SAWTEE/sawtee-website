@@ -30,12 +30,20 @@ describe('ResponsiveImage', function () {
   });
 
   it('loads LCP candidates eagerly', function () {
-    render(<ResponsiveImage src="/hero.webp" alt="Lead" priority />);
+    const onLoad = vi.fn();
+
+    render(
+      <ResponsiveImage src="/hero.webp" alt="Lead" priority onLoad={onLoad} />
+    );
 
     const image = screen.getByAltText('Lead');
 
     expect(image).toHaveAttribute('loading', 'eager');
     expect(image).toHaveAttribute('fetchpriority', 'high');
+
+    fireEvent.load(image);
+
+    expect(onLoad).toHaveBeenCalledOnce();
   });
 
   it('clears the placeholder background after the full image loads', function () {

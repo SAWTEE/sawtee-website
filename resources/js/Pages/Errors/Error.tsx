@@ -234,7 +234,7 @@ function PublicErrorContent({
               aria-label="SAWTEE home"
             >
               <img
-                src="/assets/logo-sawtee.svg"
+                src="/assets/logo-sawtee-header.webp"
                 alt=""
                 width={128}
                 height={32}

@@ -38,6 +38,15 @@ describe('Header responsiveness', () => {
     expect(mobileThemeToggle).toBeTruthy();
   });
 
+  it('loads a compact header logo after the LCP image', () => {
+    render(<Header menu={[]} />);
+
+    const logo = screen.getByAltText('SAWTEE');
+
+    expect(logo).toHaveAttribute('src', '/assets/logo-sawtee-header.webp');
+    expect(logo).toHaveAttribute('fetchpriority', 'low');
+  });
+
   it('keeps the header overflow visible so desktop dropdowns are not clipped', () => {
     const { container } = render(<Header menu={[]} />);
     const header = container.querySelector('header');

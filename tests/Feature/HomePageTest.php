@@ -6,6 +6,7 @@ use App\Models\Page;
 use App\Models\Slide;
 use App\Models\Slider;
 use App\Support\ContentCache;
+use App\Support\ResponsiveImageSet;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Cache;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -51,18 +52,14 @@ test('home page exposes assembler payload keys', function () {
             ->has('homePageSections')
             ->has('seo.title')
             ->has('seo.description')
-            ->missing('featuredPublications')
-            ->missing('featuredBlogPosts')
+            ->has('featuredPublications')
+            ->has('featuredBlogPosts')
             // Below-the-fold sections are deferred (group: below).
             ->missing('sawteeInMedia')
             ->missing('events')
             ->missing('publications')
             ->missing('newsletters')
             ->missing('webinars')
-            ->loadDeferredProps('sidebar', fn (Assert $reload) => $reload
-                ->has('featuredPublications')
-                ->has('featuredBlogPosts')
-            )
             ->loadDeferredProps('below', fn (Assert $reload) => $reload
                 ->has('infocus')
                 ->has('sawteeInMedia')
@@ -99,10 +96,19 @@ test('home page includes a static lcp fallback image in the initial html', funct
     $response = $this->get(route('home'));
 
     $response->assertOk();
-    expect($response->getContent())
+    $content = $response->getContent();
+    $media = $slide->fresh(['media'])->getFirstMedia('slides');
+    $srcset = $media ? ResponsiveImageSet::srcset($media, 'large') : null;
+    $lcpUrl = ResponsiveImageSet::firstUrl($srcset);
+
+    expect($content)
         ->toContain('id="inertia-lcp-fallback"')
         ->toContain('rel="preload" as="image"')
-        ->toContain('body.inertia-mounted #inertia-lcp-fallback');
+        ->toContain('body.inertia-lcp-ready #inertia-lcp-fallback');
+
+    if (is_string($lcpUrl) && $lcpUrl !== '') {
+        expect($content)->toContain($lcpUrl);
+    }
 });
 
 test('public htaccess sets long cache headers for build assets', function () {

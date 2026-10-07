@@ -81,7 +81,11 @@ function FeatureImage({ feature }: { feature: HomeFeature }) {
           className="h-full w-full rounded-sm object-cover transition-transform duration-500 ease-out group-hover:scale-[1.02] lg:rounded-lg"
           src={feature.image_src}
           alt={feature.title}
+          width={800}
+          height={304}
+          sizes="(min-width: 1024px) 40vw, 100vw"
           loading="lazy"
+          decoding="async"
         />
       ) : null}
       <div

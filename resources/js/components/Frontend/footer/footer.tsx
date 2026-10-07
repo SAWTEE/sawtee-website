@@ -45,10 +45,11 @@ export default function Footer({
               className="mx-auto flex w-full justify-center lg:mx-0 lg:justify-start"
             >
               <img
-                src="/assets/logo-sawtee.svg"
+                src="/assets/logo-sawtee-header.webp"
                 alt="SAWTEE"
                 width={128}
                 height={32}
+                decoding="async"
                 className="h-8 w-32 object-contain"
               />
             </InertiaLink>

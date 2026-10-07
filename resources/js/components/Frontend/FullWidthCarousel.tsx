@@ -11,6 +11,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { dismissStaticLcpFallback } from '@/lib/dismiss-lcp-fallback';
+import { firstSrcSetUrl } from '@/lib/media-image';
 import { cn } from '@/lib/utils';
 import type { Slide } from '@/types';
 
@@ -75,6 +77,17 @@ const FullWidthCarousel = ({
     };
   }, [api]);
 
+  const firstSlideSrc = firstSrcSetUrl(
+    slides?.[0]?.media?.[0]?.srcset || responsiveImages?.[0],
+    slides?.[0]?.media?.[0]?.original_url
+  );
+
+  useEffect(() => {
+    if (!slides?.length || !firstSlideSrc) {
+      dismissStaticLcpFallback();
+    }
+  }, [firstSlideSrc, slides?.length]);
+
   if (!slides?.length) {
     return null;
   }
@@ -101,9 +114,9 @@ const FullWidthCarousel = ({
         >
           {slides.map((slide, index) => {
             const image = slide.media?.[0];
-            const imageSrc = image?.original_url;
             const srcSet =
               image?.srcset || responsiveImages?.[index] || undefined;
+            const imageSrc = firstSrcSetUrl(srcSet, image?.original_url);
             const hasCopy = Boolean(slide.title || slide.subtitle);
 
             return (
@@ -137,6 +150,12 @@ const FullWidthCarousel = ({
                         matchSiblingHeight && 'lg:absolute lg:inset-0'
                       )}
                       priority={index === 0}
+                      onLoad={
+                        index === 0 ? dismissStaticLcpFallback : undefined
+                      }
+                      onError={
+                        index === 0 ? dismissStaticLcpFallback : undefined
+                      }
                     />
                   ) : (
                     <div

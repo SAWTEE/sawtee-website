@@ -55,6 +55,13 @@ function registerVariants(Media $media, array $dimensions, string $conversion = 
     }
 }
 
+test('firstUrl returns the first srcset candidate', function () {
+    expect(ResponsiveImageSet::firstUrl('/wide.webp 1200w, /narrow.webp 400w'))
+        ->toBe('/wide.webp')
+        ->and(ResponsiveImageSet::firstUrl(null))->toBeNull()
+        ->and(ResponsiveImageSet::firstUrl('/only.webp'))->toBe('/only.webp');
+});
+
 test('srcset lists every generated variant with a width descriptor', function () {
     $slide = slideWithResponsiveImages();
     $media = $slide->getFirstMedia('slides');

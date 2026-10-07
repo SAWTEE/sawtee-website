@@ -4,6 +4,7 @@ import { createInertiaApp } from '@inertiajs/react';
 import { Suspense } from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 
+import { armStaticLcpFallback } from '@/lib/dismiss-lcp-fallback';
 import { registerInertiaErrorHandlers } from '@/lib/inertia-errors';
 import { resolveDefaultLayout } from '@/lib/resolve-layout';
 import { resolvePage } from '@/lib/resolve-page';
@@ -17,7 +18,7 @@ if (import.meta.env.PROD) {
 }
 
 function removeStaticLcpFallback(): void {
-  document.body.classList.add('inertia-mounted');
+  armStaticLcpFallback();
 }
 
 createInertiaApp({

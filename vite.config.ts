@@ -14,7 +14,7 @@ const pwaIconEntries = [
   '/pwa-192x192.png',
   '/pwa-512x512.png',
   '/pwa-maskable-512x512.png',
-  '/assets/logo-sawtee.svg',
+  '/assets/logo-sawtee-header.webp',
 ].map(url => ({ url, revision: `${Date.now()}` }));
 
 export default defineConfig(({ isSsrBuild }) => ({
