@@ -7,6 +7,7 @@ import {
 
 import InertiaLink from '@/components/shared/InertiaLink';
 import useMinWidth from '@/hooks/use-min-width';
+import { SITE_HEADER_LOGO_SRC } from '@/lib/site-logo';
 import { cn } from '@/lib/utils';
 import type { MenuItem } from '@/types';
 
@@ -111,7 +112,7 @@ const Header = ({
     <SiteHeader className={className}>
       <SiteHeaderInner>
         <div className="flex w-full min-w-0 items-center justify-between gap-3">
-          <SiteLogo src="/assets/logo-sawtee-header.webp" />
+          <SiteLogo src={SITE_HEADER_LOGO_SRC} />
           {isDesktop ? (
             <Suspense fallback={null}>
               <DesktopNavigation menu={menu ?? []} />

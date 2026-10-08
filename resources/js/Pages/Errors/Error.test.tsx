@@ -125,6 +125,9 @@ describe('ErrorPage', () => {
       '/'
     );
     expect(
+      screen.getByRole('link', { name: /sawtee home/i }).querySelector('img')
+    ).toHaveAttribute('src', '/assets/logo-sawtee-header.webp');
+    expect(
       screen.getByText(/south asia watch on trade, economics and environment/i)
     ).toBeInTheDocument();
   });

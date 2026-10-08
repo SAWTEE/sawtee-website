@@ -99,6 +99,7 @@ describe('Header responsiveness', () => {
 
     expect(logo).toHaveAttribute('src', '/assets/logo-sawtee-header.webp');
     expect(logo).toHaveAttribute('fetchpriority', 'low');
+    expect(logo.className).not.toMatch(/invert|mix-blend/);
   });
 
   it('keeps the header overflow visible so desktop dropdowns are not clipped', () => {

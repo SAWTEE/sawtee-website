@@ -16,6 +16,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useSiteCopy } from '@/lib/site-copy';
+import { SITE_HEADER_LOGO_SRC } from '@/lib/site-logo';
 import { cn } from '@/lib/utils';
 
 import { SocialMenu } from '../header/social-menu';
@@ -45,7 +46,7 @@ export default function Footer({
               className="mx-auto flex w-full justify-center lg:mx-0 lg:justify-start"
             >
               <img
-                src="/assets/logo-sawtee-header.webp"
+                src={SITE_HEADER_LOGO_SRC}
                 alt="SAWTEE"
                 width={128}
                 height={32}

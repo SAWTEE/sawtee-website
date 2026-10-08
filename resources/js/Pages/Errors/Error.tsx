@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import GuestLayout from '@/layouts/GuestLayout';
 import MainLayout from '@/layouts/MainLayout';
 import { SITE_COPY_DEFAULTS, useSiteCopy } from '@/lib/site-copy';
+import { SITE_HEADER_LOGO_SRC } from '@/lib/site-logo';
 import { cn } from '@/lib/utils';
 
 type ErrorStatus = 403 | 404 | 419 | 500 | 503;
@@ -234,7 +235,7 @@ function PublicErrorContent({
               aria-label="SAWTEE home"
             >
               <img
-                src="/assets/logo-sawtee-header.webp"
+                src={SITE_HEADER_LOGO_SRC}
                 alt=""
                 width={128}
                 height={32}
